@@ -4,11 +4,14 @@ mode: attachment
 language: rust
 module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
-findable: true
-kind: failure
-reproduce: "cd input && quire coverage --scope . --module ./module --json"
+findable: false
+kind: control
+reproduce: quire coverage --scope cases/attachment/marker-form-declared/input --module cases/attachment/marker-form-declared/input/module
+  --json
 tags:
-  - TC-992
-  - coverage
-  - binding
-comment: "The control. Same tree, the declared spelling: nothing fires, and the census becomes the reassurance the payload could not previously give."
+- TC-992
+- coverage
+- binding
+comment: 'The control. Same tree, the declared spelling: nothing fires, and the census becomes the reassurance
+  the payload could not previously give.'
+control_for: marker-form-mismatch

@@ -6,9 +6,12 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: "cd input && quire coverage --scope . --module ./module --json"
+reproduce: quire coverage --scope cases/provenance/implements-never-asked/input --module cases/provenance/implements-never-asked/input/module
+  --json
 tags:
-  - TC-995
-  - coverage
-  - metric
-comment: "A module declaring no `implements` forms. An empty list and an uncomputed one are the same bytes; the metric says which. `not_computed` carries no numbers at all, so there is no zero to be read as an answer."
+- TC-995
+- coverage
+- metric
+comment: A module declaring no `implements` forms. An empty list and an uncomputed one are the same bytes;
+  the metric says which. `not_computed` carries no numbers at all, so there is no zero to be read as an
+  answer.

@@ -1,0 +1,14 @@
+{
+  "$comment": "The metric dictionary, versioned with the corpus rather than inside either tool's bench/. Seeded with the one metric this corpus publishes about itself; finding-quality metrics arrive with the labels/ ground truth.",
+  "schema_version": 1,
+  "metrics": {
+    "bounds.gap_count": {
+      "unit": "mode-language cell",
+      "population": "every cell declared in corpus.yaml's bounds matrix",
+      "method": "count of cells in state GAP",
+      "shape": "count",
+      "direction": "lower-is-better",
+      "note": "A COUNT, never a ratio (FR-065-CON-2). A ratio falls as easy cases are added, so a corpus could improve its number while the hard missing case stayed missing."
+    }
+  }
+}

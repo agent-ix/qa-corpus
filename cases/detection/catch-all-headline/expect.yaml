@@ -9,6 +9,6 @@ metrics:
 diagnostic_reasons:
   - catch-all-universal
 diagnostic_paths:
-  catch-all-universal: FR-001.md
+  catch-all-universal: spec/FR-001.md
 diagnostic_message_contains:
-  catch-all-universal: "`FR-001-AC-1` at FR-001.md:10"
+  catch-all-universal: "`FR-001-AC-1` at spec/FR-001.md:10"

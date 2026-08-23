@@ -4,12 +4,16 @@ mode: attachment
 language: rust
 module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
-findable: true
+findable: false
 kind: control
 control_for: marker-form-mismatch
-reproduce: "cd input && quire coverage --scope . --module ./module --json"
+reproduce: quire coverage --scope cases/attachment/marker-form-mismatch-control/input --module cases/attachment/marker-form-mismatch-control/input/module
+  --json
 tags:
-  - TC-1006
-  - coverage
-  - binding
-comment: "The control for `marker-form-mismatch`: the identical tree with the marker spelled as the module declares it. Everything binds, so there is no unbound example to name and no diagnostic to carry it. Without this, the assertion above is satisfied by a census that always carries an example \u2014 a check that cannot stay silent on healthy input is not a check, it is a constant."
+- TC-1006
+- coverage
+- binding
+comment: 'The control for `marker-form-mismatch`: the identical tree with the marker spelled as the module
+  declares it. Everything binds, so there is no unbound example to name and no diagnostic to carry it.
+  Without this, the assertion above is satisfied by a census that always carries an example — a check
+  that cannot stay silent on healthy input is not a check, it is a constant.'

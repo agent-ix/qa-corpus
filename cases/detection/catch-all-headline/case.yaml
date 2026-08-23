@@ -6,10 +6,14 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: "cd input && quire coverage --scope . --module ./module --json"
+reproduce: quire coverage --scope cases/detection/catch-all-headline/input --module cases/detection/catch-all-headline/input/module
+  --json
 tags:
-  - TC-1009
-  - TC-996
-  - metric
-  - properties
-comment: "Every extractable criterion is the `universal` catch-all, so `specific_shaped` is 0 while `property_shaped` is not. 54% vs 8% on the pass-2 corpus \u2014 both true, one misleading. #261: and the diagnostic must NAME a criterion. `coverage.specific_shaped` is a ratio over a corpus, so a reader watching it fall has every spec file to search \u2014 the same shape as `no-symbol-bound` naming a language."
+- TC-1009
+- TC-996
+- metric
+- properties
+comment: 'Every extractable criterion is the `universal` catch-all, so `specific_shaped` is 0 while `property_shaped`
+  is not. 54% vs 8% on the pass-2 corpus — both true, one misleading. #261: and the diagnostic must NAME
+  a criterion. `coverage.specific_shaped` is a ratio over a corpus, so a reader watching it fall has every
+  spec file to search — the same shape as `no-symbol-bound` naming a language.'

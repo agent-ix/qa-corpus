@@ -6,10 +6,15 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: "cd input && quire coverage --scope . --module ./module --json"
+reproduce: quire coverage --scope cases/attachment/marker-form-mismatch/input --module cases/attachment/marker-form-mismatch/input/module
+  --json
 tags:
-  - TC-1006
-  - TC-992
-  - binding
-  - coverage
-comment: "Real tests, real tags, a marker spelling the module never declared. filament-ide-rs: 1,292 such symbols, 0 bound, reported as 555/2389 (23%) with nothing saying so. #256: and it must name ONE of them \u2014 `src/lib.rs:5`, the annotation line, not the `fn` line, because a marker that failed to match is written where the annotation is and that is what the reader edits. The diagnostic named the LANGUAGE and nothing else, so a reader with 1,292 unbound symbols was told to search Rust."
+- TC-1006
+- TC-992
+- binding
+- coverage
+comment: 'Real tests, real tags, a marker spelling the module never declared. filament-ide-rs: 1,292 such
+  symbols, 0 bound, reported as 555/2389 (23%) with nothing saying so. #256: and it must name ONE of them
+  — `src/lib.rs:5`, the annotation line, not the `fn` line, because a marker that failed to match is written
+  where the annotation is and that is what the reader edits. The diagnostic named the LANGUAGE and nothing
+  else, so a reader with 1,292 unbound symbols was told to search Rust.'
