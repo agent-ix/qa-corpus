@@ -51,10 +51,10 @@ result_record:
   - fail
   - rejected
 bounds:
-  gap_count: 42
+  gap_count: 43
   covered_count: 0
   out_of_scope_count: 1
-  declared_cells: 43
+  declared_cells: 44
   matrix:
   - mode: minting
     case: section-name-mismatch
@@ -265,6 +265,15 @@ bounds:
         state: GAP
         reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
           no ecosystem mode (agent-ix/quire-rs#285)
+  - mode: attachment
+    case: tests-directory-topology
+    source: agent-ix/quire-rs#267
+    shipped: true
+    cells:
+      rust:
+        state: GAP
+        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
+          no ecosystem mode (agent-ix/quire-rs#285)
 known_gaps:
   uncontrolled_failure_cases:
     cases:
@@ -292,6 +301,12 @@ cases:
   kind: control
   module: variants/bench-legacy
   path: cases/attachment/marker-form-mismatch-control
+- id: tests-directory-topology
+  mode: attachment
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/attachment/tests-directory-topology
 - id: catch-all-headline
   mode: detection
   language: rust
