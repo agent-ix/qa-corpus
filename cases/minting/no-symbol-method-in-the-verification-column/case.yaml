@@ -1,0 +1,14 @@
+id: no-symbol-method-in-the-verification-column
+issue_ref: agent-ix/quire-rs#259
+mode: minting
+language: rust
+module: variants/bench-legacy
+relaxation_ticket: agent-ix/quire-rs#285
+findable: true
+kind: failure
+reproduce: "cd input && quire coverage --scope . --module ./module --json"
+tags:
+  - TC-1008
+  - coverage
+  - no-source-symbol
+comment: "CR-041's exemption read `test_type_column` and nothing else, so the same declared vocabulary governed two columns and was consulted for one. Measured on filament-ide-rs @ 6f87a7e: 21 matrix rows exempt, 15 FR criteria rows naming the identical method NOT exempt. And the compare was exact, so `Inspection (TC-002)` would miss even reading the right column \u2014 eleven of the fifteen are annotated that way."

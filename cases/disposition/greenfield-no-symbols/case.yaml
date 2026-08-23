@@ -1,0 +1,14 @@
+id: greenfield-no-symbols
+issue_ref: agent-ix/quire-rs#229
+mode: disposition
+language: rust
+module: variants/bench-legacy
+relaxation_ticket: agent-ix/quire-rs#285
+findable: true
+kind: failure
+reproduce: "cd input && quire coverage --scope . --module ./module --json"
+tags:
+  - TC-994
+  - coverage
+  - metric
+comment: "A repository with no tests reports 0% HONESTLY. This is the case `examined` exists for: without it the hollow-denominator gate fires on every greenfield corpus, which the first draft of FR-063 did."

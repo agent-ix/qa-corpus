@@ -1,0 +1,15 @@
+id: no-symbol-method-in-the-verification-column-control
+issue_ref: agent-ix/quire-rs#259
+mode: minting
+language: rust
+module: variants/bench-legacy
+relaxation_ticket: agent-ix/quire-rs#285
+findable: true
+kind: control
+control_for: no-symbol-method-in-the-verification-column
+reproduce: "cd input && quire coverage --scope . --module ./module --json"
+tags:
+  - TC-1008
+  - coverage
+  - no-source-symbol
+comment: "The control: the identical tree with AC-2 verified by `Test` instead. No row names a declared no-symbol method, so nothing is exempted. Without it the assertion above is satisfied by an exemption that fires on every row \u2014 and an exemption that cannot stay silent is a coverage backdoor, not a check."

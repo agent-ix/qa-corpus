@@ -1,0 +1,14 @@
+id: marker-form-declared
+issue_ref: agent-ix/spec-artifacts-process#59
+mode: attachment
+language: rust
+module: variants/bench-legacy
+relaxation_ticket: agent-ix/quire-rs#285
+findable: true
+kind: failure
+reproduce: "cd input && quire coverage --scope . --module ./module --json"
+tags:
+  - TC-992
+  - coverage
+  - binding
+comment: "The control. Same tree, the declared spelling: nothing fires, and the census becomes the reassurance the payload could not previously give."

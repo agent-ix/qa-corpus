@@ -1,0 +1,4 @@
+metrics:
+  -
+    name: coverage.implements
+    state: not_computed

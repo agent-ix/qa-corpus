@@ -1,0 +1,10 @@
+backed: 1
+binding_census:
+  -
+    language: rust
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+total: 2

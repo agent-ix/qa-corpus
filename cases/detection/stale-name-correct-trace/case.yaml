@@ -1,0 +1,14 @@
+id: stale-name-correct-trace
+issue_ref: agent-ix/quire-rs#227
+mode: detection
+language: rust
+module: variants/bench-legacy
+relaxation_ticket: agent-ix/quire-rs#285
+findable: true
+kind: failure
+reproduce: "cd input && quire coverage --scope . --module ./module --json"
+tags:
+  - TC-993
+  - coverage
+  - binding
+comment: "A test whose NAME carries an id the matrix does not declare while its marker carries one it does. The binding is correct; the name is stale. Neither the row nor the symbol should be reported as a defect."

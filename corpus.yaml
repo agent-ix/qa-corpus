@@ -1,0 +1,234 @@
+# The controlled corpus. Contract: agent-ix/quire-rs FR-065.
+#
+# `bounds.gap_count` is a COUNT, never a ratio (FR-065-CON-2). A ratio falls
+# as easy cases are added, so a corpus could improve its number while the hard
+# missing case stayed missing. Converting a GAP to out-of-scope moves this
+# number, which makes scoping something out a visible act.
+#
+# The vocabularies below are declared HERE and read by both runners rather
+# than compiled into either (FR-065-AC-19..21) — which is what makes
+# `one definition` checkable from a single repository.
+
+schema_version: 1
+mode_families:
+- minting
+- detection
+- attachment
+- parser
+- join
+- disposition
+- provenance
+bounds_states:
+- covered
+- out-of-scope
+- GAP
+grading_levels:
+- L1
+- L2
+- L3
+case_kinds:
+- failure
+- control
+bounds:
+  gap_count: 36
+  matrix:
+  - mode: minting
+    case: section-name-mismatch
+    source: 88 repos / 3,514 TC ids
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: minting
+    case: id-column-mismatch
+    source: agent-ix/identity
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: minting
+    case: section-and-id-column
+    source: identity — section-only diagnosis is insufficient
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: minting
+    case: rows-across-many-headings
+    source: identity (~30 headings)
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: minting
+    case: no-testmatrix-document
+    source: 47 repos
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: detection
+    case: test-name-id-in-call-title
+    source: spec-artifacts-process#68, 81% of a repo
+    cells:
+      typescript:
+        state: GAP
+  - mode: detection
+    case: test-name-id-in-fn-name
+    source: CR-034, 1,292 sites
+    cells:
+      rust:
+        state: GAP
+  - mode: attachment
+    case: tag-on-describe-header
+    source: 30 repos, 0 backed
+    cells:
+      typescript:
+        state: GAP
+  - mode: attachment
+    case: tag-at-module-scope
+    source: ix-ui, sqlmodel-fixtures
+    cells:
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: attachment
+    case: tag-on-non-test-function
+    source: binds_trace_ids complement
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: parser
+    case: triple-quote-scope-desync
+    source: symbols/python.rs:40-42
+    cells:
+      python:
+        state: GAP
+  - mode: join
+    case: tag-names-con-inv-sc-vc
+    source: 328 tags
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: join
+    case: tag-names-bare-fr
+    source: 244 tags
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: join
+    case: tag-names-unminted-tc
+    source: 455 tags
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: disposition
+    case: real-tests-zero-tags
+    source: 82 repos — must dispose authoring-absent
+    cells:
+      rust:
+        state: GAP
+      python:
+        state: GAP
+      typescript:
+        state: GAP
+  - mode: provenance
+    case: engine-lacks-capability
+    source: the 0.29.0 failure — census must abort
+    cells:
+      n/a:
+        state: out-of-scope
+        reason: provenance is a property of the toolchain, not of a source language; the case is language-neutral
+cases:
+- id: marker-form-declared
+  mode: attachment
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/attachment/marker-form-declared
+- id: marker-form-mismatch
+  mode: attachment
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/attachment/marker-form-mismatch
+- id: marker-form-mismatch-control
+  mode: attachment
+  language: rust
+  kind: control
+  module: variants/bench-legacy
+  path: cases/attachment/marker-form-mismatch-control
+- id: catch-all-headline
+  mode: detection
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/detection/catch-all-headline
+- id: catch-all-headline-control
+  mode: detection
+  language: rust
+  kind: control
+  module: variants/bench-legacy
+  path: cases/detection/catch-all-headline-control
+- id: stale-name-correct-trace
+  mode: detection
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/detection/stale-name-correct-trace
+- id: greenfield-no-symbols
+  mode: disposition
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/disposition/greenfield-no-symbols
+- id: no-symbol-method-in-the-verification-column
+  mode: minting
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/minting/no-symbol-method-in-the-verification-column
+- id: no-symbol-method-in-the-verification-column-control
+  mode: minting
+  language: rust
+  kind: control
+  module: variants/bench-legacy
+  path: cases/minting/no-symbol-method-in-the-verification-column-control
+- id: implements-never-asked
+  mode: provenance
+  language: rust
+  kind: failure
+  module: variants/bench-legacy
+  path: cases/provenance/implements-never-asked
