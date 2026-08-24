@@ -14,6 +14,6 @@ tags:
 - binding
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-fn-name-control/input --json
 comment: >-
-  The same function with `tc_001_` instead of `tc_1_` — one character. It binds and backs the
+  The same function with `tc_001_` instead of `tc_1_` — two characters. It binds and backs the
   row. This half also pins CR-034, the change that made the underscore spelling bind at all,
   which nothing else in the corpus does.

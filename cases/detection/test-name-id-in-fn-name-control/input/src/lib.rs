@@ -1,4 +1,4 @@
-//! The SAME function, one character different: `tc_001_` where its partner
+//! The SAME function, two characters different: `tc_001_` where its partner
 //! says `tc_1_`. The id minted matches the declared row, so it binds and backs
 //! it.
 //!

@@ -32,12 +32,28 @@ groups:
     target: test-case
     backed: 0
     total: 1
+# BOTH halves of the pair. The first version pinned only the untracked one,
+# which left the row's entire thesis half-asserted: `total` and `groups` are
+# satisfied by any two minted rows with any ids, so minting could have
+# regressed to `TC-01` or to a null identity and this stayed green — while the
+# forward block's `["TC-1", "TC-001"]` became unsatisfiable and the case sat
+# pending forever on a string the engine no longer produced.
 untracked_symbols:
   - symbol: "tests::tc_1_every_finding_defaults_to_warning"
     trace_id: TC-1
     path: src/lib.rs
-# One candidate, one BOUND. This is the assertion that makes the row worth
-# having: a census that reads perfectly healthy beside a backing ratio of zero.
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+# One candidate, one BOUND — a census reading perfectly healthy beside a
+# backing ratio of zero. This does NOT discriminate from the control (whose
+# census is identical); what it pins is that today's engine counts a wrong-id
+# binding as `bound`, so a future census that became join-aware would break it
+# here rather than silently.
 binding_census:
   - language: rust
     candidates: 1

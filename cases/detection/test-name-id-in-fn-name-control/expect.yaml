@@ -1,4 +1,4 @@
-# The control: `tc_001_` where its partner says `tc_1_`. One character.
+# The control: `tc_001_` where its partner says `tc_1_`. Two characters.
 #
 # It binds, backs the row, and leaves nothing untracked — so the pair isolates
 # the padding exactly, with no other difference between the trees.
@@ -18,6 +18,7 @@ groups:
     backed: 1
     total: 1
 untracked_symbols: []
+unbacked_rows: []
 binding_census:
   - language: rust
     candidates: 1
