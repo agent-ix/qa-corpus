@@ -52,10 +52,23 @@ verify.py            runs every case by its own `reproduce` and diffs expect.yam
 modules/
   ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
   variants/<id>/     relaxation variants — each names the ticket it sizes
-cases/<mode>/<case>/
+cases/<mode>/<case>/                       ONE language
   case.yaml          id, case, issue_ref, mode, language, module, kind, findable,
                      reproduce; control_for on a control; relaxation_ticket on a
                      variant binding; pending on a case awaiting its fix
+  input/ expect.yaml
+
+cases/<mode>/<case>/                       a LANGUAGE SET
+  case.yaml          everything SHARED — identity: id, case, issue_ref, mode,
+                     module, kind, findable, control_for
+  <language>/
+    case.yaml        only what VARIES: reproduce, per-language overrides
+    input/ expect.yaml
+
+`language` comes from the DIRECTORY NAME, never a declared field. A variant's id
+is `<shared id>-<language>` in every reader, and a variant may not override
+`case`, `mode`, `module`, `kind` or `pending` — those declare WHICH case it is,
+and varying them re-points the cell it credits (FR-065 CR-109).
   input/             REAL STATIC FILES — full topology, cd-able, runnable by hand
   expect.yaml        what the run must show. Data, not assertions in code.
 labels/              hand-labelled ground truth for finding-quality scoring
@@ -77,19 +90,19 @@ added, so a corpus could improve its number while the hard missing case stayed
 missing. Converting a `GAP` to `out-of-scope` moves the count — declaring something
 out of scope is a visible act.
 
-### Today: `gap_count: 42`, `covered: 1`
+### Today: run `make bounds`
 
 Run `make bounds` — these numbers are **derived, never stored**, so they cannot go
 stale. Adding a fixture flips its own cell and moves the count with no edit to any
 central file.
 
-Eleven of the thirteen fixtures are ports of the old `quire-rs` cases and **all
-eleven bind the `bench-legacy` variant** — the synthetic manifest whose heading
-always matches. They therefore cover **no ecosystem mode**, and the matrix says so
-rather than crediting them. Rebinding them is `agent-ix/quire-rs#285`.
+Most fixtures are ports of the old `quire-rs` cases and bind the `bench-legacy`
+variant — the synthetic manifest whose heading always matches — so they cover no
+ecosystem mode and the matrix says so. Rebinding them is `agent-ix/quire-rs#285`.
 
-The one covered cell is `minting/section-name-mismatch`, the first fixture bound to
-the real declaration.
+A cell covered by a **pending** fixture is reported separately: a case exists and
+the engine fails it, and `covered` read as `working` is the conflation this
+corpus exists to end.
 
 Starting near zero is the honest reading. A corpus that credited itself on day one
 for cases bound to a manifest that cannot fail is the exact defect this repository

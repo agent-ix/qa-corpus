@@ -6,6 +6,17 @@
 total: 2
 backed: 1
 absent_diagnostic_reasons:
+  # The two REAL tokens the Rust control asserts, carried into this language.
+  # Dropping them left `section-matches-nothing` — which the engine does not
+  # emit at all — as the only absence assertion here, so this control could not
+  # fail. #250 is exactly the shape that would slip through: a Rust guard
+  # misfiring in another language. A control weaker in Python than in Rust
+  # reproduces the gap #268 exists to close.
+  - no-symbol-bound
+  - hollow-denominator
+  # Forward-declared: the engine emits no such token yet, so this one is
+  # vacuous until agent-ix/quire-rs#270 lands. Retained deliberately — it arms
+  # the moment the detector exists.
   - section-matches-nothing
 binding_census:
   - language: typescript

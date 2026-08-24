@@ -69,15 +69,35 @@ def discover() -> list[dict]:
             per_case = yaml.safe_load((variant / "case.yaml").read_text()) if (
                 variant / "case.yaml"
             ).is_file() else {}
+            # A variant may vary its EXPECTATIONS and its invocation, not what
+            # case it is. Overriding `case`/`mode` silently re-points the cell
+            # a fixture credits — measured: one line in a variant file moved a
+            # covered cell to a different inventory row and `gap_count` did not
+            # change. `module`/`kind`/`pending` are the same class of claim.
+            protected = {"case", "mode", "module", "kind", "pending"}
+            clashes = sorted(
+                k for k in protected
+                if k in per_case and k in shared and per_case[k] != shared[k]
+            )
+            if clashes:
+                raise CorpusError(
+                    f"{rel}/{language}: a variant may not override {clashes} — "
+                    f"those declare WHICH case this is, and varying them "
+                    f"silently re-points the cell it credits.")
             merged = {**shared, **per_case, "language": language}
             # The variant's id must be its OWN. `setdefault` never fired here
             # because the shared `case.yaml` already carries `id`, so all three
             # language variants reported one id — indistinguishable in the
             # pending list, and a duplicate-id check would have called them one
             # case.
-            base = shared.get("id", case_dir.name)
-            merged["id"] = per_case.get("id", f"{base}-{language}")
-            merged.setdefault("case", base)
+            # Derived from the MERGED map and always suffixed, matching the
+            # Rust harness exactly. This honoured a variant-declared `id`
+            # verbatim while Rust overwrote it, so one fixture had two
+            # identities and nothing keyed on `id` — a pending ticket, a
+            # baseline row, a result record — could be joined across runners.
+            base = merged.get("id", case_dir.name)
+            merged["case"] = merged.get("case", base)
+            merged["id"] = f"{base}-{language}"
             cases.append({
                 **merged,
                 "dir": str(variant.relative_to(ROOT)),

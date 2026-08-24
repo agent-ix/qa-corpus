@@ -59,10 +59,14 @@ def check_engine() -> str:
     # traceability model errors and emits no payload, which the first version
     # then read as "no provenance block" — accusing a perfectly good binary of
     # predating #68.
-    sample = next(iter(sorted(ROOT.glob("cases/*/*/case.yaml"))), None)
+    # Through `discover()`, not a raw glob. The glob took the first sorted
+    # `case.yaml` and read `reproduce` off it — a language SET's shared
+    # declaration has none, so the first set sorting before a single-language
+    # case would have killed this with a bare `KeyError` before a case ran.
+    sample = next(iter(discover()), None)
     if sample is None:
         raise SystemExit("verify: the corpus has no cases to probe with")
-    meta = yaml.safe_load(sample.read_text())
+    meta = sample
     tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
     env = dict(os.environ)
     while tokens and ENV_ASSIGNMENT.match(tokens[0]):
@@ -281,6 +285,34 @@ def main() -> int:
             pending.append((meta["id"], ticket, mine))
         else:
             now_passing.append((meta["id"], ticket))
+
+    # RESTORED. The shared-discovery refactor deleted this loop and nothing
+    # replaced it, so the Python runner enforced zero corpus-level conformance:
+    # deleting the flagship failure case left `26/26, 0 mismatches, rc 0` with
+    # the PENDING lines simply gone. The commit that dropped it claimed to be
+    # preventing the two readers from disagreeing.
+    #
+    # FAILURE cases only: including controls puts each control's own `case` in
+    # the set, so `control_for` resolves against itself (FR-065-AC-13).
+    partners = set()
+    for c in cases:
+        if c.get("kind") != "failure":
+            continue
+        partners.add((c["id"], c.get("language")))
+        if c.get("case"):
+            partners.add((c["case"], c.get("language")))
+    for c in cases:
+        if c.get("kind") != "control":
+            continue
+        partner = c.get("control_for")
+        if not partner:
+            failures.append(f"{c['id']}: a control declares no `control_for`")
+        elif (partner, c.get("language")) not in partners:
+            failures.append(
+                f"{c['id']}: control_for names {partner!r}, which is no failure "
+                f"case in {c.get('language')}")
+        if c.get("findable"):
+            failures.append(f"{c['id']}: a control cannot be findable")
 
     print(f"cases run: {ran}/{len(cases)}")
     for failure in failures:
