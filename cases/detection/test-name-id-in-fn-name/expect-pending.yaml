@@ -1,0 +1,11 @@
+# FORWARD: what agent-ix/quire-rs#307 will make true.
+#
+# L3 must print BOTH spellings. "An id did not match" is useless here — the
+# whole defect is that `TC-1` and `TC-001` look identical until you count
+# zeros, so a message naming one of them sends its reader to the wrong file.
+diagnostic_reasons:
+  - untracked-id-near-miss
+diagnostic_message_contains:
+  untracked-id-near-miss:
+    - "TC-1"
+    - "TC-001"

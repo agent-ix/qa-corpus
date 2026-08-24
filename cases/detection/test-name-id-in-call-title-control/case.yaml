@@ -14,5 +14,6 @@ tags:
 - binding
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title-control/input --json
 comment: >-
-  The SAME test with the SAME title, plus the declared `ts-trace-helper` marker. One line is
-  the whole difference, and it is the line the declaration can read.
+  The SAME test with the SAME title, plus the declared `ts-trace-helper` marker. The trees
+  differ by two lines — the import and the call — but only the call is engine-visible:
+  deleting the import leaves the payload unchanged.

@@ -39,10 +39,13 @@ diagnostic_paths:
   no-symbol-bound: src/coverage.test.ts
 diagnostic_message_contains:
   no-symbol-bound:
-    # Every declared form it tried. A message that named none of them would
-    # leave a reader unable to tell which marker to write.
+    # ALL FOUR declared forms. Asserting two would let the other two vanish
+    # from the message with nothing noticing, and the whole value of naming
+    # them is that a reader learns which markers were tried.
     - "ts-trace-helper"
+    - "typescript-trace-line"
     - "typescript-comment-id"
+    - "typescript-doc-comment-id"
     # The symbol, verbatim — which is the id the engine could not read.
     - "TC-001: every finding defaults to warning"
     - "src/coverage.test.ts:10"

@@ -82,6 +82,11 @@ diagnostic_reasons:
   forward:
     section-matches-nothing: agent-ix/quire-rs#270
     id-column-matches-nothing: agent-ix/quire-rs#270
+    # An id in `untracked_symbols` that differs from one in `unbacked_rows` only
+    # by zero-padding, case or separator. The engine holds both strings and
+    # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
+    # because the symbol bound fine — to the wrong id.
+    untracked-id-near-miss: agent-ix/quire-rs#307
   # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
   # not reach the payload on the input in question) nor `forward` (the literal
   # is already in `src/`, so TC-1026's scan finds it).
@@ -181,8 +186,19 @@ inventory:
   languages:
   - typescript
 - mode: detection
+  # CENSUSED, and the premise this row was filed under is STALE. `rust-test-name-id`
+  # binds the underscore spelling today — CR-034 landed as spec-artifacts-process
+  # cf7b4e2 and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
+  # sites, 3,952 bind. The 8 misses are 4 names duplicated into a worktree, all the
+  # `tc_811b_` "b-variant" shape, all supplementary tests for a criterion whose
+  # canonical row is already backed. Zero unbacked ecosystem rows are attributable
+  # to this form.
+  #
+  # So the row is re-scoped from "seed the defect" to "pin the fix": the fixture
+  # asserts that the id BINDS, with the pre-CR-034 relaxation variant as the
+  # control. A fixture written to the original premise would have landed green.
   case: test-name-id-in-fn-name
-  source: CR-034, 1,292 sites
+  source: CR-034 (LANDED, cf7b4e2) — regression pin, 3952/3960 sites bind
   languages:
   - rust
 - mode: attachment

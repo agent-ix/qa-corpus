@@ -1,0 +1,19 @@
+mode: detection
+language: rust
+module: ecosystem
+id: test-name-id-in-fn-name-control
+issue_ref: agent-ix/quire-rs#307
+kind: control
+control_for:
+- test-name-id-in-fn-name
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-fn-name-control/input --json
+comment: >-
+  The same function with `tc_001_` instead of `tc_1_` — one character. It binds and backs the
+  row. This half also pins CR-034, the change that made the underscore spelling bind at all,
+  which nothing else in the corpus does.

@@ -1,0 +1,47 @@
+# THIS ROW WAS RE-SCOPED. Its inventory entry said `rust-test-name-id` binds
+# nothing across 1,292 sites. Censused before authoring: 3,960 rust
+# `fn (?i:tc)_?\d+` sites across ~/dev, 3,952 BIND. CR-034 landed as
+# spec-artifacts-process cf7b4e2 and is in the vendored copy. A fixture written
+# to the original premise would have arrived green.
+#
+# What is actually broken is narrower and worse. `id_format: 'TC-{1}'` renders
+# the captured digits VERBATIM, so `fn tc_1_…` mints `TC-1` while the row
+# declares `TC-001`.
+#
+#   binding_census   rust  candidates 1, bound 1     <- reads as HEALTHY
+#   untracked_symbols  tests::tc_1_… -> TC-1
+#   unbacked_rows      TC-001
+#   diagnostics        [catch-all-universal]          <- unrelated
+#
+# The engine holds BOTH halves and joins neither. `TC-1` is homeless, `TC-001`
+# is unbacked, they differ by two characters of zero-padding, they are in the
+# same payload, and nothing says so.
+#
+# Neither existing diagnostic fires, and both stand down for the same reason:
+# `no-symbol-bound` needs `bound == 0` and `hollow-denominator` needs
+# `matched == 0`. Here both are 1. From their vantage point the binding worked —
+# it bound to the wrong id. agent-ix/quire-rs#307.
+total: 2
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 0
+    total: 1
+untracked_symbols:
+  - symbol: "tests::tc_1_every_finding_defaults_to_warning"
+    trace_id: TC-1
+    path: src/lib.rs
+# One candidate, one BOUND. This is the assertion that makes the row worth
+# having: a census that reads perfectly healthy beside a backing ratio of zero.
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator

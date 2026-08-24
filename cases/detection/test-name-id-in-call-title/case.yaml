@@ -2,7 +2,6 @@ mode: detection
 language: typescript
 module: ecosystem
 id: test-name-id-in-call-title
-case: test-name-id-in-call-title
 issue_ref: agent-ix/spec-artifacts-process#68
 kind: failure
 findable: true

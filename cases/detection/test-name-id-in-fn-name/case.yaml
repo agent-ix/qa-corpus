@@ -1,0 +1,20 @@
+mode: detection
+language: rust
+module: ecosystem
+id: test-name-id-in-fn-name
+issue_ref: agent-ix/quire-rs#307
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#307
+pending_reason: >-
+  No diagnostic pairs `untracked_symbols` against `unbacked_rows`. `no-symbol-bound` requires
+  `bound == 0` and `hollow-denominator` requires `matched == 0`; here both are 1, because the
+  symbol bound fine — to the wrong id.
+tags:
+- TC-1014
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-fn-name/input --json
+comment: >-
+  `fn tc_1_…` mints `TC-1` because `id_format: 'TC-{1}'` renders the captured digits verbatim,
+  while the matrix row declares `TC-001`. The engine holds both strings and joins neither.
