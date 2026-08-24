@@ -360,7 +360,7 @@ inventory:
   - python
 - mode: join
   # RE-SCOPED, and `tag-names-con-inv-sc-vc` is gone. That row bundled four
-  # prefixes on the strength of one number — "328 tags" — and MEASURED WITH THE
+  # prefixes on the strength of one number — "123 tags" — and MEASURED WITH THE
   # ENGINE the four behave completely differently, so the sum was never a
   # quantity anybody could act on. Unit: entries in `coverage.untracked_symbols`,
   # one per `verifies` relation whose id is neither declared, referenced by a

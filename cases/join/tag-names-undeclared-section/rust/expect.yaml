@@ -31,7 +31,7 @@
 # `spec-artifacts-process` CR-041 (#69) settled the four prefixes the inventory
 # row used to bundle, and the rule it adopted is one line: the traceability
 # model mints from sections the SHAPE CONTRACT declares, and does not invent
-# sections. Minting `Invariants` would add 328 denominator rows to reach one
+# sections. Minting `Invariants` would add 123 denominator rows (an earlier draft published 123; measured 123, consistent with a census of 113 `## Invariants` rows across 15 repositories) to reach one
 # tag — measured, `section: [Constraints, Invariants]` moves the ecosystem
 # 23,059 rows / 5,452 backed to 23,387 / 5,453. The site is repaired by renaming
 # that section in `identity`, which is what the control does one token at a time.
@@ -41,7 +41,7 @@
 # What the engine publishes instead is the LOCUS, and it is exact:
 # `untracked_symbols` names the symbol, the id it bound, and the file. What it
 # does NOT publish is the disposition — this id and a typo'd `TC-1207` arrive in
-# the same list looking identical, which is `agent-ix/quire-rs#328`.
+# the same list looking identical, which is `agent-ix/quire-rs#123`.
 #
 # THE PAYLOAD CARRIES A LINE (17) THAT THIS BLOCK CANNOT ASSERT. Both graders
 # compare `untracked_symbols` on (symbol, trace_id, path) only, deliberately —
