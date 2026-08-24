@@ -179,17 +179,14 @@ def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
     forward_path = case / "expect-pending.yaml"
     grade(yaml.safe_load(live_path.read_text()) or {}, got, meta, name, failures)
 
-    # Both halves of the pairing, because either alone is a fixture whose
-    # forward claim nothing grades.
-    if meta.get("pending") and not forward_path.is_file():
-        failures.append(
-            f"{name}: declares `pending:` and ships no expect-pending.yaml — the "
-            f"behaviour it is waiting on is asserted nowhere")
-    elif forward_path.is_file() and not meta.get("pending"):
-        failures.append(
-            f"{name}: ships expect-pending.yaml and declares no `pending:` — a "
-            f"forward claim naming no ticket")
-    elif forward_path.is_file():
+    # The pairing itself is the LOADER's check (`bounds.check_expectations`,
+    # FR-065-AC-26) and reaching here means it held. Asserted, not assumed: an
+    # earlier version handled it inline and left `ahead` empty in the
+    # missing-file branch, so main() ALSO reported the ticket as landed — one
+    # corpus state, two contradictory messages, and following the second one
+    # landed you in the opposite pairing error.
+    assert forward_path.is_file() == bool(meta.get("pending")), name
+    if forward_path.is_file():
         grade(yaml.safe_load(forward_path.read_text()) or {}, got, meta, name, ahead)
     return True
 
@@ -236,6 +233,16 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
     # mismatch is two facts — found and declared — and one substring is
     # satisfied by naming either.
     for reason, fragments in (expect.get("diagnostic_message_contains") or {}).items():
+        # A SCALAR iterates its characters and asserts each one, which every
+        # message satisfies. Measured: the old string form left this reader at
+        # `0 mismatches` on an assertion Rust rejects outright at parse — one
+        # corpus, one file, one reader green and one dead. Rejected explicitly
+        # rather than coerced, so the two readers take the same input.
+        if isinstance(fragments, str):
+            failures.append(
+                f"{name}: diagnostic_message_contains.{reason} is a string; it "
+                f"takes a LIST of substrings (FR-065-AC-29)")
+            continue
         message = next((d["message"] for d in diagnostics if d["reason"] == reason), None)
         for fragment in fragments:
             if message is None or fragment not in message:
@@ -365,13 +372,23 @@ def main() -> int:
     for c in cases:
         if c.get("kind") != "control":
             continue
-        partner = c.get("control_for")
-        if not partner:
+        # A LIST, always. One control can legitimately serve several failure
+        # cases — the healthy repair of two single-cell defects in one document
+        # is the same document — and a string form alongside a list form would
+        # be two spellings of one claim.
+        declared = c.get("control_for")
+        if not declared:
             failures.append(f"{c['id']}: a control declares no `control_for`")
-        elif (partner, c.get("language")) not in partners:
+        elif not isinstance(declared, list):
             failures.append(
-                f"{c['id']}: control_for names {partner!r}, which is no failure "
-                f"case in {c.get('language')}")
+                f"{c['id']}: control_for is {declared!r}; it takes a LIST of "
+                f"failure-case names")
+        else:
+            for partner in declared:
+                if (partner, c.get("language")) not in partners:
+                    failures.append(
+                        f"{c['id']}: control_for names {partner!r}, which is no "
+                        f"failure case in {c.get('language')}")
         if c.get("findable"):
             failures.append(f"{c['id']}: a control cannot be findable")
 

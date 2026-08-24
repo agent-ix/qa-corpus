@@ -1,0 +1,23 @@
+mode: minting
+module: ecosystem
+id: declared-heading-and-column-control
+case: section-name-mismatch
+issue_ref: agent-ix/quire-rs#270
+kind: control
+# ONE control, two partners. `section-name-mismatch` and `id-column-mismatch`
+# are the same document with two different single-cell defects, so the healthy
+# repair of either is the SAME tree — measured, the two controls' `input/`
+# trees differed by one blank line and their expect blocks were byte-identical
+# in all three languages. Two copies of one fixture asserted twice and
+# distinguished nothing: swapping their `control_for` left every gate green.
+control_for:
+- section-name-mismatch
+- id-column-mismatch
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- minting
+- coverage
+comment: The declared heading AND the declared id column. It mints the TC row (test-case 1/1),
+  binds it, and stays silent — so a check firing on every TestMatrix cannot score perfect recall.

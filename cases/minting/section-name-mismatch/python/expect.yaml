@@ -20,6 +20,8 @@ binding_census:
   - language: python
     candidates: 1
     bound: 1
-absent_diagnostic_reasons:
-  - section-matches-nothing
-  - id-column-matches-nothing
+# The two #270 tokens are NOT asserted absent here. They belong to the fix this
+# case is waiting for, so a live block naming them would be guaranteed to FAIL
+# the day it lands rather than pass — and the run would report a lost detection
+# level instead of "the ticket appears to have landed". Their absence is the
+# CONTROL's claim, where it stays true after the fix.

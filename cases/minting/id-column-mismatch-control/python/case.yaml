@@ -1,2 +1,0 @@
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/id-column-mismatch-control/python/input
-  --json

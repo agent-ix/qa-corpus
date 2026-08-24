@@ -6,7 +6,8 @@ module: variants/bench-no-symbol-vocab
 relaxation_ticket: agent-ix/quire-rs#285
 findable: false
 kind: control
-control_for: no-symbol-method-in-the-verification-column
+control_for:
+- no-symbol-method-in-the-verification-column
 reproduce: quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column-control/input
   --module modules/variants/bench-no-symbol-vocab --json
 tags:

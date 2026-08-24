@@ -14,4 +14,5 @@ tags:
 - binding
 comment: 'The control. Same tree, the declared spelling: nothing fires, and the census becomes the reassurance
   the payload could not previously give.'
-control_for: marker-form-mismatch
+control_for:
+- marker-form-mismatch

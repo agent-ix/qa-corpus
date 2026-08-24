@@ -107,7 +107,110 @@ def discover() -> list[dict]:
                 "dir": str(variant.relative_to(ROOT)),
                 "expect": str(variant.relative_to(ROOT) / "expect.yaml"),
             })
+    check_expectations(cases)
     return cases
+
+
+def check_expectations(cases: list[dict]) -> None:
+    """Every expectation block, checked at LOAD.
+
+    FR-065-AC-26 says the corpus LOADER rejects a broken pairing. It did not:
+    only the two runners objected, so `bounds.py` — one of the three gates —
+    exited 0 and printed an unchanged matrix, still counting six pending, over
+    a corpus state the spec calls invalid.
+
+    The reason vocabulary is checked here too. A forward block naming a token
+    no ticket introduces sat pending forever with nothing to say so.
+    """
+    declaration = load_declaration()
+    vocabulary = declaration.get("diagnostic_reasons") or {}
+    emitted = set(vocabulary.get("emitted") or [])
+    forward = dict(vocabulary.get("forward") or {})
+
+    for case in cases:
+        directory = ROOT / case["dir"]
+        live_path = ROOT / case["expect"]
+        forward_path = directory / "expect-pending.yaml"
+        ticket = case.get("pending")
+        name = case["id"]
+
+        if ticket and not forward_path.is_file():
+            raise CorpusError(
+                f"{name}: declares `pending: {ticket}` and ships no "
+                f"expect-pending.yaml — the behaviour it waits on is asserted "
+                f"nowhere (FR-065-AC-26).")
+        if forward_path.is_file() and not ticket:
+            raise CorpusError(
+                f"{name}: ships expect-pending.yaml and declares no `pending:` "
+                f"— a forward claim naming no ticket (FR-065-AC-26).")
+
+        live = yaml.safe_load(live_path.read_text()) or {}
+        check_reasons(name, live, "expect.yaml", case, emitted, forward)
+        if not forward_path.is_file():
+            continue
+
+        ahead = yaml.safe_load(forward_path.read_text()) or {}
+        # An EMPTY forward block grades zero assertions, so it trivially
+        # "holds" — and both runners then report that the ticket has landed.
+        # Measured with a 0-byte file and with `{}`: the engine untouched, and
+        # a reader told to delete the marker, which converts the regression
+        # fixture into a green case asserting nothing.
+        if not ahead:
+            raise CorpusError(
+                f"{name}: expect-pending.yaml asserts nothing. An empty forward "
+                f"block always holds, which every runner reads as `{ticket} has "
+                f"landed`.")
+        check_reasons(name, ahead, "expect-pending.yaml", case, emitted, forward)
+
+
+def check_reasons(
+    name: str, block: dict, where: str, case: dict, emitted: set, forward: dict
+) -> None:
+    """Every reason token a block names is declared, and declared for THIS case."""
+    ticket = case.get("pending")
+    present = list(block.get("diagnostic_reasons") or [])
+    present += list(block.get("diagnostic_paths") or {})
+    present += list(block.get("diagnostic_message_contains") or {})
+    absent = list(block.get("absent_diagnostic_reasons") or [])
+
+    for reason in present + absent:
+        if reason not in emitted and reason not in forward:
+            raise CorpusError(
+                f"{name}: {where} names `{reason}`, which `corpus.yaml` declares "
+                f"neither emitted nor forward. A token in neither list is a typo "
+                f"nothing can ever satisfy.")
+
+    for reason in present:
+        if reason not in forward:
+            continue
+        if where != "expect-pending.yaml":
+            raise CorpusError(
+                f"{name}: {where} requires `{reason}`, which no engine emits yet "
+                f"({forward[reason]}). A live block must hold TODAY; this belongs "
+                f"in expect-pending.yaml.")
+        if forward[reason] != ticket:
+            raise CorpusError(
+                f"{name}: is pending on {ticket} and asserts `{reason}`, which "
+                f"{forward[reason]} introduces. A fixture cannot wait on one "
+                f"ticket while asserting another's behaviour.")
+
+    for reason in absent:
+        if reason not in forward:
+            continue
+        # A CONTROL asserting the absence of a not-yet-emitted token is vacuous
+        # today and load-bearing the day the ticket lands — which is what a
+        # control is for. A FAILURE case doing it asserts the absence of the
+        # very thing it is waiting for, so its live block is guaranteed to
+        # break on the fix instead of passing it.
+        if case.get("kind") != "control":
+            raise CorpusError(
+                f"{name}: {where} asserts `{reason}` is ABSENT, but {forward[reason]} "
+                f"adds it and this case is not a control. The day that ticket lands "
+                f"this block fails — a live block must survive the fix it waits for.")
+        if where != "expect.yaml":
+            raise CorpusError(
+                f"{name}: a control's forward absence claim belongs in expect.yaml; "
+                f"a forward block must FAIL today, and this cannot.")
 
 
 def build(declaration: dict, cases: list[dict]) -> dict:

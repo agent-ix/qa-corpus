@@ -44,6 +44,44 @@ grading_levels:
 case_kinds:
 - failure
 - control
+
+# EVERY diagnostic reason a fixture may name, and the only place a new token is
+# introduced. Both runners reject a token that appears in neither list.
+#
+# Without this the forward half of a pending case asserted NOTHING checkable:
+# measured, replacing a forward block with
+# `diagnostic_reasons: [totally-bogus-token-unrelated-to-270]` left 12/12 Rust
+# tests, 32/32 Python and the bounds matrix all green, with the case still
+# printing "PENDING — expected to fail, and did". A typo'd token would stay
+# pending forever, after its ticket had shipped, and no gate would ever say the
+# fixture had stopped meaning anything.
+diagnostic_reasons:
+  # Tokens the engine emits TODAY. A live `expect.yaml` may name these.
+  emitted:
+  - catch-all-universal
+  - hollow-denominator
+  - low-symbol-binding
+  - model-mints-nothing
+  - no-symbol-bound
+  - obligation-row-states-nothing
+  - uncatalogued-verification-method
+  - undeclared-coverage-vocabulary
+  # Tokens no engine emits YET, each naming the ticket that will add it. A
+  # forward `expect-pending.yaml` may name only these, and only when the case's
+  # own `pending:` is the SAME ticket — so a fixture cannot sit pending on one
+  # ticket while asserting another's behaviour.
+  #
+  # A control MAY name a forward token in `absent_diagnostic_reasons`: that
+  # assertion is vacuous today and load-bearing the day the ticket lands, which
+  # is exactly what a control is for. A FAILURE case may not — its live block
+  # would then assert the absence of the very thing it is waiting for, and be
+  # guaranteed to break on the fix rather than pass it.
+  #
+  # When a ticket lands, its token MOVES from `forward` to `emitted`. That edit
+  # is the one that makes every pending fixture in its group go green at once.
+  forward:
+    section-matches-nothing: agent-ix/quire-rs#270
+    id-column-matches-nothing: agent-ix/quire-rs#270
 result_record:
   description: The per-case record a runner emits. Field set and order are declared here so FR-065-AC-17's
     byte-identity has a defined shape to be identical about.

@@ -6,7 +6,8 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: false
 kind: control
-control_for: marker-form-mismatch
+control_for:
+- marker-form-mismatch
 reproduce: quire coverage --scope cases/attachment/marker-form-mismatch-control/input --module modules/variants/bench-legacy
   --json
 tags:
