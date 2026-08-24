@@ -1,0 +1,11 @@
+# EXPECTED TO FAIL until agent-ix/quire-rs#270. Asserts ONLY what is pending.
+#
+# Measured identically in all three languages: the tagged test IS bound
+# (census python 1/1) and the TC row still mints NOTHING. The minting failure is
+# language-independent — the binder reads Python and TypeScript fine — which is
+# why this mode's row declares all three applicable rather than treating the
+# 3,514-id defect as a Rust observation.
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md

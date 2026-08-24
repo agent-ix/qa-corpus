@@ -1,0 +1,13 @@
+# The control: the same tree with the DECLARED heading.
+#
+# The contrast, measured in this language: the row mints and binds, so `total`
+# is 2 rather than 1. Its defect twin reports 0/1 — one heading word decides
+# whether the TC row exists at all, in python exactly as in Rust.
+total: 2
+backed: 1
+absent_diagnostic_reasons:
+  - section-matches-nothing
+binding_census:
+  - language: python
+    candidates: 1
+    bound: 1

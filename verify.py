@@ -20,6 +20,8 @@ import sys
 
 import yaml
 
+from bounds import discover
+
 ROOT = pathlib.Path(__file__).resolve().parent
 
 # NOT a PATH lookup. `quire` on PATH is whatever somebody installed — measured
@@ -138,9 +140,15 @@ def validate_output(meta: dict, name: str, failures: list[str]) -> str:
     return done.stdout + done.stderr
 
 
-def check(case: pathlib.Path, failures: list[str]) -> bool:
-    meta = yaml.safe_load((case / "case.yaml").read_text())
-    expect = yaml.safe_load((case / "expect.yaml").read_text()) or {}
+def check(meta: dict, failures: list[str]) -> bool:
+    """Grade one DISCOVERED case — `meta` is already the merged declaration.
+
+    It used to re-read `case.yaml` from a directory, which is what kept it from
+    seeing a language set: the shared declaration and the per-language one live
+    in two files, and only `discover()` merges them.
+    """
+    case = pathlib.Path(meta["dir"])
+    expect = yaml.safe_load(pathlib.Path(meta["expect"]).read_text()) or {}
     name = meta["id"]
 
     unknown = set(expect) - KNOWN
@@ -254,35 +262,25 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
 def main() -> int:
     print(f"engine: {check_engine()}")
     failures: list[str] = []
-    cases = sorted(ROOT.glob("cases/*/*/case.yaml"))
+    # ONE discovery, shared with `bounds.py`. This globbed `cases/*/*/case.yaml`
+    # and so could not see a language SET — it found the case-level `case.yaml`,
+    # looked for an `expect.yaml` beside it, and died. Two readers of one corpus
+    # disagreeing about what a case IS is the drift FR-065 exists to prevent.
+    cases = discover()
     ran = 0
     pending, now_passing = [], []
 
-    for path in cases:
-        meta = yaml.safe_load(path.read_text())
+    for case in cases:
+        meta = case
         mine: list[str] = []
-        ran += check(path.parent, mine)
+        ran += check(case, mine)
         ticket = meta.get("pending")
         if ticket is None:
             failures.extend(mine)
         elif mine:
-            # Expected to fail, and did. This is the state EPIC #264 rule 3
-            # wants a fixture to be in BEFORE its fix lands: the defect has a
-            # regression the day it is found, and the suite still goes green.
             pending.append((meta["id"], ticket, mine))
         else:
-            # Expected to fail and passed: the fix landed and the marker now
-            # lies about the engine. Failing here is what stops the corpus
-            # filling with stale `pending:` markers nobody revisits.
             now_passing.append((meta["id"], ticket))
-
-    # Structural conformance to FR-065, over the corpus as a whole.
-    ids = {yaml.safe_load(p.read_text())["id"] for p in cases}
-    for p in cases:
-        meta = yaml.safe_load(p.read_text())
-        if meta["kind"] == "control" and meta.get("control_for") not in ids:
-            failures.append(
-                f"{meta['id']}: control_for names {meta.get('control_for')!r}, which is no case")
 
     print(f"cases run: {ran}/{len(cases)}")
     for failure in failures:

@@ -1,0 +1,2 @@
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch/rust/input
+  --json

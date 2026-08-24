@@ -1,5 +1,4 @@
 mode: minting
-language: rust
 module: ecosystem
 id: section-name-mismatch-control
 case: section-name-mismatch
@@ -7,8 +6,6 @@ issue_ref: agent-ix/quire-rs#270
 kind: control
 control_for: section-name-mismatch
 findable: false
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch-control/input
-  --json
 tags:
 - TC-1014
 - TC-1017

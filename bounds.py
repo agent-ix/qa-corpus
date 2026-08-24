@@ -70,7 +70,14 @@ def discover() -> list[dict]:
                 variant / "case.yaml"
             ).is_file() else {}
             merged = {**shared, **per_case, "language": language}
-            merged.setdefault("id", f"{shared.get('id', case_dir.name)}-{language}")
+            # The variant's id must be its OWN. `setdefault` never fired here
+            # because the shared `case.yaml` already carries `id`, so all three
+            # language variants reported one id — indistinguishable in the
+            # pending list, and a duplicate-id check would have called them one
+            # case.
+            base = shared.get("id", case_dir.name)
+            merged["id"] = per_case.get("id", f"{base}-{language}")
+            merged.setdefault("case", base)
             cases.append({
                 **merged,
                 "dir": str(variant.relative_to(ROOT)),
@@ -134,7 +141,17 @@ def build(declaration: dict, cases: list[dict]) -> dict:
                 f"cannot exhibit a declaration defect, so an unticketed "
                 f"relaxation is the state CON-3 forbids.")
 
+    # A cell covered by a PENDING fixture is covered — a case exists and
+    # exercises the mode — but the engine demonstrably fails it. Reported
+    # separately so `covered` cannot be read as `working`, which is the exact
+    # conflation this corpus exists to end.
+    pending_cases = {
+        (c.get("mode"), c.get("case") or c.get("id"), c.get("language"))
+        for c in cases
+        if c.get("pending")
+    }
     matrix, counts = [], {"covered": 0, "GAP": 0, "out-of-scope": 0}
+    covered_pending = 0
     for row in declaration["inventory"]:
         scoped_out = row.get("out_of_scope", {})
         # FR-065-AC-7: an out-of-scope cell carries a non-empty reason.
@@ -166,6 +183,11 @@ def build(declaration: dict, cases: list[dict]) -> dict:
             else:
                 cells[language] = {"state": "GAP"}
             counts[cells[language]["state"]] += 1
+            if cells[language]["state"] == "covered" and (
+                row["mode"], row["case"], language
+            ) in pending_cases:
+                cells[language]["pending"] = True
+                covered_pending += 1
         matrix.append({"mode": row["mode"], "case": row["case"],
                        "source": row["source"], "cells": cells})
 
@@ -193,6 +215,7 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     return {
         "gap_count": counts["GAP"],
         "covered_count": counts["covered"],
+        "covered_pending_count": covered_pending,
         "out_of_scope_count": counts["out-of-scope"],
         "declared_cells": declared,
         "matrix": matrix,
@@ -219,7 +242,9 @@ def main() -> int:
         for c in pending:
             print(f"      {c['id']} -> {c['pending']}")
     print(f"declared cells          : {bounds['declared_cells']}")
-    print(f"  covered               : {bounds['covered_count']}")
+    print(f"  covered               : {bounds['covered_count']}"
+          + (f"  ({bounds['covered_pending_count']} of them PENDING — a case "
+             f"exists and the engine fails it)" if bounds["covered_pending_count"] else ""))
     print(f"  out-of-scope          : {bounds['out_of_scope_count']}")
     print(f"  GAP                   : {bounds['gap_count']}")
     print()

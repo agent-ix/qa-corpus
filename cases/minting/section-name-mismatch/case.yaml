@@ -2,12 +2,9 @@ id: section-name-mismatch
 case: section-name-mismatch
 issue_ref: agent-ix/quire-rs#270
 mode: minting
-language: rust
 module: ecosystem
 kind: failure
 findable: true
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch/input
-  --json
 tags:
 - TC-1014
 - minting
