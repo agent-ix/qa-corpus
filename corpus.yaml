@@ -280,6 +280,24 @@ inventory:
 # stale in either direction: a new violation fails the run, and burning one
 # down means deleting a line.
 known_gaps:
+  findable_but_undetected:
+    reason: >-
+      A `findable` case tells a recall-scoring consumer to expect a finding on that
+      input. These nine require none, in either block, so their cells read `covered` for a mode
+      nothing measures — three of them (`mocked-confirmation`, `oracle-copy`,
+      `vacuous-property-suite`) ship byte-identical live blocks true of any healthy three-row
+      corpus, and swapping one's whole `input/` tree for another's leaves every gate green.
+      Deciding each — write the assertion, or stop calling it findable — is agent-ix/quire-rs#301.
+    cases:
+    - gate-that-gates-nothing
+    - greenfield-no-symbols
+    - implements-never-asked
+    - mocked-confirmation
+    - no-symbol-method-in-the-verification-column
+    - oracle-copy
+    - stale-name-correct-trace
+    - tests-directory-topology
+    - vacuous-property-suite
   uncontrolled_failure_cases:
     reason: FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
       fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
@@ -295,13 +313,3 @@ known_gaps:
     - tests-directory-topology
     - vacuous-property-suite
     - wrong-type-cell
-  control_binds_another_module:
-    reason: A control is the healthy version of its partner, so it should bind the same declaration.
-      These three bind `variants/bench-legacy` while their partners bind `ecosystem` — they prove
-      silence against a RELAXED declaration, which is a weaker claim than the one their partner
-      exercises. Migrating them means rewriting each document to the real declaration, which is
-      agent-ix/quire-rs#285.
-    cases:
-    - catch-all-headline-control
-    - marker-form-declared
-    - marker-form-mismatch-control

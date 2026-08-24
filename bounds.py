@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import sys
 
 import yaml
@@ -124,9 +125,31 @@ def discover() -> list[dict]:
                 # so a check on whether the author wrote one needs the original.
                 "_declared": {**shared, **per_case},
             })
+    check_known_gaps(load_declaration())
     check_expectations(cases)
     check_controls(cases)
     return cases
+
+
+def check_known_gaps(declaration: dict) -> None:
+    """Every declared departure names a ticket.
+
+    `pending:` requires a `pending_reason`; a variant `module` requires a
+    `relaxation_ticket`. A `known_gaps` entry required neither, so one appended
+    line was a total, permanent exemption from a contract clause with nothing
+    recording who would undo it.
+    """
+    for name, entry in (declaration.get("known_gaps") or {}).items():
+        reason = (entry or {}).get("reason") or ""
+        if not re.search(r"#\d+", reason):
+            raise CorpusError(
+                f"known_gaps.{name}: its reason names no ticket. An exemption "
+                f"from the contract with nothing tracking its removal is a "
+                f"departure that becomes permanent by default.")
+        if not ((entry or {}).get("cases") or []):
+            raise CorpusError(
+                f"known_gaps.{name}: declares no cases. An empty exemption is "
+                f"a clause nobody removed when the last case was fixed.")
 
 
 def check_controls(cases: list[dict]) -> None:
@@ -151,13 +174,25 @@ def check_controls(cases: list[dict]) -> None:
     module_gaps = set((gaps.get("control_binds_another_module") or {}).get("cases") or [])
     uncontrolled = set((gaps.get("uncontrolled_failure_cases") or {}).get("cases") or [])
 
+    # Keyed by `id` FIRST, and an alias never displaces one. This was a set
+    # before the checks moved here; converting it to a dict to carry each
+    # partner's mode and module introduced a silent overwrite, because one
+    # case's `case:` alias can equal another case's `id`. Two real collisions
+    # existed on this corpus — `catch-all-headline` and `marker-form-mismatch`
+    # each name both a bench-legacy fixture and an ecosystem one — and the
+    # later-sorted alias won. That misdiagnosed THREE controls as binding the
+    # wrong module (they do not; their partners match exactly) and let a case
+    # with no control of its own inherit somebody else's.
     partners = {}
     for c in cases:
         if c.get("kind") != "failure":
             continue
-        partners[(c["id"], c.get("language"))] = c
         if c.get("case"):
-            partners[(c["case"], c.get("language"))] = c
+            partners.setdefault((c["case"], c.get("language")), c)
+    for c in cases:
+        if c.get("kind") != "failure":
+            continue
+        partners[(c["id"], c.get("language"))] = c
     for c in cases:
         if c.get("kind") != "control":
             continue
@@ -188,10 +223,15 @@ def check_controls(cases: list[dict]) -> None:
                 # gate stayed green.
                 other = partners[key]
                 for field in ("mode", "module"):
-                    if c.get(field) == other.get(field) or c["id"] in module_gaps:
+                    if c.get(field) == other.get(field):
                         continue
-                    if True:
-                        problems.append(
+                    # Scoped to `module`. The exemption is declared for a
+                    # control binding another MODULE; it excused a mode
+                    # mismatch too, so a `detection` control could claim a
+                    # `minting` partner and stay green.
+                    if field == "module" and c["id"] in module_gaps:
+                        continue
+                    problems.append(
                             f"{c['id']}: control_for names {partner!r}, whose "
                             f"{field} is {other.get(field)!r} against this "
                             f"control's {c.get(field)!r}. A control is the "
@@ -248,6 +288,8 @@ def check_expectations(cases: list[dict]) -> None:
     vocabulary = declaration.get("diagnostic_reasons") or {}
     emitted = set(vocabulary.get("emitted") or [])
     forward = dict(vocabulary.get("forward") or {})
+    gaps = declaration.get("known_gaps") or {}
+    undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
 
     for case in cases:
         directory = ROOT / case["dir"]
@@ -282,7 +324,50 @@ def check_expectations(cases: list[dict]) -> None:
                 f"the rows it serves are its `control_for` partners.")
 
         live = yaml.safe_load(live_path.read_text()) or {}
+        # THE LIVE BLOCK TOO. This was enforced on the forward block by both
+        # readers and on `expect.yaml` by neither, so emptying any failure
+        # case's `expect.yaml` left every gate green with its cell still
+        # `covered` — round one's defect exactly, reached by truncating the
+        # file instead of by the `pending:` key. `unbacked_rows`, the one field
+        # separating the two minting fixtures, is precisely what an empty live
+        # block drops.
+        if not asserts_something(live):
+            raise CorpusError(
+                f"{name}: expect.yaml asserts nothing. A case that asserts "
+                f"nothing about its own payload still counts its cell covered, "
+                f"which is the conflation this corpus exists to end.")
+        unknown = set(live) - KNOWN_EXPECT_KEYS
+        if unknown:
+            raise CorpusError(
+                f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}.")
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
+
+        # A FINDABLE failure case claims something is DETECTED on its input, so
+        # some block of it has to require a finding. Measured: three `skeptic`
+        # fixtures ship byte-identical live blocks — `backed: 1`, `total: 3`,
+        # one bound rust symbol — true of any healthy three-row corpus, with no
+        # diagnostic asserted anywhere. Swapping one's whole `input/` tree for
+        # another's left every gate green and the cell still `covered`, so the
+        # fixture was not about its own defect at all.
+        if case.get("kind") == "failure" and case.get("findable"):
+            ahead = (
+                yaml.safe_load(forward_path.read_text()) or {}
+                if forward_path.is_file() else {}
+            )
+            claims = any(
+                block.get(key)
+                for block in (live, ahead)
+                for key in ("diagnostic_reasons", "validate_contains")
+            )
+            if not claims and (case.get("case") or case["id"]) not in undetected:
+                raise CorpusError(
+                    f"{name}: is `findable: true` and requires no finding, in "
+                    f"either block. A case claiming its defect is DETECTABLE "
+                    f"has to say what detects it, or its cell counts as covered "
+                    f"for a mode nothing measures. Declare it under "
+                    f"`known_gaps.findable_but_undetected` if the engine truly "
+                    f"finds nothing yet.")
+
         if not forward_path.is_file():
             continue
 
@@ -340,8 +425,15 @@ def asserts_something(block: dict) -> bool:
     A block that grades zero assertions trivially passes, which for a forward
     block means every runner reports its ticket as landed.
     """
+    # PRESENCE for the keys graded exactly, non-emptiness for the rest —
+    # matching the Rust harness field for field. A blanket "not in (None, [],
+    # {})" scored `unbacked_rows: []` as asserting nothing, while FR-065-AC-28
+    # says an empty list IS an assertion and `grade()` grades it as one. So a
+    # forward block of `unbacked_rows: []` was rejected at load by this reader
+    # and accepted-and-graded by the other.
+    exact = {"backed", "total", "unbacked_rows", "groups", "no_symbol_rows"}
     return any(
-        block.get(key) not in (None, [], {})
+        block.get(key) is not None if key in exact else block.get(key) not in (None, [], {})
         for key in KNOWN_EXPECT_KEYS
     )
 
@@ -564,7 +656,12 @@ def main() -> int:
         return 1
 
     if "--json" in sys.argv:
-        print(json.dumps({"bounds": bounds, "cases": cases}, indent=1))
+        # `_declared` is loader scaffolding — the declaration as written, kept
+        # so a check can ask whether the AUTHOR wrote a field rather than
+        # whether it was derived. It is not part of the payload a runner reads,
+        # and leaving it in duplicated every declared field in a nested copy.
+        public = [{k: v for k, v in c.items() if not k.startswith("_")} for c in cases]
+        print(json.dumps({"bounds": bounds, "cases": public}, indent=1))
         return 0
 
     pending = [c for c in cases if c.get("pending")]
