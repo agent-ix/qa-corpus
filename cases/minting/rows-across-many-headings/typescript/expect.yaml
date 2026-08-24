@@ -1,25 +1,29 @@
-# The LIVE contract — and this row's defect is PARTLY OBSERVABLE today, which
-# is what makes it different from rows 1-3.
+# The whole contract, live. agent-ix/quire-rs#272 has landed, so what used to
+# sit in expect-pending.yaml is folded in below and graded like everything else.
 #
-# There the whole table was stranded and the engine said nothing at all. Here
-# the declared heading is present and correct, so the table IS read — but only
-# the rows under that one heading. The document declares three; the engine
-# counts one, and reports `test-case 1/1`.
+# What this row was about: the declared heading was present and correct, so the
+# table WAS read — but only the rows under that one heading. The document
+# declares three; the engine counted one and reported `test-case 1/1`, which is
+# PERFECT minting health on the fraction it could see. The two rows it could not
+# see left no trace in the totals at all.
 #
-# That is the dangerous part. A repository in this state reports PERFECT
-# minting health on the fraction it can see, and the two rows it cannot see
-# leave no trace in the totals at all.
+# They left one elsewhere, and that is what moved: the tests answering for
+# TC-002 and TC-003 bound fine — `binding_census` still says 3 candidates, 3
+# bound — and landed in `untracked_symbols` with a path and a line, the one
+# place a reader of a coverage summary does not look. #272's own body names
+# exactly this: "the `TC-nnn with no minted row` tags that already bind to real
+# test symbols and currently land in `untracked_symbols`".
 #
-# They do leave one elsewhere. The tests answering for TC-002 and TC-003 bind
-# fine — `binding_census` says 3 candidates, 3 bound — and land in
-# `untracked_symbols` with a path and a line. #272's own body names exactly
-# this: "the `TC-nnn with no minted row` tags that already bind to real test
-# symbols and currently land in `untracked_symbols`".
+# RE-MEASURED against the payload, not copied from the forward block:
+#   IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage \
+#     --scope cases/minting/rows-across-many-headings/typescript/input --json
 #
-# So the engine is not silent about this defect. It reports it in the one place
-# a reader of a coverage summary does not look.
-total: 2
-backed: 1
+# `total` goes 2 -> 4 and `backed` 1 -> 3, so this fixture's own backing ratio
+# moves 50% -> 75%. The ecosystem's moves the other way, because most of the
+# rows that start minting across 88 repositories have nothing backing them —
+# and that is the correction, not a regression.
+total: 4
+backed: 3
 groups:
   - document: spec/FR-001.md
     target: acceptance-criterion
@@ -27,17 +31,19 @@ groups:
     total: 1
   - document: spec/tests.md
     target: test-case
-    backed: 1
-    total: 1
+    backed: 3
+    total: 3
 unbacked_rows: []
-untracked_symbols:
-  - symbol: "covers the second criterion"
-    trace_id: TC-002
-    path: src/coverage.test.ts
-  - symbol: "covers the third criterion"
-    trace_id: TC-003
-    path: src/coverage.test.ts
+# The assertion that matters: the two tests answering for rows the declaration
+# could not reach stop being homeless, because their rows exist now.
+untracked_symbols: []
 binding_census:
   - language: typescript
     candidates: 3
     bound: 3
+# The declared sections are all found, so the CR-117 token that fires when a
+# heading is one word off must stay silent here — this tree's headings were
+# never wrong, and #272 changed which of them the declaration reaches.
+absent_diagnostic_reasons:
+  - section-matches-nothing
+  - id-column-matches-nothing

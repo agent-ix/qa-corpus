@@ -664,11 +664,46 @@ traceability:
   # Nine declarations collapse to three. `spec/matrix.md` and `spec/evals.md`
   # need no entry of their own: a matrix is reached by what it *is*, not by what
   # it is called.
+  # ── One heading name reached one heading (quire-rs CR-118, #272) ──
+  #
+  # `section:` took one name exactly, and a matrix that groups its rows under
+  # several headings minted only the group that happened to sit under that one.
+  # The denominator silently became "the rows under one heading" rather than
+  # "the rows this document declares", and a repository in that state reports
+  # PERFECT minting health on the fraction it can see.
+  #
+  # **[RAN]** over the 393 `type: TestMatrix` documents in ~/dev: 434 test-case
+  # ids sit in a `Test ID` table this target cannot reach. **306 of them — 70%
+  # — are under a heading that CONTAINS `Test Case Summary`** and qualifies it
+  # locally: `Test Case Summary (plugin scope)`, `Test Case Summary (discovery
+  # scope)`, `Phase 4 Test Case Summary`, `Modular Core Test Case Summary`,
+  # `Test Case Summary — packages/elements`. They are the same table, sharded
+  # by scope or by phase.
+  #
+  # So the widening is a **pattern, not a list of names**. A literal list would
+  # have to enumerate one repository's phase numbers and package paths, and
+  # would go stale the day somebody wrote `Phase 5`. The `#272` sketch proposed
+  # `["Test Case Summary", "Test Cases", "Integration Test Matrix", …]`;
+  # measured, that list reaches 14 of the 434 and misses all 306.
+  #
+  # `Integration Test Matrix` is declared as a NAME because it is a different
+  # claim — a differently-named table of test cases, with the declared `Test ID`
+  # column, in a repository that keeps its cross-process tests apart
+  # (`filament-editor`, 7 ids). A name reads better than a pattern for that.
+  #
+  # **`Test Cases` is deliberately NOT declared**, although it carries ids in
+  # three repositories. It is the canonical *wrong* heading — `spec-matrix`
+  # emits `Test Case Summary`, and `cases/minting/section-name-mismatch`
+  # asserts that a matrix saying `Test Cases` is reported rather than read.
+  # Declaring it would retire that finding by fiat instead of fixing the three
+  # documents, which is the "unify on one form and flag the rest" rule.
   trace_targets:
   - name: test-case
     archetype: TestMatrix
     exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
-    section: Test Case Summary
+    section:
+    - "*Test Case Summary*"
+    - Integration Test Matrix
     id_column: Test ID
   - name: acceptance-criterion
     archetype: FR
@@ -805,10 +840,17 @@ traceability:
     targets: [test-case]
     expand_ranges: true
     strip_annotations: false
+  # Widened WITH the `test-case` target above, never after it (CR-118). This
+  # declaration reads `Traces To` off the same rows that target mints from, so
+  # a section the target reaches and this one does not is a row whose id exists
+  # and whose stated coverage nothing reads — the criteria it answers for would
+  # report unreferenced while the matrix looked healthy.
   - name: traces-to
     archetype: TestMatrix
     exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
-    section: Test Case Summary
+    section:
+    - "*Test Case Summary*"
+    - Integration Test Matrix
     column: Traces To
     row_id_column: Test ID
     pattern: '\b([A-Za-z]{2,4}-\d+(?:-[A-Za-z]+-\d+)?)\b'

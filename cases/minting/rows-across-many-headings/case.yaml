@@ -3,18 +3,22 @@ module: ecosystem
 id: rows-across-many-headings
 case: rows-across-many-headings
 issue_ref: agent-ix/quire-rs#272
-kind: failure
-findable: true
-pending: agent-ix/quire-rs#272
-pending_reason: >-
-  `TraceTarget.section` is one heading name exactly, so rows under any other heading are
-  invisible. #272 makes it accept several.
+kind: regression
+findable: false
 tags:
 - TC-1014
 - minting
 - coverage
 comment: >-
-  Nothing here is misspelled. The declared heading is present and correct, the declared
-  id column is correct, and all three tests bind. The defect is that the rows are spread
-  across SEVERAL headings while the declaration names ONE — agent-ix/identity carries
-  roughly thirty, and 606 of its TC ids mint nothing for that reason alone.
+  A REGRESSION PIN, not a defect — the same reclassification #274's fixture took, for the
+  same reason. Nothing here was ever misspelled: the declared heading is present and
+  correct, the declared id column is correct, and all three tests bind. What was wrong was
+  the ENGINE — `TraceTarget.section` took one heading name, so the two rows under the other
+  two headings were invisible and the matrix reported a flawless `test-case 1/1` over a
+  third of itself. agent-ix/identity carries roughly thirty such headings.
+  agent-ix/quire-rs#272 (CR-118) made `section:` accept a list or a pattern and the
+  ecosystem module now declares the `*Test Case Summary*` family, so all three are reached.
+  The input tree is byte-unchanged, which is exactly why the pair stopped discriminating:
+  its healthy counterpart differs from it only in heading text, and the payloads are now
+  identical. FR-065-AC-42 rejected the pair, correctly. The input is still the shape that
+  used to strand rows, and asserting that it mints all four is worth keeping.

@@ -143,9 +143,10 @@ diagnostic_reasons:
 # Tickets that change what the engine MINTS rather than adding a diagnostic.
 #
 # The forward-token rule (AC-36) was written when every pending fix was a new
-# diagnostic, and it does not fit a fix like #272 — which makes
-# `TraceTarget.section` accept several headings, so rows that were invisible
-# start minting. There is no token to name; the payload simply changes.
+# diagnostic, and it does not fit a fix like `agent-ix/quire-rs#272` — which
+# made `TraceTarget.section` accept several headings, so rows that were
+# invisible start minting. There is no token to name; the payload simply
+# changes.
 #
 # A forward block pending on one of these SHALL instead assert the same
 # exactly-graded keys its live block does, with at least one different value.
@@ -156,8 +157,12 @@ diagnostic_reasons:
 # against its control's payload, the control being the repaired tree, which is
 # what the engine should produce once the ticket lands. That needs an engine,
 # so it lives in the graders rather than here.
+#
+# `agent-ix/quire-rs#272` LANDED (CR-118, engine v0.33.0) and is gone from this
+# list. Its case, `rows-across-many-headings`, folded its forward block into
+# `expect.yaml` re-measured, and the prediction held exactly: `total` 2 -> 4,
+# `backed` 1 -> 3, `untracked_symbols` emptied.
 behaviour_change_tickets:
-- agent-ix/quire-rs#272
 # Registers `describe()`/`suite()` headers as Containers, so a tag on the header
 # has something to attach to. No diagnostic added.
 - agent-ix/quire-rs#273
