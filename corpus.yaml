@@ -82,6 +82,12 @@ diagnostic_reasons:
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
+  # agent-ix/quire-rs#320: every declared section the document HAS holds no
+  # table, so it mints nothing and neither sibling diagnostic can fire — the
+  # section WAS found, and there is no table to read an id column from. Landed
+  # because #272's widening made three repositories match a table-less heading
+  # and LOSE their section-matches-nothing while still minting zero.
+  - section-holds-no-table
   - section-matches-nothing
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
