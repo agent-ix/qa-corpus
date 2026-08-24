@@ -1,0 +1,15 @@
+# The control: the same tree with the DECLARED column.
+#
+# The contrast that is live today — the row mints and binds, so `total` is 2
+# rather than 1. The absence assertions carry the two tokens the engine really
+# emits, so this control can fail now rather than only once #270 lands.
+total: 2
+backed: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+  - id-column-matches-nothing
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1

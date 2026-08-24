@@ -1,0 +1,20 @@
+id: id-column-mismatch
+case: id-column-mismatch
+issue_ref: agent-ix/quire-rs#270
+mode: minting
+module: ecosystem
+kind: failure
+findable: true
+comment: 'The heading is RIGHT and the ID COLUMN is not: the ecosystem declares `id_column: Test ID` and
+  this says `Test Case ID`. On agent-ix/identity this is the second of two failures on one document and
+  606 TC ids mint nothing — diagnosing the section alone would have called that repository fixed. Measured
+  here: backed 0/1 against the control''s 1/2, with NO diagnostic, which is the same silence the section
+  defect produces and the reason #270 needs two tokens rather than one.'
+tags:
+- TC-1014
+- minting
+- coverage
+pending: agent-ix/quire-rs#270
+pending_reason: 'The engine emits no diagnostic when the archetype and section match and the ID COLUMN
+  does not. #270 adds `id-column-matches-nothing` alongside `section-matches-nothing`. Until it lands
+  this fails at L1, which is the correct state for a defect nobody has fixed.'

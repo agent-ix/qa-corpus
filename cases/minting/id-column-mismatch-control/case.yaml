@@ -1,0 +1,14 @@
+id: id-column-mismatch-control
+case: id-column-mismatch
+issue_ref: agent-ix/quire-rs#270
+mode: minting
+module: ecosystem
+kind: control
+findable: false
+comment: The same tree with the declared column. It mints the row (1/2) and stays silent. Without it,
+  a column check firing on every TestMatrix would score perfect recall.
+tags:
+- TC-1014
+- minting
+- coverage
+control_for: id-column-mismatch
