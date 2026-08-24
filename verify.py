@@ -98,7 +98,7 @@ def check_engine() -> str:
 KNOWN = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
     "diagnostic_paths", "diagnostic_message_contains", "binding_census",
-    "metrics", "no_symbol_rows",
+    "metrics", "no_symbol_rows", "unbacked_rows", "groups",
     # `quire validate` findings, for cases whose family is a STRUCTURAL defect
     # rather than a coverage one. `undeclared-type-value` is the first: a cell
     # outside the declared vocabulary is rejected by `validate`, and the
@@ -144,20 +144,21 @@ def validate_output(meta: dict, name: str, failures: list[str]) -> str:
     return done.stdout + done.stderr
 
 
-def check(meta: dict, failures: list[str]) -> bool:
-    """Grade one DISCOVERED case — `meta` is already the merged declaration.
+def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
+    """Run one DISCOVERED case and grade BOTH its contracts.
 
-    It used to re-read `case.yaml` from a directory, which is what kept it from
-    seeing a language set: the shared declaration and the per-language one live
-    in two files, and only `discover()` merges them.
+    `expect.yaml` is the LIVE contract and goes to `failures`: it must hold
+    today whether or not the case is pending. `expect-pending.yaml` is the
+    FORWARD contract and goes to `ahead`: it must NOT hold yet.
+
+    They were one block, and `pending:` excused the whole of it — so the rule
+    became "a pending fixture asserts only what is pending" and every fact that
+    was true today went unasserted. `unbacked_rows` was one of them, and it is
+    the only field distinguishing the two minting fixtures from each other
+    (reviewed, agent-ix/quire-rs#297).
     """
     case = pathlib.Path(meta["dir"])
-    expect = yaml.safe_load(pathlib.Path(meta["expect"]).read_text()) or {}
     name = meta["id"]
-
-    unknown = set(expect) - KNOWN
-    if unknown:
-        failures.append(f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}")
 
     # The invocation may carry leading `KEY=value` assignments — the ecosystem
     # declaration is a module PATH, not a single module, so it is selected with
@@ -173,6 +174,33 @@ def check(meta: dict, failures: list[str]) -> bool:
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False
     got = json.loads(done.stdout)
+
+    live_path = pathlib.Path(meta["expect"])
+    forward_path = case / "expect-pending.yaml"
+    grade(yaml.safe_load(live_path.read_text()) or {}, got, meta, name, failures)
+
+    # Both halves of the pairing, because either alone is a fixture whose
+    # forward claim nothing grades.
+    if meta.get("pending") and not forward_path.is_file():
+        failures.append(
+            f"{name}: declares `pending:` and ships no expect-pending.yaml — the "
+            f"behaviour it is waiting on is asserted nowhere")
+    elif forward_path.is_file() and not meta.get("pending"):
+        failures.append(
+            f"{name}: ships expect-pending.yaml and declares no `pending:` — a "
+            f"forward claim naming no ticket")
+    elif forward_path.is_file():
+        grade(yaml.safe_load(forward_path.read_text()) or {}, got, meta, name, ahead)
+    return True
+
+
+def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -> None:
+    """Assert ONE expectation block against a payload."""
+    case = pathlib.Path(meta["dir"])
+
+    unknown = set(expect) - KNOWN
+    if unknown:
+        failures.append(f"{name}: declares unhandled expectation key(s) {sorted(unknown)}")
 
     if expect.get("validate_contains") or expect.get("validate_absent"):
         report = validate_output(meta, name, failures)
@@ -204,11 +232,41 @@ def check(meta: dict, failures: list[str]) -> bool:
         if actual != want:
             failures.append(f"{name}: {reason} path expected {want!r}, got {actual!r}")
 
-    # L3: the message names the thing to change.
-    for reason, fragment in (expect.get("diagnostic_message_contains") or {}).items():
+    # L3: the message names the things to change. A LIST, because L3 for a
+    # mismatch is two facts — found and declared — and one substring is
+    # satisfied by naming either.
+    for reason, fragments in (expect.get("diagnostic_message_contains") or {}).items():
         message = next((d["message"] for d in diagnostics if d["reason"] == reason), None)
-        if message is None or fragment not in message:
-            failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")
+        for fragment in fragments:
+            if message is None or fragment not in message:
+                failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")
+
+    # L2. EXACT, both directions, and the field that tells two minting defects
+    # apart. A wrong section name strands the whole table — nothing mints, so
+    # this is empty. A wrong id column still reads the table and mints a row
+    # with a NULL identity. Every other key of those two payloads is
+    # byte-identical; until this was asserted the corpus could not distinguish
+    # them (reviewed, agent-ix/quire-rs#297). An empty list is an assertion.
+    if (want := expect.get("unbacked_rows")) is not None:
+        rows = [
+            {"document": r.get("document"), "row_id": r.get("row_id"),
+             "target_ids": r.get("target_ids")}
+            for r in (got.get("unbacked_rows") or [])
+        ]
+        if rows != want:
+            failures.append(f"{name}: unbacked_rows expected {want}, got {rows}")
+
+    # L1. What MINTED, per document per target kind. A control's real job is
+    # proving the row it is about mints at all; `total` alone is satisfied by
+    # any two backed ids from anywhere.
+    if (want := expect.get("groups")) is not None:
+        groups = [
+            {"document": g.get("document"), "target": g.get("target"),
+             "backed": g.get("backed"), "total": g.get("total")}
+            for g in (got.get("groups") or [])
+        ]
+        if groups != want:
+            failures.append(f"{name}: groups expected {want}, got {groups}")
 
     for want in expect.get("binding_census") or []:
         # Found BY LANGUAGE, and absent is a failure. The first version zipped
@@ -260,7 +318,6 @@ def check(meta: dict, failures: list[str]) -> bool:
         wanted = sorted(expect["no_symbol_rows"] or [])
         if actual != wanted:
             failures.append(f"{name}: no_symbol_rows expected {wanted}, got {actual}")
-    return True
 
 
 def main() -> int:
@@ -277,12 +334,16 @@ def main() -> int:
     for case in cases:
         meta = case
         mine: list[str] = []
-        ran += check(case, mine)
+        forward: list[str] = []
+        ran += check(case, mine, forward)
+        # The LIVE contract is a failure for every case. Pending never excuses
+        # it — that excuse is what left the live facts unasserted.
+        failures.extend(mine)
         ticket = meta.get("pending")
         if ticket is None:
-            failures.extend(mine)
-        elif mine:
-            pending.append((meta["id"], ticket, mine))
+            continue
+        if forward:
+            pending.append((meta["id"], ticket, forward))
         else:
             now_passing.append((meta["id"], ticket))
 

@@ -1,11 +1,33 @@
-# EXPECTED TO FAIL until agent-ix/quire-rs#270. Asserts ONLY what is pending.
+# The LIVE contract: what holds TODAY, asserted for real. What
+# agent-ix/quire-rs#270 will add lives in expect-pending.yaml.
 #
-# Measured in rust: backed 0/1, and the control 1/2 — the row simply never
-# mints. The payload is INDISTINGUISHABLE from the section-name defect's, which
-# is why #270 needs `id-column-matches-nothing` as its own token: told only that
-# something matched nothing, a reader of agent-ix/identity would fix the heading
-# and still have 606 unminted ids.
-diagnostic_reasons:
+# The heading is RIGHT (`Test Case Summary`); the id column is not — this
+# document says `Test Case ID` where the ecosystem declares `Test ID`.
+#
+# So the table IS read. The row mints, and its IDENTITY does not: `unbacked_rows`
+# carries one row with `row_id: null`. That single field is the whole difference
+# between this fixture and `section-name-mismatch`, whose every other key —
+# totals, groups, diagnostics, binding_census — is byte-identical.
+#
+# Measured, not assumed. The claim first reported for this row was that the two
+# payloads are INDISTINGUISHABLE; diffing them key by key showed they are not,
+# and that nothing asserted the one key that differs.
+total: 1
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: null
+    target_ids:
+      - FR-001-AC-1
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - section-matches-nothing
   - id-column-matches-nothing
-diagnostic_paths:
-  id-column-matches-nothing: spec/tests.md

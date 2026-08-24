@@ -1,21 +1,25 @@
-# EXPECTED TO FAIL until agent-ix/quire-rs#270. See `pending:` in case.yaml.
+# The LIVE contract: what holds TODAY, asserted for real. What
+# agent-ix/quire-rs#270 will add lives in expect-pending.yaml.
 #
-# This asserts ONLY the behaviour #270 adds. Its first draft also asserted
-# `total: 1`, `backed: 0` and the binding census — all TRUE today — which meant
-# a regression in any of them would have been swallowed as "pending, failed as
-# expected". A pending fixture must assert only what is pending, or the marker
-# hides live assertions.
+# The declared heading is `Test Case Summary`; this document says `Test Cases`.
+# Nothing in the table is read, so nothing mints — `groups` has the criterion
+# document alone and `unbacked_rows` is EMPTY.
 #
-# The measured contrast that makes this the 3,514-id defect lives in the
-# CONTROL, which asserts it and is not pending:
-#
-#   this case   totals {backed 0, total 1}   groups [acceptance-criterion]
-#   control     totals {backed 1, total 2}   groups [acceptance-criterion,
-#                                                    test-case 1/1]
-#
-# One heading word decides whether the TC row exists, the denominator silently
-# shrinks, and today the engine is silent in both directions.
-diagnostic_reasons:
+# That empty list is the assertion that separates this fixture from
+# `id-column-mismatch`, whose every other key is byte-identical. Until it was
+# written, both could have regressed to minting nothing and stayed green.
+total: 1
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+unbacked_rows: []
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
   - section-matches-nothing
-diagnostic_paths:
-  section-matches-nothing: spec/tests.md
+  - id-column-matches-nothing

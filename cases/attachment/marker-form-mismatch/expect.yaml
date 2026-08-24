@@ -19,4 +19,5 @@ total: 2
 diagnostic_paths:
   no-symbol-bound: src/lib.rs
 diagnostic_message_contains:
-  no-symbol-bound: "`tests::covers_0` at src/lib.rs:5"
+  no-symbol-bound:
+    - "`tests::covers_0` at src/lib.rs:5"

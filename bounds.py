@@ -74,16 +74,20 @@ def discover() -> list[dict]:
             # a fixture credits — measured: one line in a variant file moved a
             # covered cell to a different inventory row and `gap_count` did not
             # change. `module`/`kind`/`pending` are the same class of claim.
+            # PRESENCE, not disagreement. The first version required the field
+            # in BOTH files, so a variant could INJECT one the shared file
+            # omitted and nothing fired. Measured: adding `pending:` to one
+            # control variant and then breaking that control left
+            # `32/32, 0 mismatches, rc 0` and this matrix unmoved — a control
+            # that exists to prove a check stays silent on healthy input,
+            # converted into an expected failure by one line.
             protected = {"case", "mode", "module", "kind", "pending"}
-            clashes = sorted(
-                k for k in protected
-                if k in per_case and k in shared and per_case[k] != shared[k]
-            )
-            if clashes:
+            declared = sorted(k for k in protected if k in per_case)
+            if declared:
                 raise CorpusError(
-                    f"{rel}/{language}: a variant may not override {clashes} — "
-                    f"those declare WHICH case this is, and varying them "
-                    f"silently re-points the cell it credits.")
+                    f"{rel}/{language}: a variant may not declare {declared} at "
+                    f"all — those say WHICH case this is, and the shared "
+                    f"`case.yaml` is where that claim lives (FR-065-AC-22).")
             merged = {**shared, **per_case, "language": language}
             # The variant's id must be its OWN. `setdefault` never fired here
             # because the shared `case.yaml` already carries `id`, so all three
@@ -268,11 +272,21 @@ def main() -> int:
     print(f"  out-of-scope          : {bounds['out_of_scope_count']}")
     print(f"  GAP                   : {bounds['gap_count']}")
     print()
+    # The per-cell PENDING flag is printed, not just counted in the summary.
+    # Without it the matrix reads `covered` on rows the engine detects nothing
+    # on, and `covered` here means only "a fixture exists" — the exact
+    # conflation between "there is a case" and "it works" that this corpus was
+    # built to end. Two whole minting rows are covered in three languages
+    # today with no detector behind either.
     for row in bounds["matrix"]:
         states = " ".join(
-            f"{lang}={cell['state']}" for lang, cell in sorted(row["cells"].items())
+            f"{lang}={cell['state']}" + ("(pending)" if cell.get("pending") else "")
+            for lang, cell in sorted(row["cells"].items())
         )
         print(f"  {row['mode']:12s} {row['case']:32s} {states}")
+    print()
+    print("  covered = a fixture exists for the cell. covered(pending) = it "
+          "exists AND the engine fails it.")
     return 0
 
 

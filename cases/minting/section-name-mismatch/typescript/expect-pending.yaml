@@ -1,0 +1,14 @@
+# FORWARD: what agent-ix/quire-rs#270 will make true. Graded, and required
+# to FAIL until it lands — a run in which this passes fails, naming the ticket.
+#
+# L3 is asserted, not just L1/L2: told only that "something matched nothing", a
+# reader of agent-ix/identity cannot tell which of the two headings to edit.
+# The message must name both the heading it FOUND and the one DECLARED.
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing:
+    - "Test Cases"
+    - "Test Case Summary"

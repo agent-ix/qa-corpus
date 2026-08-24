@@ -1,23 +1,29 @@
 # The control: the same tree with the DECLARED heading.
 #
-# The contrast, measured in this language: the row mints and binds, so `total`
-# is 2 rather than 1. Its defect twin reports 0/1 — one heading word decides
-# whether the TC row exists at all, in typescript exactly as in Rust.
+# `groups` is what makes this control able to do its job. Its previous form
+# asserted `total: 2`, which is satisfied by any two backed ids from anywhere —
+# it could not say that THE TC ROW mints. `test-case 1/1` says exactly that,
+# and `unbacked_rows: []` says the row that minted also bound.
+#
+# The absence tokens carry the two the engine really emits today alongside the
+# forward one, so this control can fail now rather than only once #270 lands.
 total: 2
 backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 1
+unbacked_rows: []
 absent_diagnostic_reasons:
-  # The two REAL tokens the Rust control asserts, carried into this language.
-  # Dropping them left `section-matches-nothing` — which the engine does not
-  # emit at all — as the only absence assertion here, so this control could not
-  # fail. #250 is exactly the shape that would slip through: a Rust guard
-  # misfiring in another language. A control weaker in Python than in Rust
-  # reproduces the gap #268 exists to close.
   - no-symbol-bound
   - hollow-denominator
-  # Forward-declared: the engine emits no such token yet, so this one is
-  # vacuous until agent-ix/quire-rs#270 lands. Retained deliberately — it arms
-  # the moment the detector exists.
   - section-matches-nothing
+  - id-column-matches-nothing
 binding_census:
   - language: typescript
     candidates: 1

@@ -1,0 +1,15 @@
+# FORWARD: what agent-ix/quire-rs#270 will make true. Graded, and required
+# to FAIL until it lands — a run in which this passes fails, naming the ticket.
+#
+# L3 is asserted because L1 is not enough here. `agent-ix/identity` has 606 TC
+# ids minting nothing; a finding that says only "something matched nothing"
+# sends its reader to the heading, which is correct, and leaves all 606 stranded.
+# The message must name the column FOUND and the column DECLARED.
+diagnostic_reasons:
+  - id-column-matches-nothing
+diagnostic_paths:
+  id-column-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  id-column-matches-nothing:
+    - "Test Case ID"
+    - "Test ID"
