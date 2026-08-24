@@ -1,0 +1,11 @@
+# The control: the same tree with the declared heading. It must mint the row
+# and stay silent. A detector that fires here as well would score perfect
+# recall while saying nothing about the defect.
+total: 2
+backed: 1
+absent_diagnostic_reasons:
+  - section-matches-nothing
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1

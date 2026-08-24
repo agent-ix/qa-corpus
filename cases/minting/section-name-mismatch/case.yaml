@@ -1,0 +1,24 @@
+id: section-name-mismatch
+case: section-name-mismatch
+issue_ref: agent-ix/quire-rs#270
+mode: minting
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: quire coverage --scope cases/minting/section-name-mismatch/input --module modules/ecosystem
+  --json
+tags:
+- TC-1014
+- minting
+- coverage
+comment: 'Archetype matches, SECTION DOES NOT. The document is a TestMatrix and the ecosystem declares
+  `section: Test Case Summary`; this one says `Test Cases`. Measured across 239 repositories: 93 with
+  the declared heading average 32.55% backed, 88 without it average 6.77%, and 3,514 distinct TC ids mint
+  nothing. The first fixture in this corpus bound to the REAL declaration, and therefore the first that
+  can exhibit the defect at all.'
+pending: agent-ix/quire-rs#270
+pending_reason: 'The engine emits no diagnostic when the archetype matches and the section does not. `declared_tables.rs`
+  carries one reason token, `archetype-matches-nothing`, and this is not that case: the archetype DID
+  match. #270 adds `section-matches-nothing`. Until it lands this case fails at L1, which is the correct
+  state for a defect nobody has fixed.'

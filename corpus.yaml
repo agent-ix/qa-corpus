@@ -1,20 +1,29 @@
 # The controlled corpus. Contract: agent-ix/quire-rs FR-065.
 #
-# `bounds.gap_count` is a COUNT, never a ratio (FR-065-CON-2). A ratio falls
-# as easy cases are added, so a corpus could improve its number while the hard
-# missing case stayed missing. Converting a GAP to out-of-scope moves this
-# number, which makes scoping something out a visible act.
+# THIS FILE DECLARES INTENT. It does not record state.
 #
-# The vocabularies below are declared HERE and read by both runners rather
-# than compiled into either (FR-065-AC-19..21) — which is what makes
-# `one definition` checkable from a single repository.
+# What a human writes here: the vocabularies, and the INVENTORY — for each
+# case, the languages it should exist in, and any cell deliberately scoped out
+# with its reason.
 #
-# `shipped: true` rows are cases that EXIST. They are still GAP, because they
-# bind a relaxation variant and therefore exercise no ecosystem mode. Omitting
-# them (the first draft) reached covered:0 by not listing them, which is a
-# different and worse claim than grading them.
+# What is DERIVED from the filesystem, every time, by `bounds.py`:
+#   covered  — a fixture exists for that case and language
+#   GAP      — declared applicable, no fixture, not scoped out
+#   gap_count and the sum invariant
+#
+# So adding a fixture flips its own cell and drops gap_count with NO edit to
+# this file (#289). A stored count is a number that can go stale; a derived one
+# cannot disagree with the tree it describes.
+#
+# `bounds.gap_count` is a COUNT, never a ratio (FR-065-CON-2). A ratio falls as
+# easy cases are added, so a corpus could improve its number while the hard
+# missing case stayed missing.
+#
+# The vocabularies below are read by both runners rather than compiled into
+# either (FR-065-AC-19..21) — which is what makes `one definition` checkable
+# from a single repository.
 
-schema_version: 1
+schema_version: 2
 mode_families:
 - minting
 - detection
@@ -50,230 +59,145 @@ result_record:
   - pass
   - fail
   - rejected
-bounds:
-  gap_count: 43
-  covered_count: 0
-  out_of_scope_count: 1
-  declared_cells: 44
-  matrix:
-  - mode: minting
-    case: section-name-mismatch
-    source: 88 repos / 3,514 TC ids
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: minting
-    case: id-column-mismatch
-    source: agent-ix/identity
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: minting
-    case: section-and-id-column
-    source: identity — section-only diagnosis is insufficient
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: minting
-    case: rows-across-many-headings
-    source: identity (~30 headings)
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: minting
-    case: no-testmatrix-document
-    source: 47 repos
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: detection
-    case: test-name-id-in-call-title
-    source: spec-artifacts-process#68, 81% of a repo
-    shipped: false
-    cells:
-      typescript:
-        state: GAP
-  - mode: detection
-    case: test-name-id-in-fn-name
-    source: CR-034, 1,292 sites
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-  - mode: attachment
-    case: tag-on-describe-header
-    source: 30 repos, 0 backed
-    shipped: false
-    cells:
-      typescript:
-        state: GAP
-  - mode: attachment
-    case: tag-at-module-scope
-    source: ix-ui, sqlmodel-fixtures
-    shipped: false
-    cells:
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: attachment
-    case: tag-on-non-test-function
-    source: binds_trace_ids complement
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: parser
-    case: triple-quote-scope-desync
-    source: symbols/python.rs:40-42
-    shipped: false
-    cells:
-      python:
-        state: GAP
-  - mode: join
-    case: tag-names-con-inv-sc-vc
-    source: 328 tags
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: join
-    case: tag-names-bare-fr
-    source: 244 tags
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: join
-    case: tag-names-unminted-tc
-    source: 455 tags
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: disposition
-    case: real-tests-zero-tags
-    source: 82 repos — must dispose authoring-absent
-    shipped: false
-    cells:
-      rust:
-        state: GAP
-      python:
-        state: GAP
-      typescript:
-        state: GAP
-  - mode: provenance
-    case: engine-lacks-capability
-    source: the 0.29.0 failure — census must abort
-    shipped: false
-    cells:
-      n/a:
-        state: out-of-scope
-        reason: provenance is a property of the toolchain, not of a source language; the case is language-neutral
-  - mode: attachment
-    case: marker-form-mismatch
-    source: agent-ix/spec-artifacts-process#59
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: detection
-    case: catch-all-headline
-    source: agent-ix/quire-rs#230
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: detection
-    case: stale-name-correct-trace
-    source: agent-ix/quire-rs#227
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: disposition
-    case: greenfield-no-symbols
-    source: agent-ix/quire-rs#229
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: minting
-    case: no-symbol-method-in-the-verification-column
-    source: agent-ix/quire-rs#259
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-no-symbol-vocab rather than the ecosystem declaration,
-          so it exercises no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: provenance
-    case: implements-never-asked
-    source: agent-ix/quire-rs#226
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
-  - mode: attachment
-    case: tests-directory-topology
-    source: agent-ix/quire-rs#267
-    shipped: true
-    cells:
-      rust:
-        state: GAP
-        reason: ships, but binds variants/bench-legacy rather than the ecosystem declaration, so it exercises
-          no ecosystem mode (agent-ix/quire-rs#285)
+inventory:
+- mode: minting
+  case: section-name-mismatch
+  source: 88 repos / 3,514 TC ids
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: minting
+  case: id-column-mismatch
+  source: agent-ix/identity
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: minting
+  case: section-and-id-column
+  source: identity — section-only diagnosis is insufficient
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: minting
+  case: rows-across-many-headings
+  source: identity (~30 headings)
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: minting
+  case: no-testmatrix-document
+  source: 47 repos
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: detection
+  case: test-name-id-in-call-title
+  source: spec-artifacts-process#68, 81% of a repo
+  languages:
+  - typescript
+- mode: detection
+  case: test-name-id-in-fn-name
+  source: CR-034, 1,292 sites
+  languages:
+  - rust
+- mode: attachment
+  case: tag-on-describe-header
+  source: 30 repos, 0 backed
+  languages:
+  - typescript
+- mode: attachment
+  case: tag-at-module-scope
+  source: ix-ui, sqlmodel-fixtures
+  languages:
+  - python
+  - typescript
+- mode: attachment
+  case: tag-on-non-test-function
+  source: binds_trace_ids complement
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: parser
+  case: triple-quote-scope-desync
+  source: symbols/python.rs:40-42
+  languages:
+  - python
+- mode: join
+  case: tag-names-con-inv-sc-vc
+  source: 328 tags
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: join
+  case: tag-names-bare-fr
+  source: 244 tags
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: join
+  case: tag-names-unminted-tc
+  source: 455 tags
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: disposition
+  case: real-tests-zero-tags
+  source: 82 repos — must dispose authoring-absent
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: provenance
+  case: engine-lacks-capability
+  source: the 0.29.0 failure — census must abort
+  languages:
+  - n/a
+  out_of_scope:
+    n/a: provenance is a property of the toolchain, not of a source language; the case is language-neutral
+- mode: attachment
+  case: marker-form-mismatch
+  source: agent-ix/spec-artifacts-process#59
+  languages:
+  - rust
+- mode: detection
+  case: catch-all-headline
+  source: agent-ix/quire-rs#230
+  languages:
+  - rust
+- mode: detection
+  case: stale-name-correct-trace
+  source: agent-ix/quire-rs#227
+  languages:
+  - rust
+- mode: disposition
+  case: greenfield-no-symbols
+  source: agent-ix/quire-rs#229
+  languages:
+  - rust
+- mode: minting
+  case: no-symbol-method-in-the-verification-column
+  source: agent-ix/quire-rs#259
+  languages:
+  - rust
+- mode: provenance
+  case: implements-never-asked
+  source: agent-ix/quire-rs#226
+  languages:
+  - rust
+- mode: attachment
+  case: tests-directory-topology
+  source: agent-ix/quire-rs#267
+  languages:
+  - rust
 known_gaps:
   uncontrolled_failure_cases:
     cases:
@@ -282,70 +206,3 @@ known_gaps:
     - stale-name-correct-trace
     reason: FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
       fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
-cases:
-- id: marker-form-declared
-  mode: attachment
-  language: rust
-  kind: control
-  module: variants/bench-legacy
-  path: cases/attachment/marker-form-declared
-- id: marker-form-mismatch
-  mode: attachment
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/attachment/marker-form-mismatch
-- id: marker-form-mismatch-control
-  mode: attachment
-  language: rust
-  kind: control
-  module: variants/bench-legacy
-  path: cases/attachment/marker-form-mismatch-control
-- id: tests-directory-topology
-  mode: attachment
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/attachment/tests-directory-topology
-- id: catch-all-headline
-  mode: detection
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/detection/catch-all-headline
-- id: catch-all-headline-control
-  mode: detection
-  language: rust
-  kind: control
-  module: variants/bench-legacy
-  path: cases/detection/catch-all-headline-control
-- id: stale-name-correct-trace
-  mode: detection
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/detection/stale-name-correct-trace
-- id: greenfield-no-symbols
-  mode: disposition
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/disposition/greenfield-no-symbols
-- id: no-symbol-method-in-the-verification-column
-  mode: minting
-  language: rust
-  kind: failure
-  module: variants/bench-no-symbol-vocab
-  path: cases/minting/no-symbol-method-in-the-verification-column
-- id: no-symbol-method-in-the-verification-column-control
-  mode: minting
-  language: rust
-  kind: control
-  module: variants/bench-no-symbol-vocab
-  path: cases/minting/no-symbol-method-in-the-verification-column-control
-- id: implements-never-asked
-  mode: provenance
-  language: rust
-  kind: failure
-  module: variants/bench-legacy
-  path: cases/provenance/implements-never-asked

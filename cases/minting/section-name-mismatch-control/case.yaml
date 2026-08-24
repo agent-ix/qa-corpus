@@ -1,0 +1,18 @@
+mode: minting
+language: rust
+module: ecosystem
+id: section-name-mismatch-control
+case: section-name-mismatch
+issue_ref: agent-ix/quire-rs#270
+kind: control
+control_for: section-name-mismatch
+findable: false
+reproduce: quire coverage --scope cases/minting/section-name-mismatch-control/input --module modules/ecosystem
+  --json
+tags:
+- TC-1014
+- TC-1017
+- minting
+- coverage
+comment: The same tree with the DECLARED heading. It mints the TC row (test-case 1/1) and stays silent.
+  Without it, `section-matches-nothing` firing on every TestMatrix would score perfect recall.

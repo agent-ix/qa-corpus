@@ -8,7 +8,7 @@ findable: false
 kind: control
 control_for: no-symbol-method-in-the-verification-column
 reproduce: quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column-control/input
-  --module cases/minting/no-symbol-method-in-the-verification-column-control/input/module --json
+  --module modules/variants/bench-no-symbol-vocab --json
 tags:
 - TC-1008
 - coverage

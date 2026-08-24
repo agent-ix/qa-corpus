@@ -1,0 +1,25 @@
+# EXPECTED TO FAIL until agent-ix/quire-rs#270 lands. See `pending:` in
+# case.yaml. What this asserts is the behaviour #270 adds, not today's.
+#
+# TODAY the engine emits NOTHING here: no group, no diagnostic, no unbacked
+# row. The measured contrast against the control is the whole finding —
+#
+#   this case   : totals {backed 0, total 1}, groups [acceptance-criterion]
+#   the control : totals {backed 1, total 2}, groups [acceptance-criterion,
+#                                                     test-case 1/1]
+#
+# One heading word decides whether the TC row exists, the denominator silently
+# shrinks, and the engine is silent in both directions. A repository in this
+# state is indistinguishable from one that simply wrote fewer rows.
+total: 1
+backed: 0
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing: "Test Case Summary"
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1

@@ -7,7 +7,7 @@ relaxation_ticket: agent-ix/quire-rs#285
 findable: false
 kind: control
 control_for: catch-all-headline
-reproduce: quire coverage --scope cases/detection/catch-all-headline-control/input --module cases/detection/catch-all-headline-control/input/module
+reproduce: quire coverage --scope cases/detection/catch-all-headline-control/input --module modules/variants/bench-legacy
   --json
 tags:
 - TC-1009

@@ -6,7 +6,7 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: quire coverage --scope cases/provenance/implements-never-asked/input --module cases/provenance/implements-never-asked/input/module
+reproduce: quire coverage --scope cases/provenance/implements-never-asked/input --module modules/variants/bench-legacy
   --json
 tags:
 - TC-995

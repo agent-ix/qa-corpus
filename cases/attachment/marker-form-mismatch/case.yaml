@@ -6,7 +6,7 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: quire coverage --scope cases/attachment/marker-form-mismatch/input --module cases/attachment/marker-form-mismatch/input/module
+reproduce: quire coverage --scope cases/attachment/marker-form-mismatch/input --module modules/variants/bench-legacy
   --json
 tags:
 - TC-1006

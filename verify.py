@@ -125,7 +125,26 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
 def main() -> int:
     failures: list[str] = []
     cases = sorted(ROOT.glob("cases/*/*/case.yaml"))
-    ran = sum(check(p.parent, failures) for p in cases)
+    ran = 0
+    pending, now_passing = [], []
+
+    for path in cases:
+        meta = yaml.safe_load(path.read_text())
+        mine: list[str] = []
+        ran += check(path.parent, mine)
+        ticket = meta.get("pending")
+        if ticket is None:
+            failures.extend(mine)
+        elif mine:
+            # Expected to fail, and did. This is the state EPIC #264 rule 3
+            # wants a fixture to be in BEFORE its fix lands: the defect has a
+            # regression the day it is found, and the suite still goes green.
+            pending.append((meta["id"], ticket, mine))
+        else:
+            # Expected to fail and passed: the fix landed and the marker now
+            # lies about the engine. Failing here is what stops the corpus
+            # filling with stale `pending:` markers nobody revisits.
+            now_passing.append((meta["id"], ticket))
 
     # Structural conformance to FR-065, over the corpus as a whole.
     ids = {yaml.safe_load(p.read_text())["id"] for p in cases}
@@ -139,7 +158,20 @@ def main() -> int:
     for failure in failures:
         print("  MISMATCH", failure)
     print(f"mismatches: {len(failures)}")
-    return 1 if failures else 0
+
+    # Printed, never hidden. A count of known-failing cases is a measurement of
+    # what the engine cannot yet do, and it belongs beside every run.
+    for case, ticket, mine in pending:
+        print(f"  PENDING {case} ({ticket}) — expected to fail, and did:")
+        for detail in mine:
+            print(f"      {detail}")
+    if pending:
+        print(f"pending: {len(pending)} case(s) awaiting a fix")
+    for case, ticket in now_passing:
+        print(f"  STALE  {case} now PASSES — {ticket} appears to have landed. "
+              f"Remove `pending:` from its case.yaml.")
+
+    return 1 if failures or now_passing else 0
 
 
 if __name__ == "__main__":

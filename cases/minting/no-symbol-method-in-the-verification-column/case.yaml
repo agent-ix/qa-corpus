@@ -7,7 +7,7 @@ relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
 reproduce: quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column/input --module
-  cases/minting/no-symbol-method-in-the-verification-column/input/module --json
+  modules/variants/bench-no-symbol-vocab --json
 tags:
 - TC-1008
 - coverage

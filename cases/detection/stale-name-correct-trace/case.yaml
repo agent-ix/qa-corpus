@@ -6,7 +6,7 @@ module: variants/bench-legacy
 relaxation_ticket: agent-ix/quire-rs#285
 findable: true
 kind: failure
-reproduce: quire coverage --scope cases/detection/stale-name-correct-trace/input --module cases/detection/stale-name-correct-trace/input/module
+reproduce: quire coverage --scope cases/detection/stale-name-correct-trace/input --module modules/variants/bench-legacy
   --json
 tags:
 - TC-993
