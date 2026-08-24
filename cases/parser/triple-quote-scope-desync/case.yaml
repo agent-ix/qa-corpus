@@ -1,0 +1,21 @@
+mode: parser
+language: python
+module: ecosystem
+id: triple-quote-scope-desync
+issue_ref: agent-ix/quire-rs#274
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#274
+pending_reason: >-
+  `python.rs` enters string mode only when a triple-quote STARTS the trimmed line, so an
+  assigned string is parsed as code and its closing quote is read as an opener. Nothing in
+  the payload reports either half.
+tags:
+- TC-1014
+- parser
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync/input --json
+comment: >-
+  Two compounding failures on one string: the body is parsed as code, inventing a test that
+  does not exist, and then the closing quote swallows the rest of the file, losing the real
+  one. Measured across ~/dev: 51 files lose 387 real declarations; 3 files gain 6 phantoms.

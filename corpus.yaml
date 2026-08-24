@@ -121,6 +121,9 @@ diagnostic_reasons:
 # so it lives in the graders rather than here.
 behaviour_change_tickets:
 - agent-ix/quire-rs#272
+# The scanner fix. No diagnostic is added — the parse becomes correct, so the
+# payload changes shape.
+- agent-ix/quire-rs#274
 # A DECLARATION change rather than an engine one: sap#68 adds the TypeScript
 # test-name form, so a title-carried id binds and the fixture stops being a
 # defect. Same class for corpus purposes — the payload changes, no diagnostic
@@ -220,8 +223,12 @@ inventory:
   - rust
   - typescript
 - mode: parser
+  # MEASURED, and #274's "2 files" was wrong by 25x. Reimplementing `python.rs`'s
+  # state machine and diffing against `ast.parse` over every .py under ~/dev:
+  # 51 files LOSE 387 real declarations, 3 files GAIN 6 phantom ones. Live
+  # trigger at py-project/tests/test_deps.py:309.
   case: triple-quote-scope-desync
-  source: symbols/python.rs:40-42
+  source: symbols/python.rs:40-42 — 51 files lose 387 declarations, 3 gain 6 phantoms
   languages:
   - python
 - mode: join

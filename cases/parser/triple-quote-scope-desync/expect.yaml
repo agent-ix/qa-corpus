@@ -1,0 +1,65 @@
+# THE LARGEST MEASURED BLAST RADIUS IN THE #268 INVENTORY, and the entry said
+# "2 files". Measured across ~/dev by reimplementing `python.rs`'s state
+# machine and diffing against `ast.parse`: 51 files LOSE 387 real declarations,
+# 3 files GAIN 6 phantom ones.
+#
+# Two failures compound on one string, in opposite directions:
+#
+#   1. The opener does not START its line, so the scanner never enters string
+#      mode and parses the string BODY as code — INVENTING a test that does not
+#      exist in the program and binding a trace id to it.
+#
+#   2. The CLOSING quote does start its line, so it is read as an OPENER, and
+#      everything after it swallows into a string that never ends. The real
+#      test is LOST.
+#
+# 387 lost against 6 invented: the second half is where the damage is.
+#
+# WHAT THE PAYLOAD SAYS ABOUT ALL THAT:
+#
+#   binding_census  python  candidates 1, bound 1
+#
+# One candidate, one bound, a perfectly healthy census — for a symbol that DOES
+# NOT EXIST. The engine is measuring a string literal. The real test appears
+# nowhere in the payload at all.
+#
+# `untracked_symbols` naming the phantom is the sharpest assertion here: it is
+# the engine stating, with a path and a line, that it found a test the file
+# does not contain.
+#
+# Both existing guards stand down for #307's reason exactly — `no-symbol-bound`
+# needs `bound == 0`, `hollow-denominator` needs `matched == 0`, and both are 1.
+#
+# This is upstream of every python number this campaign quotes. A backing ratio
+# measured over a symbol set missing 387 declarations cannot settle "bad rule or
+# bad corpus" for python until #274 lands.
+total: 2
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 0
+    total: 1
+untracked_symbols:
+  - symbol: "test_phantom_inside_a_string"
+    trace_id: TC-999
+    path: src/test_coverage.py
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+binding_census:
+  - language: python
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+  - low-symbol-binding

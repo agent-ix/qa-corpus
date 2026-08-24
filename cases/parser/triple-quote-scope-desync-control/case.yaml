@@ -1,0 +1,18 @@
+mode: parser
+language: python
+module: ecosystem
+id: triple-quote-scope-desync-control
+issue_ref: agent-ix/quire-rs#274
+kind: control
+control_for:
+- triple-quote-scope-desync
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- parser
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync-control/input --json
+comment: >-
+  The identical file with the opening triple-quote moved onto its own line — the one condition
+  `python.rs` checks. Same phantom text inside the same string, same real test after it.
