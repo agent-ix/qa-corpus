@@ -20,7 +20,7 @@ import sys
 
 import yaml
 
-from bounds import discover
+from bounds import CorpusError, discover
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
@@ -412,5 +412,20 @@ def main() -> int:
     return 1 if failures or now_passing else 0
 
 
+def cli() -> int:
+    """`main`, with the loader's conformance errors reported as failures.
+
+    Uncaught they printed a traceback, which reads as this script being broken
+    rather than as the corpus being invalid — and `check_engine()` calls
+    `discover()` too, so the guard belongs at the entry point rather than at
+    any one call site.
+    """
+    try:
+        return main()
+    except CorpusError as error:
+        print(f"corpus: {error}", file=sys.stderr)
+        return 1
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(cli())
