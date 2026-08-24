@@ -1,0 +1,23 @@
+mode: join
+module: ecosystem
+id: tag-names-undeclared-section-control
+issue_ref: agent-ix/spec-artifacts-process#69
+kind: control
+control_for:
+- tag-names-undeclared-section
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- join
+- binding
+comment: >-
+  ONE TOKEN. `FR-001-INV-1` becomes `FR-001-AC-1` and nothing else in either tree changes —
+  same two tests, same comment form, same position in the body, same sibling tag, same census,
+  and the `## Invariants` table is still there, unread and unminted, in the same document.
+  Four fields move on that one edit: `backed` 1 -> 2, the `acceptance-criterion` group 0/2 ->
+  1/2, `unbacked_rows` 2 -> 0 and `untracked_symbols` 1 -> 0.
+  KEEPING THE UNMINTED TABLE IS THE POINT. Deleting it would have made the pair differ in two
+  things and would have hidden the finding: what separates a minted id class from an unminted
+  one is the HEADING above the table, not the presence of the table, and this control proves
+  that by leaving the unminted rows exactly where they are and still going green.

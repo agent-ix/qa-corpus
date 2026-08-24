@@ -1,0 +1,47 @@
+# THE CONTROL, AND IT IS ONE TOKEN AWAY FROM ITS PARTNER.
+#
+# `FR-001-INV-1` becomes `FR-001-AC-1`. Nothing else in either tree changes: the
+# same `## Invariants` table is still there, unread and unminted, in the same
+# document; same two tests, same comment form, same position in the body, same
+# sibling tag, same census.
+#
+#   case      backed 1/4  ac 0/2  1 untracked  2 unbacked
+#   control   backed 2/4  ac 1/2  0 untracked  0 unbacked
+#
+# FOUR fields move on that one edit, so FR-065-AC-42 is met four times over. And
+# reading is identical on both sides — `binding_census` is 2 of 2 here and 2 of
+# 2 there — which is the sharpest statement this pair can make: the failure case
+# is not about a tag the engine could not read.
+#
+# THE CONTROL DELIBERATELY KEEPS THE `## Invariants` TABLE. Deleting it would
+# have made the pair differ in two things and would have hidden the finding:
+# what separates a minted id class from an unminted one here is the HEADING
+# above the table, not the presence of the table, and the control proves that by
+# leaving the unminted rows exactly where they are and still going green.
+#
+# `untracked_symbols: []` is the assertion that matters most. Its partner names
+# one entry; this names none. A change that stopped populating the field
+# altogether would leave this block green and break the partner's, which is the
+# direction that catches a silent removal.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 1
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 2
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
+  - section-matches-nothing

@@ -1,0 +1,94 @@
+# AN AUTHORED TABLE ROW, WITH AN `ID` COLUMN, THAT NOTHING MINTS.
+#
+# This is the sharper sibling of `tag-names-bare-fr`. There the tag named a
+# document id that is no row at all. Here it names a row — `FR-001-INV-1` sits
+# in a four-column table with an `ID` column, in the same document as the
+# criteria table two headings down, indistinguishable from it in every respect
+# except the HEADING above it.
+#
+# Nothing here is a binder fault, and the census says so out loud:
+#
+#   binding_census  rust  candidates 2, bound 2   <- 100%, and honestly so
+#
+# `rust-doc-comment-id` admits the sub-id segment, the enclosing symbol is a
+# test function, and the engine records the relation. What it recorded is a
+# relation to an id no `TraceTarget` mints, because a target names a SECTION and
+# `## Invariants` is a heading NEITHER declaring module admits: not in the ISO
+# `FR` skeleton, not in `spec_artifacts_iso/manifest.yaml`, not in
+# `spec_artifacts_process/manifest.yaml`.
+#
+# MEASURED, with the engine, over the 241 repositories
+# `quire-rs/scripts/corpus.py` enumerates under ~/dev — one `quire` binary built
+# from `quire-cli` at its pinned rev, engine `e06f121`, release profile,
+# `quire coverage --scope <repo> --json` per repository, `untracked_symbols`
+# read out of the payload. 15 repositories author `## Invariants` (129 rows),
+# its table is literally `| ID | Constraint | Type | Rationale |` — the
+# `Constraints` table under another name — and exactly ONE tag in the whole
+# corpus names one of those ids:
+# `identity/tests/test_tenant_auth_policy.py:195`, `FR-043-INV-1`.
+#
+# THAT ONE SITE IS WHY THIS ROW EXISTS AND WHY IT IS NOT A MINTING CASE.
+# `spec-artifacts-process` CR-041 (#69) settled the four prefixes the inventory
+# row used to bundle, and the rule it adopted is one line: the traceability
+# model mints from sections the SHAPE CONTRACT declares, and does not invent
+# sections. Minting `Invariants` would add 328 denominator rows to reach one
+# tag — measured, `section: [Constraints, Invariants]` moves the ecosystem
+# 23,059 rows / 5,452 backed to 23,387 / 5,453. The site is repaired by renaming
+# that section in `identity`, which is what the control does one token at a time.
+#
+# DETECTION REACHES L2, NOT L1. No diagnostic reason fires and none should —
+# `no-symbol-bound` needs `bound == 0` and `low-symbol-binding` needs under 5%.
+# What the engine publishes instead is the LOCUS, and it is exact:
+# `untracked_symbols` names the symbol, the id it bound, and the file. What it
+# does NOT publish is the disposition — this id and a typo'd `TC-1207` arrive in
+# the same list looking identical, which is `agent-ix/quire-rs#328`.
+#
+# THE PAYLOAD CARRIES A LINE (17) THAT THIS BLOCK CANNOT ASSERT. Both graders
+# compare `untracked_symbols` on (symbol, trace_id, path) only, deliberately —
+# two identical bindings in one file are one defect, not two records. The line
+# is in the JSON and a reader gets it; the assertion stops at the file.
+#
+# MIXED on purpose: one undeclared-section id beside one minted test-case id, so
+# the census stays at 100% and no binding diagnostic can be credited for
+# catching this.
+total: 4
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+# THE DETECTION. Exact, both directions: an extra entry, a missing one, a
+# changed field or a different order all fail (FR-065-AC-28).
+untracked_symbols:
+  - symbol: tests::carries_the_declared_severity
+    trace_id: FR-001-INV-1
+    path: src/lib.rs
+binding_census:
+  - language: rust
+    candidates: 2
+    bound: 2
+# None of these may fire: the binder read this tree correctly and said so.
+# Crediting a binding diagnostic here would be crediting it for noise.
+#
+# `section-matches-nothing` is listed because it is the reason a reader would
+# EXPECT here and it is genuinely absent: a trace target fires it when a
+# document of its archetype lacks its section, and no target names `Invariants`
+# — so the engine has no declaration through which to notice this document at
+# all. It is silent for the same reason it joins nothing.
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
+  - section-matches-nothing

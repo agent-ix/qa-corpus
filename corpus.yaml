@@ -359,8 +359,66 @@ inventory:
   languages:
   - python
 - mode: join
-  case: tag-names-con-inv-sc-vc
-  source: 328 tags
+  # RE-SCOPED, and `tag-names-con-inv-sc-vc` is gone. That row bundled four
+  # prefixes on the strength of one number — "328 tags" — and MEASURED WITH THE
+  # ENGINE the four behave completely differently, so the sum was never a
+  # quantity anybody could act on. Unit: entries in `coverage.untracked_symbols`,
+  # one per `verifies` relation whose id is neither declared, referenced by a
+  # cell, nor any row's own id (quire-rs `coverage.rs:1247-1254`) — not
+  # deduplicated by id. Population: the 241 repositories
+  # `quire-rs/scripts/corpus.py` enumerates under ~/dev. Instrument: one `quire`
+  # binary built from `quire-cli` at its pinned rev, engine `e06f121`, release
+  # profile, `quire coverage --scope <repo> --json` per repository.
+  #
+  #   CON  155 entries / 28 repos  -> DECIDED to mint, by spec-artifacts-process
+  #                                   CR-041 (#69), and GATED on
+  #                                   `agent-ix/quire-rs#327`. Declaring the
+  #                                   target is measured at +3,029 rows minted,
+  #                                   +143 backed and -121 dead CON tags — and
+  #                                   at `section-matches-nothing` 512 -> 1,672,
+  #                                   because `## Constraints` is OPTIONAL in
+  #                                   the FR contract and a `TraceTarget` has no
+  #                                   way to say so. THIS CORPUS CAUGHT THAT:
+  #                                   run with the target declared, **19 of 75
+  #                                   cases fail, 34 mismatches, 100% of them
+  #                                   `section-matches-nothing`** — 13 asserting
+  #                                   silence that is no longer true and 6 whose
+  #                                   `diagnostic_paths` is displaced by a
+  #                                   finding from another declaration. Neither
+  #                                   is repairable without lowering the
+  #                                   assertion, so the declaration waits.
+  #   SC   124 entries /  7 repos  -> UNREACHABLE, and a declared engine limit
+  #                                   rather than a modelling gap. Those ids are
+  #                                   list items: 1,356 occurrences across 28
+  #                                   repositories, 243 directly under
+  #                                   `## Test Procedure`, against 148 table
+  #                                   occurrences — and all 148 of those are
+  #                                   references from a matrix, not a minting
+  #                                   table. `agent-ix/quire-rs#244` owns it.
+  #   VC     0 entries /  0 repos  -> ALREADY MINTED, by CR-037 (#63, closed
+  #                                   2026-08-22, before #69 was filed). The
+  #                                   engine mints 36 rows in filament-ide-rs,
+  #                                   22 in quire-rs, 18 in ix-cli, backed 0 in
+  #                                   every one — because not one `StR-nnn-VC-n`
+  #                                   tag exists anywhere in any declared form.
+  #                                   A fixture for it would have landed GREEN
+  #                                   and taught nobody anything.
+  #   INV    1 entry   /  1 repo   -> THIS ROW.
+  #
+  # What survives is the DECISION, not the prefix list, and it is sharper than
+  # the row it replaces: `FR-001-INV-1` is an AUTHORED TABLE ROW with an `ID`
+  # column, in the same document as the criteria table two headings down and
+  # indistinguishable from it except for the HEADING above it — and a target
+  # names a section, so nothing mints it. `## Invariants` is admitted by neither
+  # declaring module; 15 repositories author it anyway (129 rows) with the table
+  # literally `| ID | Constraint | Type | Rationale |`.
+  #
+  # That makes it the sharper sibling of `tag-names-bare-fr`, where the tag
+  # named a document id that is no row at all.
+  case: tag-names-undeclared-section
+  source: 1 entry / 1 repo (identity/tests/test_tenant_auth_policy.py:195) — the surviving prefix
+    of the four `tag-names-con-inv-sc-vc` bundled; CON 155/28 decided-to-mint and gated on
+    quire-rs#327, SC 124/7 is quire-rs#244, VC 0/0 minted since CR-037 and tagged by nobody
   languages:
   - python
   - rust

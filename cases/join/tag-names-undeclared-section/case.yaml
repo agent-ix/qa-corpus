@@ -1,0 +1,28 @@
+mode: join
+module: ecosystem
+id: tag-names-undeclared-section
+case: tag-names-undeclared-section
+issue_ref: agent-ix/spec-artifacts-process#69
+kind: failure
+findable: true
+tags:
+- TC-1014
+- join
+- binding
+comment: >-
+  NOT PENDING. The engine already does its job here, at L2, and this case is the surviving half
+  of the inventory row that used to read `tag-names-con-inv-sc-vc`. That row bundled four
+  prefixes behind one number — "328 tags" — and MEASURED WITH THE ENGINE over the 241
+  repositories `quire-rs/scripts/corpus.py` enumerates, the four behave completely differently:
+  `CON` 155 entries / 28 repos, `SC` 124 / 7, `INV` 1 / 1, `VC` **0**. So the sum was never a
+  quantity anybody could act on, and three of the four are not fixture material — `VC` has been
+  minted since CR-037 and is named by no tag anywhere, `SC` is a declared engine limit
+  (`agent-ix/quire-rs#244`, those ids are list items rather than a table column), and `CON` is
+  decided-to-mint by CR-041 but gated on `agent-ix/quire-rs#327`.
+  What survives is the DECISION, and it is sharper than the prefix list: `FR-001-INV-1` is an
+  authored table row with an `ID` column, in the same document as the criteria table two
+  headings down and indistinguishable from it except for the HEADING above it — and a target
+  names a section, so nothing mints it. `## Invariants` is admitted by neither declaring
+  module; 15 repositories author it anyway (129 rows) with the table literally
+  `| ID | Constraint | Type | Rationale |`. Shape from
+  `identity/tests/test_tenant_auth_policy.py:195` (`FR-043-INV-1`), the one site in the corpus.
