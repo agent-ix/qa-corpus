@@ -1,0 +1,18 @@
+mode: attachment
+language: typescript
+module: ecosystem
+id: tag-on-describe-header-control
+issue_ref: agent-ix/quire-rs#273
+kind: control
+control_for:
+- tag-on-describe-header
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- attachment
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tag-on-describe-header-control/input --json
+comment: >-
+  The same file with the first tag moved off the `describe(` header and onto the `it` inside
+  it. One line moved, nothing else differs.

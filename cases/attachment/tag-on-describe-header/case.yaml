@@ -1,0 +1,22 @@
+mode: attachment
+language: typescript
+module: ecosystem
+id: tag-on-describe-header
+issue_ref: agent-ix/quire-rs#273
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#273
+pending_reason: >-
+  `describe()` registers no symbol, so a tag on the block header has nothing to attach to. It
+  reaches neither `verifies` nor `untracked_symbols` — that channel needs a BOUND symbol with an
+  unmatched id. #273 registers the header as a Container.
+tags:
+- TC-1014
+- attachment
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tag-on-describe-header/input --json
+comment: >-
+  Shape taken verbatim from ix-ui/packages/semantic/tests/glyphs.test.ts:100 — a comment-id
+  above the `describe(` header with the work in an `it` inside. 209 occurrences across 9 repo
+  roots. MIXED with a correctly-tagged sibling, because that is what real files look like and
+  it is what keeps the census above the floor.

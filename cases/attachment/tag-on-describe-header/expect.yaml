@@ -1,0 +1,56 @@
+# THE TAG REACHES NEITHER CHANNEL. `describe()` registers no symbol
+# (`typescript.rs` accepts only `test` and `it`), so a tag on the block header
+# has nothing to attach to. It does not bind, and it does not reach
+# `untracked_symbols` either — that channel requires a BOUND symbol carrying an
+# unmatched id. As #273 puts it: silence, not a miss.
+#
+# THE FIXTURE IS MIXED ON PURPOSE. One misattached tag beside one correct one,
+# because that is what real files look like — and it is the configuration in
+# which the engine says nothing:
+#
+#   binding_census  candidates 2, bound 1     = 50% bound
+#
+# `binding_diagnostics` fires on `bound == 0` or `bound < candidates * 0.05`.
+# One tag in two clears that floor easily; one tag in two hundred clears it by
+# more. The floor catches "this repo's tags do not work at all" and is blind to
+# "one tag in this repo is on the wrong node", which is the common case.
+#
+# A degenerate all-tags-misattached tree WOULD fire `no-symbol-bound`. Writing
+# the fixture that way would have made it pass for a reason that does not hold
+# in any real repository.
+#
+# AND THE ENGINE ALREADY HAS THE LOCUS. `unbound_example` names
+# `defaults every finding to warning` at src/coverage.test.ts:10 — the exact
+# test left unbound because its tag sits one line above it. The evidence is
+# computed and carried; only the report is suppressed. Same shape as #304,
+# where a finding is computed and discarded by a model-wide gate.
+total: 4
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+# EMPTY, and that is the assertion. A tag that bound to the wrong id would be
+# here; this one is nowhere.
+untracked_symbols: []
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 1
+    unbound_example: src/coverage.test.ts:10
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator

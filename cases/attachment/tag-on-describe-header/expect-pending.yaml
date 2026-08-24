@@ -1,0 +1,24 @@
+# FORWARD: what agent-ix/quire-rs#273 makes true.
+#
+# A BEHAVIOUR-CHANGE ticket — it registers `describe()`/`suite()` headers as
+# Containers, so the tag has something to attach to. No diagnostic is added;
+# the tag simply stops vanishing.
+#
+# The forward state is the control's payload: both rows backed, nothing
+# unbacked. `binding_census` is deliberately not asserted — #273 registers the
+# header as a Container rather than a Test, and whether a Container counts as a
+# binding CANDIDATE is a design choice the ticket has not settled. Pinning it
+# would decide that here.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 2
+    total: 2
+unbacked_rows: []
+untracked_symbols: []

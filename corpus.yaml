@@ -124,6 +124,9 @@ behaviour_change_tickets:
 # The scanner fix. No diagnostic is added — the parse becomes correct, so the
 # payload changes shape.
 - agent-ix/quire-rs#274
+# Registers `describe()`/`suite()` headers as Containers, so a tag on the header
+# has something to attach to. No diagnostic added.
+- agent-ix/quire-rs#273
 # A DECLARATION change rather than an engine one: sap#68 adds the TypeScript
 # test-name form, so a title-carried id binds and the fixture stops being a
 # defect. Same class for corpus purposes — the payload changes, no diagnostic
@@ -205,8 +208,14 @@ inventory:
   languages:
   - rust
 - mode: attachment
+  # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
+  # ENTIRELY on headers. The fixture models the MIXED case instead — one
+  # misattached tag beside a correct one — because that is what real files look
+  # like and it is the configuration in which the engine goes silent. Measured:
+  # 209 TS comment-ids sit directly above a `describe(`, across 9 repo roots,
+  # against 2,396 above an `it`/`test`.
   case: tag-on-describe-header
-  source: 30 repos, 0 backed
+  source: 30 repos 0 backed (#273); 209 occurrences / 9 roots, mixed with 2396 correct
   languages:
   - typescript
 - mode: attachment

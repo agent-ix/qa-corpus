@@ -1,0 +1,31 @@
+# The control: the same file with the first tag moved off the `describe(`
+# header and onto the `it` inside it. One line moved.
+#
+# Both rows back, nothing is unbacked, and the census reads 2 of 2.
+#
+# `untracked_symbols: []` holds in BOTH halves of this pair, so it discriminates
+# nothing here — it is asserted because its partner's empty list is a claim
+# about where the tag went, and a reader comparing the two should see that the
+# field is silent either way. What separates them is `backed`, `groups` and
+# `unbacked_rows`.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 2
+    total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 2
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
