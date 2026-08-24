@@ -1,0 +1,17 @@
+# FORWARD: what agent-ix/quire-rs#304 will make true. Required to FAIL until
+# then.
+#
+# A TOKEN ticket, not a behaviour change: #304 adds a diagnostic naming a
+# declared trace target that matched zero documents. Whether it ALSO emits the
+# group with `total: 0` is left open — that is the alternative the ticket
+# records, and asserting the group here would pre-decide it.
+#
+# L3 must name the target and the archetype. "Something was declared and not
+# found" sends a reader of 47 repos looking for the wrong thing; the message
+# has to say `test-case` and `TestMatrix`.
+diagnostic_reasons:
+  - declared-target-no-documents
+diagnostic_message_contains:
+  declared-target-no-documents:
+    - "test-case"
+    - "TestMatrix"

@@ -1,0 +1,41 @@
+# The LIVE contract. The defect is an ABSENT document, which is a different
+# shape from every row before it — those seeded a malformed one.
+#
+# The declaration declares a `test-case` target over the TestMatrix archetype.
+# This corpus has no TestMatrix, so the whole target kind is MISSING from
+# `groups` rather than present and zero:
+#
+#   this case   groups [acceptance-criterion 0/1]
+#   control     groups [acceptance-criterion 0/1, test-case 3/3]
+#
+# A missing denominator is not a low score, it is NO score, and the two are
+# indistinguishable on every surface the engine emits. A repo that never wrote
+# a TestMatrix and one whose TestMatrix is perfect both report nothing about
+# `test-case`, so ranking by backing ratio omits 47 repos from the population
+# rather than placing them at the bottom.
+#
+# `groups` asserted EXACTLY is what pins this: a one-entry list is the claim
+# that the second entry is absent. Nothing else in the payload carries it.
+#
+# TC-001 is not untracked because `FR-001.md`'s Verification column names it —
+# the criterion row references it directly, so it is answered for even with no
+# matrix. TC-002 and TC-003 are named nowhere and land homeless.
+total: 1
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+unbacked_rows: []
+untracked_symbols:
+  - symbol: "covers the second criterion"
+    trace_id: TC-002
+    path: src/coverage.test.ts
+  - symbol: "covers the third criterion"
+    trace_id: TC-003
+    path: src/coverage.test.ts
+binding_census:
+  - language: typescript
+    candidates: 3
+    bound: 3

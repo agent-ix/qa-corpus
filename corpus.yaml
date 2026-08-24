@@ -82,6 +82,11 @@ diagnostic_reasons:
   forward:
     section-matches-nothing: agent-ix/quire-rs#270
     id-column-matches-nothing: agent-ix/quire-rs#270
+    # A declared trace target that matched no document in the corpus. 47 repos
+    # contain no TestMatrix at all, and the whole target kind is MISSING from
+    # `groups` rather than present and zero — so a missing denominator and a
+    # perfect one are indistinguishable on every surface the engine emits.
+    declared-target-no-documents: agent-ix/quire-rs#304
 
 # Tickets that change what the engine MINTS rather than adding a diagnostic.
 #
