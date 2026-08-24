@@ -53,11 +53,25 @@ def discover() -> list[dict]:
         shared = yaml.safe_load(case_yaml.read_text()) or {}
         rel = case_dir.relative_to(ROOT)
 
+        sub_languages = [d for d in case_dir.iterdir() if (d / "input").is_dir()]
         if (case_dir / "input").is_dir():
-            cases.append({**shared, "dir": str(rel), "expect": str(rel / "expect.yaml")})
+            # FR-065: a directory in BOTH layouts is rejected rather than
+            # silently read as one of them. Both readers took the `input/`
+            # branch and moved on, so a half-migrated case would have had its
+            # language variants disappear from the matrix without a word.
+            if sub_languages:
+                raise CorpusError(
+                    f"{rel}: carries both an `input/` and "
+                    f"{sorted(d.name for d in sub_languages)} — a case is one "
+                    f"layout or the other, and reading it as one silently drops "
+                    f"the other.")
+            cases.append({
+                **shared, "dir": str(rel), "expect": str(rel / "expect.yaml"),
+                "_declared": shared,
+            })
             continue
 
-        variants = sorted(d for d in case_dir.iterdir() if (d / "input").is_dir())
+        variants = sorted(sub_languages)
         if not variants:
             raise CorpusError(
                 f"{rel}: neither an `input/` nor any `<language>/input/`. A "
@@ -106,6 +120,9 @@ def discover() -> list[dict]:
                 **merged,
                 "dir": str(variant.relative_to(ROOT)),
                 "expect": str(variant.relative_to(ROOT) / "expect.yaml"),
+                # The declaration AS WRITTEN. `merged` gains a derived `case`,
+                # so a check on whether the author wrote one needs the original.
+                "_declared": {**shared, **per_case},
             })
     check_expectations(cases)
     return cases
@@ -143,6 +160,21 @@ def check_expectations(cases: list[dict]) -> None:
             raise CorpusError(
                 f"{name}: ships expect-pending.yaml and declares no `pending:` "
                 f"— a forward claim naming no ticket (FR-065-AC-26).")
+        # FR-065 requires this of the LOADER; only the Rust runner checked it.
+        if ticket and not (case.get("pending_reason") or "").strip():
+            raise CorpusError(
+                f"{name}: is pending on {ticket} with no `pending_reason`. A "
+                f"marker with no stated reason is one nobody can decide whether "
+                f"to remove.")
+        # F9: a control serves inventory rows through its partners, not through
+        # a `case:` of its own. One control now names TWO partners and could
+        # only name one row — measured, pointing it at a row that does not
+        # exist left every gate green, because `build()` credits only failure
+        # cases and the field is dead for a control.
+        if case.get("kind") == "control" and "case" in (case.get("_declared") or {}):
+            raise CorpusError(
+                f"{name}: a control declares `case:`. A control credits no cell; "
+                f"the rows it serves are its `control_for` partners.")
 
         live = yaml.safe_load(live_path.read_text()) or {}
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
@@ -155,12 +187,69 @@ def check_expectations(cases: list[dict]) -> None:
         # Measured with a 0-byte file and with `{}`: the engine untouched, and
         # a reader told to delete the marker, which converts the regression
         # fixture into a green case asserting nothing.
-        if not ahead:
+        #
+        # Field by field, matching the Rust harness. A truthiness test passed
+        # `diagnostic_reasons: []` — non-empty as YAML, zero assertions when
+        # graded — so this loader exited 0 and `verify.py` then announced the
+        # ticket had landed. Same for `binding_census: []`, `metrics: []`,
+        # `diagnostic_paths: {}` and any key with a null value.
+        if not asserts_something(ahead):
             raise CorpusError(
                 f"{name}: expect-pending.yaml asserts nothing. An empty forward "
                 f"block always holds, which every runner reads as `{ticket} has "
                 f"landed`.")
+        # A typo'd key in a forward block was GRADED — reported as the reason
+        # the ticket has not landed, forever. `diagnostic_reason:` (singular)
+        # produced `PENDING … declares unhandled expectation key(s)`, and the
+        # fixture's own schema error was counted as evidence about the engine.
+        unknown = set(ahead) - KNOWN_EXPECT_KEYS
+        if unknown:
+            raise CorpusError(
+                f"{name}: expect-pending.yaml declares unhandled key(s) "
+                f"{sorted(unknown)}. In a forward block a typo grades as a "
+                f"failure, so it reads as `the ticket has not landed` and never "
+                f"stops doing so.")
         check_reasons(name, ahead, "expect-pending.yaml", case, emitted, forward)
+
+        # THE BLOCK MUST BE ABOUT ITS TICKET. Two rounds of review found the
+        # forward half unpoliced, and the second fix constrained only reason
+        # TOKENS — so `backed: 99` was still accepted: false today, false
+        # forever, and the case stays pending after its ticket ships with no
+        # gate saying so. A forward block has to REQUIRE at least one token
+        # the named ticket introduces.
+        claimed = set(ahead.get("diagnostic_reasons") or [])
+        claimed |= set(ahead.get("diagnostic_paths") or {})
+        claimed |= set(ahead.get("diagnostic_message_contains") or {})
+        owned = {r for r in claimed if forward.get(r) == ticket}
+        if not owned:
+            raise CorpusError(
+                f"{name}: expect-pending.yaml requires no token that {ticket} "
+                f"introduces. A forward block that is merely FALSE stays false "
+                f"after the fix lands — it has to be ABOUT the ticket, or "
+                f"nothing ever tells you the fixture went stale.")
+
+
+def asserts_something(block: dict) -> bool:
+    """Whether a block asserts anything at all, field by field.
+
+    A block that grades zero assertions trivially passes, which for a forward
+    block means every runner reports its ticket as landed.
+    """
+    return any(
+        block.get(key) not in (None, [], {})
+        for key in KNOWN_EXPECT_KEYS
+    )
+
+
+# Every key an expectation block may carry. Shared with `verify.py`, which
+# grades them; declared here because the LOADER now rejects a typo rather than
+# grading one.
+KNOWN_EXPECT_KEYS = {
+    "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
+    "diagnostic_paths", "diagnostic_message_contains", "binding_census",
+    "metrics", "no_symbol_rows", "unbacked_rows", "groups",
+    "validate_contains", "validate_absent",
+}
 
 
 def check_reasons(
@@ -182,6 +271,17 @@ def check_reasons(
 
     for reason in present:
         if reason not in forward:
+            # FR-065: a forward block requires ONLY `forward` tokens. Both
+            # readers implemented the weaker ticket-match rule and skipped
+            # here, so a forward block could require `catch-all-universal` with
+            # an unreachable message fragment — false today, false forever, and
+            # exactly the shape a PARTIAL landing of a ticket takes.
+            if where == "expect-pending.yaml":
+                raise CorpusError(
+                    f"{name}: expect-pending.yaml requires `{reason}`, which the "
+                    f"engine already emits. A forward block states what the "
+                    f"ticket ADDS; an already-emitted token there is satisfied "
+                    f"or not for reasons that have nothing to do with it.")
             continue
         if where != "expect-pending.yaml":
             raise CorpusError(

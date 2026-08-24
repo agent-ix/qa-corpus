@@ -1,5 +1,4 @@
 id: clean-control
-case: clean-control
 issue_ref: agent-ix/quoin#227
 mode: detection
 language: rust

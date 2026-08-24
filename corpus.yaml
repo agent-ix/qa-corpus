@@ -269,11 +269,39 @@ inventory:
   source: agent-ix/quoin#227 — a ratio over input the binder could not read
   languages:
   - rust
+# DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
+#
+# This block was read by NO CODE. It listed three uncontrolled failure cases
+# where eleven were true — a declaration nobody checked, describing a corpus it
+# had drifted from, which is the shape this whole corpus exists to end.
+#
+# Both readers now read it. An entry here is permitted; anything NOT here is
+# rejected, and an entry naming no case is rejected too. So the list cannot go
+# stale in either direction: a new violation fails the run, and burning one
+# down means deleting a line.
 known_gaps:
   uncontrolled_failure_cases:
-    cases:
-    - greenfield-no-symbols
-    - implements-never-asked
-    - stale-name-correct-trace
     reason: FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
       fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
+    cases:
+    - gate-that-gates-nothing
+    - greenfield-no-symbols
+    - hollow-metric
+    - implements-never-asked
+    - marker-mismatch
+    - mocked-confirmation
+    - oracle-copy
+    - stale-name-correct-trace
+    - tests-directory-topology
+    - vacuous-property-suite
+    - wrong-type-cell
+  control_binds_another_module:
+    reason: A control is the healthy version of its partner, so it should bind the same declaration.
+      These three bind `variants/bench-legacy` while their partners bind `ecosystem` — they prove
+      silence against a RELAXED declaration, which is a weaker claim than the one their partner
+      exercises. Migrating them means rewriting each document to the real declaration, which is
+      agent-ix/quire-rs#285.
+    cases:
+    - catch-all-headline-control
+    - marker-form-declared
+    - marker-form-mismatch-control

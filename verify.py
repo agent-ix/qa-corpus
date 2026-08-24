@@ -362,13 +362,18 @@ def main() -> int:
     #
     # FAILURE cases only: including controls puts each control's own `case` in
     # the set, so `control_for` resolves against itself (FR-065-AC-13).
-    partners = set()
+    declaration = yaml.safe_load((ROOT / "corpus.yaml").read_text())
+    gaps = declaration.get("known_gaps") or {}
+    module_gaps = set((gaps.get("control_binds_another_module") or {}).get("cases") or [])
+    uncontrolled = set((gaps.get("uncontrolled_failure_cases") or {}).get("cases") or [])
+
+    partners = {}
     for c in cases:
         if c.get("kind") != "failure":
             continue
-        partners.add((c["id"], c.get("language")))
+        partners[(c["id"], c.get("language"))] = c
         if c.get("case"):
-            partners.add((c["case"], c.get("language")))
+            partners[(c["case"], c.get("language"))] = c
     for c in cases:
         if c.get("kind") != "control":
             continue
@@ -385,12 +390,59 @@ def main() -> int:
                 f"failure-case names")
         else:
             for partner in declared:
-                if (partner, c.get("language")) not in partners:
+                key = (partner, c.get("language"))
+                if key not in partners:
                     failures.append(
                         f"{c['id']}: control_for names {partner!r}, which is no "
                         f"failure case in {c.get('language')}")
+                    continue
+                # A control is the HEALTHY version of its partner, so it has to
+                # be the same kind of thing. Nothing checked this once the field
+                # became a list: measured, a `detection` control on the
+                # bench-legacy variant could claim a `minting` case on the
+                # ecosystem declaration — a different tree entirely — and every
+                # gate stayed green.
+                other = partners[key]
+                for field in ("mode", "module"):
+                    if c.get(field) == other.get(field) or c["id"] in module_gaps:
+                        continue
+                    if True:
+                        failures.append(
+                            f"{c['id']}: control_for names {partner!r}, whose "
+                            f"{field} is {other.get(field)!r} against this "
+                            f"control's {c.get(field)!r}. A control is the "
+                            f"healthy version of its partner, not any case that "
+                            f"happens to resolve.")
         if c.get("findable"):
             failures.append(f"{c['id']}: a control cannot be findable")
+
+    # AC-13's OTHER direction, which nothing enforced: every failure case is
+    # named by SOME control. Eleven were not, while the declaration listed
+    # three — and that declaration was read by no code at all.
+    controlled = {
+        (partner, c.get("language"))
+        for c in cases if c.get("kind") == "control"
+        and isinstance(c.get("control_for"), list)
+        for partner in c["control_for"]
+    }
+    for c in cases:
+        if c.get("kind") != "failure":
+            continue
+        row = c.get("case") or c["id"]
+        if (row, c.get("language")) in controlled or (c["id"], c.get("language")) in controlled:
+            continue
+        if row in uncontrolled or c["id"] in uncontrolled:
+            continue
+        failures.append(
+            f"{c['id']}: no control names it (FR-065-AC-13). Without one, a check "
+            f"firing on every input scores perfect recall. Declare it under "
+            f"`known_gaps.uncontrolled_failure_cases` if that is deliberate.")
+    known = {c.get("case") or c["id"] for c in cases} | {c["id"] for c in cases}
+    stale = sorted(uncontrolled - known) + sorted(module_gaps - known)
+    if stale:
+        failures.append(
+            f"known_gaps names {stale}, which is no case in the corpus — a "
+            f"declared gap that has outlived its fixture")
 
     print(f"cases run: {ran}/{len(cases)}")
     for failure in failures:

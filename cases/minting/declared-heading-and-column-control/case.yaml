@@ -1,7 +1,6 @@
 mode: minting
 module: ecosystem
 id: declared-heading-and-column-control
-case: section-name-mismatch
 issue_ref: agent-ix/quire-rs#270
 kind: control
 # ONE control, two partners. `section-name-mismatch` and `id-column-mismatch`
