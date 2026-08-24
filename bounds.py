@@ -182,6 +182,17 @@ def check_expectations(cases: list[dict]) -> None:
             continue
 
         ahead = yaml.safe_load(forward_path.read_text()) or {}
+        # A typo'd key in a forward block was GRADED — reported as the reason
+        # the ticket has not landed, forever. `diagnostic_reason:` (singular)
+        # produced `PENDING … declares unhandled expectation key(s)`, and the
+        # fixture's own schema error was counted as evidence about the engine.
+        unknown = set(ahead) - KNOWN_EXPECT_KEYS
+        if unknown:
+            raise CorpusError(
+                f"{name}: expect-pending.yaml declares unhandled key(s) "
+                f"{sorted(unknown)}. In a forward block a typo grades as a "
+                f"failure, so it reads as `the ticket has not landed` and never "
+                f"stops doing so.")
         # An EMPTY forward block grades zero assertions, so it trivially
         # "holds" — and both runners then report that the ticket has landed.
         # Measured with a 0-byte file and with `{}`: the engine untouched, and
@@ -198,17 +209,6 @@ def check_expectations(cases: list[dict]) -> None:
                 f"{name}: expect-pending.yaml asserts nothing. An empty forward "
                 f"block always holds, which every runner reads as `{ticket} has "
                 f"landed`.")
-        # A typo'd key in a forward block was GRADED — reported as the reason
-        # the ticket has not landed, forever. `diagnostic_reason:` (singular)
-        # produced `PENDING … declares unhandled expectation key(s)`, and the
-        # fixture's own schema error was counted as evidence about the engine.
-        unknown = set(ahead) - KNOWN_EXPECT_KEYS
-        if unknown:
-            raise CorpusError(
-                f"{name}: expect-pending.yaml declares unhandled key(s) "
-                f"{sorted(unknown)}. In a forward block a typo grades as a "
-                f"failure, so it reads as `the ticket has not landed` and never "
-                f"stops doing so.")
         check_reasons(name, ahead, "expect-pending.yaml", case, emitted, forward)
 
         # THE BLOCK MUST BE ABOUT ITS TICKET. Two rounds of review found the
