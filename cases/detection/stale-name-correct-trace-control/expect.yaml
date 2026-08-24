@@ -1,0 +1,17 @@
+# Re-derived from a real run against the vendored ecosystem declaration
+# (engine bcda5ed, `quire` 0.30.2).
+#
+# The healthy half of the pair: same marker, same row, a function name carrying
+# no id. `untracked_symbols: []` is the assertion — an EMPTY list is a claim
+# (FR-065-AC-28), and it is the one field that differs from the partner.
+backed: 1
+total: 2
+untracked_symbols: []
+binding_census:
+  -
+    language: rust
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator

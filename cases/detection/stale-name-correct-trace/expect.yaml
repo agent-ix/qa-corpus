@@ -1,4 +1,21 @@
+# Re-derived from a real run against the vendored ecosystem declaration
+# (engine bcda5ed, `quire` 0.30.2), NOT transcribed from the pre-#285 block.
+#
+# `untracked_symbols` is new here and is what the case is about. On
+# `bench-legacy` this list was empty because that variant declares no
+# name-shaped rust form, so `fn tc_999_…` was never read and the fixture
+# asserted the absence of something it could not have produced. The ecosystem
+# declares `rust-test-name-id`, the stale name mints `TC-999`, no row answers
+# for it, and the symbol lands here with its path — L2, today, with no
+# diagnostic and none warranted: the marker bound correctly and the row is
+# backed.
 backed: 1
+total: 2
+untracked_symbols:
+  -
+    symbol: tests::tc_999_renamed_but_still_correct
+    trace_id: TC-999
+    path: src/lib.rs
 binding_census:
   -
     language: rust
@@ -7,4 +24,3 @@ binding_census:
 absent_diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator
-total: 2
