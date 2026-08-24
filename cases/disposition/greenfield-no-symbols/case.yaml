@@ -2,15 +2,17 @@ id: greenfield-no-symbols
 issue_ref: agent-ix/quire-rs#229
 mode: disposition
 language: rust
-module: variants/bench-legacy
-relaxation_ticket: agent-ix/quire-rs#285
+module: ecosystem
 findable: true
 kind: failure
-reproduce: quire coverage --scope cases/disposition/greenfield-no-symbols/input --module modules/variants/bench-legacy
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/disposition/greenfield-no-symbols/input
   --json
 tags:
 - TC-994
 - coverage
 - metric
 comment: 'A repository with no tests reports 0% HONESTLY. This is the case `examined` exists for: without
-  it the hollow-denominator gate fires on every greenfield corpus, which the first draft of FR-063 did.'
+  it the hollow-denominator gate fires on every greenfield corpus, which the first draft of FR-063 did.
+  MIGRATED off `bench-legacy` onto the real declaration (#285): the matrix says `Test Case Summary` /
+  `Test ID`, both rows still mint, and `coverage.backed` still reads examined 0 / matched 0 / not hollow.
+  It now also gains the control #286 asked for.'

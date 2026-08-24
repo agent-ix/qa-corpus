@@ -1,0 +1,22 @@
+id: greenfield-no-symbols-control
+issue_ref: agent-ix/quire-rs#286
+mode: disposition
+language: rust
+module: ecosystem
+findable: false
+kind: control
+control_for:
+- greenfield-no-symbols
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/disposition/greenfield-no-symbols-control/input
+  --json
+tags:
+- TC-994
+- coverage
+- metric
+comment: 'The control: the identical tree with the condition removed — one evidence symbol, carrying a
+  declared marker. Both trees are silent, so `absent_diagnostic_reasons` alone would not separate them;
+  what separates them is `coverage.backed`''s own envelope, examined 1 / matched 1 here against examined
+  0 / matched 0 in the partner. That is the distinction #229 exists for and the reason a greenfield 0%
+  is not hollow: `hollow` is a statement about whether anything was READ, and only the envelope carries
+  it. Retires `greenfield-no-symbols` from `known_gaps.uncontrolled_failure_cases`
+  (agent-ix/quire-rs#286).'
