@@ -1,5 +1,5 @@
 id: catch-all-properties
-case: catch-all-properties
+case: catch-all-headline
 issue_ref: agent-ix/quoin#227
 mode: detection
 language: rust
@@ -13,4 +13,6 @@ tags:
 - detection
 - finding-quality
 comment: Every extractable criterion is the `universal` catch-all, so the extractable headline reads far
-  higher than the figure for 'the tool told me what property to write' — 54% against 8% in pass 2.
+  higher than the figure for 'the tool told me what property to write' — 54% against 8% in pass 2. PORTED
+  to the real declaration, so it claims the inventory row its variant-bound twin holds — which is the
+  work agent-ix/quire-rs#285 exists for, done for this row.

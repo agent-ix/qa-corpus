@@ -9,10 +9,11 @@ defects:
   row_id: TC-001
   findable: true
   expect_reason: assert
-  note: '`Demonstration` is not in this module''s declared test_type vocabulary. The first draft of this
-    label was WRONG: the module declared the vocabulary but no `column_choices` assert, so nothing could
-    fire. Verifying the labels is what caught it. The SECOND draft was wrong too, at `spec/tests.md:8`
-    — the table header, not the row. Both errors were found by rendering the corpus and reading it, which
-    is the only way a label is ground truth rather than a claim.'
-  confirmed_at: quire-rs main (post v0.44.2, agent-ix/quire-rs#254)
+  note: '`Telepathy` is not in the real ecosystem `test_type` vocabulary, which declares fourteen values.
+    RE-ADJUDICATED for the port (agent-ix/quoin#227): the seeded value was `Demonstration`, undeclared
+    only by the synthetic module''s three-value vocabulary and PRESENT in the real one — so the defect
+    did not exist once the corpus stopped declaring a narrower world than reality. The label itself has
+    now been wrong twice; verifying it against a real run is what caught it both times.'
+  confirmed_at: quire-cli 0.30.2 (engine 84740d4)
   needs_engine: '> v0.44.2'
+  command: validate

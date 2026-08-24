@@ -1,5 +1,5 @@
 id: marker-mismatch
-case: marker-mismatch
+case: marker-form-mismatch
 issue_ref: agent-ix/quoin#227
 mode: attachment
 language: rust
@@ -13,4 +13,5 @@ tags:
 - attachment
 - finding-quality
 comment: Real tests, real tags, a marker spelling the module never declared. 1,292 such symbols in filament-ide-rs
-  bound nothing and the report said 23%.
+  bound nothing and the report said 23%. PORTED to the real declaration, so it claims the inventory row
+  its variant-bound twin holds — which is the work agent-ix/quire-rs#285 exists for, done for this row.

@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -33,6 +34,12 @@ QUIRE = os.environ.get("QUIRE", "")
 # What a run of this corpus rests on. A binary lacking one of these cannot
 # produce the payload the fixtures assert, so the run ABORTS naming the token
 # rather than grading against a payload with holes in it.
+# A leading `KEY=value`, anchored. The first version tested `"=" in token`,
+# which ate a QUIRE path containing `=` (ordinary in a worktree or PR
+# checkout) and then ran whatever followed — blaming the binary for a
+# parse error with a confident, wrong diagnosis.
+ENV_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
+
 REQUIRED_CAPABILITIES = ("binding_census", "metrics_envelope")
 
 
@@ -56,7 +63,7 @@ def check_engine() -> str:
     meta = yaml.safe_load(sample.read_text())
     tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
     env = dict(os.environ)
-    while tokens and "=" in tokens[0] and not tokens[0].startswith("-"):
+    while tokens and ENV_ASSIGNMENT.match(tokens[0]):
         key, _, value = tokens[0].partition("=")
         env[key] = value
         tokens = tokens[1:]
@@ -86,6 +93,12 @@ KNOWN = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
     "diagnostic_paths", "diagnostic_message_contains", "binding_census",
     "metrics", "no_symbol_rows",
+    # `quire validate` findings, for cases whose family is a STRUCTURAL defect
+    # rather than a coverage one. `undeclared-type-value` is the first: a cell
+    # outside the declared vocabulary is rejected by `validate`, and the
+    # coverage payload of such a case is byte-identical to a healthy control —
+    # so a corpus that only ran `coverage` asserted nothing about it at all.
+    "validate_contains", "validate_absent",
 }
 
 
@@ -103,6 +116,28 @@ def is_hollow(metric: dict) -> bool:
             and (metric.get("matched") or 0) == 0)
 
 
+def validate_output(meta: dict, name: str, failures: list[str]) -> str:
+    """`quire validate` over the case's own spec tree.
+
+    A second command, because a structural defect is not a coverage one. The
+    seeded `Telepathy` cell produces a coverage payload byte-identical to the
+    healthy control's — the family is only visible to `validate`, so a corpus
+    that ran one command asserted nothing about it.
+    """
+    tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
+    env = dict(os.environ)
+    while tokens and ENV_ASSIGNMENT.match(tokens[0]):
+        key, _, value = tokens[0].partition("=")
+        env[key] = value
+        tokens = tokens[1:]
+    scope = tokens[tokens.index("--scope") + 1]
+    done = subprocess.run(
+        [tokens[0], "validate", "--scope", scope, "spec/tests.md"],
+        cwd=ROOT, capture_output=True, text=True, env=env,
+    )
+    return done.stdout + done.stderr
+
+
 def check(case: pathlib.Path, failures: list[str]) -> bool:
     meta = yaml.safe_load((case / "case.yaml").read_text())
     expect = yaml.safe_load((case / "expect.yaml").read_text()) or {}
@@ -117,7 +152,7 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
     # IX_FILAMENT_MODULES_PATH rather than `--module` (agent-ix/quire-rs#292).
     tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
     env = dict(os.environ)
-    while tokens and "=" in tokens[0] and not tokens[0].startswith("-"):
+    while tokens and ENV_ASSIGNMENT.match(tokens[0]):
         key, _, value = tokens[0].partition("=")
         env[key] = value
         tokens = tokens[1:]
@@ -126,6 +161,17 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False
     got = json.loads(done.stdout)
+
+    if expect.get("validate_contains") or expect.get("validate_absent"):
+        report = validate_output(meta, name, failures)
+        for fragment in expect.get("validate_contains") or []:
+            if fragment not in report:
+                failures.append(f"{name}: validate output lacks {fragment!r}")
+        for fragment in expect.get("validate_absent") or []:
+            if fragment in report:
+                failures.append(
+                    f"{name}: validate output carries {fragment!r} on input that "
+                    f"must be clean of it")
 
     for key in ("backed", "total"):
         if key in expect and expect[key] != got["totals"][key]:

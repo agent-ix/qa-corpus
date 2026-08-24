@@ -1,6 +1,7 @@
-# Derived from a real run against the COMPLETE ecosystem declaration —
-# spec-artifacts-process AND spec-artifacts-iso, whole module directories
-# including their schemas (agent-ix/quire-rs#292).
+# The control. It shares this fixture family's three structural findings
+# (missing title, missing functional_coverage, column mismatch) and must NOT
+# carry the vocabulary rejection — which is what makes the assertion above a
+# gate rather than a restatement of what every fixture produces.
 backed: 1
 total: 3
 absent_diagnostic_reasons:
@@ -12,3 +13,5 @@ binding_census:
 - language: rust
   candidates: 1
   bound: 1
+validate_absent:
+- is not one of

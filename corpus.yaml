@@ -201,6 +201,36 @@ inventory:
   source: agent-ix/quire-rs#267
   languages:
   - rust
+- mode: minting
+  case: wrong-type-cell
+  source: agent-ix/quoin#227 — a Type cell outside the declared vocabulary
+  languages:
+  - rust
+- mode: skeptic
+  case: vacuous-property-suite
+  source: agent-ix/quoin#227 — every assertion behind a narrowing guard
+  languages:
+  - rust
+- mode: skeptic
+  case: oracle-copy
+  source: agent-ix/quoin#227 — the oracle is a copy of the code under test
+  languages:
+  - rust
+- mode: skeptic
+  case: mocked-confirmation
+  source: agent-ix/quoin#227 — the test confirms its own mock
+  languages:
+  - rust
+- mode: skeptic
+  case: gate-that-gates-nothing
+  source: agent-ix/quoin#227 — a gate that cannot fail
+  languages:
+  - rust
+- mode: provenance
+  case: hollow-metric
+  source: agent-ix/quoin#227 — a ratio over input the binder could not read
+  languages:
+  - rust
 known_gaps:
   uncontrolled_failure_cases:
     cases:

@@ -1,6 +1,7 @@
 # `modules/ecosystem/` — the real declaration, vendored
 
-`manifest.yaml` here is a **verbatim copy** of the ecosystem's declaration. It is
+This directory is a **module path** carrying verbatim copies of the ecosystem's
+two declaring modules. It is
 the module a case binds unless it names a relaxation ticket (FR-065 CON-3).
 
 **The real declaration is TWO modules**, and this directory is a module *path*
@@ -28,13 +29,16 @@ its provenance.
 ## The refresh ritual (FR-065-CON-4)
 
 ```
-cp ../spec-artifacts-process/spec_artifacts_process/manifest.yaml \
-   modules/ecosystem/spec-artifacts-process/manifest.yaml
-cp ../spec-artifacts-iso/spec_artifacts_iso/manifest.yaml \
-   modules/ecosystem/spec-artifacts-iso/manifest.yaml
-git -C ../spec-artifacts-process rev-parse HEAD     # record both in the table above
-git -C ../spec-artifacts-iso rev-parse HEAD
-python3 -m pytest tests/                            # every case re-runs against the new declaration
+# WHOLE DIRECTORIES, not manifests. Archetypes reference their schema files
+# relative to the module root, so a manifest-only copy fails registration and
+# emits `undeclared-coverage-vocabulary` on every case — which is exactly the
+# defect agent-ix/quire-rs#292 records.
+for m in spec-artifacts-iso spec-artifacts-process; do
+  src="../${m}/$(echo "$m" | tr - _)"
+  rsync -a --exclude '__pycache__' --exclude '*.py' "$src/" "modules/ecosystem/$m/"
+  git -C "../$m" rev-parse HEAD   # record both in the table above
+done
+make ci                                             # every case re-runs against the new declaration
 ```
 
 Moving the SHA is **the reviewable event**. A declaration change that alters what
