@@ -10,11 +10,22 @@
 # and binding them would mass-manufacture backing out of prose).
 #
 # THE TAG IS NOT A MISS, IT IS AN ABSENCE. `trace::bind` reaches
-# `if !symbol.kind.binds_trace_ids() { continue; }` at `trace.rs:273` — and the
+# the `carries_implements()` branch at `trace.rs:261`, which `continue`s at 271 — and the
 # census `candidates` counter is incremented AFTER that guard. So the symbol is
 # missing from the DENOMINATOR rather than counted as an unbound candidate, and
 # there is no `unbound_example` because nothing was ever unbound. A repository
 # whose tags are ALL on production code reads 100% bound.
+#
+# THE PREDICATES ARE EXACT COMPLEMENTS, which is why this is one defect and not
+# two. `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget};
+# `carries_implements()` is {Function, Container}. Five variants, disjoint,
+# covering — so every symbol that cannot bind has ALREADY been consumed by the
+# implements branch. (The `!binds_trace_ids()` guard twelve lines below it is
+# therefore dead code; noted on #312.)
+#
+# That matters for the fix: at 261 the symbol is already being counted as an
+# `implements` candidate, so admitting it to `binding_census.candidates` would
+# double-count it across two censuses. #312's original citation hid that.
 #
 # NEITHER CHANNEL RECEIVES IT.
 #

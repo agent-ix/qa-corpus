@@ -37,7 +37,7 @@ class CorpusError(Exception):
 
 
 def load_declaration() -> dict:
-    return yaml.safe_load((ROOT / "corpus.yaml").read_text())
+    return load_yaml(ROOT / "corpus.yaml")
 
 
 def discover() -> list[dict]:
@@ -51,7 +51,7 @@ def discover() -> list[dict]:
     cases: list[dict] = []
     for case_yaml in sorted((ROOT / "cases").glob("*/*/case.yaml")):
         case_dir = case_yaml.parent
-        shared = yaml.safe_load(case_yaml.read_text()) or {}
+        shared = load_yaml(case_yaml) or {}
         rel = case_dir.relative_to(ROOT)
 
         sub_languages = [d for d in case_dir.iterdir() if (d / "input").is_dir()]
@@ -81,7 +81,7 @@ def discover() -> list[dict]:
             )
         for variant in variants:
             language = variant.name
-            per_case = yaml.safe_load((variant / "case.yaml").read_text()) if (
+            per_case = load_yaml(variant / "case.yaml") if (
                 variant / "case.yaml"
             ).is_file() else {}
             # A variant may vary its EXPECTATIONS and its invocation, not what
@@ -377,7 +377,7 @@ def check_expectations(cases: list[dict]) -> None:
 
         check_regression(name, case, forward_path)
 
-        live = yaml.safe_load(live_path.read_text()) or {}
+        live = load_yaml(live_path) or {}
         # THE LIVE BLOCK TOO. This was enforced on the forward block by both
         # readers and on `expect.yaml` by neither, so emptying any failure
         # case's `expect.yaml` left every gate green with its cell still
@@ -400,7 +400,7 @@ def check_expectations(cases: list[dict]) -> None:
             check_findable(name, case, live, {}, undetected, controlled)
             continue
 
-        ahead = yaml.safe_load(forward_path.read_text()) or {}
+        ahead = load_yaml(forward_path) or {}
         # A typo'd key in a forward block was GRADED — reported as the reason
         # the ticket has not landed, forever. `diagnostic_reason:` (singular)
         # produced `PENDING … declares unhandled expectation key(s)`, and the
@@ -548,6 +548,42 @@ def check_findable(
         f"or its cell counts as covered for a mode nothing measures. Declare "
         f"it under `known_gaps.findable_but_undetected` if the engine truly "
         f"finds nothing yet.")
+
+
+class _DuplicateKeyLoader(yaml.SafeLoader):
+    """A loader that REFUSES a duplicate mapping key.
+
+    PyYAML silently takes the last value, so a block written twice loses one
+    silently. Measured: an `expect.yaml` gained a second
+    `diagnostic_message_contains.hollow-denominator:` and five newly-written L3
+    fragments were discarded — the file parsed, both readers graded it, and the
+    assertions were simply not there. That is precisely the shape this corpus
+    exists to catch, arriving inside the corpus itself.
+    """
+
+
+def _no_duplicate_keys(loader, node, deep=False):
+    mapping = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if key in mapping:
+            raise CorpusError(
+                f"duplicate key {key!r} at line {key_node.start_mark.line + 1} "
+                f"of {key_node.start_mark.name} — YAML keeps the LAST and "
+                f"discards the first silently, so half the block is asserted by "
+                f"nothing")
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+_DuplicateKeyLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _no_duplicate_keys
+)
+
+
+def load_yaml(path: pathlib.Path):
+    """Every YAML this corpus reads, with duplicate keys rejected."""
+    return yaml.load(path.read_text(), Loader=_DuplicateKeyLoader)
 
 
 def asserts_something(block: dict) -> bool:

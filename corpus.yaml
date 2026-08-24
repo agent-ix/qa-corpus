@@ -99,14 +99,21 @@ diagnostic_reasons:
     # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
     # because the symbol bound fine — to the wrong id.
     untracked-id-near-miss: agent-ix/quire-rs#307
-    # A tag attached to a symbol whose kind cannot bind it. `trace::bind` hits
-    # `if !symbol.kind.binds_trace_ids() { continue; }` and the tag is dropped
-    # BEFORE the census counts anything — so the symbol is missing from
+    # A tag attached to a symbol whose kind cannot bind it. `trace::bind` takes
+    # the `carries_implements()` branch at `trace.rs:261` and `continue`s at
+    # 271, BEFORE the census counts anything — so the symbol is missing from
     # `candidates` rather than counted as an unbound one, and both
     # `no-symbol-bound` and `low-symbol-binding` read a denominator the defect
-    # has been removed from. Two rows share it because the root cause is one
-    # line: `tag-at-module-scope` lands on the file's `Container`,
-    # `tag-on-non-test-function` on a production `Function`.
+    # has been removed from.
+    #
+    # Two rows share it because the two predicates are exact COMPLEMENTS:
+    # `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget} and
+    # `carries_implements()` is {Function, Container} — five variants,
+    # disjoint, covering. So `tag-at-module-scope` (the file's `Container`) and
+    # `tag-on-non-test-function` (a production `Function`) are dropped by the
+    # SAME branch. The `!binds_trace_ids()` guard below it is dead code, which
+    # is why an earlier citation of it here would have sent #312's implementer
+    # to a line that cannot run.
     # `untracked_symbols` cannot see it either: that channel is built from
     # `graph.verifies` (`coverage.rs:1194`) and reports ids that BOUND and
     # matched no row, so a tag that never bound is not in it. A repository

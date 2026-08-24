@@ -8,7 +8,7 @@
 #
 # NEITHER CHANNEL RECEIVES IT.
 #
-#   verifies           refused by symbol kind, at `trace.rs:273`
+#   verifies           refused by symbol kind, at `trace.rs:261-271`
 #   untracked_symbols  built from `graph.verifies` (`coverage.rs:1194`), so it
 #                      reports ids that BOUND and matched no row. A tag that
 #                      never bound is not there.

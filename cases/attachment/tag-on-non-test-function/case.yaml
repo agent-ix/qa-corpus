@@ -8,7 +8,7 @@ findable: true
 pending: agent-ix/quire-rs#312
 pending_reason: >-
   `SymbolKind::Function.binds_trace_ids()` is false (CR-061), so a tag on production code is
-  not even a binding CANDIDATE — `trace::bind` drops it at `trace.rs:273`, BEFORE the census
+  not even a binding CANDIDATE — `trace::bind` drops it at `trace.rs:261-271`, BEFORE the census
   increments `candidates`. It reaches neither channel: `verifies` refuses it by symbol kind,
   `untracked_symbols` is built from `graph.verifies` and cannot see a tag that never bound,
   and `implements` needs the literal `Implements:` prefix. #312 adds the diagnostic.

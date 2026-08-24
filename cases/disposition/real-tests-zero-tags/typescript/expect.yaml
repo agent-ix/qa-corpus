@@ -11,7 +11,7 @@
 #
 #   hollow-denominator  `coverage.backed` published a ratio over 4 matrix rows
 #                       but read none of the 2 it walked, so the number is
-#                       arithmetic over nothing; <the method, in full>
+#                       arithmetic over nothing; ...the method, asserted below
 #
 # THAT IS THE WHOLE DISPOSITION, STATED. The first clause is the count, the
 # second is every form that had a chance, the third is a symbol with a
@@ -98,7 +98,22 @@ diagnostic_message_contains:
     - "src/coverage.test.ts:17"
     # And the consequence, which is the whole reason this matters.
     - "indistinguishable from a missing test"
+  # `hollow-denominator`'s METHOD half, which nothing pinned. `metric.method`
+  # is interpolated at `src/coverage.rs:788` and is the entire second half of
+  # the message; an earlier version of this fixture described it as
+  # `<the method, in full>` in a comment and asserted none of it, so it could
+  # have been emptied and this stayed green. In the fixture whose stated
+  # purpose is a regression net for the best message the engine writes, that
+  # was the half nothing netted.
   hollow-denominator:
+    # The count and the population, from the metric side.
+    - "published a ratio over 4 matrix rows but read none of the 2 it walked"
+    - "arithmetic over nothing"
+    # And the METHOD — what `backed` and `matched` actually count. This is what
+    # makes the finding actionable rather than an accusation.
+    - "rows of the declared reference tables whose trace target is bound"
+    - "`matched` counts the evidence symbols that bound a trace id"
+    - "a ratio computed over a corpus the binder could not read"
     # The metric, and both halves of the ratio that make it hollow.
     - "`coverage.backed` published a ratio over 4 matrix rows"
     - "read none of the 2 it walked"
