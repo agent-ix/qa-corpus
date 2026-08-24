@@ -1,0 +1,33 @@
+# The control: the same three rows and three tests under the ONE declared
+# heading.
+#
+# Its payload is also, exactly, the state #272 will produce for its partner —
+# `test-case 3/3`, nothing untracked, total 4. So the fixture pair measures the
+# fix's whole effect: the failure case is what the engine sees today, and this
+# is what it should see.
+#
+# `untracked_symbols: []` is the load-bearing claim. Its partner's two entries
+# are the only trace the defect leaves anywhere in the payload, and a change
+# that stopped emitting the field would make that fixture pass for the wrong
+# reason. Asserting the empty case here is what stops that.
+total: 4
+backed: 3
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 3
+    total: 3
+unbacked_rows: []
+untracked_symbols: []
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+  - section-matches-nothing
+binding_census:
+  - language: rust
+    candidates: 3
+    bound: 3

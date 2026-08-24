@@ -1,0 +1,17 @@
+mode: minting
+module: ecosystem
+id: rows-across-many-headings-control
+issue_ref: agent-ix/quire-rs#272
+kind: control
+control_for:
+- rows-across-many-headings
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- minting
+- coverage
+comment: >-
+  The same three rows and the same three tests, all under the ONE declared heading. It
+  mints 3/3 and leaves nothing untracked — so a check that fired on every TestMatrix,
+  or one that simply stopped reporting untracked symbols, could not score recall on this.

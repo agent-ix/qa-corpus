@@ -82,6 +82,23 @@ diagnostic_reasons:
   forward:
     section-matches-nothing: agent-ix/quire-rs#270
     id-column-matches-nothing: agent-ix/quire-rs#270
+
+# Tickets that change what the engine MINTS rather than adding a diagnostic.
+#
+# The forward-token rule (AC-36) was written when every pending fix was a new
+# diagnostic, and it does not fit a fix like #272 — which makes
+# `TraceTarget.section` accept several headings, so rows that were invisible
+# start minting. There is no token to name; the payload simply changes.
+#
+# A forward block pending on one of these SHALL instead assert the same
+# exactly-graded keys its live block does, with at least one different value.
+# That keeps what AC-36 was really asking for — the block has to be about the
+# ticket, not merely false — while not demanding a diagnostic nobody is
+# shipping. `backed: 99` still fails it, because the live block asserts
+# `total`, `groups` and `untracked_symbols` and the forward block must cover
+# the same ground.
+behaviour_change_tickets:
+- agent-ix/quire-rs#272
 result_record:
   description: The per-case record a runner emits. Field set and order are declared here so FR-065-AC-17's
     byte-identity has a defined shape to be identical about.

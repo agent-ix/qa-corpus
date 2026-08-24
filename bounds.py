@@ -323,6 +323,7 @@ def check_expectations(cases: list[dict]) -> None:
     gaps = declaration.get("known_gaps") or {}
     undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
     controlled = controlled_cases(cases)
+    behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
 
     for case in cases:
         directory = ROOT / case["dir"]
@@ -415,6 +416,32 @@ def check_expectations(cases: list[dict]) -> None:
         # forever, and the case stays pending after its ticket ships with no
         # gate saying so. A forward block has to REQUIRE at least one token
         # the named ticket introduces.
+        # A BEHAVIOUR-CHANGE ticket adds no diagnostic, so there is no token to
+        # name — #272 makes `TraceTarget.section` accept several headings and
+        # rows that were invisible start minting. The forward block must
+        # instead re-state the same exactly-graded keys its live block does,
+        # with at least one different value: the same measurement, after.
+        #
+        # That is what the token rule was really asking for. `backed: 99` still
+        # fails, because the live block asserts `total`, `groups` and
+        # `untracked_symbols` and the forward block has to cover the same
+        # ground rather than one field of its choosing.
+        if ticket in behaviour_change:
+            graded = {k for k in EXACTLY_GRADED if live.get(k) is not None}
+            missing = sorted(graded - {k for k in EXACTLY_GRADED if ahead.get(k) is not None})
+            if missing:
+                raise CorpusError(
+                    f"{name}: is pending on the behaviour change {ticket} and its "
+                    f"expect-pending.yaml is silent on {missing}, which its "
+                    f"expect.yaml asserts. A behaviour-change forward block is the "
+                    f"SAME measurement after the fix, so it states the same keys.")
+            if all(ahead.get(k) == live.get(k) for k in graded):
+                raise CorpusError(
+                    f"{name}: its expect-pending.yaml asserts exactly what its "
+                    f"expect.yaml does, so {ticket} landing would change nothing "
+                    f"it can see.")
+            return
+
         claimed = set(ahead.get("diagnostic_reasons") or [])
         claimed |= set(ahead.get("diagnostic_paths") or {})
         claimed |= set(ahead.get("diagnostic_message_contains") or {})
@@ -481,7 +508,8 @@ def asserts_something(block: dict) -> bool:
     # says an empty list IS an assertion and `grade()` grades it as one. So a
     # forward block of `unbacked_rows: []` was rejected at load by this reader
     # and accepted-and-graded by the other.
-    exact = {"backed", "total", "unbacked_rows", "groups", "no_symbol_rows"}
+    exact = {"backed", "total", "unbacked_rows", "groups", "no_symbol_rows",
+             "untracked_symbols"}
     return any(
         block.get(key) is not None if key in exact else block.get(key) not in (None, [], {})
         for key in KNOWN_EXPECT_KEYS
@@ -491,10 +519,16 @@ def asserts_something(block: dict) -> bool:
 # Every key an expectation block may carry. Shared with `verify.py`, which
 # grades them; declared here because the LOADER now rejects a typo rather than
 # grading one.
+# The keys graded EXACTLY — presence is an assertion and an empty list is a
+# claim, so these are what a behaviour-change forward block must re-state.
+EXACTLY_GRADED = ("backed", "total", "unbacked_rows", "groups", "no_symbol_rows",
+                  "untracked_symbols")
+
 KNOWN_EXPECT_KEYS = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
     "diagnostic_paths", "diagnostic_message_contains", "binding_census",
     "metrics", "no_symbol_rows", "unbacked_rows", "groups",
+    "untracked_symbols",
     "validate_contains", "validate_absent",
 }
 

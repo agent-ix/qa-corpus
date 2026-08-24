@@ -98,7 +98,7 @@ def check_engine() -> str:
 KNOWN = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
     "diagnostic_paths", "diagnostic_message_contains", "binding_census",
-    "metrics", "no_symbol_rows", "unbacked_rows", "groups",
+    "metrics", "no_symbol_rows", "unbacked_rows", "groups", "untracked_symbols",
     # `quire validate` findings, for cases whose family is a STRUCTURAL defect
     # rather than a coverage one. `undeclared-type-value` is the first: a cell
     # outside the declared vocabulary is rejected by `validate`, and the
@@ -262,6 +262,18 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
         ]
         if rows != want:
             failures.append(f"{name}: unbacked_rows expected {want}, got {rows}")
+
+    # L2. Symbols that bind a trace id no minted row answers for. This is the
+    # field that already makes #272's defect observable: rows spread across
+    # headings the declaration cannot reach mint nothing, so the tests that
+    # answer for them land here instead — with a path and a line, today.
+    if (want := expect.get("untracked_symbols")) is not None:
+        untracked = [
+            {"symbol": u.get("symbol"), "trace_id": u.get("trace_id"), "path": u.get("path")}
+            for u in (got.get("untracked_symbols") or [])
+        ]
+        if untracked != want:
+            failures.append(f"{name}: untracked_symbols expected {want}, got {untracked}")
 
     # L1. What MINTED, per document per target kind. A control's real job is
     # proving the row it is about mints at all; `total` alone is satisfied by

@@ -1,0 +1,43 @@
+# The LIVE contract — and this row's defect is PARTLY OBSERVABLE today, which
+# is what makes it different from rows 1-3.
+#
+# There the whole table was stranded and the engine said nothing at all. Here
+# the declared heading is present and correct, so the table IS read — but only
+# the rows under that one heading. The document declares three; the engine
+# counts one, and reports `test-case 1/1`.
+#
+# That is the dangerous part. A repository in this state reports PERFECT
+# minting health on the fraction it can see, and the two rows it cannot see
+# leave no trace in the totals at all.
+#
+# They do leave one elsewhere. The tests answering for TC-002 and TC-003 bind
+# fine — `binding_census` says 3 candidates, 3 bound — and land in
+# `untracked_symbols` with a path and a line. #272's own body names exactly
+# this: "the `TC-nnn with no minted row` tags that already bind to real test
+# symbols and currently land in `untracked_symbols`".
+#
+# So the engine is not silent about this defect. It reports it in the one place
+# a reader of a coverage summary does not look.
+total: 2
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 1
+unbacked_rows: []
+untracked_symbols:
+  - symbol: "covers the second criterion"
+    trace_id: TC-002
+    path: src/coverage.test.ts
+  - symbol: "covers the third criterion"
+    trace_id: TC-003
+    path: src/coverage.test.ts
+binding_census:
+  - language: typescript
+    candidates: 3
+    bound: 3

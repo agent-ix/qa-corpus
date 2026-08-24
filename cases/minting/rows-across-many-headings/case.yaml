@@ -1,0 +1,20 @@
+mode: minting
+module: ecosystem
+id: rows-across-many-headings
+case: rows-across-many-headings
+issue_ref: agent-ix/quire-rs#272
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#272
+pending_reason: >-
+  `TraceTarget.section` is one heading name exactly, so rows under any other heading are
+  invisible. #272 makes it accept several.
+tags:
+- TC-1014
+- minting
+- coverage
+comment: >-
+  Nothing here is misspelled. The declared heading is present and correct, the declared
+  id column is correct, and all three tests bind. The defect is that the rows are spread
+  across SEVERAL headings while the declaration names ONE — agent-ix/identity carries
+  roughly thirty, and 606 of its TC ids mint nothing for that reason alone.
