@@ -6,10 +6,10 @@
 # fix's whole effect: the failure case is what the engine sees today, and this
 # is what it should see.
 #
-# `untracked_symbols: []` is the load-bearing claim. Its partner's two entries
-# are the only trace the defect leaves anywhere in the payload, and a change
-# that stopped emitting the field would make that fixture pass for the wrong
-# reason. Asserting the empty case here is what stops that.
+# `untracked_symbols: []` says this tree leaves nothing homeless. It does NOT
+# guard against the engine dropping the field: both readers coerce absent to
+# empty, so emitted-empty and not-emitted are the same thing here. What catches
+# a removal is the PARTNER's live block, which asserts two entries.
 total: 4
 backed: 3
 groups:

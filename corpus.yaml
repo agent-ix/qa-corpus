@@ -92,11 +92,13 @@ diagnostic_reasons:
 #
 # A forward block pending on one of these SHALL instead assert the same
 # exactly-graded keys its live block does, with at least one different value.
-# That keeps what AC-36 was really asking for — the block has to be about the
-# ticket, not merely false — while not demanding a diagnostic nobody is
-# shipping. `backed: 99` still fails it, because the live block asserts
-# `total`, `groups` and `untracked_symbols` and the forward block must cover
-# the same ground.
+#
+# That is a SHAPE rule and it does not close the vacuity by itself: `total: 999`
+# restates every key and differs from today, yet is wrong after the fix too.
+# What closes it is FR-065-AC-42's differential — such a block must HOLD
+# against its control's payload, the control being the repaired tree, which is
+# what the engine should produce once the ticket lands. That needs an engine,
+# so it lives in the graders rather than here.
 behaviour_change_tickets:
 - agent-ix/quire-rs#272
 result_record:

@@ -293,6 +293,17 @@ def check_controls(cases: list[dict]) -> None:
     # check covered — a declaration going stale in exactly the way this check
     # exists to prevent.
     known = {c.get("case") or c["id"] for c in cases} | {c["id"] for c in cases}
+    # `behaviour_change_tickets` is a declaration about the corpus exactly as
+    # `known_gaps` is, and it sat outside this loop — measured, appending a
+    # ticket no case is pending on was silently accepted, and an entry would
+    # persist after its fixtures folded in with nothing saying so.
+    waited_on = {c.get("pending") for c in cases if c.get("pending")}
+    orphaned = sorted(set(declaration.get("behaviour_change_tickets") or []) - waited_on)
+    if orphaned:
+        problems.append(
+            f"behaviour_change_tickets names {orphaned}, which no case is pending "
+            f"on — a declaration that has outlived its fixtures")
+
     for gap, entry in (declaration.get("known_gaps") or {}).items():
         stale = sorted(set((entry or {}).get("cases") or []) - known)
         if stale:
@@ -422,10 +433,14 @@ def check_expectations(cases: list[dict]) -> None:
         # instead re-state the same exactly-graded keys its live block does,
         # with at least one different value: the same measurement, after.
         #
-        # That is what the token rule was really asking for. `backed: 99` still
-        # fails, because the live block asserts `total`, `groups` and
-        # `untracked_symbols` and the forward block has to cover the same
-        # ground rather than one field of its choosing.
+        # This is a SHAPE rule and it does not close the vacuity on its own:
+        # `total: 999` alongside the other graded keys restates everything and
+        # differs from today, yet is wrong after the fix too. What closes it is
+        # FR-065-AC-42's differential, which requires a behaviour-change
+        # forward block to HOLD against its control's payload — the control
+        # being the repaired tree, which is what the engine should produce once
+        # the ticket lands. That check needs an engine, so it lives in the
+        # graders; this one only rules out the cheapest evasions.
         if ticket in behaviour_change:
             graded = {k for k in EXACTLY_GRADED if live.get(k) is not None}
             missing = sorted(graded - {k for k in EXACTLY_GRADED if ahead.get(k) is not None})
@@ -435,6 +450,11 @@ def check_expectations(cases: list[dict]) -> None:
                     f"expect-pending.yaml is silent on {missing}, which its "
                     f"expect.yaml asserts. A behaviour-change forward block is the "
                     f"SAME measurement after the fix, so it states the same keys.")
+            if not graded:
+                raise CorpusError(
+                    f"{name}: is pending on the behaviour change {ticket} and its "
+                    f"expect.yaml asserts no exactly-graded key, so there is no "
+                    f"measurement for the forward block to restate.")
             if all(ahead.get(k) == live.get(k) for k in graded):
                 raise CorpusError(
                     f"{name}: its expect-pending.yaml asserts exactly what its "
@@ -469,9 +489,11 @@ def check_findable(
     entire `input/` tree with another's left every gate green and the cell
     still `covered`, so the fixture was not about its own defect at all.
 
-    Called LAST and from BOTH branches. Sitting inside the pending-only branch,
-    it ran for six cases out of twenty-nine and diagnosed a truncated forward
-    file as a missing detection claim.
+    Called LAST, from EVERY branch — there are three now: no forward file, a
+    behaviour-change ticket, and a token ticket. Sitting inside the pending-only
+    branch it ran for six cases out of twenty-nine, and the count of call sites
+    is the thing that goes stale, so it is stated as "every branch" rather than
+    as a number.
     """
     if case.get("kind") != "failure" or not case.get("findable"):
         return
@@ -509,10 +531,9 @@ def asserts_something(block: dict) -> bool:
     # says an empty list IS an assertion and `grade()` grades it as one. So a
     # forward block of `unbacked_rows: []` was rejected at load by this reader
     # and accepted-and-graded by the other.
-    exact = {"backed", "total", "unbacked_rows", "groups", "no_symbol_rows",
-             "untracked_symbols"}
     return any(
-        block.get(key) is not None if key in exact else block.get(key) not in (None, [], {})
+        block.get(key) is not None if key in EXACTLY_GRADED
+        else block.get(key) not in (None, [], {})
         for key in KNOWN_EXPECT_KEYS
     )
 
