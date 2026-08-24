@@ -288,12 +288,16 @@ known_gaps:
       `vacuous-property-suite`) ship byte-identical live blocks true of any healthy three-row
       corpus, and swapping one's whole `input/` tree for another's leaves every gate green.
       Deciding each — write the assertion, or stop calling it findable — is agent-ix/quire-rs#301.
+      All eight are ALSO uncontrolled, and that is the sharper fact: with no control there is
+      nothing to discriminate against, so FR-065-AC-42 cannot reach them either. Writing the
+      missing controls (agent-ix/quire-rs#286) dissolves both lists at once — a ninth entry here,
+      `no-symbol-method-in-the-verification-column`, HAS a control, discriminates against it, and
+      needed no exemption once AC-42 existed.
     cases:
     - gate-that-gates-nothing
     - greenfield-no-symbols
     - implements-never-asked
     - mocked-confirmation
-    - no-symbol-method-in-the-verification-column
     - oracle-copy
     - stale-name-correct-trace
     - tests-directory-topology

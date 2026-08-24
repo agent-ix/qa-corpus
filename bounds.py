@@ -126,8 +126,8 @@ def discover() -> list[dict]:
                 "_declared": {**shared, **per_case},
             })
     check_known_gaps(load_declaration())
-    check_expectations(cases)
     check_controls(cases)
+    check_expectations(cases)
     return cases
 
 
@@ -150,6 +150,24 @@ def check_known_gaps(declaration: dict) -> None:
             raise CorpusError(
                 f"known_gaps.{name}: declares no cases. An empty exemption is "
                 f"a clause nobody removed when the last case was fixed.")
+
+
+def controlled_cases(cases: list[dict]) -> set:
+    """Every failure case, by id+language, that some control names."""
+    partners = {}
+    for c in cases:
+        if c.get("kind") == "failure" and c.get("case"):
+            partners.setdefault((c["case"], c.get("language")), c)
+    for c in cases:
+        if c.get("kind") == "failure":
+            partners[(c["id"], c.get("language"))] = c
+    return {
+        (partners[(p, c.get("language"))]["id"], c.get("language"))
+        for c in cases if c.get("kind") == "control"
+        and isinstance(c.get("control_for"), list)
+        for p in c["control_for"]
+        if (p, c.get("language")) in partners
+    }
 
 
 def check_controls(cases: list[dict]) -> None:
@@ -243,17 +261,25 @@ def check_controls(cases: list[dict]) -> None:
     # AC-13's OTHER direction, which nothing enforced: every failure case is
     # named by SOME control. Eleven were not, while the declaration listed
     # three — and that declaration was read by no code at all.
+    # Resolved through the id-first `partners` map, and keyed by the partner's
+    # ID. Built from raw `control_for` strings, this had the same alias/id
+    # collision the map above was just fixed for, in the other direction:
+    # deleting `clean-control` — the ONLY control for the ecosystem case
+    # `catch-all-properties` — left the loader green, because that case's
+    # `case:` alias is also the ID of a bench-legacy fixture that has its own
+    # control, so it silently inherited a stranger's.
     controlled = {
-        (partner, c.get("language"))
+        (partners[(partner, c.get("language"))]["id"], c.get("language"))
         for c in cases if c.get("kind") == "control"
         and isinstance(c.get("control_for"), list)
         for partner in c["control_for"]
+        if (partner, c.get("language")) in partners
     }
     for c in cases:
         if c.get("kind") != "failure":
             continue
         row = c.get("case") or c["id"]
-        if (row, c.get("language")) in controlled or (c["id"], c.get("language")) in controlled:
+        if (c["id"], c.get("language")) in controlled:
             continue
         if row in uncontrolled or c["id"] in uncontrolled:
             continue
@@ -296,6 +322,7 @@ def check_expectations(cases: list[dict]) -> None:
     forward = dict(vocabulary.get("forward") or {})
     gaps = declaration.get("known_gaps") or {}
     undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
+    controlled = controlled_cases(cases)
 
     for case in cases:
         directory = ROOT / case["dir"]
@@ -349,7 +376,7 @@ def check_expectations(cases: list[dict]) -> None:
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
 
         if not forward_path.is_file():
-            check_findable(name, case, live, {}, undetected)
+            check_findable(name, case, live, {}, undetected, controlled)
             continue
 
         ahead = yaml.safe_load(forward_path.read_text()) or {}
@@ -399,11 +426,11 @@ def check_expectations(cases: list[dict]) -> None:
                 f"after the fix lands — it has to be ABOUT the ticket, or "
                 f"nothing ever tells you the fixture went stale.")
 
-        check_findable(name, case, live, ahead, undetected)
+        check_findable(name, case, live, ahead, undetected, controlled)
 
 
 def check_findable(
-    name: str, case: dict, live: dict, ahead: dict, undetected: set
+    name: str, case: dict, live: dict, ahead: dict, undetected: set, controlled: set
 ) -> None:
     """A `findable` case names something that finds it.
 
@@ -419,6 +446,13 @@ def check_findable(
     file as a missing detection claim.
     """
     if case.get("kind") != "failure" or not case.get("findable"):
+        return
+    # A case with a CONTROL is held to FR-065-AC-42 instead, which is strictly
+    # stronger: its assertions must separate its own input from healthy input,
+    # whatever form they take. "names a diagnostic" is a proxy for that, and a
+    # narrow one — `no-symbol-method-in-the-verification-column` discriminates
+    # through `no_symbol_rows` and names no diagnostic at all.
+    if (case["id"], case.get("language")) in controlled:
         return
     claims = any(
         block.get(key)
