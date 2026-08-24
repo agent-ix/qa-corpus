@@ -82,11 +82,21 @@ diagnostic_reasons:
   forward:
     section-matches-nothing: agent-ix/quire-rs#270
     id-column-matches-nothing: agent-ix/quire-rs#270
-    # A declared trace target that matched no document in the corpus. 47 repos
-    # contain no TestMatrix at all, and the whole target kind is MISSING from
-    # `groups` rather than present and zero — so a missing denominator and a
-    # perfect one are indistinguishable on every surface the engine emits.
-    declared-target-no-documents: agent-ix/quire-rs#304
+  # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
+  # not reach the payload on the input in question) nor `forward` (the literal
+  # is already in `src/`, so TC-1026's scan finds it).
+  #
+  # `archetype-matches-nothing` is the first: the engine builds exactly the
+  # right finding for a declaration whose archetype matches no document —
+  # message and all — and `into_diagnostics` drops it whenever ANYTHING in the
+  # model minted. A model-wide gate on a per-declaration finding, so one
+  # declaration's success hides another's failure.
+  #
+  # A forward block may require a suppressed token when its `pending` is the
+  # ticket that un-suppresses it. This is a third ticket class: not "adds a
+  # diagnostic" and not "changes what mints", but "stops discarding one".
+  suppressed:
+    archetype-matches-nothing: agent-ix/quire-rs#304
 
 # Tickets that change what the engine MINTS rather than adding a diagnostic.
 #

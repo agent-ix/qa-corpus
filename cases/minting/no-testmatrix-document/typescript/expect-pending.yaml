@@ -1,17 +1,26 @@
 # FORWARD: what agent-ix/quire-rs#304 will make true. Required to FAIL until
 # then.
 #
-# A TOKEN ticket, not a behaviour change: #304 adds a diagnostic naming a
-# declared trace target that matched zero documents. Whether it ALSO emits the
-# group with `total: 0` is left open — that is the alternative the ticket
-# records, and asserting the group here would pre-decide it.
+# A SUPPRESSED token, not a new one. The engine already builds exactly this
+# finding for exactly this declaration, message and all:
 #
-# L3 must name the target and the archetype. "Something was declared and not
-# found" sends a reader of 47 repos looking for the wrong thing; the message
-# has to say `test-case` and `TestMatrix`.
+#   declaration 'test-case' declares archetype 'TestMatrix', which no document
+#   in the corpus has — it scans nothing and mints no rows
+#
+# and then discards it. `into_diagnostics(minted_anything)` drops every
+# `ArchetypeMatchesNothing` whenever ANYTHING in the model minted, and here the
+# FR criterion minted — so one declaration's success hides another's failure.
+#
+# #304 narrows that gate. The first draft of this fixture reserved an invented
+# token instead, which would have gone permanently red the moment the ticket
+# was fixed the smaller, likelier way.
+#
+# L3 asserts the message the engine already writes. Nothing here asks for new
+# prose — only that what is computed reaches the payload.
 diagnostic_reasons:
-  - declared-target-no-documents
+  - archetype-matches-nothing
 diagnostic_message_contains:
-  declared-target-no-documents:
+  archetype-matches-nothing:
     - "test-case"
     - "TestMatrix"
+    - "scans nothing and mints no rows"

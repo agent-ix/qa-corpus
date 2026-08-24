@@ -27,6 +27,9 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator
   - section-matches-nothing
+  # This tree HAS its TestMatrix, so the suppressed finding its second partner
+  # waits on must stay silent here even once #304 un-suppresses it.
+  - archetype-matches-nothing
 binding_census:
   - language: python
     candidates: 3

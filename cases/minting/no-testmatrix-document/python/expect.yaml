@@ -8,14 +8,26 @@
 #   this case   groups [acceptance-criterion 0/1]
 #   control     groups [acceptance-criterion 0/1, test-case 3/3]
 #
-# A missing denominator is not a low score, it is NO score, and the two are
-# indistinguishable on every surface the engine emits. A repo that never wrote
-# a TestMatrix and one whose TestMatrix is perfect both report nothing about
-# `test-case`, so ranking by backing ratio omits 47 repos from the population
-# rather than placing them at the bottom.
+# The consequence is RATIO INFLATION, not omission. Measured on this same tree:
 #
-# `groups` asserted EXACTLY is what pins this: a one-entry list is the claim
-# that the second entry is absent. Nothing else in the payload carries it.
+#   no TestMatrix                       backed 1/1  = 100%
+#   TestMatrix, 3 rows, all backed      backed 4/4  = 100%
+#   TestMatrix, 3 rows, none backed     backed 1/4  =  25%
+#
+# So a repo with no TestMatrix sits at the TOP of a backing-ratio ranking, not
+# omitted from it — writing the matrix is what makes the number fall. An
+# earlier draft of this comment claimed the no-matrix and perfect-matrix
+# payloads are indistinguishable; the control shipped beside it refutes that,
+# and they differ on `groups`, `totals`, `untracked_symbols` and `metrics`.
+#
+# The real indistinguishability is narrower and still worth having: NO
+# TestMatrix and a TestMatrix with ZERO ROWS produce byte-identical payloads.
+#
+# `groups` asserted EXACTLY is what pins the shape: a one-entry list is the
+# claim that the second entry is absent, and `groups` is the only field that
+# separates a MISSING group from a present-and-zero one. The other assertions
+# here discriminate from the control too — all four do, independently — so this
+# fixture does not rest on any one of them.
 #
 # TC-001 is not untracked because `FR-001.md`'s Verification column names it —
 # the criterion row references it directly, so it is answered for even with no

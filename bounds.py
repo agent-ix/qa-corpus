@@ -331,6 +331,10 @@ def check_expectations(cases: list[dict]) -> None:
     vocabulary = declaration.get("diagnostic_reasons") or {}
     emitted = set(vocabulary.get("emitted") or [])
     forward = dict(vocabulary.get("forward") or {})
+    # A SUPPRESSED token behaves like a forward one for expectation purposes —
+    # it cannot hold today — but unlike a forward one its literal is already in
+    # the engine, which is TC-1026's business, not this function's.
+    forward.update(vocabulary.get("suppressed") or {})
     gaps = declaration.get("known_gaps") or {}
     undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
     controlled = controlled_cases(cases)
