@@ -169,7 +169,7 @@ def check_controls(cases: list[dict]) -> None:
     #
     # FAILURE cases only: including controls puts each control's own `case` in
     # the set, so `control_for` resolves against itself (FR-065-AC-13).
-    declaration = yaml.safe_load((ROOT / "corpus.yaml").read_text())
+    declaration = load_declaration()
     gaps = declaration.get("known_gaps") or {}
     module_gaps = set((gaps.get("control_binds_another_module") or {}).get("cases") or [])
     uncontrolled = set((gaps.get("uncontrolled_failure_cases") or {}).get("cases") or [])
@@ -261,12 +261,18 @@ def check_controls(cases: list[dict]) -> None:
             f"{c['id']}: no control names it (FR-065-AC-13). Without one, a check "
             f"firing on every input scores perfect recall. Declare it under "
             f"`known_gaps.uncontrolled_failure_cases` if that is deliberate.")
+    # EVERY list under `known_gaps`, not a hand-picked two. The first version
+    # named `uncontrolled_failure_cases` and `control_binds_another_module`
+    # explicitly, so adding a third list gave it a set of exemptions no staleness
+    # check covered — a declaration going stale in exactly the way this check
+    # exists to prevent.
     known = {c.get("case") or c["id"] for c in cases} | {c["id"] for c in cases}
-    stale = sorted(uncontrolled - known) + sorted(module_gaps - known)
-    if stale:
-        problems.append(
-            f"known_gaps names {stale}, which is no case in the corpus — a "
-            f"declared gap that has outlived its fixture")
+    for gap, entry in (declaration.get("known_gaps") or {}).items():
+        stale = sorted(set((entry or {}).get("cases") or []) - known)
+        if stale:
+            problems.append(
+                f"known_gaps.{gap} names {stale}, which is no case in the "
+                f"corpus — a declared gap that has outlived its fixture")
 
 
     if problems:
@@ -342,32 +348,6 @@ def check_expectations(cases: list[dict]) -> None:
                 f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}.")
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
 
-        # A FINDABLE failure case claims something is DETECTED on its input, so
-        # some block of it has to require a finding. Measured: three `skeptic`
-        # fixtures ship byte-identical live blocks — `backed: 1`, `total: 3`,
-        # one bound rust symbol — true of any healthy three-row corpus, with no
-        # diagnostic asserted anywhere. Swapping one's whole `input/` tree for
-        # another's left every gate green and the cell still `covered`, so the
-        # fixture was not about its own defect at all.
-        if case.get("kind") == "failure" and case.get("findable"):
-            ahead = (
-                yaml.safe_load(forward_path.read_text()) or {}
-                if forward_path.is_file() else {}
-            )
-            claims = any(
-                block.get(key)
-                for block in (live, ahead)
-                for key in ("diagnostic_reasons", "validate_contains")
-            )
-            if not claims and (case.get("case") or case["id"]) not in undetected:
-                raise CorpusError(
-                    f"{name}: is `findable: true` and requires no finding, in "
-                    f"either block. A case claiming its defect is DETECTABLE "
-                    f"has to say what detects it, or its cell counts as covered "
-                    f"for a mode nothing measures. Declare it under "
-                    f"`known_gaps.findable_but_undetected` if the engine truly "
-                    f"finds nothing yet.")
-
         if not forward_path.is_file():
             continue
 
@@ -400,6 +380,33 @@ def check_expectations(cases: list[dict]) -> None:
                 f"block always holds, which every runner reads as `{ticket} has "
                 f"landed`.")
         check_reasons(name, ahead, "expect-pending.yaml", case, emitted, forward)
+
+        # A FINDABLE failure case claims something is DETECTED on its input, so
+        # some block of it has to require a finding. Measured: three `skeptic`
+        # fixtures ship byte-identical live blocks — `backed: 1`, `total: 3`,
+        # one bound rust symbol — true of any healthy three-row corpus, with no
+        # diagnostic asserted anywhere. Swapping one's whole `input/` tree for
+        # another's left every gate green and the cell still `covered`, so the
+        # fixture was not about its own defect at all.
+        if case.get("kind") == "failure" and case.get("findable"):
+            ahead = (
+                yaml.safe_load(forward_path.read_text()) or {}
+                if forward_path.is_file() else {}
+            )
+            claims = any(
+                block.get(key)
+                for block in (live, ahead)
+                for key in ("diagnostic_reasons", "validate_contains")
+            )
+            if not claims and (case.get("case") or case["id"]) not in undetected:
+                raise CorpusError(
+                    f"{name}: is `findable: true` and requires no finding, in "
+                    f"either block. A case claiming its defect is DETECTABLE "
+                    f"has to say what detects it, or its cell counts as covered "
+                    f"for a mode nothing measures. Declare it under "
+                    f"`known_gaps.findable_but_undetected` if the engine truly "
+                    f"finds nothing yet.")
+
 
         # THE BLOCK MUST BE ABOUT ITS TICKET. Two rounds of review found the
         # forward half unpoliced, and the second fix constrained only reason
