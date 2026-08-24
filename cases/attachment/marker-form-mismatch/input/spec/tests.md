@@ -3,8 +3,8 @@ id: TM-001
 type: TestMatrix
 ---
 
-## Test Cases
+## Test Case Summary
 
-| ID | Traces To | Status |
-|----|-----------|--------|
-| TC-001 | FR-001-AC-1 | 🚧 |
+| Test ID | Traces To | Type | Status |
+|---------|-----------|------|--------|
+| TC-001 | FR-001-AC-1 | Unit | 🚧 |

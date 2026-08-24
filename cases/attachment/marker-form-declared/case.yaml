@@ -2,17 +2,18 @@ id: marker-form-declared
 issue_ref: agent-ix/spec-artifacts-process#59
 mode: attachment
 language: rust
-module: variants/bench-legacy
-relaxation_ticket: agent-ix/quire-rs#285
+module: ecosystem
 findable: false
 kind: control
-reproduce: quire coverage --scope cases/attachment/marker-form-declared/input --module modules/variants/bench-legacy
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-declared/input
   --json
 tags:
 - TC-992
 - coverage
 - binding
 comment: 'The control. Same tree, the declared spelling: nothing fires, and the census becomes the reassurance
-  the payload could not previously give.'
+  the payload could not previously give. MIGRATED onto the real declaration with its partner (#285), so
+  `#[trace("TC-001")]` is now checked against the ecosystem''s own `rust-trace-attribute` rather than
+  against a variant that declared one form and matched it.'
 control_for:
 - marker-form-mismatch
