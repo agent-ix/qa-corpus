@@ -45,6 +45,10 @@ metrics:
     population: 4
     examined: 2
     matched: 2
+    # NOT hollow, on the same metric over the same population. The metric and
+    # the diagnostic have to agree in both directions, and this is the half that
+    # catches a predicate that widens.
+    hollow: false
 absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding

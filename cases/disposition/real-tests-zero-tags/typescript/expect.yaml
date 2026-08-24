@@ -119,3 +119,7 @@ metrics:
     population: 4
     examined: 2
     matched: 0
+    # `Metric::is_hollow` itself, stated rather than left to be re-derived from
+    # the four numbers above. It is the predicate `hollow-denominator` is made
+    # of, and the control asserts it false on the same metric.
+    hollow: true
