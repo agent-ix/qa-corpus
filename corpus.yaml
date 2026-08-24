@@ -192,11 +192,6 @@ behaviour_change_tickets:
 # right — see CR-119 for the figures. `pending:` still names #273 because that
 # ticket stays OPEN on its remaining acceptance.
 - agent-ix/quire-rs#273
-# A DECLARATION change rather than an engine one: sap#68 adds the TypeScript
-# test-name form, so a title-carried id binds and the fixture stops being a
-# defect. Same class for corpus purposes — the payload changes, no diagnostic
-# is added.
-- agent-ix/spec-artifacts-process#68
 result_record:
   description: The per-case record a runner emits. Field set and order are declared here so FR-065-AC-17's
     byte-identity has a defined shape to be identical about.

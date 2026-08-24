@@ -1,28 +1,39 @@
-# THE FIRST ROW OF #268 WHERE THE ENGINE ALREADY DOES ITS JOB.
+# FOLDED. This was the forward block of `expect-pending.yaml`, RE-MEASURED
+# against the payload rather than copied across:
 #
-# Rows 1-5 are minting defects the engine is silent about. This one it detects
-# at L3, today, and the message is good:
+#   IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage \
+#     --scope cases/detection/test-name-id-in-call-title/input --json
+#
+# The prediction held exactly — `total 2`, `backed 1`, `test-case 1/1`. Two keys
+# the forward block did not state are added because they are what the fold
+# actually moved, and a pin that omits them pins less than it measured:
+# `binding_census` typescript candidates 1, bound **0 -> 1**, and
+# `untracked_symbols` still empty.
+#
+# WHAT USED TO BE HERE was the L3 detection, and it was a good message:
 #
 #   1 typescript evidence symbols were examined and none carried a tag any
 #   declared form matched (forms: ts-trace-helper, typescript-trace-line,
 #   typescript-comment-id, typescript-doc-comment-id) — for example
-#   `TC-001: every finding defaults to warning` at src/coverage.test.ts:10,
-#   whose annotation carries no matching form; every row those symbols verify
-#   is reported unbacked, which is indistinguishable from a missing test
+#   `TC-001: every finding defaults to warning` at src/coverage.test.ts:10 …
 #
-# It names the count, every form it tried, the exact symbol and line, and what
-# the consequence is. So the live block ASSERTS the detection rather than its
-# absence — this fixture's job is to stop that message regressing.
+# The engine was holding `TC-001: every finding defaults to warning` and
+# reporting that it could not find a trace id. The id was in the string it
+# printed. So the defect was in the DECLARATION, not the engine, and
+# `spec-artifacts-process#68` (CR-040) declares `typescript-test-name-id`.
 #
-# The sharpest fact is in the symbol name itself. The engine is holding
-# `TC-001: every finding defaults to warning` and reporting that it cannot find
-# a trace id, because no declared TypeScript form reads a title. The id is
-# right there in the string it prints.
+# `bound: 1` IS the assertion that the new form read the title, and it is a
+# whole assertion rather than a proxy: this tree carries no `trace()` call, no
+# `// TC-001` comment, no `Trace:` line and no ` * TC-001` docblock, so there is
+# no other declared TypeScript form that could have bound it. The form is
+# deliberately NOT named here — neither grader reads a `forms` key, and a key
+# nothing reads is an expectation that looks asserted and is not.
 #
-# The defect is therefore in the DECLARATION, not the engine: `rust-test-name-id`
-# exists and is rust-only. spec-artifacts-process#68 adds the TypeScript form.
+# `absent_diagnostic_reasons` keeps the pin honest in the other direction: those
+# are the two reasons the live block used to assert FIRING, and a declaration
+# that stopped reading titles would put them straight back.
 total: 2
-backed: 0
+backed: 1
 groups:
   - document: spec/FR-001.md
     target: acceptance-criterion
@@ -30,29 +41,13 @@ groups:
     total: 1
   - document: spec/tests.md
     target: test-case
-    backed: 0
+    backed: 1
     total: 1
-diagnostic_reasons:
+absent_diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator
-diagnostic_paths:
-  no-symbol-bound: src/coverage.test.ts
-diagnostic_message_contains:
-  no-symbol-bound:
-    # ALL FOUR declared forms. Asserting two would let the other two vanish
-    # from the message with nothing noticing, and the whole value of naming
-    # them is that a reader learns which markers were tried.
-    - "ts-trace-helper"
-    - "typescript-trace-line"
-    - "typescript-comment-id"
-    - "typescript-doc-comment-id"
-    # The symbol, verbatim — which is the id the engine could not read.
-    - "TC-001: every finding defaults to warning"
-    - "src/coverage.test.ts:10"
-    # And the consequence, which is the whole reason this matters.
-    - "indistinguishable from a missing test"
 binding_census:
   - language: typescript
     candidates: 1
-    bound: 0
-    unbound_example: src/coverage.test.ts:10
+    bound: 1
+untracked_symbols: []

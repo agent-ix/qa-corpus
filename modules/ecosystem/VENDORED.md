@@ -13,10 +13,28 @@ fixture. The totals were identical either way, which is why it went unnoticed.
 
 | Module | Source path | Pinned SHA |
 |---|---|---|
-| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `fa56ced6d772dc6f95a4d61bd0b813762488405d` |
+| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `62d691f` (`feat/68-typescript-test-name-form`) |
 | `spec-artifacts-iso` | `spec_artifacts_iso/manifest.yaml` | `3d871962b66db99a1854f40466e94ebabc7a6115` |
 
 Vendored 2026-08-24.
+
+## Two ways this copy is AHEAD of the SHA it names — read them before trusting it
+
+1. **`typescript-test-name-id` is on a BRANCH, not on `main`.** `62d691f` is
+   `agent-ix/spec-artifacts-process#71`, open against `main`. The SHA is recorded
+   rather than the branch name because a branch moves; repoint to the squash
+   commit when #71 merges.
+
+2. **The `section:` widening is in NO spec-artifacts-process commit at all.**
+   `test-case` and `traces-to` here declare
+   `section: ["*Test Case Summary*", Integration Test Matrix]`, while every ref
+   of that repository — checked across `refs/heads` and `refs/remotes` — still
+   declares the single name `Test Case Summary`. It was authored corpus-side by
+   `d272ad7` ("#272 landed — rows across many headings mint") and never
+   upstreamed. So this file is not a verbatim copy of any commit, and the CR-118
+   half of it has no home in the module it claims to vendor. Flagged, not
+   normalised: fixing it means an upstream ticket, and doing it silently here
+   would move what every case mints.
 
 ## Why a copy and not a submodule
 

@@ -3,18 +3,23 @@ language: typescript
 module: ecosystem
 id: test-name-id-in-call-title
 issue_ref: agent-ix/spec-artifacts-process#68
-kind: failure
-findable: true
-pending: agent-ix/spec-artifacts-process#68
-pending_reason: >-
-  No TypeScript form reads a trace id from a test's title. `rust-test-name-id` exists and is
-  rust-only; sap#68 adds the TypeScript equivalent, which is a DECLARATION change, not an
-  engine one.
+kind: regression
+findable: false
 tags:
 - TC-1014
 - detection
 - binding
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title/input --json
 comment: >-
-  The trace id lives in the `it(...)` title and nowhere else — no `trace()` call, no comment
-  marker, no `Trace:` line. 81% of one repo's tests are written this way.
+  A REGRESSION PIN, not a defect — the third fixture to take this reclassification, after
+  #274's and #272's, and the first where the fix was a DECLARATION rather than the engine.
+  The trace id lives in the `it(...)` title and nowhere else: no `trace()` call, no comment
+  marker, no `Trace:` line. 81% of one repository's UI tests are written that way and no
+  declared TypeScript form could read a single one of them, because `rust-test-name-id`
+  existed and was rust-only. spec-artifacts-process#68 (CR-040) declares
+  `typescript-test-name-id` and the title binds. The input tree is byte-unchanged and was
+  never defective — the DECLARATION was — so the case's payload became its control's, and
+  FR-065-AC-42 rejected the pair, correctly: the control was the same test plus the one
+  marker the declaration could already read, and the declaration now reads both. Its
+  directory is deleted. The input is still the shape that used to bind nothing, and
+  asserting that its title mints `TC-001` is worth keeping.
