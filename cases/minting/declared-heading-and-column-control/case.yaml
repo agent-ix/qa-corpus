@@ -12,6 +12,7 @@ kind: control
 control_for:
 - section-name-mismatch
 - id-column-mismatch
+- section-and-id-column
 findable: false
 tags:
 - TC-1014

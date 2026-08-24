@@ -1,0 +1,20 @@
+mode: minting
+module: ecosystem
+id: section-and-id-column
+issue_ref: agent-ix/quire-rs#270
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#270
+pending_reason: >-
+  No engine emits `section-matches-nothing` yet. Until it does, a repository in this
+  state is indistinguishable from one that simply wrote fewer rows.
+tags:
+- TC-1014
+- TC-1017
+- minting
+- coverage
+comment: >-
+  BOTH minting defects on ONE document, which is what agent-ix/identity actually looks
+  like: the heading says `Test Cases` where `Test Case Summary` is declared, AND the id
+  column says `Test Case ID` where `Test ID` is declared. Rows 1 and 2 of #268 seeded
+  one each; a repository in the wild carries both.

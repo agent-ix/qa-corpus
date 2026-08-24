@@ -1,0 +1,28 @@
+# The LIVE contract. What #270 adds is in expect-pending.yaml.
+#
+# MEASURED, and the point of this row: the payload is BYTE-IDENTICAL to
+# `section-name-mismatch`'s, in every key. `unbacked_rows` is EMPTY here even
+# though the id column is also wrong — because the wrong heading strands the
+# whole table first, so the column defect is never reached and never visible.
+#
+# That is the finding. A repository carrying BOTH defects is indistinguishable
+# from one carrying only the heading defect. Fix the heading and the second
+# defect appears on the next run, having been invisible until then — the reader
+# goes round the loop once per defect. It is the concrete argument that #270
+# must say what it could NOT check, not only what it found.
+#
+# This fixture therefore does NOT separate itself from its row-1 sibling, and
+# nothing here pretends otherwise. It separates itself from its CONTROL
+# (FR-065-AC-42), which is the claim the corpus can actually make.
+total: 1
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+unbacked_rows: []
+binding_census:
+  - language: python
+    candidates: 1
+    bound: 1

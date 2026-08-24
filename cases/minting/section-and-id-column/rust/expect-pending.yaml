@@ -1,0 +1,19 @@
+# FORWARD: what agent-ix/quire-rs#270 will make true. Required to FAIL until
+# it lands.
+#
+# Only `section-matches-nothing` is asserted, and that is deliberate. The
+# heading defect strands the table before the id column is ever read, so
+# `id-column-matches-nothing` is NOT reachable on this input — asserting it
+# would demand the engine report a defect it cannot observe.
+#
+# L3 names both the heading FOUND and the one DECLARED, because a reader of
+# agent-ix/identity told only that "something matched nothing" cannot tell
+# which of the two defects on this document to edit.
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing:
+    - "Test Cases"
+    - "Test Case Summary"
