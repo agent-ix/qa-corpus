@@ -1,7 +1,18 @@
-# THE LARGEST MEASURED BLAST RADIUS IN THE #268 INVENTORY, and the entry said
-# "2 files". Measured across ~/dev by reimplementing `python.rs`'s state
-# machine and diffing against `ast.parse`: 51 files LOSE 387 real declarations,
-# 3 files GAIN 6 phantom ones.
+# The inventory said "2 files". Two independent ports of `python.rs`'s state
+# machine, diffed against `ast.parse` over every .py under ~/dev, agree that
+# 51 files LOSE ~386 declarations by bare-name comparison. That half is settled.
+#
+# The GAIN half is NOT, and this fixture does not claim a number for it: three
+# ports gave 6, 5, 109 and 1174 depending on how each qualified names. A defect
+# in the scanner cannot be sized by reimplementing the scanner, which is #309.
+#
+# And this fixture models the SIMPLE case. Real files OSCILLATE — string mode
+# toggles back on, the scope stack resumes stale, and most affected
+# declarations are not invented but attributed to the WRONG CONTAINER
+# (`test_update_simple_version` lives in `TestTomlModification` and is reported
+# under `TestTomlParsing`). That is the dominant mode by count, and a fix that
+# stopped the swallow while leaving the stack stale would close only the half
+# modelled here.
 #
 # Two failures compound on one string, in opposite directions:
 #
@@ -13,7 +24,7 @@
 #      everything after it swallows into a string that never ends. The real
 #      test is LOST.
 #
-# 387 lost against 6 invented: the second half is where the damage is.
+# The loss half is the larger one, and it is the one that is measured.
 #
 # WHAT THE PAYLOAD SAYS ABOUT ALL THAT:
 #
@@ -23,9 +34,11 @@
 # NOT EXIST. The engine is measuring a string literal. The real test appears
 # nowhere in the payload at all.
 #
-# `untracked_symbols` naming the phantom is the sharpest assertion here: it is
-# the engine stating, with a path and a line, that it found a test the file
-# does not contain.
+# `untracked_symbols` naming the phantom is the sharpest assertion here: the
+# engine stating, with a path and a line, that it found a test the file does
+# not contain. Ecosystem-wide, no WHOLLY-INVENTED name is a test function — so
+# this shape is a hazard this fixture prevents rather than an observed
+# condition, and it is written that way deliberately.
 #
 # Both existing guards stand down for #307's reason exactly — `no-symbol-bound`
 # needs `bound == 0`, `hollow-denominator` needs `matched == 0`, and both are 1.

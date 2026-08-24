@@ -8,8 +8,9 @@ findable: true
 pending: agent-ix/quire-rs#274
 pending_reason: >-
   `python.rs` enters string mode only when a triple-quote STARTS the trimmed line, so an
-  assigned string is parsed as code and its closing quote is read as an opener. Nothing in
-  the payload reports either half.
+  assigned string is parsed as code and its closing quote is read as an opener. The payload
+  carries the EVIDENCE for both halves — a phantom in `untracked_symbols`, the real row
+  unbacked — and no DIAGNOSTIC joins them or names the cause.
 tags:
 - TC-1014
 - parser

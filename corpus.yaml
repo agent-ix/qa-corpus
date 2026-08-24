@@ -223,12 +223,27 @@ inventory:
   - rust
   - typescript
 - mode: parser
-  # MEASURED, and #274's "2 files" was wrong by 25x. Reimplementing `python.rs`'s
-  # state machine and diffing against `ast.parse` over every .py under ~/dev:
-  # 51 files LOSE 387 real declarations, 3 files GAIN 6 phantom ones. Live
-  # trigger at py-project/tests/test_deps.py:309.
+  # MEASURED, and #274's "2 files" was wrong by ~25x. Two independent ports of
+  # `python.rs`'s state machine, diffed against `ast.parse` over every .py under
+  # ~/dev (worktrees excluded, 18 files skipped as unparseable), comparing BARE
+  # declaration names: 51 files lose 387 and 51 files lose 386. Live trigger at
+  # py-project/tests/test_deps.py:309.
+  #
+  # The GAIN half is deliberately not stated as a number. Three ports gave
+  # 3 files/6, 2/5, 17/109 and 144/1174 depending on how each qualified names
+  # and walked nested scopes — which is the part of `python.rs` under test. A
+  # defect in the scanner cannot be sized by a reimplementation of the scanner;
+  # the ports disagree exactly where the original is wrong. #309 asks for a
+  # symbol-table surface so this can be measured against the engine itself.
+  #
+  # What IS established about the gains: most are not invented names but real
+  # declarations attributed to the WRONG CONTAINER, because string mode toggles
+  # back on and the scope stack resumes stale. Verified by hand —
+  # `test_update_simple_version` lives in `TestTomlModification`
+  # (test_deps.py:464, confirmed with ast) and the scanner reports it under
+  # `TestTomlParsing`.
   case: triple-quote-scope-desync
-  source: symbols/python.rs:40-42 — 51 files lose 387 declarations, 3 gain 6 phantoms
+  source: symbols/python.rs:40-42 — 51 files lose ~386 declarations (bare-name, reproduced twice)
   languages:
   - python
 - mode: join

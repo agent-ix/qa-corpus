@@ -1,8 +1,9 @@
 # The control: the identical file with the opening triple-quote moved onto its
 # own line. Same phantom text inside the same string, same real test after it.
 #
-# One line, and the whole result inverts — the string is skipped, the real test
-# is seen, and it backs its row.
+# Two added lines — the paren wrap is required for the file to stay valid
+# Python — and the whole result inverts: the string is skipped, the real test is
+# seen, and it backs its row.
 #
 # `untracked_symbols: []` is the load-bearing claim, because its partner
 # asserts a phantom entry. A scanner that stopped reporting untracked symbols
