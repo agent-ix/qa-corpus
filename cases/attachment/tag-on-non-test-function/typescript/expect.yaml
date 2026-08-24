@@ -41,9 +41,10 @@
 #                      `Implements:` keyword; `// TC-001: Warning default.` does
 #                      not carry it.
 #
-# AND THE ENGINE WALKED THAT EXACT SYMBOL. `coverage.implements` says three
-# production symbols were examined — the two module containers and `severityOf`
-# — and none carried a marker. The engine looked at the symbol the tag is on,
+# AND THE ENGINE WALKED THAT EXACT SYMBOL. `coverage.implements` says four
+# production symbols were examined — the two module containers, the
+# `describe("coverage")` suite container CR-119 added, and `severityOf` — and
+# none carried a marker. The engine looked at the symbol the tag is on,
 # for the other relation, and published a bare zero.
 #
 # THIS IS THE FIELD THAT DISCRIMINATES, and it is the only one. The control
@@ -74,12 +75,17 @@ binding_census:
   - language: typescript
     candidates: 1
     bound: 1
+# RE-COUNTED under CR-119 (`agent-ix/quire-rs#273`): 4 rather than 3, because
+# `describe("coverage")` in the test file now mints a CONTAINER and a container
+# is an `implements` candidate. The two module containers and `severityOf` are
+# unchanged. `value`/`matched` — the field this pair is separated by — is not
+# touched by it, in either half.
 metrics:
   - name: coverage.implements
     state: measured
     value: 0
-    population: 3
-    examined: 3
+    population: 4
+    examined: 4
     matched: 0
 absent_diagnostic_reasons:
   - no-symbol-bound

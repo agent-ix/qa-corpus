@@ -165,6 +165,26 @@ diagnostic_reasons:
 behaviour_change_tickets:
 # Registers `describe()`/`suite()` headers as Containers, so a tag on the header
 # has something to attach to. No diagnostic added.
+#
+# PARTIALLY LANDED (CR-119, engine v0.33.0), and the case stays pending because
+# the half that landed moves no row. The header IS a symbol now — a `Container`
+# named by its title, parenting the registrations inside it — and the fixture
+# asserts that in its LIVE block as `coverage.implements examined 2`. But a
+# `Container` is refused by `binds_trace_ids()` and taken by
+# `carries_implements()`, so `trace::bind` returns at `trace.rs:271` and the tag
+# still reaches no channel. **[RAN]** 241 repositories, same binary, only that
+# change: rows minted 20,023 -> 20,023, rows backed 5,039 -> 5,039, backing
+# 25.17% -> 25.17%, every diagnostic count and every `binding_census` identical.
+# What moved is `coverage.implements examined` 49,855 -> 51,340 (+1,485 suite
+# containers across 93 repositories) — a DENOMINATOR growing, so that ratio gets
+# worse.
+#
+# The forward block therefore waits on `agent-ix/quire-rs#312`, which owns the
+# channel question, and FR-051-AC-21 now declares the semantics #273 asked for:
+# a suite groups evidence and is not evidence. **[RAN]** with `Container` moved
+# into `binds_trace_ids()`, to check that the recommended reading was not simply
+# right — see CR-119 for the figures. `pending:` still names #273 because that
+# ticket stays OPEN on its remaining acceptance.
 - agent-ix/quire-rs#273
 # A DECLARATION change rather than an engine one: sap#68 adds the TypeScript
 # test-name form, so a title-carried id binds and the fixture stops being a
@@ -250,11 +270,24 @@ inventory:
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
   # ENTIRELY on headers. The fixture models the MIXED case instead — one
   # misattached tag beside a correct one — because that is what real files look
-  # like and it is the configuration in which the engine goes silent. Measured:
-  # 209 TS comment-ids sit directly above a `describe(`, across 9 repo roots,
-  # against 2,396 above an `it`/`test`.
+  # like and it is the configuration in which the engine goes silent.
+  #
+  # RE-MEASURED under CR-119, and the filed occurrence figure does not
+  # reproduce. Over `~/dev` with worktrees, `-task<N>` copies, `node_modules`,
+  # build and virtualenv trees excluded, and this repository excluded so the
+  # fixtures do not census themselves: a line matching a DECLARED TypeScript
+  # trace form whose next code line opens a registration —
+  #
+  #   above a `describe(`/`suite(`   162 lines / 18 repo roots (138 blocks)
+  #   above an `it`/`test`         1,004 lines / 24 repo roots (960 blocks)
+  #
+  # The published 209 / 9 roots against 2,396 reproduces under NO variant tried.
+  # Its denominator is approximately recoverable only under a predicate that
+  # counts ANY line containing an id-shaped string, comment or code (2,377) —
+  # which counts prose citations and code as tags — and that same predicate puts
+  # the numerator at 265 across 28 roots, not 209 across 9.
   case: tag-on-describe-header
-  source: 30 repos 0 backed (#273); 209 occurrences / 9 roots, mixed with 2396 correct
+  source: 162 occurrences / 18 roots against 1,004 above an it/test (CR-119 re-measure; #273's 209/9 vs 2,396 does not reproduce)
   languages:
   - typescript
 - mode: attachment

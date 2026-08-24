@@ -11,7 +11,7 @@
 # unbacked, correctly: no test verifies it, and a production symbol never could.
 #
 # `coverage.implements` is the whole separation, and FR-065-AC-42 rests on it
-# alone. 0 matched there, 2 here, over the same 3 production symbols
+# alone. 0 matched there, 2 here, over the same 4 production symbols
 # examined. A fixture pair that could only be told apart by an incidental scalar
 # would be the weakness FR-065 records against ten of the other eleven
 # controlled fixtures; this one is forced onto the field the defect is about.
@@ -45,12 +45,17 @@ binding_census:
   - language: typescript
     candidates: 1
     bound: 1
+# RE-COUNTED under CR-119 (`agent-ix/quire-rs#273`): 4 rather than 3, because
+# `describe("coverage")` in the test file now mints a CONTAINER and a container
+# is an `implements` candidate. The two module containers and `severityOf` are
+# unchanged. `value`/`matched` — the field this pair is separated by — is not
+# touched by it, in either half.
 metrics:
   - name: coverage.implements
     state: measured
     value: 2
-    population: 3
-    examined: 3
+    population: 4
+    examined: 4
     matched: 2
 absent_diagnostic_reasons:
   - no-symbol-bound

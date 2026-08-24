@@ -7,9 +7,16 @@ kind: failure
 findable: true
 pending: agent-ix/quire-rs#273
 pending_reason: >-
-  `describe()` registers no symbol, so a tag on the block header has nothing to attach to. It
-  reaches neither `verifies` nor `untracked_symbols` — that channel needs a BOUND symbol with an
-  unmatched id. #273 registers the header as a Container.
+  TWO TICKETS, and #273 has landed its half. #273 registered the header as a `Container`, so the
+  tag now attaches to `describe("warning default")` instead of to the file's module — asserted in
+  `expect.yaml` as `coverage.implements examined 2`. It changed no row: measured over 241
+  repositories, rows minted 20,023 -> 20,023 and rows backed 5,039 -> 5,039. A `Container` is
+  refused by `binds_trace_ids()` and accepted by `carries_implements()`, so `trace::bind` takes
+  the branch at `trace.rs:261` and `continue`s at 271 before the census counts anything; and
+  `untracked_symbols` is built from `graph.verifies`, so a tag that never bound is not there
+  either. The forward block below therefore waits on #312 — the channel — not on #273. FR-051-AC-21
+  now DECLARES that a suite groups evidence and is not evidence, because widening `verifies` to a
+  `Container` reaches every container including the file's own module, whose span is line 1 to EOF.
 tags:
 - TC-1014
 - attachment
@@ -17,6 +24,8 @@ tags:
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tag-on-describe-header/input --json
 comment: >-
   Shape taken verbatim from ix-ui/packages/semantic/tests/glyphs.test.ts:100 — a comment-id
-  above the `describe(` header with the work in an `it` inside. 209 occurrences across 9 repo
-  roots. MIXED with a correctly-tagged sibling, because that is what real files look like and
-  it is what keeps the census above the floor.
+  above the `describe(` header with the work in an `it` inside. RE-MEASURED under CR-119: 162
+  declared TypeScript trace-form lines across 18 repo roots sit directly above a
+  `describe(`/`suite(`, against 1,004 above an `it`/`test`. The 209-across-9-roots figure this
+  row was filed with does not reproduce. MIXED with a correctly-tagged sibling, because that is
+  what real files look like and it is what keeps the census above the floor.

@@ -1,8 +1,35 @@
-# THE TAG REACHES NEITHER CHANNEL. `describe()` registers no symbol
-# (`typescript.rs` accepts only `test` and `it`), so a tag on the block header
-# has nothing to attach to. It does not bind, and it does not reach
-# `untracked_symbols` either — that channel requires a BOUND symbol carrying an
-# unmatched id. As #273 puts it: silence, not a miss.
+# THE TAG REACHES NEITHER CHANNEL, and since `agent-ix/quire-rs#273` landed
+# that is no longer because there is nothing to attach to.
+#
+# WHAT #273 CHANGED. `describe(…)` registered no symbol at all, so the nearest
+# enclosing symbol was the file's own module — a container spanning line 1 to
+# EOF, which names no locus a reader can act on. It now mints a CONTAINER named
+# `warning default`, spanning lines 6-13, and the `it` inside it is parented to
+# it. The one payload field that moved is asserted below:
+# `coverage.implements examined` 1 -> 2, the suite entering the production-symbol
+# denominator. Measured over 241 repositories, same binary, only that change:
+# rows minted 20,023 -> 20,023, rows backed 5,039 -> 5,039, every diagnostic
+# count identical, every `binding_census` identical. #273 alone moves NOTHING.
+#
+# WHAT IT DID NOT CHANGE, AND WHY. A `Container` is refused by
+# `SymbolKind::binds_trace_ids()` and accepted by `carries_implements()`, so
+# `trace::bind` takes the `carries_implements()` branch at `trace.rs:261` and
+# `continue`s at 271 — the suite never reaches the `verifies` binder, and it
+# enters `implements_candidates` instead of `binding_census.candidates`.
+# `untracked_symbols` cannot see it either: that channel is built from
+# `graph.verifies` (`coverage.rs:1194`) and reports ids that BOUND and matched
+# no minted row. As #273 put it: silence, not a miss.
+#
+# THE SEMANTICS ARE NOW DECLARED (FR-051-AC-21) rather than accidental: a suite
+# GROUPS evidence and is not evidence. Widening `verifies` to reach a
+# `Container` would reach EVERY container, the file's own module included, so
+# every column-0 comment id in every TypeScript and Python test file would back
+# a row — the CR-061 prohibition from the other side. Measured on this corpus
+# with `Container` moved into `binds_trace_ids()`, that is what happens.
+#
+# So what is left is `agent-ix/quire-rs#312`: a tag on a symbol whose kind
+# cannot bind it reaches no channel and is missing from the census it should be
+# unbound in.
 #
 # THE FIXTURE IS MIXED ON PURPOSE. One misattached tag beside one correct one,
 # because that is what real files look like — and it is the configuration in
@@ -50,6 +77,17 @@ binding_census:
     candidates: 2
     bound: 1
     unbound_example: src/coverage.test.ts:10
+# The suite is a symbol NOW — read `2` as "module container plus the
+# `describe(…)` container", where it read `1` before #273. This is the whole
+# observable delta of that ticket on this tree, which is why it is asserted
+# here rather than described in prose: an engine that stopped registering the
+# header would go back to reading `1` and this line would catch it.
+metrics:
+  - name: coverage.implements
+    state: measured
+    value: 0
+    examined: 2
+    matched: 0
 absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding

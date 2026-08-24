@@ -33,12 +33,17 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 2
+# RE-COUNTED under CR-119 (`agent-ix/quire-rs#273`): `describe(…)` now mints a
+# CONTAINER, so the production-symbol denominator gained one — module container
+# plus the suite. Nothing else moved: the tag still sits at column 0 with a
+# BLANK line under it, so `leading_block` does not reach it and it is still the
+# FILE's container it lands on, not the suite's.
 metrics:
   - name: coverage.implements
     state: measured
     value: 0
-    population: 1
-    examined: 1
+    population: 2
+    examined: 2
     matched: 0
 # HEALTHY INPUT STAYS SILENT. The first three are the diagnostics that read the
 # binding census, and none may fire on a tree whose tags all bind.
