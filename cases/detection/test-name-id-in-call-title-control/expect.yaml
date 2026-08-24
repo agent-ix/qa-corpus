@@ -1,0 +1,25 @@
+# The control: the SAME test with the SAME title, plus the declared
+# `ts-trace-helper` marker. One line is the whole difference.
+#
+# `absent_diagnostic_reasons` is the load-bearing half here, because its
+# partner's live block asserts those two firing. A check that fired on every
+# TypeScript file — or one that stopped distinguishing a bound symbol from an
+# unbound one — would score perfect recall against the partner alone.
+total: 2
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+binding_census:
+  - language: typescript
+    candidates: 1
+    bound: 1

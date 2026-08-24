@@ -1,0 +1,18 @@
+mode: detection
+language: typescript
+module: ecosystem
+id: test-name-id-in-call-title-control
+issue_ref: agent-ix/spec-artifacts-process#68
+kind: control
+control_for:
+- test-name-id-in-call-title
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title-control/input --json
+comment: >-
+  The SAME test with the SAME title, plus the declared `ts-trace-helper` marker. One line is
+  the whole difference, and it is the line the declaration can read.

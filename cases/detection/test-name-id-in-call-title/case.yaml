@@ -1,0 +1,21 @@
+mode: detection
+language: typescript
+module: ecosystem
+id: test-name-id-in-call-title
+case: test-name-id-in-call-title
+issue_ref: agent-ix/spec-artifacts-process#68
+kind: failure
+findable: true
+pending: agent-ix/spec-artifacts-process#68
+pending_reason: >-
+  No TypeScript form reads a trace id from a test's title. `rust-test-name-id` exists and is
+  rust-only; sap#68 adds the TypeScript equivalent, which is a DECLARATION change, not an
+  engine one.
+tags:
+- TC-1014
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title/input --json
+comment: >-
+  The trace id lives in the `it(...)` title and nowhere else — no `trace()` call, no comment
+  marker, no `Trace:` line. 81% of one repo's tests are written this way.

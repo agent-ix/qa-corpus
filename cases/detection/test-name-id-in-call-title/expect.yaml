@@ -1,0 +1,55 @@
+# THE FIRST ROW OF #268 WHERE THE ENGINE ALREADY DOES ITS JOB.
+#
+# Rows 1-5 are minting defects the engine is silent about. This one it detects
+# at L3, today, and the message is good:
+#
+#   1 typescript evidence symbols were examined and none carried a tag any
+#   declared form matched (forms: ts-trace-helper, typescript-trace-line,
+#   typescript-comment-id, typescript-doc-comment-id) — for example
+#   `TC-001: every finding defaults to warning` at src/coverage.test.ts:10,
+#   whose annotation carries no matching form; every row those symbols verify
+#   is reported unbacked, which is indistinguishable from a missing test
+#
+# It names the count, every form it tried, the exact symbol and line, and what
+# the consequence is. So the live block ASSERTS the detection rather than its
+# absence — this fixture's job is to stop that message regressing.
+#
+# The sharpest fact is in the symbol name itself. The engine is holding
+# `TC-001: every finding defaults to warning` and reporting that it cannot find
+# a trace id, because no declared TypeScript form reads a title. The id is
+# right there in the string it prints.
+#
+# The defect is therefore in the DECLARATION, not the engine: `rust-test-name-id`
+# exists and is rust-only. spec-artifacts-process#68 adds the TypeScript form.
+total: 2
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 1
+  - document: spec/tests.md
+    target: test-case
+    backed: 0
+    total: 1
+diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+diagnostic_paths:
+  no-symbol-bound: src/coverage.test.ts
+diagnostic_message_contains:
+  no-symbol-bound:
+    # Every declared form it tried. A message that named none of them would
+    # leave a reader unable to tell which marker to write.
+    - "ts-trace-helper"
+    - "typescript-comment-id"
+    # The symbol, verbatim — which is the id the engine could not read.
+    - "TC-001: every finding defaults to warning"
+    - "src/coverage.test.ts:10"
+    # And the consequence, which is the whole reason this matters.
+    - "indistinguishable from a missing test"
+binding_census:
+  - language: typescript
+    candidates: 1
+    bound: 0
+    unbound_example: src/coverage.test.ts:10
