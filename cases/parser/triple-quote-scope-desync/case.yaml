@@ -3,20 +3,14 @@ language: python
 module: ecosystem
 id: triple-quote-scope-desync
 issue_ref: agent-ix/quire-rs#274
-kind: failure
-findable: true
-pending: agent-ix/quire-rs#274
-pending_reason: >-
-  `python.rs` enters string mode only when a triple-quote STARTS the trimmed line, so an
-  assigned string is parsed as code and its closing quote is read as an opener. The payload
-  carries the EVIDENCE for both halves — a phantom in `untracked_symbols`, the real row
-  unbacked — and no DIAGNOSTIC joins them or names the cause.
+kind: regression
 tags:
 - TC-1014
 - parser
 - binding
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync/input --json
 comment: >-
-  Two compounding failures on one string: the body is parsed as code, inventing a test that
-  does not exist, and then the closing quote swallows the rest of the file, losing the real
-  one. Measured across ~/dev: 51 files lose 387 real declarations; 3 files gain 6 phantoms.
+  A REGRESSION PIN, not a defect. #274 landed and this input now parses correctly. Its control
+  was the same content written the way the BROKEN parser could handle, so once the parser was
+  fixed both spellings parsed identically and the pair had nothing left to separate — AC-42
+  rejected it, correctly. The input is still the shape that used to break.

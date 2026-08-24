@@ -44,6 +44,18 @@ grading_levels:
 case_kinds:
 - failure
 - control
+# A fixture that pins behaviour a LANDED ticket established, rather than a
+# defect that still reproduces. No control, not findable, no `pending:`.
+#
+# Added when the first Wave 3 fix landed. #274's fixture had a control that was
+# the same content written the way the BROKEN parser could handle — so once the
+# parser was fixed both spellings parsed identically and the pair had nothing
+# left to separate. FR-065-AC-42 rejected it, correctly. The input is still the
+# shape that used to break, and asserting it parses is worth keeping.
+#
+# Not every fix leaves one behind. Where a fix makes a diagnostic FIRE, the
+# control stays silent and the pair keeps discriminating (FR-065-AC-43/44).
+- regression
 
 # EVERY diagnostic reason a fixture may name, and the only place a new token is
 # introduced. Both runners reject a token that appears in neither list.
@@ -134,9 +146,6 @@ diagnostic_reasons:
 # so it lives in the graders rather than here.
 behaviour_change_tickets:
 - agent-ix/quire-rs#272
-# The scanner fix. No diagnostic is added — the parse becomes correct, so the
-# payload changes shape.
-- agent-ix/quire-rs#274
 # Registers `describe()`/`suite()` headers as Containers, so a tag on the header
 # has something to attach to. No diagnostic added.
 - agent-ix/quire-rs#273
@@ -291,7 +300,11 @@ inventory:
   # (test_deps.py:464, confirmed with ast) and the scanner reports it under
   # `TestTomlParsing`.
   case: triple-quote-scope-desync
-  source: symbols/python.rs:40-42 — 51 files lose ~386 declarations (bare-name, reproduced twice)
+  source: >-
+    symbols/python.rs — FIXED by #274; regression pin. Recovery measured on the real ecosystem:
+    py-project 102 to 151 python binding candidates, filament-parser-lib 311 to 395, and repos
+    with no triple-quoted assignment unchanged (quire-rs 125, sqlmodel-fixtures 74), so the gain
+    is recovery rather than inflation.
   languages:
   - python
 - mode: join

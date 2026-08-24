@@ -1,53 +1,34 @@
-# The inventory said "2 files". Two independent ports of `python.rs`'s state
-# machine, diffed against `ast.parse` over every .py under ~/dev, agree that
-# 51 files LOSE ~386 declarations by bare-name comparison. That half is settled.
+# A REGRESSION PIN. This fixture landed RED against agent-ix/quire-rs#274 and
+# is now green because the fix shipped. What it asserts is the fixed behaviour.
 #
-# The GAIN half is NOT, and this fixture does not claim a number for it: three
-# ports gave 6, 5, 109 and 1174 depending on how each qualified names. A defect
-# in the scanner cannot be sized by reimplementing the scanner, which is #309.
+# WHAT USED TO HAPPEN. `python.rs` entered string mode only when a triple-quote
+# STARTED the trimmed line, and two failures compounded on one string:
 #
-# And this fixture models the SIMPLE case. Real files OSCILLATE — string mode
-# toggles back on, the scope stack resumes stale, and most affected
-# declarations are not invented but attributed to the WRONG CONTAINER
-# (`test_update_simple_version` lives in `TestTomlModification` and is reported
-# under `TestTomlParsing`). That is the dominant mode by count, and a fix that
-# stopped the swallow while leaving the stack stale would close only the half
-# modelled here.
+#   1. the opener does not start its line -> the string BODY was parsed as
+#      code, INVENTING `test_phantom_inside_a_string` and binding TC-999 to it;
+#   2. the CLOSING quote does start its line -> it was read as an OPENER, and
+#      the rest of the file swallowed into a string that never ended, LOSING
+#      the real test.
 #
-# Two failures compound on one string, in opposite directions:
+# The payload called that healthy: `binding_census 1 candidate, 1 bound` — for
+# a symbol that does not exist in the program. The engine was measuring a
+# string literal.
 #
-#   1. The opener does not START its line, so the scanner never enters string
-#      mode and parses the string BODY as code — INVENTING a test that does not
-#      exist in the program and binding a trace id to it.
+# WHAT HAPPENS NOW. The string is skipped, the real test is seen, and it backs
+# its row. `untracked_symbols: []` is the assertion that the phantom is gone;
+# `test-case 1/1` is the assertion that the real test came back.
 #
-#   2. The CLOSING quote does start its line, so it is read as an OPENER, and
-#      everything after it swallows into a string that never ends. The real
-#      test is LOST.
+# RECOVERY, measured on the real ecosystem rather than on this fixture:
 #
-# The loss half is the larger one, and it is the one that is measured.
+#   py-project            102 -> 151 python binding candidates
+#   filament-parser-lib   311 -> 395
+#   quire-rs              125 -> 125   (no triple-quoted assignment)
+#   sqlmodel-fixtures      74 ->  74   (same)
 #
-# WHAT THE PAYLOAD SAYS ABOUT ALL THAT:
-#
-#   binding_census  python  candidates 1, bound 1
-#
-# One candidate, one bound, a perfectly healthy census — for a symbol that DOES
-# NOT EXIST. The engine is measuring a string literal. The real test appears
-# nowhere in the payload at all.
-#
-# `untracked_symbols` naming the phantom is the sharpest assertion here: the
-# engine stating, with a path and a line, that it found a test the file does
-# not contain. Ecosystem-wide, no WHOLLY-INVENTED name is a test function — so
-# this shape is a hazard this fixture prevents rather than an observed
-# condition, and it is written that way deliberately.
-#
-# Both existing guards stand down for #307's reason exactly — `no-symbol-bound`
-# needs `bound == 0`, `hollow-denominator` needs `matched == 0`, and both are 1.
-#
-# This is upstream of every python number this campaign quotes. A backing ratio
-# measured over a symbol set missing 387 declarations cannot settle "bad rule or
-# bad corpus" for python until #274 lands.
+# The unaffected repos not moving is the half that matters: the gain is
+# recovery, not inflation.
 total: 2
-backed: 0
+backed: 1
 groups:
   - document: spec/FR-001.md
     target: acceptance-criterion
@@ -55,19 +36,10 @@ groups:
     total: 1
   - document: spec/tests.md
     target: test-case
-    backed: 0
+    backed: 1
     total: 1
-untracked_symbols:
-  - symbol: "test_phantom_inside_a_string"
-    trace_id: TC-999
-    path: src/test_coverage.py
-unbacked_rows:
-  - document: spec/tests.md
-    row_id: TC-001
-    target_ids: [FR-001-AC-1, TC-001]
-  - document: spec/FR-001.md
-    row_id: FR-001-AC-1
-    target_ids: [FR-001-AC-1, TC-001]
+untracked_symbols: []
+unbacked_rows: []
 binding_census:
   - language: python
     candidates: 1

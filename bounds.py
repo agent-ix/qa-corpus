@@ -276,6 +276,9 @@ def check_controls(cases: list[dict]) -> None:
         if (partner, c.get("language")) in partners
     }
     for c in cases:
+        # A regression case is exempt: AC-13 exists so a check cannot score
+        # perfect recall against input with no healthy counterpart, and a
+        # regression case IS the healthy counterpart — there is no defect.
         if c.get("kind") != "failure":
             continue
         row = c.get("case") or c["id"]
@@ -371,6 +374,8 @@ def check_expectations(cases: list[dict]) -> None:
             raise CorpusError(
                 f"{name}: a control declares `case:`. A control credits no cell; "
                 f"the rows it serves are its `control_for` partners.")
+
+        check_regression(name, case, forward_path)
 
         live = yaml.safe_load(live_path.read_text()) or {}
         # THE LIVE BLOCK TOO. This was enforced on the forward block by both
@@ -479,6 +484,28 @@ def check_expectations(cases: list[dict]) -> None:
                 f"nothing ever tells you the fixture went stale.")
 
         check_findable(name, case, live, ahead, undetected, controlled)
+
+
+def check_regression(name: str, case: dict, forward_path) -> None:
+    """A regression case pins a LANDED fix, so it has no forward half.
+
+    No control (there is no defect to be the healthy counterpart OF), not
+    findable (nothing is expected to fire on it), and no `pending:` — the ticket
+    it names has already shipped.
+    """
+    if case.get("kind") != "regression":
+        return
+    if case.get("findable"):
+        raise CorpusError(
+            f"{name}: a regression case pins behaviour that WORKS — `findable` "
+            f"says a finding is expected on this input, and none is.")
+    if case.get("control_for"):
+        raise CorpusError(
+            f"{name}: a regression case has no partner to be the control of.")
+    if case.get("pending") or forward_path.is_file():
+        raise CorpusError(
+            f"{name}: a regression case pins a LANDED ticket; `pending:` and "
+            f"expect-pending.yaml both say the opposite.")
 
 
 def check_findable(
@@ -633,7 +660,12 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         # input stays silent; it measures nothing about the mode. The first
         # version credited either, so deleting the only ecosystem failure
         # fixture and keeping its control left `gap_count` unmoved.
-        if c.get("kind") != "failure":
+        # A REGRESSION case credits its cell too. It pins behaviour a landed
+        # ticket established, and the mode is exercised whether or not the
+        # behaviour is currently broken — a cell that reverted to GAP when its
+        # defect was FIXED would make `gap_count` count unfixed defects rather
+        # than unmeasured modes (FR-065-AC-44).
+        if c.get("kind") not in ("failure", "regression"):
             continue
         # The inventory row this fixture claims, by `case:` — falling back to
         # the id only for a fixture whose id IS the inventory name. Both keys
