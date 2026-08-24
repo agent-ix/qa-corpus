@@ -251,8 +251,21 @@ inventory:
   - python
   - typescript
 - mode: attachment
+  # MEASURED. The row was filed naming a code predicate and no population.
+  # Censused over ~/dev with worktrees, -task<N> copies, node_modules, build and
+  # virtualenv trees excluded, and this repository excluded so the fixtures do
+  # not census themselves: a declared comment-id form anywhere in a NON-test
+  # file, where every enclosing symbol is production and no kind binds. 1,677
+  # occurrences across 86 repos — python 497/47, rust 943/6, typescript 237/36.
+  #
+  # That is a superset of "directly above a production function": it also counts
+  # ids inside a production body and file-header banners, which land on the same
+  # two non-binding kinds. It is NOT a claim that all 1,677 were meant as
+  # binding tags — many are genuine prose citations, which is the ambiguity
+  # CR-061 refused to resolve by widening `verifies`. The claim is that the
+  # engine cannot tell the two apart and says nothing either way.
   case: tag-on-non-test-function
-  source: binds_trace_ids complement
+  source: 1,677 occurrences / 86 repos — python 497/47, rust 943/6, typescript 237/36
   languages:
   - python
   - rust

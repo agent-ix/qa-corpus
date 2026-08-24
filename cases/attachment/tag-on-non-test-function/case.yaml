@@ -1,0 +1,27 @@
+mode: attachment
+module: ecosystem
+id: tag-on-non-test-function
+case: tag-on-non-test-function
+issue_ref: agent-ix/quire-rs#312
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#312
+pending_reason: >-
+  `SymbolKind::Function.binds_trace_ids()` is false (CR-061), so a tag on production code is
+  not even a binding CANDIDATE — `trace::bind` drops it at `trace.rs:273`, BEFORE the census
+  increments `candidates`. It reaches neither channel: `verifies` refuses it by symbol kind,
+  `untracked_symbols` is built from `graph.verifies` and cannot see a tag that never bound,
+  and `implements` needs the literal `Implements:` prefix. #312 adds the diagnostic.
+tags:
+- TC-1014
+- attachment
+- binding
+comment: >-
+  THE CENSUS READS 1 OF 1 — a flawless 100% — while the row that tag names is reported
+  unbacked, and there is no `unbound_example` to follow because nothing was ever unbound. That
+  is the sharpest form of this defect and it is why the tree carries exactly one test.
+  Measured over ~/dev with worktrees, -task<N> copies, node_modules, build and virtualenv
+  trees excluded, and this repository excluded: 1,677 declared comment-id forms in non-test
+  files across 86 repos — python 497/47, rust 943/6, typescript 237/36. Shapes taken from
+  k8s-orchestration/k8s_orchestration/retry.py:15, catalog-mcp-ui/src/ElementList.tsx:20 and
+  quire-rs/src/corpus/validate.rs:253.

@@ -1,0 +1,77 @@
+# THE CENSUS READS 100% AND A ROW IS UNBACKED.
+#
+#   binding_census  python  candidates 1, bound 1   <- and no unbound_example
+#   groups          test-case 1 of 2
+#   unbacked_rows   TC-001, FR-001-AC-1
+#
+# Those three lines are the defect. `normalize_severity` is a plain function, so
+# `SymbolKind::Function`, and `binds_trace_ids()` is false for that kind
+# (CR-061: production doc comments routinely CITE the criterion they implement,
+# and binding them would mass-manufacture backing out of prose).
+#
+# THE TAG IS NOT A MISS, IT IS AN ABSENCE. `trace::bind` reaches
+# `if !symbol.kind.binds_trace_ids() { continue; }` at `trace.rs:273` — and the
+# census `candidates` counter is incremented AFTER that guard. So the symbol is
+# missing from the DENOMINATOR rather than counted as an unbound candidate, and
+# there is no `unbound_example` because nothing was ever unbound.
+#
+# That is what separates this row from `tag-at-module-scope`, whose numbers are
+# otherwise the same: there the misplaced tag leaves a real test unbound and the
+# census falls to 50%; here it leaves nothing unbound at all and the census is
+# perfect. A repository whose tags are ALL on production code reads 100% bound.
+#
+# NEITHER CHANNEL RECEIVES IT.
+#
+#   verifies           refused by symbol kind
+#   untracked_symbols  built from `graph.verifies` (`coverage.rs:1194`), so it
+#                      reports ids that BOUND and matched no row. A tag that
+#                      never bound is not there.
+#   implements         `python-implements-line` needs the literal `Implements:`
+#                      keyword; `# TC-001: Warning default.` does not carry it.
+#
+# AND THE ENGINE WALKED THAT EXACT SYMBOL. `coverage.implements` says three
+# production symbols were examined — the two module containers and
+# `normalize_severity` — and none carried a marker. The engine looked at the
+# symbol the tag is on, for the other relation, and published a bare zero.
+#
+# THIS IS THE FIELD THAT DISCRIMINATES, and it is the only one. The control
+# leaves the annotation where it is and rewrites it as `Implements:
+# FR-001-AC-1`, so every count below is byte-identical there — same `backed`,
+# same `groups`, same `unbacked_rows`, same census. `coverage.implements` goes
+# to 2 matched. Asserting `total: 1`-style incidentals would not have separated
+# this pair, which is exactly the weakness FR-065 records against ten of the
+# other eleven controlled fixtures.
+total: 4
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+untracked_symbols: []
+binding_census:
+  - language: python
+    candidates: 1
+    bound: 1
+metrics:
+  - name: coverage.implements
+    state: measured
+    value: 0
+    population: 3
+    examined: 3
+    matched: 0
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator

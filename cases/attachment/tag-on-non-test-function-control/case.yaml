@@ -1,0 +1,21 @@
+mode: attachment
+module: ecosystem
+id: tag-on-non-test-function-control
+issue_ref: agent-ix/quire-rs#312
+kind: control
+control_for:
+- tag-on-non-test-function
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- attachment
+- binding
+comment: >-
+  ONE LINE CHANGED, and the id-shaped annotation stays exactly where it is: the tag above the
+  production function is rewritten in the form the production channel accepts. That is the
+  repair for THIS defect — a production symbol cannot be evidence for a matrix row, and the
+  relation it can carry is `implements`. It is also the harder control: a detector written as
+  "any declared trace-id form inside a symbol that does not bind trace ids" fires here and is
+  wrong. The coverage counts are identical to its partner's BY DESIGN; the whole separation is
+  `coverage.implements`, which goes from 0 matched to 2 (rust 1, which has no file container).
