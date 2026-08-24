@@ -28,12 +28,16 @@ make bounds                     # the derived matrix and gap_count
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
 ```bash
-quire coverage --scope cases/attachment/marker-form-mismatch/input \
-               --module modules/variants/bench-legacy --json
+IX_FILAMENT_MODULES_PATH=modules/ecosystem \
+  quire coverage --scope cases/attachment/marker-form-mismatch/input --json
 ```
 
-`--module` is not decoration. Without it no traceability model loads, the run reports
-`0/0 rows backed`, and the case cannot exhibit the declaration defect it exists for.
+Naming the module is not decoration. Without it no traceability model loads, the run
+reports `0/0 rows backed`, and the case cannot exhibit the declaration defect it exists
+for. The ecosystem declaration is a module **path** — `spec-artifacts-process` *and*
+`spec-artifacts-iso` — so it is selected with `IX_FILAMENT_MODULES_PATH`;
+`--module` takes one directory and is what a variant-bound case uses.
+
 It runs from the root because the CLI **refuses a `..` segment** in `--module` under
 path safety, so a `cd input && … --module ../../../../modules/…` form is rejected
 (agent-ix/quire-rs#287).
@@ -96,17 +100,21 @@ Run `make bounds` — these numbers are **derived, never stored**, so they canno
 stale. Adding a fixture flips its own cell and moves the count with no edit to any
 central file.
 
-Most fixtures are ports of the old `quire-rs` cases and bind the `bench-legacy`
-variant — the synthetic manifest whose heading always matches — so they cover no
-ecosystem mode and the matrix says so. Rebinding them is `agent-ix/quire-rs#285`.
+`agent-ix/quire-rs#285` migrated the last of the ported `quire-rs` cases off
+`bench-legacy` — the synthetic manifest whose heading always matches — and deleted
+it. Every fixture binds the vendored ecosystem declaration now, with one exception
+that the matrix still reports as a `GAP`: `provenance/implements-never-asked`
+asserts a metric state (`coverage.implements: not_computed`) that only a module
+declaring no `implements` forms can produce, so it binds a variant relaxing that one
+axis (`agent-ix/quire-rs#330`).
 
 A cell covered by a **pending** fixture is reported separately: a case exists and
 the engine fails it, and `covered` read as `working` is the conflation this
 corpus exists to end.
 
-Starting near zero is the honest reading. A corpus that credited itself on day one
-for cases bound to a manifest that cannot fail is the exact defect this repository
-was created to end.
+A corpus that credited itself on day one for cases bound to a manifest that cannot
+fail is the exact defect this repository was created to end, which is why the count
+started near zero and why it moves one migration at a time.
 
 ### A fixture may be red before its fix
 

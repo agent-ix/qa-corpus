@@ -75,5 +75,10 @@ SHA rather than a silent fetch.
 
 One heading name strands **3,514 TC ids across 88 repositories**. A corpus bound
 to a manifest whose heading always matches cannot exhibit that defect — which is
-why the synthetic module the ported cases still carry lives in
+why the synthetic module the ported cases arrived on was carried in
 `modules/variants/bench-legacy/` under a named ticket rather than here.
+
+`agent-ix/quire-rs#285` migrated the last case off it and **deleted it**. Every
+fixture in this corpus now binds this declaration except one, and that one binds
+a variant relaxing a single axis it is itself named for
+(`modules/variants/no-implements-declaration/`, `agent-ix/quire-rs#330`).

@@ -559,37 +559,41 @@ known_gaps:
   findable_but_undetected:
     reason: >-
       A `findable` case tells a recall-scoring consumer to expect a finding on that
-      input. These nine require none, in either block, so their cells read `covered` for a mode
+      input. These four require none, in either block, so their cells read `covered` for a mode
       nothing measures — three of them (`mocked-confirmation`, `oracle-copy`,
       `vacuous-property-suite`) ship byte-identical live blocks true of any healthy three-row
       corpus, and swapping one's whole `input/` tree for another's leaves every gate green.
       Deciding each — write the assertion, or stop calling it findable — is agent-ix/quire-rs#301.
-      All eight are ALSO uncontrolled, and that is the sharper fact: with no control there is
+      All four are ALSO uncontrolled, and that is the sharper fact: with no control there is
       nothing to discriminate against, so FR-065-AC-42 cannot reach them either. Writing the
-      missing controls (agent-ix/quire-rs#286) dissolves both lists at once — a ninth entry here,
-      `no-symbol-method-in-the-verification-column`, HAS a control, discriminates against it, and
+      missing controls (agent-ix/quire-rs#286) dissolves both lists at once —
+      `no-symbol-method-in-the-verification-column` HAS a control, discriminates against it, and
       needed no exemption once AC-42 existed.
+      DOWN FROM EIGHT, by agent-ix/quire-rs#285. `greenfield-no-symbols` and
+      `stale-name-correct-trace` gained the controls #286 asked for — AC-42 is strictly stronger
+      than "names a diagnostic", so a controlled case needs no exemption here — and
+      `implements-never-asked` and `tests-directory-topology` are `regression` pins now, which are
+      never `findable`. Two of the four were only reachable BECAUSE of the migration: on
+      `bench-legacy` the stale-name pair produced identical payloads and had nothing to separate.
     cases:
     - gate-that-gates-nothing
-    - greenfield-no-symbols
-    - implements-never-asked
     - mocked-confirmation
     - oracle-copy
-    - stale-name-correct-trace
-    - tests-directory-topology
     - vacuous-property-suite
   uncontrolled_failure_cases:
-    reason: FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
+    reason: >-
+      FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
       fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
+      DOWN FROM ELEVEN, by agent-ix/quire-rs#285. `greenfield-no-symbols` and
+      `stale-name-correct-trace` now have controls; `implements-never-asked` and
+      `tests-directory-topology` are `regression` pins, which AC-43 exempts because a regression
+      case IS the healthy counterpart and there is no defect for a control to be the healthy
+      version OF.
     cases:
     - gate-that-gates-nothing
-    - greenfield-no-symbols
     - hollow-metric
-    - implements-never-asked
     - marker-mismatch
     - mocked-confirmation
     - oracle-copy
-    - stale-name-correct-trace
-    - tests-directory-topology
     - vacuous-property-suite
     - wrong-type-cell

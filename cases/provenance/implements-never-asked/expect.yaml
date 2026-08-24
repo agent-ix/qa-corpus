@@ -1,3 +1,13 @@
+# Re-derived from a real run against `modules/variants/no-implements-declaration`
+# (engine bcda5ed, `quire` 0.30.2).
+#
+# `backed`/`total` are asserted BESIDE the metric state, and they are load-
+# bearing: `not_computed` over a model that minted nothing would be true of a
+# declaration that failed to load at all, which is the reading this case exists
+# to rule out. Two rows mint, one is backed, and the `implements` question was
+# still never asked.
+backed: 1
+total: 2
 metrics:
   -
     name: coverage.implements

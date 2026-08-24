@@ -1,0 +1,65 @@
+# A declaration that omits `traceability.trace_tags.implements`, and is the
+# ecosystem's own spelling in every other respect this fixture touches.
+#
+# See VARIANT.md. This is NOT a transitional relaxation: `coverage.implements`
+# reaches `state: not_computed` only when the loaded module declares no
+# `implements` forms, and the vendored ecosystem declares three
+# (`rust-implements-line`, `python-implements-line`, `typescript-implements-line`
+# — `modules/ecosystem/spec-artifacts-process/manifest.yaml:1185-1197`). A
+# fixture for that metric state therefore cannot bind `ecosystem` at all.
+name: no-implements-declaration
+manifest_version: 1.0.0
+version: 0.0.1
+artifact_types:
+- name: FR
+  grammar_ref: iso-spec-core
+- name: TestMatrix
+traceability:
+  trace_targets:
+  # The ECOSYSTEM's heading and id column, not `Test Cases` / `ID`. The one
+  # axis this variant relaxes is the absent `implements:` block below; a second
+  # relaxation carried alongside it would make the fixture unable to say which
+  # of the two it was measuring.
+  - name: test-case
+    archetype: TestMatrix
+    section:
+    - "*Test Case Summary*"
+    - Integration Test Matrix
+    id_column: Test ID
+  - name: acceptance-criterion
+    archetype: FR
+    section: Acceptance Criteria
+    id_column: ID
+  document_references:
+  - name: verification
+    archetype: FR
+    section: Acceptance Criteria
+    row_id_column: ID
+    column: Verification
+    targets: [test-case]
+    pattern: '\b((?:TC|IT)(?:-[A-Za-z0-9]+)*-\d+[A-Za-z0-9]*)\b'
+    expand_ranges: true
+    strip_annotations: false
+  - name: traces-to
+    archetype: TestMatrix
+    section:
+    - "*Test Case Summary*"
+    - Integration Test Matrix
+    column: Traces To
+    row_id_column: Test ID
+    pattern: '\b([A-Za-z]{2,4}-\d+(?:-[A-Za-z]+-\d+)?)\b'
+    targets: [acceptance-criterion]
+    expand_ranges: true
+    strip_annotations: true
+  status:
+    column: Status
+    complete: ["✅"]
+    pending: ["\U0001F6A7"]
+  trace_tags:
+    markers:
+    - name: rust-trace-attribute
+      language: rust
+      pattern: '#\[trace\(((?:\s*"[^"]*"\s*,?)+)\)\]'
+      template: '#[trace({ids})]'
+    # DELIBERATELY ABSENT: `implements:`. That absence is the fixture's whole
+    # subject — see VARIANT.md.
