@@ -72,10 +72,17 @@ diagnostic_reasons:
   emitted:
   - catch-all-universal
   - hollow-denominator
+  # agent-ix/quire-rs#270, landed: the archetype matched the document and the
+  # declared table did not. Two tokens rather than one because the two faults
+  # differ in exactly one field of the payload — a wrong section strands the
+  # table and `unbacked_rows` is empty, a wrong id column reads it and mints a
+  # row whose `row_id` is null — and agree in every field a reader looks at.
+  - id-column-matches-nothing
   - low-symbol-binding
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
+  - section-matches-nothing
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
   # Tokens no engine emits YET, each naming the ticket that will add it. A
@@ -92,8 +99,6 @@ diagnostic_reasons:
   # When a ticket lands, its token MOVES from `forward` to `emitted`. That edit
   # is the one that makes every pending fixture in its group go green at once.
   forward:
-    section-matches-nothing: agent-ix/quire-rs#270
-    id-column-matches-nothing: agent-ix/quire-rs#270
     # An id in `untracked_symbols` that differs from one in `unbacked_rows` only
     # by zero-padding, case or separator. The engine holds both strings and
     # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down

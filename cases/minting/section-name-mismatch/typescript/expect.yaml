@@ -1,5 +1,5 @@
-# The LIVE contract: what holds TODAY, asserted for real. What
-# agent-ix/quire-rs#270 will add lives in expect-pending.yaml.
+# The whole contract, live. agent-ix/quire-rs#270 has landed, so what used to
+# sit in expect-pending.yaml is folded in below and graded like everything else.
 #
 # The declared heading is `Test Case Summary`; this document says `Test Cases`.
 # Nothing in the table is read, so nothing mints — `groups` has the criterion
@@ -20,8 +20,23 @@ binding_census:
   - language: typescript
     candidates: 1
     bound: 1
-# The two #270 tokens are NOT asserted absent here. They belong to the fix this
-# case is waiting for, so a live block naming them would be guaranteed to FAIL
-# the day it lands rather than pass — and the run would report a lost detection
-# level instead of "the ticket appears to have landed". Their absence is the
-# CONTROL's claim, where it stays true after the fix.
+# ── agent-ix/quire-rs#270 LANDED (CR-117, v0.33.0 engine) ──────────────────
+#
+# Folded from expect-pending.yaml, RE-MEASURED against the payload rather than
+# copied from the forward block. L3 is asserted, not just L1/L2: told only that
+# "something matched nothing", a reader of agent-ix/identity cannot tell which
+# of the two headings to edit. The message names both the heading it FOUND and
+# the one DECLARED.
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing:
+    - "Test Cases"
+    - "Test Case Summary"
+# The id column is RIGHT in this tree, so the partner token must stay silent —
+# the assertion that keeps this case discriminating from `section-and-id-column`
+# rather than merely firing.
+absent_diagnostic_reasons:
+  - id-column-matches-nothing

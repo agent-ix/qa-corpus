@@ -5,10 +5,6 @@ case: section-and-id-column
 issue_ref: agent-ix/quire-rs#270
 kind: failure
 findable: true
-pending: agent-ix/quire-rs#270
-pending_reason: >-
-  No engine emits `section-matches-nothing` yet. Until it does, a repository in this
-  state is indistinguishable from one that simply wrote fewer rows.
 tags:
 - TC-1014
 - minting

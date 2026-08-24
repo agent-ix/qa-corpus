@@ -14,7 +14,3 @@ tags:
 - TC-1014
 - minting
 - coverage
-pending: agent-ix/quire-rs#270
-pending_reason: 'The engine emits no diagnostic when the archetype and section match and the ID COLUMN
-  does not. #270 adds `id-column-matches-nothing` alongside `section-matches-nothing`. Until it lands
-  this fails at L1, which is the correct state for a defect nobody has fixed.'

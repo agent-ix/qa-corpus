@@ -1,5 +1,5 @@
-# The LIVE contract: what holds TODAY, asserted for real. What
-# agent-ix/quire-rs#270 will add lives in expect-pending.yaml.
+# The whole contract, live. agent-ix/quire-rs#270 has landed, so what used to
+# sit in expect-pending.yaml is folded in below and graded like everything else.
 #
 # The heading is RIGHT (`Test Case Summary`); the id column is not — this
 # document says `Test Case ID` where the ecosystem declares `Test ID`.
@@ -28,8 +28,23 @@ binding_census:
   - language: rust
     candidates: 1
     bound: 1
-# The two #270 tokens are NOT asserted absent here. They belong to the fix this
-# case is waiting for, so a live block naming them would be guaranteed to FAIL
-# the day it lands rather than pass — and the run would report a lost detection
-# level instead of "the ticket appears to have landed". Their absence is the
-# CONTROL's claim, where it stays true after the fix.
+# ── agent-ix/quire-rs#270 LANDED (CR-117, v0.33.0 engine) ──────────────────
+#
+# Folded from expect-pending.yaml, RE-MEASURED against the payload. L3 is
+# asserted because L1 is not enough here: agent-ix/identity has 606 TC ids
+# minting nothing, and a finding that says only "something matched nothing"
+# sends its reader to the heading, which is correct, and leaves all 606
+# stranded. The message names the column FOUND and the column DECLARED.
+diagnostic_reasons:
+  - id-column-matches-nothing
+diagnostic_paths:
+  id-column-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  id-column-matches-nothing:
+    - "Test Case ID"
+    - "Test ID"
+# The heading is RIGHT in this tree. Asserting the section token absent is what
+# makes the pair a DISCRIMINATION rather than two fixtures that both fire: its
+# sibling `section-name-mismatch` asserts the mirror image.
+absent_diagnostic_reasons:
+  - section-matches-nothing

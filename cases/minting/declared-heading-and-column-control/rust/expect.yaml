@@ -5,8 +5,10 @@
 # it could not say that THE TC ROW mints. `test-case 1/1` says exactly that,
 # and `unbacked_rows: []` says the row that minted also bound.
 #
-# The absence tokens carry the two the engine really emits today alongside the
-# forward one, so this control can fail now rather than only once #270 lands.
+# The absence tokens were written while two of the four were still forward, so
+# this control could fail before #270 landed rather than only after. All four
+# are emitted now, and all four must stay silent on a healthy matrix — which is
+# the claim that stops the two new checks from being constants.
 total: 2
 backed: 1
 groups:

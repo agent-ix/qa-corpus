@@ -1,4 +1,5 @@
-# The LIVE contract. What #270 adds is in expect-pending.yaml.
+# The whole contract, live. #270 has landed and its forward block is folded in
+# below.
 #
 # MEASURED, and the point of this row: the payload is BYTE-IDENTICAL to
 # `section-name-mismatch`'s, in every key. `unbacked_rows` is EMPTY here even
@@ -26,3 +27,30 @@ binding_census:
   - language: typescript
     candidates: 1
     bound: 1
+# ── agent-ix/quire-rs#270 LANDED (CR-117, v0.33.0 engine) ──────────────────
+#
+# Folded from expect-pending.yaml, RE-MEASURED against the payload.
+#
+# Only `section-matches-nothing` is asserted, and that is deliberate. The
+# heading defect strands the table before the id column is ever read, so
+# `id-column-matches-nothing` is NOT reachable on this input — asserting it
+# would demand the engine report a defect it cannot observe. (Measured: the
+# engine emits exactly one minting diagnostic here.)
+#
+# L3 names both the heading FOUND and the one DECLARED, because a reader of
+# agent-ix/identity told only that "something matched nothing" cannot tell
+# which of the two defects on this document to edit.
+diagnostic_reasons:
+  - section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing:
+    - "Test Cases"
+    - "Test Case Summary"
+    # THE THESIS OF THIS ROW, asserted rather than argued in a comment. The
+    # heading defect strands the table, so the declared id column is never
+    # checked — and a reader told only that the heading is wrong will fix it,
+    # re-run, and meet a second defect that was there all along. The message
+    # has to name what it could NOT check.
+    - "Test ID"
