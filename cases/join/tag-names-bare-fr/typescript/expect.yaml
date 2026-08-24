@@ -1,0 +1,73 @@
+# THE ENGINE READS THE TAG PERFECTLY AND JOINS IT TO NOTHING.
+#
+# This is the row where the binder is not at fault in any way. The tag is not
+# missing, not misplaced, and not in an unreadable form:
+#
+#   binding_census  typescript  candidates 2, bound 2   <- 100%, and honestly so
+#
+# Both tags bind. `typescript`'s comment-id form admits a bare `FR-\d+`, the
+# enclosing symbol is a test function, and the engine records the relation. What
+# it recorded is a relation to an id the declaration never minted:
+# `acceptance-criterion` mints `FR-001-AC-1`, `test-case` mints `TC-001`, and
+# the bare document id `FR-001` is none of those — not minted, not referenced by
+# any table cell, not any row's own id (`coverage.rs:1198`).
+#
+# DETECTION REACHES L2, NOT L1. No diagnostic reason fires — `no-symbol-bound`
+# needs `bound == 0`, `low-symbol-binding` needs under 5%, and both are correct
+# to stand down. What the engine publishes instead is the LOCUS, and it is
+# exact: `untracked_symbols` names the symbol, the id it bound, and the file.
+# Read beside `unbacked_rows`, the two lists are the whole diagnosis — the test
+# that answers TC-001 is right there, holding a different string.
+#
+# This fixture therefore asserts the DETECTION rather than its absence. Its job
+# is to stop that pair regressing, and `untracked_symbols` is the field the
+# corpus already relies on for #272.
+#
+# THE PAYLOAD CARRIES A LINE (14) THAT THIS BLOCK CANNOT ASSERT. Both graders
+# compare `untracked_symbols` on (symbol, trace_id, path) only, deliberately —
+# two identical bindings in one file are one defect, not two records
+# (`coverage.rs:1247`). The line is in the JSON and a reader gets it; the
+# assertion stops at the file.
+#
+# NOT A NEAR MISS IN #307's SENSE. That ticket pairs ids differing by zero
+# padding, case or separator — `TC-1` against `TC-001`. `FR-001` against
+# `FR-001-AC-1` differs by a whole id segment, and a rule that joined them would
+# back every criterion of a requirement from one test naming the requirement.
+#
+# MIXED on purpose: one bare requirement id beside one minted test-case id, so
+# the census stays at 100% and no binding diagnostic can be credited for
+# catching this.
+total: 4
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+# THE DETECTION. Exact, both directions: an extra entry, a missing one, a
+# changed field or a different order all fail (FR-065-AC-28).
+untracked_symbols:
+  - symbol: defaults every finding to warning
+    trace_id: FR-001
+    path: src/coverage.test.ts
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 2
+# None of these may fire: the binder read this tree correctly and said so.
+# Crediting a binding diagnostic here would be crediting it for noise.
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator

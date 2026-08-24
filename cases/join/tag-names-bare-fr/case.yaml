@@ -1,0 +1,24 @@
+mode: join
+module: ecosystem
+id: tag-names-bare-fr
+case: tag-names-bare-fr
+issue_ref: agent-ix/quire-rs#268
+kind: failure
+findable: true
+tags:
+- TC-1014
+- join
+- binding
+comment: >-
+  NOT PENDING. The engine already does its job here, at L2: the id lands in `untracked_symbols`
+  with the symbol, the trace id and the path, and the rows it fails to answer sit in
+  `unbacked_rows`. The fixture exists to stop that regressing.
+  The tag is not missing, misplaced or unreadable — it BINDS, and the census counts it as
+  bound. `FR-001` is simply an id the declaration never mints: `acceptance-criterion` mints
+  `FR-001-AC-1` and `test-case` mints `TC-001`, and the document id itself is neither minted,
+  referenced by a cell, nor any row's id. Measured over ~/dev with worktrees, -task<N> copies,
+  node_modules, build and virtualenv trees excluded, and this repository excluded: 714 bare
+  requirement-id tags in test files across 50 repos — python 504/38, rust 179/3, typescript
+  31/10. Shapes from agent-duncan/tests/unit/test_executor.py:2234,
+  ecaz/src/tests/ec_distann_basic.rs:767 and
+  filament-ui-shared/tests/useArchetypeNav.test.ts:48.

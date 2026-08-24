@@ -315,8 +315,21 @@ inventory:
   - rust
   - typescript
 - mode: join
+  # RE-MEASURED, and 244 was low by roughly 3x. Censused over ~/dev with
+  # worktrees, -task<N> copies, node_modules, build and virtualenv trees
+  # excluded, and this repository excluded so the fixtures do not census
+  # themselves: a declared comment-id or doc-comment form in a TEST file whose
+  # id is a BARE requirement id — `FR-12`, `NFR-3`, `US-7`, no `-AC-` segment.
+  # Test files only, because that is where an evidence symbol can bind one and
+  # produce the untracked entry this row is about. 714 occurrences across 50
+  # repos: python 504/38, rust 179/3, typescript 31/10.
+  #
+  # The engine DETECTS this one, at L2: the id lands in `untracked_symbols` with
+  # the symbol and the path, and the rows it fails to answer sit in
+  # `unbacked_rows`. No diagnostic reason fires, and none should — the census is
+  # an honest 100%, because the tag really did bind.
   case: tag-names-bare-fr
-  source: 244 tags
+  source: 714 occurrences / 50 repos in test files — python 504/38, rust 179/3, typescript 31/10
   languages:
   - python
   - rust

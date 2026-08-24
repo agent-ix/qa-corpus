@@ -1,0 +1,18 @@
+mode: join
+module: ecosystem
+id: tag-names-bare-fr-control
+issue_ref: agent-ix/quire-rs#268
+kind: control
+control_for:
+- tag-names-bare-fr
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- join
+- binding
+comment: >-
+  FOUR CHARACTERS. The bare requirement id becomes the criterion id the declaration mints, and
+  nothing else in the tree changes — same two tests, same comment form, same position in the
+  body, same sibling tag. It is the smallest control in this corpus and it moves four fields:
+  `backed`, `groups`, `unbacked_rows` and `untracked_symbols`.

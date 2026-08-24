@@ -1,0 +1,39 @@
+# THE CONTROL, AND IT IS FOUR CHARACTERS AWAY FROM ITS PARTNER.
+#
+# The bare requirement id becomes the criterion id the declaration mints.
+# Nothing else in the tree changes: same two tests, same comment form, same
+# position in the body, same sibling tag, same census.
+#
+#   case      backed 1/4  ac 0/2  1 untracked  2 unbacked
+#   control   backed 2/4  ac 1/2  0 untracked  0 unbacked
+#
+# Four fields move, so FR-065-AC-42 is met four times over on a one-token edit.
+# That is the sharpest statement this pair can make: the failure case is not
+# about a tag the engine could not read, and the proof is that reading is
+# identical on both sides — `binding_census` is 2 of 2 here and 2 of 2 there.
+#
+# `untracked_symbols: []` is the assertion that matters most. Its partner names
+# one entry; this names none. A change that stopped populating the field
+# altogether would leave this block green and break the partner's, which is the
+# direction that catches a silent removal.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 1
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+  - language: python
+    candidates: 2
+    bound: 2
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
