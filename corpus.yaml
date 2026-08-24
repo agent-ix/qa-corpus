@@ -342,8 +342,24 @@ inventory:
   - rust
   - typescript
 - mode: disposition
+  # RE-MEASURED, and 82 was low by most of a factor of two. Censused over ~/dev
+  # with worktrees, -task<N> copies, node_modules, build and virtualenv trees
+  # excluded, and this repository excluded so the fixtures do not census
+  # themselves: repositories holding at least one test file, split by whether
+  # any test file in them carries any declared trace-tag form — a marker, a
+  # `Trace:` line, a comment id or a doc-comment id. 234 repos hold test files;
+  # 150 of them carry no binding tag at all.
+  #
+  # The engine DETECTS this one and does it best of anything it writes:
+  # `no-symbol-bound` and `hollow-denominator` both fire at L3, with the count,
+  # every declared form tried, an example symbol at `path:line`, and the
+  # consequence. The fixture is a regression net for that message.
+  #
+  # It is also the ONE row whose fixture is deliberately not MIXED. Elsewhere an
+  # all-defective tree fires `no-symbol-bound` for a reason that holds in no real
+  # repository; here the degenerate tree is 150 of 234 repositories.
   case: real-tests-zero-tags
-  source: 82 repos — must dispose authoring-absent
+  source: 150 of 234 repos with test files carry no binding tag in any test
   languages:
   - python
   - rust

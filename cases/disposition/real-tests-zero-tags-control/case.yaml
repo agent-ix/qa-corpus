@@ -1,0 +1,20 @@
+mode: disposition
+module: ecosystem
+id: real-tests-zero-tags-control
+issue_ref: agent-ix/quire-rs#268
+kind: control
+control_for:
+- real-tests-zero-tags
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- disposition
+- binding
+comment: >-
+  The SAME two tests with a tag added to each. Same names, same bodies, same assertions —
+  the only difference is that this tree has been authored against the matrix and its partner
+  has not. That is the disposition the pair exists to separate, and it is why the control
+  matters more here than anywhere else in the corpus: `no-symbol-bound` fires whenever a
+  language binds nothing, so a check that could not stay silent on a tagged tree would score
+  perfect recall on the mode this row is named for.

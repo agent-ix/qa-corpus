@@ -1,0 +1,121 @@
+# THE ENGINE GETS THIS ONE COMPLETELY RIGHT, TWICE, AT L3.
+#
+# Two diagnostics fire on this tree and both name the thing to change:
+#
+#   no-symbol-bound     2 python evidence symbols were examined and none carried
+#                       a tag any declared form matched (forms: pytest-trace-marker, python-trace-line, python-comment-id, python-docstring-id)
+#                       — for example `test_defaults_every_finding_to_warning` at src/test_coverage.py:18, whose annotation
+#                       carries no matching form; every row those symbols verify
+#                       is reported unbacked, which is indistinguishable from a
+#                       missing test
+#
+#   hollow-denominator  `coverage.backed` published a ratio over 4 matrix rows
+#                       but read none of the 2 it walked, so the number is
+#                       arithmetic over nothing; <the method, in full>
+#
+# THAT IS THE WHOLE DISPOSITION, STATED. The first clause is the count, the
+# second is every form that had a chance, the third is a symbol with a
+# `path:line` a reader can open, and the last is the consequence — and the
+# consequence is precisely the confusion this corpus exists to end: an untagged
+# suite and an absent suite produce the same 0 of 4.
+#
+# `hollow-denominator` is the same fact from the metric side. `coverage.backed`
+# is a RATIO over a population of 4 that read none of the 2 it walked, so the 0%
+# is arithmetic over nothing rather than a measurement of coverage
+# (FR-063-AC-5). Publishing that number bare is how a repository gets told it has
+# no tests when what it has is no tags.
+#
+# SO THIS FIXTURE ASSERTS THE DETECTION, at every level the ladder has:
+#
+#   L1  both reasons fire
+#   L2  `no-symbol-bound` names src/test_coverage.py, and `binding_census.unbound_example`
+#       names src/test_coverage.py:18
+#   L3  the message names the count, all 4 declared forms, the symbol, the
+#       line, and the consequence
+#
+# It is a regression net for the best message the engine currently writes.
+#
+# NOT MIXED, and this is the one fixture in the corpus for which that is right.
+# Everywhere else a degenerate all-defective tree fires `no-symbol-bound` for a
+# reason that holds in no real repository, so those fixtures pair a defective tag
+# with a correct one. Here the degenerate tree IS the population: 150 of the 234
+# repositories under ~/dev that hold test files carry no binding tag at all.
+#
+# WHICH MAKES THE CONTROL LOAD-BEARING RATHER THAN CEREMONIAL. `no-symbol-bound`
+# fires whenever a language binds nothing, so it is exactly the shape of check
+# that can score perfect recall by firing on everything. The control is the same
+# two tests with a tag added to each — same names, same bodies, same assertions —
+# and all three binding diagnostics must be absent there.
+total: 4
+backed: 0
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 0
+    total: 2
+# ALL FOUR ROWS, exactly and in order. The control's list is empty, so this is
+# the field that separates the pair at its widest.
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/tests.md
+    row_id: TC-002
+    target_ids: [FR-001-AC-2, TC-002]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-2
+    target_ids: [FR-001-AC-2, TC-002]
+# EMPTY, and it is a claim: nothing bound to anything at all. A tree whose tags
+# were merely in the wrong FORM would read the same here, which is why the
+# `no-symbol-bound` message has to name the forms it tried.
+untracked_symbols: []
+diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator
+# L2: the finding names the file.
+diagnostic_paths:
+  no-symbol-bound: src/test_coverage.py
+# L3: the message names the things to change.
+diagnostic_message_contains:
+  no-symbol-bound:
+    # The count, and the language it counted.
+    - "2 python evidence symbols were examined"
+    # Every declared form the binder consults for this language. Asserting a
+    # subset would let the others vanish from the message with nothing noticing.
+    - "pytest-trace-marker"
+    - "python-trace-line"
+    - "python-comment-id"
+    - "python-docstring-id"
+    # The symbol and the exact line, which is what a reader opens.
+    - "test_defaults_every_finding_to_warning"
+    - "src/test_coverage.py:18"
+    # And the consequence, which is the whole reason this matters.
+    - "indistinguishable from a missing test"
+  hollow-denominator:
+    # The metric, and both halves of the ratio that make it hollow.
+    - "`coverage.backed` published a ratio over 4 matrix rows"
+    - "read none of the 2 it walked"
+    - "arithmetic over nothing"
+binding_census:
+  - language: python
+    candidates: 2
+    bound: 0
+    unbound_example: src/test_coverage.py:18
+# The metric the second diagnostic is about, as data: a RATIO whose population is
+# non-empty, whose examined count is non-zero, and which matched nothing. That
+# triple is `Metric::is_hollow` exactly, and asserting it is what stops the
+# diagnostic and the metric it is about drifting apart.
+metrics:
+  - name: coverage.backed
+    state: measured
+    value: 0
+    population: 4
+    examined: 2
+    matched: 0

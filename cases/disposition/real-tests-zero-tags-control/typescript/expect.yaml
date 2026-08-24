@@ -1,0 +1,51 @@
+# THE CONTROL, AND IT IS DOING REAL WORK HERE.
+#
+# `no-symbol-bound` fires whenever a language binds nothing, so it is exactly the
+# shape of check that can score perfect recall by firing on everything. This tree
+# is the same two tests with a tag added to each — same names, same bodies, same
+# assertions — and all three binding diagnostics must stay silent on it.
+#
+#   case      backed 0/4  test-case 0/2  census 2 candidates, 0 bound  2 findings
+#   control   backed 2/4  test-case 2/2  census 2 candidates, 2 bound  0 findings
+#
+# Four fields move and both diagnostics stand down, so FR-065-AC-42 is met
+# several times over. `unbacked_rows` is the widest: four entries there, none
+# here.
+#
+# THE DISPOSITION IS THE POINT. Both trees hold real, passing tests. One has been
+# authored against the matrix and one has not, and telling those two apart is the
+# entire mode this row is named for — 150 of the 234 repositories under ~/dev
+# that hold test files are in the failure case's state, and reporting them as
+# having no tests is the wrong answer to give any of them.
+#
+# `coverage.backed` is asserted here as the same measurement, NOT hollow: matched
+# 2 of the 2 examined, over the same population of 4. The metric and the
+# diagnostic have to agree in both directions, or one of them is decoration.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 2
+    total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 2
+metrics:
+  - name: coverage.backed
+    state: measured
+    value: 2
+    population: 4
+    examined: 2
+    matched: 2
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator

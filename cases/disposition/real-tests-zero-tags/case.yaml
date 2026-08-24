@@ -1,0 +1,23 @@
+mode: disposition
+module: ecosystem
+id: real-tests-zero-tags
+case: real-tests-zero-tags
+issue_ref: agent-ix/quire-rs#268
+kind: failure
+findable: true
+tags:
+- TC-1014
+- disposition
+- binding
+comment: >-
+  NOT PENDING, and the strongest row of the four. Two diagnostics fire, both at L3:
+  `no-symbol-bound` names the count, every declared form it tried, an example symbol with
+  `path:line`, and the consequence; `hollow-denominator` names the metric, the population, the
+  examined count and the method. This fixture is a regression net for the best message the
+  engine currently writes.
+  NOT MIXED, deliberately, and it is the only fixture in this corpus for which that is right:
+  the degenerate all-untagged tree IS the population. Measured over ~/dev with worktrees,
+  -task<N> copies, node_modules, build and virtualenv trees excluded, and this repository
+  excluded: 234 repos hold test files and 150 of them carry no binding trace tag of any
+  declared form in any test. Shapes from data-store/tests/test_hashing.py,
+  build-chain/src/core/plugin.rs:50 and agent-pty/tests/session.test.ts.
