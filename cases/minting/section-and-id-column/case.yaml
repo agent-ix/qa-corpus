@@ -1,6 +1,7 @@
 mode: minting
 module: ecosystem
 id: section-and-id-column
+case: section-and-id-column
 issue_ref: agent-ix/quire-rs#270
 kind: failure
 findable: true
@@ -10,7 +11,6 @@ pending_reason: >-
   state is indistinguishable from one that simply wrote fewer rows.
 tags:
 - TC-1014
-- TC-1017
 - minting
 - coverage
 comment: >-
