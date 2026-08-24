@@ -1,0 +1,18 @@
+case: marker-mismatch
+family: marker-form-mismatch
+summary: Real tests, real tags, a marker spelling the module never declared. 1,292 such symbols in filament-ide-rs
+  bound nothing and the report said 23%.
+defects:
+- id: MM-1
+  family: marker-form-mismatch
+  location: src/lib.rs:5
+  row_id: TC-001
+  findable: true
+  expect_reason: no-symbol-bound
+  note: the module declares `#[trace(...)]`; the source writes `#[tracks(...)]`
+  confirmed_at: quire-rs v0.43.0
+  collateral:
+  - family: hollow-denominator
+    reason: hollow-denominator
+    note: an unread marker IS a hollow denominator; `coverage.backed` is the only ratio metric that can
+      go hollow and this is its only cause, so the two findings are one fact seen twice

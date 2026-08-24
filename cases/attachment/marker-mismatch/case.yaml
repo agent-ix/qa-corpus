@@ -1,0 +1,16 @@
+id: marker-mismatch
+case: marker-mismatch
+issue_ref: agent-ix/quoin#227
+mode: attachment
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-mismatch/input
+  --json
+tags:
+- TC-1014
+- attachment
+- finding-quality
+comment: Real tests, real tags, a marker spelling the module never declared. 1,292 such symbols in filament-ide-rs
+  bound nothing and the report said 23%.

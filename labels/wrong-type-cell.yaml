@@ -1,0 +1,18 @@
+case: wrong-type-cell
+family: undeclared-type-value
+summary: A `Type` cell naming a verification method the vocabulary has no word for. 128 such rows in filament-ide-rs,
+  and the `Inspection` ones were reported as status lies because no declared type said what they are.
+defects:
+- id: WT-1
+  family: undeclared-type-value
+  location: spec/tests.md:10
+  row_id: TC-001
+  findable: true
+  expect_reason: assert
+  note: '`Demonstration` is not in this module''s declared test_type vocabulary. The first draft of this
+    label was WRONG: the module declared the vocabulary but no `column_choices` assert, so nothing could
+    fire. Verifying the labels is what caught it. The SECOND draft was wrong too, at `spec/tests.md:8`
+    — the table header, not the row. Both errors were found by rendering the corpus and reading it, which
+    is the only way a label is ground truth rather than a claim.'
+  confirmed_at: quire-rs main (post v0.44.2, agent-ix/quire-rs#254)
+  needs_engine: '> v0.44.2'

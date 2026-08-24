@@ -7,7 +7,7 @@ issue_ref: agent-ix/quire-rs#270
 kind: control
 control_for: section-name-mismatch
 findable: false
-reproduce: quire coverage --scope cases/minting/section-name-mismatch-control/input --module modules/ecosystem
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch-control/input
   --json
 tags:
 - TC-1014

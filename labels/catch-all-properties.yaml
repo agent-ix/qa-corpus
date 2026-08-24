@@ -1,0 +1,14 @@
+case: catch-all-properties
+family: catch-all-universal
+summary: Every extractable criterion is the `universal` catch-all, so the extractable headline reads far
+  higher than the figure for 'the tool told me what property to write' — 54% against 8% in pass 2.
+defects:
+- id: CA-1
+  family: catch-all-universal
+  location: spec/FR-001.md
+  row_id: null
+  findable: true
+  expect_metric: coverage.specific_shaped
+  expect_value: 0
+  note: specific_shaped must be 0 while property_shaped is not
+  confirmed_at: quire-rs v0.43.0

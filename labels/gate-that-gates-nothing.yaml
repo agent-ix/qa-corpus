@@ -1,0 +1,19 @@
+case: gate-that-gates-nothing
+family: gate-that-gates-nothing
+summary: A gate that is wired, green, and asserts no condition that could fail. Observed across filament-ide-rs's
+  own CI during pass 2, found by a human, and detected by nothing anywhere in the ecosystem.
+defects:
+- id: GN-1
+  family: gate-that-gates-nothing
+  location: scripts/check_unwrap.sh:5
+  row_id: TC-001
+  findable: true
+  expect_reason: gate-that-gates-nothing
+  note: '`exit 0` follows unconditionally, so the gate is green for any grep result — and `src/lib.rs`
+    carries the `unwrap()` it claims to forbid, so the corpus proves the gate is not merely tautological
+    but actively wrong. NO DETECTOR EXISTS anywhere in the ecosystem (agent-ix/quoin#197 workstream 4),
+    so recall reads 0 and that 0 is the measurement. This is also the shape quoin#204 turned out to have:
+    a check that runs, evaluates one branch and returns empty every time is indistinguishable from a clean
+    result.'
+  confirmed_at: not detected at quire-rs v0.44.2 / quoin 0.21.8 — no detector
+  needs_engine: a detector that does not yet exist

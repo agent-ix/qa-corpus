@@ -1,0 +1,17 @@
+id: hollow-metric
+case: hollow-metric
+issue_ref: agent-ix/quoin#227
+mode: provenance
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/provenance/hollow-metric/input
+  --json
+tags:
+- TC-1014
+- provenance
+- finding-quality
+comment: A ratio published over a population the measurement could not read. `coverage` reported 23% over
+  filament-ide-rs while binding 0 of 1,292 evidence symbols, and three SpecReviews cite figures computed
+  under it.

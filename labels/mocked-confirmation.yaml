@@ -1,0 +1,21 @@
+case: mocked-confirmation
+family: mocked-confirmation
+summary: 'The behaviour a criterion verifies, substituted by the test that verifies it. Pass 2''s case:
+  FR-017-AC-7''s trusted-UI confirmation had no implementation and its test passed by injecting `Confirmation::allow()`.'
+defects:
+- id: MC-1
+  family: mocked-confirmation
+  location: src/lib.rs
+  row_id: TC-001
+  findable: true
+  expect_reason: mocked-confirmation
+  note: 'The criterion''s only binding injects `Confirmation::allow()` — the behaviour under verification
+    — so the test passes whether or not that behaviour exists. NOT YET DETECTED: quoin''s detector ships
+    at `src/auditor/audit.ts:241` and `mockedBindings` returns [] on every production call, because `AuditInput.injections`
+    is optional and no caller supplies it and nothing in the tree produces a `MockInjection` (agent-ix/quoin#204,
+    reopened). Scoring this family additionally needs the runner to call `quoin evidence audit` — `quire
+    coverage` and `quire properties` cannot see it — and an evidence store this corpus deliberately does
+    NOT carry, because a hand-written `statementHashAtBinding` would fabricate the one field the store''s
+    suspect-link check exists to compare.'
+  confirmed_at: not detected at quoin 0.21.8 — detector has no producer
+  needs_engine: agent-ix/quoin#204

@@ -1,0 +1,14 @@
+case: vacuous-property-suite
+family: vacuous-under-guard
+summary: Every assertion sits behind a narrowing guard, so an input that does not enter it passes unchecked.
+  TC-1596 was green while checking 2.3% of its samples.
+defects:
+- id: VP-1
+  family: vacuous-under-guard
+  location: src/lib.rs:7
+  row_id: TC-001
+  findable: true
+  expect_suspicion: vacuous-under-guard
+  note: the only assertion is inside an `if let`
+  confirmed_at: quire-rs main (post v0.43.0)
+  needs_engine: '> v0.43.0'

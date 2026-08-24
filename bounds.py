@@ -113,10 +113,18 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         module = (c.get("module") or "").strip().strip("./").rstrip("/")
         if not module:
             raise CorpusError(f"{c.get('id')}: declares no `module`")
-        if not (ROOT / "modules" / module / "manifest.yaml").is_file():
+        base = ROOT / "modules" / module
+        # A module id names either a single module (`manifest.yaml` directly) or
+        # a module PATH — a directory of module directories. `ecosystem` is the
+        # second: the real declaration is spec-artifacts-process AND
+        # spec-artifacts-iso, and vendoring only the first meant criteria
+        # classification silently produced nothing (agent-ix/quire-rs#292).
+        if not (base / "manifest.yaml").is_file() and not any(
+            d.joinpath("manifest.yaml").is_file() for d in base.glob("*") if d.is_dir()
+        ):
             raise CorpusError(
-                f"{c.get('id')}: module `{c.get('module')}` has no manifest at "
-                f"modules/{module}/manifest.yaml")
+                f"{c.get('id')}: module `{c.get('module')}` has no manifest under "
+                f"modules/{module}/")
         c["module"] = module
         # FR-065-CON-3 / AC-15: a variant binding names its relaxation ticket.
         if module != "ecosystem" and not c.get("relaxation_ticket"):

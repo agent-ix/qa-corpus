@@ -3,12 +3,19 @@
 `manifest.yaml` here is a **verbatim copy** of the ecosystem's declaration. It is
 the module a case binds unless it names a relaxation ticket (FR-065 CON-3).
 
-| | |
-|---|---|
-| Source | `agent-ix/spec-artifacts-process` |
-| Path | `spec_artifacts_process/manifest.yaml` |
-| Pinned SHA | `fa56ced6d772dc6f95a4d61bd0b813762488405d` |
-| Vendored | 2026-08-23 |
+**The real declaration is TWO modules**, and this directory is a module *path*
+carrying both. Vendoring only `spec-artifacts-process` was the defect
+`agent-ix/quire-rs#292` records: it declares the `traceability:` model but not
+`FR`, `NFR` or `TestMatrix`, so minting worked while **criteria classification
+silently produced nothing** and `catch-all-universal` could not fire on any
+fixture. The totals were identical either way, which is why it went unnoticed.
+
+| Module | Source path | Pinned SHA |
+|---|---|---|
+| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `fa56ced6d772dc6f95a4d61bd0b813762488405d` |
+| `spec-artifacts-iso` | `spec_artifacts_iso/manifest.yaml` | `3d871962b66db99a1854f40466e94ebabc7a6115` |
+
+Vendored 2026-08-24.
 
 ## Why a copy and not a submodule
 
@@ -21,8 +28,12 @@ its provenance.
 ## The refresh ritual (FR-065-CON-4)
 
 ```
-cp ../spec-artifacts-process/spec_artifacts_process/manifest.yaml modules/ecosystem/manifest.yaml
-git -C ../spec-artifacts-process rev-parse HEAD     # record it in the table above
+cp ../spec-artifacts-process/spec_artifacts_process/manifest.yaml \
+   modules/ecosystem/spec-artifacts-process/manifest.yaml
+cp ../spec-artifacts-iso/spec_artifacts_iso/manifest.yaml \
+   modules/ecosystem/spec-artifacts-iso/manifest.yaml
+git -C ../spec-artifacts-process rev-parse HEAD     # record both in the table above
+git -C ../spec-artifacts-iso rev-parse HEAD
 python3 -m pytest tests/                            # every case re-runs against the new declaration
 ```
 

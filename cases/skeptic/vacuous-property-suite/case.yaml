@@ -1,0 +1,16 @@
+id: vacuous-property-suite
+case: vacuous-property-suite
+issue_ref: agent-ix/quoin#227
+mode: skeptic
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/vacuous-property-suite/input
+  --json
+tags:
+- TC-1014
+- skeptic
+- finding-quality
+comment: Every assertion sits behind a narrowing guard, so an input that does not enter it passes unchecked.
+  TC-1596 was green while checking 2.3% of its samples.

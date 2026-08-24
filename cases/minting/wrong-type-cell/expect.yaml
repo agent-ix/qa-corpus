@@ -2,11 +2,7 @@
 # spec-artifacts-process AND spec-artifacts-iso, whole module directories
 # including their schemas (agent-ix/quire-rs#292).
 backed: 1
-total: 2
-absent_diagnostic_reasons:
-- no-symbol-bound
-- hollow-denominator
-- section-matches-nothing
+total: 3
 binding_census:
 - language: rust
   candidates: 1

@@ -1,0 +1,22 @@
+case: hollow-metric
+family: hollow-denominator
+summary: A ratio published over a population the measurement could not read. `coverage` reported 23% over
+  filament-ide-rs while binding 0 of 1,292 evidence symbols, and three SpecReviews cite figures computed
+  under it.
+defects:
+- id: HD-1
+  family: hollow-denominator
+  location: src/lib.rs
+  row_id: null
+  findable: true
+  expect_reason: hollow-denominator
+  note: 'One evidence symbol examined, none bound, so `coverage.backed` reports a ratio over nothing.
+    The diagnostic itself carries NO path — it names the metric, not a place — so this label pairs on
+    family alone and correctly drags `finding_localisation_rate` down: a number that cannot say where
+    is exactly the thing being measured.'
+  confirmed_at: quire-rs v0.44.2
+  collateral:
+  - family: marker-form-mismatch
+    reason: no-symbol-bound
+    note: the same unbound symbol seen through the binder's own lens; `hollow-denominator` is the generalization
+      of it, so a corpus that makes one fire makes both fire

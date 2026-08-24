@@ -54,10 +54,13 @@ def check_engine() -> str:
     if sample is None:
         raise SystemExit("verify: the corpus has no cases to probe with")
     meta = yaml.safe_load(sample.read_text())
-    probe = subprocess.run(
-        meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split(),
-        cwd=ROOT, capture_output=True, text=True,
-    )
+    tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
+    env = dict(os.environ)
+    while tokens and "=" in tokens[0] and not tokens[0].startswith("-"):
+        key, _, value = tokens[0].partition("=")
+        env[key] = value
+        tokens = tokens[1:]
+    probe = subprocess.run(tokens, cwd=ROOT, capture_output=True, text=True, env=env)
     try:
         engine = json.loads(probe.stdout).get("engine") or {}
     except json.JSONDecodeError:
@@ -109,8 +112,16 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
     if unknown:
         failures.append(f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}")
 
-    argv = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
-    done = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True)
+    # The invocation may carry leading `KEY=value` assignments — the ecosystem
+    # declaration is a module PATH, not a single module, so it is selected with
+    # IX_FILAMENT_MODULES_PATH rather than `--module` (agent-ix/quire-rs#292).
+    tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
+    env = dict(os.environ)
+    while tokens and "=" in tokens[0] and not tokens[0].startswith("-"):
+        key, _, value = tokens[0].partition("=")
+        env[key] = value
+        tokens = tokens[1:]
+    done = subprocess.run(tokens, cwd=ROOT, capture_output=True, text=True, env=env)
     if done.returncode != 0 or not done.stdout.strip():
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False

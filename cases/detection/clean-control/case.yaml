@@ -1,0 +1,17 @@
+id: clean-control
+case: clean-control
+issue_ref: agent-ix/quoin#227
+mode: detection
+language: rust
+module: ecosystem
+kind: control
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/clean-control/input
+  --json
+tags:
+- TC-1014
+- detection
+- finding-quality
+comment: 'No seeded defect. The control every corpus needs and most lack: a check that cannot stay silent
+  on healthy input is not a check, it is a constant.'
+control_for: catch-all-properties

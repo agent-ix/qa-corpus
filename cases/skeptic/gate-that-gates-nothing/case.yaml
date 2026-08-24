@@ -1,0 +1,16 @@
+id: gate-that-gates-nothing
+case: gate-that-gates-nothing
+issue_ref: agent-ix/quoin#227
+mode: skeptic
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/gate-that-gates-nothing/input
+  --json
+tags:
+- TC-1014
+- skeptic
+- finding-quality
+comment: A gate that is wired, green, and asserts no condition that could fail. Observed across filament-ide-rs's
+  own CI during pass 2, found by a human, and detected by nothing anywhere in the ecosystem.

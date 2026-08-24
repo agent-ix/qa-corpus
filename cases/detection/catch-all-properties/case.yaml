@@ -1,0 +1,16 @@
+id: catch-all-properties
+case: catch-all-properties
+issue_ref: agent-ix/quoin#227
+mode: detection
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/catch-all-properties/input
+  --json
+tags:
+- TC-1014
+- detection
+- finding-quality
+comment: Every extractable criterion is the `universal` catch-all, so the extractable headline reads far
+  higher than the figure for 'the tool told me what property to write' — 54% against 8% in pass 2.

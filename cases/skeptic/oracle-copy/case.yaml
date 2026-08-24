@@ -1,0 +1,17 @@
+id: oracle-copy
+case: oracle-copy
+issue_ref: agent-ix/quoin#227
+mode: skeptic
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/oracle-copy/input
+  --json
+tags:
+- TC-1014
+- skeptic
+- finding-quality
+comment: 'A test oracle that recomputes the implementation instead of judging it. Pass 2''s highest-value
+  manual finding: TC-1598''s oracle was a character-for-character copy, redundant branch included, and
+  replacing it exposed a real Windows containment gap.'
