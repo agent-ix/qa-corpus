@@ -76,7 +76,7 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 1
-    unbound_example: src/coverage.test.ts:10
+    unbound_example: src/coverage.test.ts:14
 # The suite is a symbol NOW — read `2` as "module container plus the
 # `describe(…)` container", where it read `1` before #273. This is the whole
 # observable delta of that ticket on this tree, which is why it is asserted
