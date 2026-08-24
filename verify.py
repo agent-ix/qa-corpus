@@ -144,6 +144,33 @@ def validate_output(meta: dict, name: str, failures: list[str]) -> str:
     return done.stdout + done.stderr
 
 
+def find_diagnostic(diagnostics: list, key: str):
+    """The diagnostic a key names, honouring the DECLARATION when one is given.
+
+    Every diagnostic carries the declaration that raised it, and neither reader
+    read it — both took the first entry with a matching `reason`. Two
+    declarations can raise the same reason on one payload, and then the wrong
+    finding is graded: measured, declaring a `constraint` target made
+    `constraint`'s `section-matches-nothing` displace `test-case`'s in six
+    fixtures, including the #270 pair, and the diagnosis was that the token was
+    "not scoped to its declaration" — an engine defect that does not exist.
+    The engine had always published `declaration`; this reader ignored it.
+
+    A key is either `reason` (any declaration — what every fixture writes
+    today) or `declaration/reason` (that declaration only). Scoping is opt-in
+    so no existing assertion changes meaning, and picking it up RAISES an
+    assertion rather than lowering one.
+    """
+    declaration, _, reason = key.rpartition("/")
+    for d in diagnostics:
+        if d["reason"] != reason:
+            continue
+        if declaration and d.get("declaration") != declaration:
+            continue
+        return d
+    return None
+
+
 def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
     """Run one DISCOVERED case and grade BOTH its contracts.
 
@@ -216,6 +243,7 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
 
     diagnostics = got.get("diagnostics", [])
     have = {d["reason"] for d in diagnostics}
+    have |= {f"{d.get('declaration')}/{d['reason']}" for d in diagnostics}
     for reason in expect.get("diagnostic_reasons") or []:
         if reason not in have:
             failures.append(f"{name}: `{reason}` did not fire; got {sorted(have)}")
@@ -225,7 +253,8 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
 
     # L2: the finding names the right place.
     for reason, want in (expect.get("diagnostic_paths") or {}).items():
-        actual = next((d.get("path") for d in diagnostics if d["reason"] == reason), None)
+        found = find_diagnostic(diagnostics, reason)
+        actual = found.get("path") if found else None
         if actual != want:
             failures.append(f"{name}: {reason} path expected {want!r}, got {actual!r}")
 
@@ -243,7 +272,8 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
                 f"{name}: diagnostic_message_contains.{reason} is a string; it "
                 f"takes a LIST of substrings (FR-065-AC-29)")
             continue
-        message = next((d["message"] for d in diagnostics if d["reason"] == reason), None)
+        found = find_diagnostic(diagnostics, reason)
+        message = found["message"] if found else None
         for fragment in fragments:
             if message is None or fragment not in message:
                 failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")

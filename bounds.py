@@ -627,10 +627,18 @@ def check_reasons(
 ) -> None:
     """Every reason token a block names is declared, and declared for THIS case."""
     ticket = case.get("pending")
-    present = list(block.get("diagnostic_reasons") or [])
-    present += list(block.get("diagnostic_paths") or {})
-    present += list(block.get("diagnostic_message_contains") or {})
-    absent = list(block.get("absent_diagnostic_reasons") or [])
+    # A key may be scoped to the declaration that raised it —
+    # `declaration/reason`. The TOKEN is what the vocabulary declares, so the
+    # prefix is stripped before checking. Scoping exists because two
+    # declarations can raise the same reason on one payload and the graders
+    # took the first (see `find_diagnostic` in verify.py).
+    def token(key: str) -> str:
+        return key.rpartition("/")[2]
+
+    present = [token(k) for k in (block.get("diagnostic_reasons") or [])]
+    present += [token(k) for k in (block.get("diagnostic_paths") or {})]
+    present += [token(k) for k in (block.get("diagnostic_message_contains") or {})]
+    absent = [token(k) for k in (block.get("absent_diagnostic_reasons") or [])]
 
     for reason in present + absent:
         if reason not in emitted and reason not in forward:
