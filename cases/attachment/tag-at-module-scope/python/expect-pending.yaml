@@ -1,0 +1,24 @@
+# FORWARD: what agent-ix/quire-rs#312 makes true.
+#
+# A DIAGNOSTIC ticket, not a behaviour change — the tag still will not bind
+# after the fix, and it should not. What changes is that the engine stops being
+# silent about a tag it dropped. So this block states nothing about the payload:
+# every count in `expect.yaml` survives the fix unchanged, which is what makes
+# the live block safe to assert today.
+#
+# L3 has to name THE SYMBOL KIND. "This row is unbacked" is what the report
+# already says and it is not actionable; "your tag is on the module container"
+# is the fix.
+diagnostic_reasons:
+  - tag-on-non-binding-symbol
+diagnostic_paths:
+  tag-on-non-binding-symbol: src/test_coverage.py
+diagnostic_message_contains:
+  tag-on-non-binding-symbol:
+    # The id that was written, verbatim — without it the reader has a file and
+    # not a line.
+    - "TC-001"
+    # The symbol it landed on, and the kind, which is the whole fix.
+    - "container"
+    # And the consequence, so this is not read as a style note.
+    - "unbacked"

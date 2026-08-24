@@ -1,0 +1,25 @@
+mode: attachment
+module: ecosystem
+id: tag-at-module-scope
+case: tag-at-module-scope
+issue_ref: agent-ix/quire-rs#312
+kind: failure
+findable: true
+pending: agent-ix/quire-rs#312
+pending_reason: >-
+  A tag at module scope lands inside the file's own `Container` symbol, which `python.rs` and
+  `typescript.rs` emit spanning line 1 to EOF. `SymbolKind::Container.binds_trace_ids()` is
+  false (CR-061), so the tag reaches neither `verifies` nor `untracked_symbols` — that channel
+  is built from `graph.verifies` and needs a tag that BOUND. #312 adds the diagnostic.
+tags:
+- TC-1014
+- attachment
+- binding
+comment: >-
+  Rust is deliberately absent from this row's language set. `rust.rs` emits no file-level
+  container, so a column-0 comment in a `.rs` file sits inside no symbol at all — a third case,
+  not this one. Measured across ~/dev with worktrees and -task<N> copies excluded: 125 declared
+  comment-id forms at column 0 in test files whose next code line is not a test registration,
+  across 23 repos — python 96/18, rust 25/4, typescript 4/3.
+  MIXED with a correctly-tagged sibling, because that is what real files look like and it is
+  what keeps the census above the `binding_diagnostics` floor.

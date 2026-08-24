@@ -1,0 +1,18 @@
+mode: attachment
+module: ecosystem
+id: tag-at-module-scope-control
+issue_ref: agent-ix/quire-rs#312
+kind: control
+control_for:
+- tag-at-module-scope
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- attachment
+- binding
+comment: >-
+  The same two files with the banner tag moved off module scope and onto the test it names.
+  One tag moved, nothing else differs — same two tests, same two ids, same comment form, same
+  correctly-tagged sibling. So `backed`, `groups` and `unbacked_rows` separate the pair and
+  nothing else can.

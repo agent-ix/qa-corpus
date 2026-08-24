@@ -87,6 +87,19 @@ diagnostic_reasons:
     # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
     # because the symbol bound fine — to the wrong id.
     untracked-id-near-miss: agent-ix/quire-rs#307
+    # A tag attached to a symbol whose kind cannot bind it. `trace::bind` hits
+    # `if !symbol.kind.binds_trace_ids() { continue; }` and the tag is dropped
+    # BEFORE the census counts anything — so the symbol is missing from
+    # `candidates` rather than counted as an unbound one, and both
+    # `no-symbol-bound` and `low-symbol-binding` read a denominator the defect
+    # has been removed from. Two rows share it because the root cause is one
+    # line: `tag-at-module-scope` lands on the file's `Container`,
+    # `tag-on-non-test-function` on a production `Function`.
+    # `untracked_symbols` cannot see it either: that channel is built from
+    # `graph.verifies` (`coverage.rs:1194`) and reports ids that BOUND and
+    # matched no row, so a tag that never bound is not in it. A repository
+    # whose tags are ALL in the wrong place therefore reads 100% bound.
+    tag-on-non-binding-symbol: agent-ix/quire-rs#312
   # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
   # not reach the payload on the input in question) nor `forward` (the literal
   # is already in `src/`, so TC-1026's scan finds it).
@@ -219,8 +232,21 @@ inventory:
   languages:
   - typescript
 - mode: attachment
+  # RE-MEASURED. The row was filed naming two repos and no number. Censused over
+  # ~/dev with worktrees, -task<N> copies, node_modules, build and virtualenv
+  # trees excluded, and this repository excluded so the fixtures do not census
+  # themselves: a declared comment-id form at column 0 in a TEST file whose next
+  # non-blank, non-comment line is not a test registration — the shape whose
+  # nearest enclosing symbol is the file's own Container. 125 occurrences across
+  # 23 repos: python 96/18, rust 25/4, typescript 4/3.
+  #
+  # RUST IS NOT IN THE LANGUAGE SET, and its 25 occurrences are a different
+  # case: `rust.rs` emits no file-level container, so a column-0 comment there
+  # sits inside no symbol at all rather than inside the module's. Live shapes:
+  # sqlmodel-fixtures/tests/test_loader.py:49 (python, seven in that one file),
+  # quoin/tests/org-no-subprocess.test.ts:5 (typescript).
   case: tag-at-module-scope
-  source: ix-ui, sqlmodel-fixtures
+  source: 125 occurrences / 23 repos — python 96/18, typescript 4/3 (rust excluded, see above)
   languages:
   - python
   - typescript

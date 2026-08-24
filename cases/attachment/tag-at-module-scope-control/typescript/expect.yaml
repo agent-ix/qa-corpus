@@ -1,0 +1,55 @@
+# The control: the same file with the module-scope tag moved onto the `it` it
+# names. One tag moved.
+#
+# Both rows back, nothing is unbacked, and the census reads 2 of 2 with no
+# `unbound_example` at all — the field the failure case uses to prove the engine
+# already holds the locus is simply absent here, because nothing is unbound.
+#
+# `untracked_symbols: []` holds in BOTH halves of this pair, so it discriminates
+# nothing — it is asserted because its partner's empty list is a claim about
+# where the tag WENT, and a reader comparing the two should see that the field
+# is silent either way. What separates them is `backed`, `groups` and
+# `unbacked_rows`.
+#
+# `coverage.implements` is asserted for the same reason and reads the same 0 of
+# 1 examined: the module container is an implements candidate whether or not it
+# carries a trace tag, so the metric cannot tell the two trees apart. Stating it
+# here is what makes that visible rather than leaving the failure case's copy
+# looking like evidence.
+total: 4
+backed: 2
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 2
+    total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+  - language: typescript
+    candidates: 2
+    bound: 2
+metrics:
+  - name: coverage.implements
+    state: measured
+    value: 0
+    population: 1
+    examined: 1
+    matched: 0
+# HEALTHY INPUT STAYS SILENT. The first three are the diagnostics that read the
+# binding census, and none may fire on a tree whose tags all bind.
+#
+# The fourth is the forward token #312 introduces, and asserting it absent HERE
+# is the point of the pair: it is vacuous today, and the day #312 lands it is
+# the check that the new diagnostic did not simply fire on every file carrying a
+# comment above a test. A failure case may not make this claim (FR-065-AC-32) —
+# a control is exactly what may.
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
+  - tag-on-non-binding-symbol

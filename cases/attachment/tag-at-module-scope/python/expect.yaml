@@ -1,0 +1,76 @@
+# THE TAG LANDS ON THE MODULE AND STOPS THERE.
+#
+# `python.rs` emits a `Container` symbol for the file itself, named by its
+# dotted module path and spanning line 1 to EOF. A banner comment at column 0 is
+# inside no narrower symbol, so that container is what the tag attaches to —
+# and `SymbolKind::Container.binds_trace_ids()` is false (CR-061: a `mod tests`
+# block would otherwise inherit every marker nested inside it).
+#
+# NEITHER CHANNEL RECEIVES IT.
+#
+#   verifies           refused by symbol kind, at `trace.rs:273`
+#   untracked_symbols  built from `graph.verifies` (`coverage.rs:1194`), so it
+#                      reports ids that BOUND and matched no row. A tag that
+#                      never bound is not there.
+#   implements         the container IS an implements candidate, and the
+#                      `*-implements-line` forms need the literal `Implements:`
+#                      keyword, which a banner comment does not carry.
+#
+# So the payload below is, field for field, what a file with no tag at all
+# produces. That is the whole defect.
+#
+# THE FIXTURE IS MIXED ON PURPOSE. One tag at module scope beside one on the
+# test itself:
+#
+#   binding_census  candidates 2, bound 1     = 50% bound
+#
+# `binding_diagnostics` fires on `bound == 0` or `bound < candidates * 0.05`.
+# One in two clears that floor easily. An all-defective tree WOULD fire
+# `no-symbol-bound`, and writing the fixture that way would have made it pass
+# for a reason that holds in no real repository.
+#
+# THE ENGINE HAS THE LOCUS ALREADY. `unbound_example` names
+# `test_defaults_every_finding_to_warning` at src/test_coverage.py:22 — the
+# exact test left unbound because its id was written eight lines above it, at
+# module scope. Computed, carried, and never connected to the tag that explains
+# it.
+total: 4
+backed: 1
+groups:
+  - document: spec/FR-001.md
+    target: acceptance-criterion
+    backed: 0
+    total: 2
+  - document: spec/tests.md
+    target: test-case
+    backed: 1
+    total: 2
+unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+# EMPTY, and that is the assertion. A tag that bound to the wrong id would be
+# here; this one is nowhere.
+untracked_symbols: []
+binding_census:
+  - language: python
+    candidates: 2
+    bound: 1
+    unbound_example: src/test_coverage.py:22
+# The container the tag landed on IS one of these examined production symbols,
+# and it carried nothing the `implements` forms could read. The engine looked at
+# the right symbol for the wrong relation and reported a bare zero.
+metrics:
+  - name: coverage.implements
+    state: measured
+    value: 0
+    population: 1
+    examined: 1
+    matched: 0
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - low-symbol-binding
+  - hollow-denominator
