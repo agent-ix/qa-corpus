@@ -349,6 +349,7 @@ def check_expectations(cases: list[dict]) -> None:
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
 
         if not forward_path.is_file():
+            check_findable(name, case, live, {}, undetected)
             continue
 
         ahead = yaml.safe_load(forward_path.read_text()) or {}
@@ -381,33 +382,6 @@ def check_expectations(cases: list[dict]) -> None:
                 f"landed`.")
         check_reasons(name, ahead, "expect-pending.yaml", case, emitted, forward)
 
-        # A FINDABLE failure case claims something is DETECTED on its input, so
-        # some block of it has to require a finding. Measured: three `skeptic`
-        # fixtures ship byte-identical live blocks — `backed: 1`, `total: 3`,
-        # one bound rust symbol — true of any healthy three-row corpus, with no
-        # diagnostic asserted anywhere. Swapping one's whole `input/` tree for
-        # another's left every gate green and the cell still `covered`, so the
-        # fixture was not about its own defect at all.
-        if case.get("kind") == "failure" and case.get("findable"):
-            ahead = (
-                yaml.safe_load(forward_path.read_text()) or {}
-                if forward_path.is_file() else {}
-            )
-            claims = any(
-                block.get(key)
-                for block in (live, ahead)
-                for key in ("diagnostic_reasons", "validate_contains")
-            )
-            if not claims and (case.get("case") or case["id"]) not in undetected:
-                raise CorpusError(
-                    f"{name}: is `findable: true` and requires no finding, in "
-                    f"either block. A case claiming its defect is DETECTABLE "
-                    f"has to say what detects it, or its cell counts as covered "
-                    f"for a mode nothing measures. Declare it under "
-                    f"`known_gaps.findable_but_undetected` if the engine truly "
-                    f"finds nothing yet.")
-
-
         # THE BLOCK MUST BE ABOUT ITS TICKET. Two rounds of review found the
         # forward half unpoliced, and the second fix constrained only reason
         # TOKENS — so `backed: 99` was still accepted: false today, false
@@ -424,6 +398,41 @@ def check_expectations(cases: list[dict]) -> None:
                 f"introduces. A forward block that is merely FALSE stays false "
                 f"after the fix lands — it has to be ABOUT the ticket, or "
                 f"nothing ever tells you the fixture went stale.")
+
+        check_findable(name, case, live, ahead, undetected)
+
+
+def check_findable(
+    name: str, case: dict, live: dict, ahead: dict, undetected: set
+) -> None:
+    """A `findable` case names something that finds it.
+
+    The flag tells a recall-scoring consumer to expect a finding on that input.
+    Measured: three `skeptic` fixtures ship BYTE-IDENTICAL live blocks —
+    `backed: 1`, `total: 3`, one bound rust symbol — true of any healthy
+    three-row corpus, with no diagnostic asserted anywhere. Replacing one's
+    entire `input/` tree with another's left every gate green and the cell
+    still `covered`, so the fixture was not about its own defect at all.
+
+    Called LAST and from BOTH branches. Sitting inside the pending-only branch,
+    it ran for six cases out of twenty-nine and diagnosed a truncated forward
+    file as a missing detection claim.
+    """
+    if case.get("kind") != "failure" or not case.get("findable"):
+        return
+    claims = any(
+        block.get(key)
+        for block in (live, ahead)
+        for key in ("diagnostic_reasons", "validate_contains")
+    )
+    if claims or (case.get("case") or case["id"]) in undetected:
+        return
+    raise CorpusError(
+        f"{name}: is `findable` and requires no finding, in either block. A "
+        f"case claiming its defect is DETECTABLE has to say what detects it, "
+        f"or its cell counts as covered for a mode nothing measures. Declare "
+        f"it under `known_gaps.findable_but_undetected` if the engine truly "
+        f"finds nothing yet.")
 
 
 def asserts_something(block: dict) -> bool:
