@@ -440,7 +440,8 @@ def check_expectations(cases: list[dict]) -> None:
                     f"{name}: its expect-pending.yaml asserts exactly what its "
                     f"expect.yaml does, so {ticket} landing would change nothing "
                     f"it can see.")
-            return
+            check_findable(name, case, live, ahead, undetected, controlled)
+            continue
 
         claimed = set(ahead.get("diagnostic_reasons") or [])
         claimed |= set(ahead.get("diagnostic_paths") or {})
