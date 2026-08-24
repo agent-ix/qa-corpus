@@ -21,24 +21,41 @@ That is the whole reproduction — no harness, no generator, byte-identical to w
 runs:
 
 ```bash
-cd cases/attachment/marker-form-mismatch/input
-quire coverage --scope . --module ./module --json
+make verify                     # every case, by its own recorded invocation
+make bounds                     # the derived matrix and gap_count
+```
+
+Or one case by hand, **from the corpus root** — this is exactly what CI runs:
+
+```bash
+quire coverage --scope cases/attachment/marker-form-mismatch/input \
+               --module modules/variants/bench-legacy --json
 ```
 
 `--module` is not decoration. Without it no traceability model loads, the run reports
 `0/0 rows backed`, and the case cannot exhibit the declaration defect it exists for.
+It runs from the root because the CLI **refuses a `..` segment** in `--module` under
+path safety, so a `cd input && … --module ../../../../modules/…` form is rejected
+(agent-ix/quire-rs#287).
 
-Each case's own invocation is recorded in its `case.yaml` under `reproduce`.
+Each case's own invocation is recorded in its `case.yaml` under `reproduce`, and
+`make verify` runs exactly that string — so a documented command that does not work
+fails the corpus rather than misleading a reader.
 
 ## Layout
 
 ```
-corpus.yaml          schema version, vocabularies, case index, the bounds matrix
+corpus.yaml          schema version, vocabularies, and the INVENTORY (intent only —
+                     the case index and the matrix are DERIVED, see below)
+bounds.py            derives the matrix and gap_count from the filesystem
+verify.py            runs every case by its own `reproduce` and diffs expect.yaml
 modules/
   ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
   variants/<id>/     relaxation variants — each names the ticket it sizes
 cases/<mode>/<case>/
-  case.yaml          id, issue_ref, mode, language, module, findable, kind, reproduce
+  case.yaml          id, case, issue_ref, mode, language, module, kind, findable,
+                     reproduce; control_for on a control; relaxation_ticket on a
+                     variant binding; pending on a case awaiting its fix
   input/             REAL STATIC FILES — full topology, cd-able, runnable by hand
   expect.yaml        what the run must show. Data, not assertions in code.
 labels/              hand-labelled ground truth for finding-quality scoring
@@ -60,17 +77,34 @@ added, so a corpus could improve its number while the hard missing case stayed
 missing. Converting a `GAP` to `out-of-scope` moves the count — declaring something
 out of scope is a visible act.
 
-### Today: `gap_count: 36`, and nothing is `covered`
+### Today: `gap_count: 42`, `covered: 1`
 
-The ten cases here are ports of the existing `quire-rs` fixtures, and **all ten bind
-the `bench-legacy` variant** — the synthetic manifest described above. They therefore
-cover **no ecosystem mode**, and the matrix says so rather than crediting them.
-Rebinding them to the real declaration changes what they assert, which is migration
-work with its own before/after: `agent-ix/quire-rs#285`.
+Run `make bounds` — these numbers are **derived, never stored**, so they cannot go
+stale. Adding a fixture flips its own cell and moves the count with no edit to any
+central file.
 
-Starting at zero covered is the honest reading. A corpus that credited itself on day
-one for cases bound to a manifest that cannot fail is the exact defect this repository
+Eleven of the thirteen fixtures are ports of the old `quire-rs` cases and **all
+eleven bind the `bench-legacy` variant** — the synthetic manifest whose heading
+always matches. They therefore cover **no ecosystem mode**, and the matrix says so
+rather than crediting them. Rebinding them is `agent-ix/quire-rs#285`.
+
+The one covered cell is `minting/section-name-mismatch`, the first fixture bound to
+the real declaration.
+
+Starting near zero is the honest reading. A corpus that credited itself on day one
+for cases bound to a manifest that cannot fail is the exact defect this repository
 was created to end.
+
+### A fixture may be red before its fix
+
+`pending: <ticket>` means a case asserts behaviour the engine does not have yet. It
+is **expected to fail**, is counted and printed, and the suite still goes green —
+which is what makes *case red before fix* workable rather than a choice between a
+red build and writing the fixture after the fix.
+
+A pending case that **passes** fails the run, naming the ticket that appears to have
+landed, so stale markers cannot accumulate. A pending case asserts **only** what is
+pending: anything already true belongs in the control, or the marker hides it.
 
 ## Detection is graded
 

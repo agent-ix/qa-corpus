@@ -88,19 +88,59 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     # ticket that will move it (FR-065 CON-3, #285).
     covered_by, on_variant = set(), {}
     for c in cases:
-        module = c.get("module", "")
-        keys = {(c.get("mode"), c.get("case", c.get("id")), c.get("language")),
-                (c.get("mode"), c.get("id"), c.get("language"))}
-        if module == "ecosystem":
-            covered_by |= keys
+        # Only a FAILURE fixture covers a cell. A control asserts that healthy
+        # input stays silent; it measures nothing about the mode. The first
+        # version credited either, so deleting the only ecosystem failure
+        # fixture and keeping its control left `gap_count` unmoved.
+        if c.get("kind") != "failure":
+            continue
+        # The inventory row this fixture claims, by `case:` — falling back to
+        # the id only for a fixture whose id IS the inventory name. Both keys
+        # were added before, so a control's id leaked into the namespace and
+        # could collide with a future row.
+        key = (c.get("mode"), c.get("case") or c.get("id"), c.get("language"))
+        if c.get("module") == "ecosystem":
+            covered_by.add(key)
         else:
-            for key in keys:
-                on_variant[key] = (c.get("id"), module, c.get("relaxation_ticket"))
+            on_variant[key] = (c.get("id"), c.get("module"), c.get("relaxation_ticket"))
     have = covered_by
+
+    # #289 acceptance: a case naming a module with no manifest is REJECTED.
+    # The first version emitted a GAP whose reason named a module that was not
+    # there, and an exact-string `== "ecosystem"` meant `./ecosystem` silently
+    # became a variant while the Rust harness loaded it fine.
+    for c in cases:
+        module = (c.get("module") or "").strip().strip("./").rstrip("/")
+        if not module:
+            raise CorpusError(f"{c.get('id')}: declares no `module`")
+        if not (ROOT / "modules" / module / "manifest.yaml").is_file():
+            raise CorpusError(
+                f"{c.get('id')}: module `{c.get('module')}` has no manifest at "
+                f"modules/{module}/manifest.yaml")
+        c["module"] = module
+        # FR-065-CON-3 / AC-15: a variant binding names its relaxation ticket.
+        if module != "ecosystem" and not c.get("relaxation_ticket"):
+            raise CorpusError(
+                f"{c.get('id')}: binds variant `{module}` and names no "
+                f"`relaxation_ticket`. A corpus whose manifest always matches "
+                f"cannot exhibit a declaration defect, so an unticketed "
+                f"relaxation is the state CON-3 forbids.")
 
     matrix, counts = [], {"covered": 0, "GAP": 0, "out-of-scope": 0}
     for row in declaration["inventory"]:
         scoped_out = row.get("out_of_scope", {})
+        # FR-065-AC-7: an out-of-scope cell carries a non-empty reason.
+        for lang, reason in scoped_out.items():
+            if not (reason or "").strip():
+                raise CorpusError(
+                    f"{row['case']}/{lang}: out-of-scope with no reason. "
+                    f"Scoping a cell out is a claim, and an unexplained one is "
+                    f"indistinguishable from forgetting it.")
+            if lang not in row["languages"]:
+                raise CorpusError(
+                    f"{row['case']}: out-of-scope names `{lang}`, which the row "
+                    f"does not declare applicable — the cell would vanish "
+                    f"rather than be scoped out.")
         cells = {}
         for language in row["languages"]:
             if language in scoped_out:
@@ -121,9 +161,26 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         matrix.append({"mode": row["mode"], "case": row["case"],
                        "source": row["source"], "cells": cells})
 
-    declared = sum(counts.values())
-    if counts["covered"] + counts["GAP"] + counts["out-of-scope"] != declared:
-        raise CorpusError("the sum invariant does not hold — a cell is in no state")
+    # The invariant compares the states against an INDEPENDENT count of what
+    # the inventory declares. The first version computed
+    # `declared = sum(counts.values())` and then compared that same sum to
+    # itself — `x != x`, which can never fire. A cell dropped or double-counted
+    # moved both sides together and stayed green.
+    declared = sum(len(row["languages"]) for row in declaration["inventory"])
+    graded = counts["covered"] + counts["GAP"] + counts["out-of-scope"]
+    if graded != declared:
+        raise CorpusError(
+            f"the sum invariant does not hold: the inventory declares {declared} "
+            f"cells and {graded} were graded (covered {counts['covered']}, GAP "
+            f"{counts['GAP']}, out-of-scope {counts['out-of-scope']}). A cell is "
+            f"in no state, or in two."
+        )
+    duplicates = [
+        row["case"] for row in declaration["inventory"]
+        if len(row["languages"]) != len(set(row["languages"]))
+    ]
+    if duplicates:
+        raise CorpusError(f"inventory rows declare a language twice: {duplicates}")
 
     return {
         "gap_count": counts["GAP"],
@@ -147,7 +204,12 @@ def main() -> int:
         print(json.dumps({"bounds": bounds, "cases": cases}, indent=1))
         return 0
 
+    pending = [c for c in cases if c.get("pending")]
     print(f"fixtures on disk        : {len(cases)}")
+    if pending:
+        print(f"  pending a fix         : {len(pending)}")
+        for c in pending:
+            print(f"      {c['id']} -> {c['pending']}")
     print(f"declared cells          : {bounds['declared_cells']}")
     print(f"  covered               : {bounds['covered_count']}")
     print(f"  out-of-scope          : {bounds['out_of_scope_count']}")

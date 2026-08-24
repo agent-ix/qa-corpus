@@ -1,6 +1,13 @@
-# The control: the same tree with the declared heading. It must mint the row
-# and stay silent. A detector that fires here as well would score perfect
-# recall while saying nothing about the defect.
+# The control: the same tree with the DECLARED heading.
+#
+# It asserts the contrast that IS true today — the row mints and binds, so
+# `total` is 2 rather than 1 — which is what makes this a gate now rather than
+# only once #270 lands.
+#
+# `absent_diagnostic_reasons` is deliberately kept although the token does not
+# exist in the engine yet, so it cannot fail today. It arms the moment #270
+# adds `section-matches-nothing`: without it, a detector firing on every
+# TestMatrix would score perfect recall.
 total: 2
 backed: 1
 absent_diagnostic_reasons:

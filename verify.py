@@ -12,6 +12,7 @@ Usage:  python3 verify.py            # from the corpus root
 from __future__ import annotations
 
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -19,7 +20,62 @@ import sys
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent
-QUIRE = "quire"
+
+# NOT a PATH lookup. `quire` on PATH is whatever somebody installed — measured
+# at 0.29.0 on this machine, which pins engine v0.42.0 and predates
+# `binding_census` entirely, so half these fixtures grade against a payload that
+# cannot carry what they assert. That is agent-ix/quire-rs#265's defect, one
+# repository over, and this corpus is the thing that is supposed to catch it.
+#
+# Pass an explicit binary: `QUIRE=/path/to/quire make verify`.
+QUIRE = os.environ.get("QUIRE", "")
+
+# What a run of this corpus rests on. A binary lacking one of these cannot
+# produce the payload the fixtures assert, so the run ABORTS naming the token
+# rather than grading against a payload with holes in it.
+REQUIRED_CAPABILITIES = ("binding_census", "metrics_envelope")
+
+
+def check_engine() -> str:
+    """Refuse a binary that cannot say what it is, or lacks what we assert on."""
+    if not QUIRE:
+        raise SystemExit(
+            "verify: set QUIRE to the binary to test — e.g.\n"
+            "  QUIRE=../quire-cli/target/debug/quire make verify\n"
+            "Deliberately not a PATH lookup: the installed `quire` is whatever "
+            "somebody put there, and grading a corpus with an unidentified "
+            "binary is the defect this corpus exists to catch."
+        )
+    # Probed over a REAL case, with its module. A scope carrying no
+    # traceability model errors and emits no payload, which the first version
+    # then read as "no provenance block" — accusing a perfectly good binary of
+    # predating #68.
+    sample = next(iter(sorted(ROOT.glob("cases/*/*/case.yaml"))), None)
+    if sample is None:
+        raise SystemExit("verify: the corpus has no cases to probe with")
+    meta = yaml.safe_load(sample.read_text())
+    probe = subprocess.run(
+        meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split(),
+        cwd=ROOT, capture_output=True, text=True,
+    )
+    try:
+        engine = json.loads(probe.stdout).get("engine") or {}
+    except json.JSONDecodeError:
+        engine = {}
+    if not engine:
+        raise SystemExit(
+            f"verify: {QUIRE} emits no `engine` provenance block, so it predates "
+            f"agent-ix/quire-cli#68 and cannot say which engine it links. "
+            f"Refusing to grade."
+        )
+    missing = [t for t in REQUIRED_CAPABILITIES if t not in engine.get("capabilities", [])]
+    if missing:
+        raise SystemExit(
+            f"verify: {QUIRE} lacks required capability token(s): "
+            f"{', '.join(missing)}. It reports {engine.get('capabilities')}. "
+            f"Aborting rather than grading against a payload with holes in it."
+        )
+    return f"{engine.get('cli')} (engine {engine.get('engine')})"
 
 # Every key `expect.yaml` may carry. A key here with no handler below is a
 # silently-unasserted expectation, so the set is closed and checked.
@@ -85,7 +141,19 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
         if message is None or fragment not in message:
             failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")
 
-    for want, census in zip(expect.get("binding_census") or [], got.get("binding_census") or []):
+    for want in expect.get("binding_census") or []:
+        # Found BY LANGUAGE, and absent is a failure. The first version zipped
+        # positionally, so an engine that stopped emitting `binding_census`
+        # yielded zero iterations and not one assertion ran — green here, red
+        # under `cargo test`, which finds by language and fails loudly.
+        census = next(
+            (c for c in got.get("binding_census") or [] if c.get("language") == want["language"]),
+            None,
+        )
+        if census is None:
+            failures.append(
+                f"{name}: no `{want['language']}` census in {got.get('binding_census')}")
+            continue
         for key in ("language", "candidates", "bound"):
             if key in want and want[key] != census.get(key):
                 failures.append(
@@ -111,18 +179,23 @@ def check(case: pathlib.Path, failures: list[str]) -> bool:
                 f"{name}: {want['name']}.hollow expected {want['hollow']}, got {is_hollow(metric)}")
 
     if "no_symbol_rows" in expect:
+        # By ID, not by count — a count is satisfied by exempting the WRONG
+        # row, which is exactly what `corpus_case/mod.rs` warns about and what
+        # the first version of this check did. `filter(None)` matches the Rust
+        # grader's `filter_map`, so a null-id row does not diverge 0 vs 1.
+        #
         # ABSENT and EMPTY are the same claim for this key: the engine omits it
         # when nothing is exempt (FR-050-AC-7 byte-identity), so a strict
         # `null != []` reading would fail every clean corpus.
-        actual = got.get("no_symbol_rows", [])
-        if len(actual) != len(expect["no_symbol_rows"] or []):
-            failures.append(
-                f"{name}: no_symbol_rows expected {len(expect['no_symbol_rows'] or [])}, "
-                f"got {len(actual)}")
+        actual = sorted(r["row_id"] for r in got.get("no_symbol_rows", []) if r.get("row_id"))
+        wanted = sorted(expect["no_symbol_rows"] or [])
+        if actual != wanted:
+            failures.append(f"{name}: no_symbol_rows expected {wanted}, got {actual}")
     return True
 
 
 def main() -> int:
+    print(f"engine: {check_engine()}")
     failures: list[str] = []
     cases = sorted(ROOT.glob("cases/*/*/case.yaml"))
     ran = 0

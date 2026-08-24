@@ -54,10 +54,12 @@ result_record:
   - outcome
   - level_reached
   - level_lost
+  - pending
   - mismatches
   outcome:
   - pass
   - fail
+  - pending
   - rejected
 inventory:
 - mode: minting

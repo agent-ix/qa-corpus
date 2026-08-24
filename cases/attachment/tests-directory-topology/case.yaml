@@ -15,3 +15,4 @@ comment: 'Evidence in `tests/`, not `src/`. The pre-port harness materialised ev
   `src/` (corpus_case/mod.rs `run()`), so a repository with this topology was INEXPRESSIBLE — which is
   why #266 called the limit out and #267''s acceptance asks for exactly this case. The tag binds from
   `tests/`, proving the input directory is the topology rather than three fixed folders.'
+relaxation_ticket: agent-ix/quire-rs#285

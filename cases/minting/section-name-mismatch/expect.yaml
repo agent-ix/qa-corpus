@@ -1,25 +1,21 @@
-# EXPECTED TO FAIL until agent-ix/quire-rs#270 lands. See `pending:` in
-# case.yaml. What this asserts is the behaviour #270 adds, not today's.
+# EXPECTED TO FAIL until agent-ix/quire-rs#270. See `pending:` in case.yaml.
 #
-# TODAY the engine emits NOTHING here: no group, no diagnostic, no unbacked
-# row. The measured contrast against the control is the whole finding —
+# This asserts ONLY the behaviour #270 adds. Its first draft also asserted
+# `total: 1`, `backed: 0` and the binding census — all TRUE today — which meant
+# a regression in any of them would have been swallowed as "pending, failed as
+# expected". A pending fixture must assert only what is pending, or the marker
+# hides live assertions.
 #
-#   this case   : totals {backed 0, total 1}, groups [acceptance-criterion]
-#   the control : totals {backed 1, total 2}, groups [acceptance-criterion,
-#                                                     test-case 1/1]
+# The measured contrast that makes this the 3,514-id defect lives in the
+# CONTROL, which asserts it and is not pending:
+#
+#   this case   totals {backed 0, total 1}   groups [acceptance-criterion]
+#   control     totals {backed 1, total 2}   groups [acceptance-criterion,
+#                                                    test-case 1/1]
 #
 # One heading word decides whether the TC row exists, the denominator silently
-# shrinks, and the engine is silent in both directions. A repository in this
-# state is indistinguishable from one that simply wrote fewer rows.
-total: 1
-backed: 0
+# shrinks, and today the engine is silent in both directions.
 diagnostic_reasons:
   - section-matches-nothing
 diagnostic_paths:
   section-matches-nothing: spec/tests.md
-diagnostic_message_contains:
-  section-matches-nothing: "Test Case Summary"
-binding_census:
-  - language: rust
-    candidates: 1
-    bound: 1
