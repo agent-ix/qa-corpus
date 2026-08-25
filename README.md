@@ -178,10 +178,27 @@ that happens to be handy. Both readers do this since `agent-ix/quire-rs#337`; be
 it, only `cargo test` did, and `verify.py` reported `mismatches: 0` on a corpus the
 Rust harness rejected.
 
-Two consequences worth knowing before you write a fixture:
+**And through your mode's own channel, not any channel** (FR-065-AC-46). The block is
+graded a *second* time with every key outside `witness_channels[<your mode>]` dropped,
+and the restriction must still mismatch. So "assert the field that separates the pair"
+is not the whole rule: the field also has to be one your mode declares. `total` is a
+witness for `minting` and for **nothing else** — a minted-row count *is* the minting
+channel, and everywhere else it is an incidental global scalar. Measured over the whole
+controlled population, 14 of the 35 (case, control) pairs differ in `total` while being
+about something else entirely, which is what this closes.
+
+Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
+A block that names none of them is rejected by name; so is one that separates the pair
+only outside them. A channel name the readers cannot restrict on is rejected at load
+rather than dropped (FR-065-AC-47), so the declared set and the graded set cannot drift.
+
+Three more consequences worth knowing before you write a fixture:
 
 * `validate_*` keys are re-run over the **control's** tree in that grading, because
-  `quire validate` reads a spec tree and cannot be recomputed from a payload.
+  `quire validate` reads a spec tree and cannot be recomputed from a payload. They are
+  a witness in **every** mode: `quire validate` is a second oracle, not a coverage
+  channel. No fixture with a control uses them today — the rule's reach is 0 pairs of
+  35 — so if yours is the first, that is the rule you are the subject of.
 * If your case is `pending:` on a **behaviour-change** ticket — one that adds no
   diagnostic — its `expect-pending.yaml` is held to the opposite rule: it must
   **hold** against the control, which is the tree the engine should produce once the
