@@ -27,9 +27,29 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator
   - section-matches-nothing
-  # This tree HAS its TestMatrix, so the suppressed finding its second partner
-  # waits on must stay silent here even once #304 un-suppresses it.
-  - archetype-matches-nothing
+  # This tree HAS its TestMatrix, so the finding its second partner waits on
+  # must stay silent HERE — but scoped to the declaration, not to the token.
+  #
+  # `agent-ix/quire-rs#304` removed the model-wide gate, and the bare token now
+  # fires legitimately on this tree for the archetypes a three-file fixture
+  # simply has no document of: `inspection`, `suite`,
+  # `nfr-acceptance-criterion`, `stakeholder-validation-criterion`. Measured
+  # across 245 ecosystem repositories, `inspection` and `suite` fire on 242 of
+  # them each — nobody writes `suites.md` or `inspections.md`, which is a fact
+  # about the DECLARATION and is filed as such, not a defect in this tree.
+  #
+  # The `declaration/reason` spelling is what makes the assertion say what it
+  # means: this control's TestMatrix is present, so `test-case` must not be
+  # reported. The bare token would now assert something false.
+  - test-case/archetype-matches-nothing
+  # A REFERENCE declaration's absence is not a finding, and this asserts it.
+  # `nfr-verification` reads an existing column rather than minting ids, and
+  # this tree has no NFR document — so under the `mints` narrowing it stays
+  # silent. Without that narrowing it fires here, which is what makes the rule
+  # observable: removing `scope.mints.is_some()` was measured as changing
+  # NOTHING any gate could see until this line existed, and a rule never
+  # observed to reject anything is indistinguishable from one that cannot.
+  - nfr-verification/archetype-matches-nothing
 binding_census:
   - language: python
     candidates: 3

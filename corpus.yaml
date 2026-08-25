@@ -192,6 +192,29 @@ case_schema:
 diagnostic_reasons:
   # Tokens the engine emits TODAY. A live `expect.yaml` may name these.
   emitted:
+  # agent-ix/quire-rs#304, landed: a declared TRACE TARGET whose archetype
+  # names no document in the corpus. It was computed correctly all along and
+  # then thrown away by a model-wide gate — `into_diagnostics(minted_anything)`
+  # dropped every one of them as soon as ANY declaration minted, so one
+  # declaration's success hid another's failure. A repository with no
+  # TestMatrix reported `groups` holding only `acceptance-criterion`, the whole
+  # `test-case` target MISSING from the payload rather than present and zero,
+  # and said nothing about it.
+  #
+  # SCOPE THE ASSERTION, NOT THE TOKEN. Measured across 245 ecosystem
+  # repositories after the gate came out: 741 findings over 243 of them, and
+  # `inspection` and `suite` account for 484 of those — they fire on 242 repos
+  # each, because almost nobody writes `suites.md` or `inspections.md`. That is
+  # a fact about the DECLARATION, filed as `agent-ix/spec-artifacts-process#75`,
+  # not a defect in each repository and not a reason to re-suppress the token.
+  # `test-case`, the signal #304 is about, is 57 repositories.
+  #
+  # So a fixture in a three-file tree writes `test-case/archetype-matches-nothing`
+  # rather than the bare token: the bare form would now assert something false.
+  # Reference declarations are excluded at the source — their sections are
+  # legitimately optional, which is the same `mints` distinction that keeps
+  # `section-matches-nothing` off healthy repositories.
+  - archetype-matches-nothing
   - catch-all-universal
   - hollow-denominator
   # agent-ix/quire-rs#270, landed: the archetype matched the document and the
@@ -249,21 +272,21 @@ diagnostic_reasons:
     # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
     # because the symbol bound fine — to the wrong id.
     untracked-id-near-miss: agent-ix/quire-rs#307
+
   # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
   # not reach the payload on the input in question) nor `forward` (the literal
   # is already in `src/`, so TC-1026's scan finds it).
   #
-  # `archetype-matches-nothing` is the first: the engine builds exactly the
-  # right finding for a declaration whose archetype matches no document —
-  # message and all — and `into_diagnostics` drops it whenever ANYTHING in the
-  # model minted. A model-wide gate on a per-declaration finding, so one
-  # declaration's success hides another's failure.
-  #
   # A forward block may require a suppressed token when its `pending` is the
   # ticket that un-suppresses it. This is a third ticket class: not "adds a
   # diagnostic" and not "changes what mints", but "stops discarding one".
-  suppressed:
-    archetype-matches-nothing: agent-ix/quire-rs#304
+  #
+  # EMPTY SINCE agent-ix/quire-rs#304 LANDED, and kept rather than deleted: the
+  # class is real and its one member graduated. `archetype-matches-nothing` was
+  # computed correctly for the right declaration and thrown away by a model-wide
+  # gate; it is in `emitted` now. The next ticket of this shape has somewhere to
+  # be declared.
+  suppressed: {}
 
 # Tickets that change what the engine MINTS rather than adding a diagnostic.
 #

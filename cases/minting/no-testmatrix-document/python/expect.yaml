@@ -51,3 +51,22 @@ binding_census:
   - language: python
     candidates: 3
     bound: 3
+
+# ── agent-ix/quire-rs#304 LANDED: what was the forward block is now live ──
+#
+# Folded in from `expect-pending.yaml` unchanged. Every count above is
+# untouched: #304 removed a model-wide SUPPRESSION, it did not change what
+# mints. The `test-case` group is still absent from `groups` rather than
+# present and zero — that alternative was considered on the ticket and is
+# not what shipped, so the payload shape is unchanged and only the
+# diagnostic is new.
+diagnostic_reasons:
+  # SCOPED to the declaration. #304 removed the model-wide gate, so the bare
+  # token also fires for the archetypes this three-file tree has no document
+  # of; naming `test-case` is what asserts the fact this case is about.
+  - test-case/archetype-matches-nothing
+diagnostic_message_contains:
+  test-case/archetype-matches-nothing:
+    - "test-case"
+    - "TestMatrix"
+    - "scans nothing and mints no rows"

@@ -5,11 +5,6 @@ case: no-testmatrix-document
 issue_ref: agent-ix/quire-rs#304
 kind: failure
 findable: true
-pending: agent-ix/quire-rs#304
-pending_reason: >-
-  No diagnostic names a declared trace target that matched zero documents. `model-mints-nothing`
-  is declaration-side — it fires when the MODEL declares no targets — and this model declares
-  `test-case` correctly.
 tags:
 - TC-1014
 - minting

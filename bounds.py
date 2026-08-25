@@ -688,7 +688,12 @@ def check_expectations(cases: list[dict]) -> None:
         claimed = set(ahead.get("diagnostic_reasons") or [])
         claimed |= set(ahead.get("diagnostic_paths") or {})
         claimed |= set(ahead.get("diagnostic_message_contains") or {})
-        owned = {r for r in claimed if forward.get(r) == ticket}
+        # A claim may be spelled `reason` or `declaration/reason`; both graders
+        # accept the scoped form and resolve it the same way, so the registry
+        # lookup has to strip the scope before asking. Without this a fixture
+        # that scopes its claim to one declaration — which is the PRECISE way to
+        # write it — reads as claiming no token at all (agent-ix/quire-rs#304).
+        owned = {r for r in claimed if forward.get(r.rsplit("/", 1)[-1]) == ticket}
         if not owned:
             raise CorpusError(
                 f"{name}: expect-pending.yaml requires no token that {ticket} "
