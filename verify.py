@@ -398,6 +398,93 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             failures.append(f"{name}: no_symbol_rows expected {wanted}, got {actual}")
 
 
+def check_witness_channels(declaration: dict) -> dict:
+    """`witness_channels`, validated before a single pair is graded.
+
+    FR-065-AC-47 IN THIS READER TOO. AC-47 shipped in the Rust harness alone
+    (`tests/corpus_cases.rs`, TC-1028) — which is the exact defect CR-128 was
+    written to end, recurring one commit later. Reproduced by the outside review
+    of 2026-08-24 at `quire-rs 26af2c8` / `qa-corpus 2bc486d`: change
+    `witness_channels.disposition`'s `unbacked_rows` to `unbacked_rowz`, one
+    character, and `verify.py` reported `cases run: 77/77`, `differential pairs
+    graded: 35`, `mismatches: 0`, **exit 0**, while `cargo test --test
+    corpus_cases tc1028` panicked naming the channel. `bounds.py` never reads
+    `witness_channels`, `schema_selftest.py` does not cover it and
+    `parity_selftest.py` still passed 6/6, so the whole of `make ci` was green
+    on a corpus where FR-065-AC-46 had been silently weakened for a mode.
+
+    WHY IT IS SILENT WITHOUT THIS. The restriction below is a dict-key filter:
+    a name no `expect.yaml` key matches simply contributes nothing to
+    `restricted`. Dropping it makes AC-46 quietly WEAKER for precisely the mode
+    that declared the channel — a rule-shaped hole rather than a rule.
+
+    THREE CLAIMS, and each is the Rust harness's claim restated over this
+    reader's own vocabulary rather than a second hand-written copy of it:
+
+    * every declared channel is a key `grade` handles (`KNOWN`), which is what
+      `CaseExpect::channel_names()` is on the other side;
+    * a channel list is a LIST. `set(witness.get(mode, []))` over the scalar
+      `minting: total` yields `{'t','o','a','l'}` and fails CLOSED with a
+      misleading message about the fixture; Rust rejects the same YAML outright
+      at `as_sequence().expect("a list of channel names")`. This file already
+      made exactly this correction once, for `diagnostic_message_contains` (see
+      the `isinstance(fragments, str)` branch in `grade`);
+    * every declared `mode_family` has an entry, and every entry names a
+      declared family. Both readers otherwise notice an unwitnessed family only
+      when a CONTROLLED failure case of that mode is graded — and a new family
+      arrives with no controlled case, which is how every mode in this corpus
+      started.
+
+    Raised as a `CorpusError`, not appended to `failures`: a declaration this
+    reader cannot grade against is a corpus that does not load, and grading 35
+    pairs under a rule with a hole in it is the outcome to avoid.
+    """
+    witness = declaration.get("witness_channels") or {}
+    if not witness:
+        # Not a skip. A reader that silently grades nothing when its rules are
+        # absent is indistinguishable from one that graded and found nothing.
+        raise CorpusError(
+            "corpus.yaml declares no `witness_channels`, so FR-065-AC-46 cannot "
+            "be graded and AC-42 would silently fall back to the floor")
+
+    problems: list[str] = []
+    for mode, channels in sorted(witness.items()):
+        if not isinstance(channels, list):
+            problems.append(
+                f"`witness_channels.{mode}` is {channels!r}; it takes a LIST of "
+                f"channel names. A scalar iterates its characters and restricts "
+                f"on none of them (FR-065-AC-47)")
+            continue
+        if not channels:
+            problems.append(
+                f"`witness_channels.{mode}` is empty, so every block of this mode "
+                f"restricts to nothing and FR-065-AC-46 rejects the whole family")
+            continue
+        unknown = sorted(set(channels) - KNOWN)
+        if unknown:
+            problems.append(
+                f"`witness_channels.{mode}` names {unknown}, which this reader "
+                f"cannot restrict on — it would be dropped and FR-065-AC-46 would "
+                f"silently weaken for this mode (FR-065-AC-47)")
+
+    families = declaration.get("mode_families") or []
+    unwitnessed = sorted(set(families) - set(witness))
+    if unwitnessed:
+        problems.append(
+            f"`mode_families` declares {unwitnessed} with no `witness_channels` "
+            f"entry, so FR-065-AC-46 is unenforced for that family until one of "
+            f"its failure cases gains a control (FR-065-AC-47)")
+    stray = sorted(set(witness) - set(families))
+    if stray:
+        problems.append(
+            f"`witness_channels` declares {stray}, which `mode_families` does not "
+            f"— a channel set no case can ever be graded against (FR-065-AC-47)")
+
+    if problems:
+        raise CorpusError("; ".join(problems))
+    return witness
+
+
 def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
     """FR-065-AC-42 IN THIS READER. Returns the number of pairs graded.
 
@@ -437,13 +524,7 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
     """
     declaration = load_declaration()
     behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
-    witness = declaration.get("witness_channels") or {}
-    if not witness:
-        # Not a skip. A reader that silently grades nothing when its rules are
-        # absent is indistinguishable from one that graded and found nothing.
-        raise CorpusError(
-            "corpus.yaml declares no `witness_channels`, so FR-065-AC-46 cannot "
-            "be graded and AC-42 would silently fall back to the floor")
+    witness = check_witness_channels(declaration)
     pairs = controls_by_case(cases)
     by_key = {(c["id"], c.get("language")): c for c in cases}
     graded = 0
@@ -483,6 +564,11 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
             # `total` is a witness for `minting` and for nothing else, which is
             # the rule the review asked for: an incidental global row count is
             # not detection of an attachment, parser or join defect.
+            # `check_witness_channels` has already established that this is a
+            # LIST of names `grade` handles, so the restriction below cannot
+            # silently drop one (FR-065-AC-47). Unvalidated, `set()` over the
+            # scalar `minting: total` yields `{'t','o','a','l'}` and this reader
+            # rejects the whole mode with a message about the fixture.
             channels = set(witness.get(case.get("mode"), []))
             restricted = {k: v for k, v in live.items() if k in channels}
             if not restricted:
