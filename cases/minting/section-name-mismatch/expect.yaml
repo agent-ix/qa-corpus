@@ -1,21 +1,33 @@
-# EXPECTED TO FAIL until agent-ix/quire-rs#270. See `pending:` in case.yaml.
+# NO LONGER PENDING. agent-ix/quire-rs#270 landed in `a6a1144`; the marker that
+# said this case was expected to fail was stale for 33 engine commits.
 #
-# This asserts ONLY the behaviour #270 adds. Its first draft also asserted
-# `total: 1`, `backed: 0` and the binding census — all TRUE today — which meant
-# a regression in any of them would have been swallowed as "pending, failed as
-# expected". A pending fixture must assert only what is pending, or the marker
-# hides live assertions.
+# While it WAS pending this file asserted only what was pending — a first draft
+# also asserted `total: 1`, `backed: 0` and the binding census, all TRUE at the
+# time, which would have let a regression in any of them be swallowed as
+# "pending, failed as expected". Now that the case is scored those assertions
+# belong here, and they are back.
 #
-# The measured contrast that makes this the 3,514-id defect lives in the
-# CONTROL, which asserts it and is not pending:
+# The measured contrast that makes this the 3,514-id defect:
 #
 #   this case   totals {backed 0, total 1}   groups [acceptance-criterion]
 #   control     totals {backed 1, total 2}   groups [acceptance-criterion,
 #                                                    test-case 1/1]
 #
-# One heading word decides whether the TC row exists, the denominator silently
-# shrinks, and today the engine is silent in both directions.
+# One heading word decides whether the TC row exists and the denominator
+# silently shrinks. `minting.section_hit_rate` is the number that says so: 1 of
+# 2 (trace target, document) pairs reached its declared section here, 2 of 2 in
+# the control. An engine predating #270 emits neither the diagnostic nor the
+# metric.
+backed: 0
+total: 1
 diagnostic_reasons:
   - section-matches-nothing
 diagnostic_paths:
   section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing: "found no section matching 'Test Case Summary'"
+metrics:
+  - name: minting.section_hit_rate
+    state: measured
+    examined: 2
+    matched: 1
