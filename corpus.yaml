@@ -340,10 +340,14 @@ behaviour_change_tickets:
 # mismatch against its control's payload. That closes empty blocks and assertions
 # true of every input, and the outside review of 2026-08-24 was right that it
 # stops there: it proves an assertion distinguishes THESE TWO PAYLOADS, not that
-# the assertion concerns the SEEDED DEFECT. Measured over the 34 controlled
-# failure cases at `801afd5`, 14 pairs differ in `total` — so for those, an
-# incidental row count satisfies the whole rule while saying nothing about the
-# family the case is named for.
+# the assertion concerns the SEEDED DEFECT. Measured by running every case and
+# every control and comparing `totals.total`, over the whole controlled
+# population at `801afd5` (fixtures byte-identical at `2bc486d`): **14 of the 35
+# (case, control) pairs differ in `total`** — equivalently 14 of the 34
+# controlled cases — so for those, an incidental row count satisfies the whole
+# rule while saying nothing about the family the case is named for. The
+# complement is 21 of 35 pairs, or 20 of 34 cases; CR-132 fixes the places that
+# published that 20 as a pair count.
 #
 # So AC-42 is graded TWICE: once over the whole block, and once over the block
 # RESTRICTED to these keys. The restriction must still mismatch. An assertion
@@ -356,14 +360,22 @@ behaviour_change_tickets:
 # absent from `minting`: a row's minting and its backing are different facts,
 # and #318 is the standing example of confusing them.
 #
-# MEASURED BEFORE IT WAS WRITTEN. All 37 controlled failure blocks already name
-# at least one witness key for their mode, so this rule changes no fixture. The
-# four that name none — `vacuous-property-suite`, `oracle-copy`,
-# `mocked-confirmation`, `gate-that-gates-nothing`, which assert only
-# `backed`/`total`/`binding_census` — are all `skeptic`, all UNCONTROLLED, and
-# all already declared under `known_gaps.uncontrolled_failure_cases`. AC-42
-# cannot reach them at all, which is what that declaration means. `#286` giving
-# them controls is also what will first put this rule under load.
+# MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
+# controlled ones. Population: 41 `kind: failure` fixtures, of which 34 are
+# controlled. **37 of the 41 already name at least one witness key for their
+# mode**, so this rule changes no fixture. The four that name none —
+# `vacuous-property-suite`, `oracle-copy`, `mocked-confirmation`,
+# `gate-that-gates-nothing`, which assert only `backed`/`total`/`binding_census`
+# — are all `skeptic`, all UNCONTROLLED, and all already declared under
+# `known_gaps.uncontrolled_failure_cases`. AC-42 cannot reach them at all, which
+# is what that declaration means. `#286` giving them controls is also what will
+# first put this rule under load.
+#
+# THIS SENTENCE READ "All 37 controlled failure blocks" UNTIL CR-132, which is
+# a population error: 37 is out of 41 failure blocks, not out of the 34
+# controlled ones, and the "four that name none" two lines down only adds up
+# against 41. The commit messages and `spec/log.md` stated it correctly; this
+# file — the one a fixture author actually reads — did not.
 # `validate_contains` / `validate_absent` ARE A WITNESS IN EVERY MODE, and the
 # reason is that they are not a coverage channel at all. `quire validate` is the
 # corpus's SECOND ORACLE: it reads the spec tree and reports structure, and a
