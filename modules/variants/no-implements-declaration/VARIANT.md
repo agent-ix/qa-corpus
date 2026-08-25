@@ -30,7 +30,14 @@ forms.
 Both are correct and they are different claims. So the absent declaration is
 not a defect awaiting a fix — it is **what the fixture measures**, and
 `agent-ix/quire-rs#285` could not migrate this case the way it migrated the
-other eleven. `#330` owns whether FR-065 should say that in a word of its own;
+other **ten**. (This read "eleven" and was wrong. Counted from the derived
+matrix at `db55b05`, the commit before the migration: `bounds.py --json`
+reports **eleven** fixtures with `module != ecosystem` — nine on `bench-legacy`
+and two on `bench-no-symbol-vocab` — of which ten moved and this one did not.
+The twelfth never existed; the corpus grew from 75 to 77 fixtures because the
+migration also authored two controls `#286` had asked for, and those were
+counted as migrations they were not.) `#330` owns whether FR-065 should say
+that in a word of its own;
 until it decides, `relaxation_ticket` names `#330` rather than a ticket that
 would never close.
 
