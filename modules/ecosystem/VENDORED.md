@@ -73,7 +73,10 @@ SHA rather than a silent fetch.
   id_column: Test ID             # NOT "ID"
 ```
 
-One heading name strands **3,514 TC ids across 88 repositories**. A corpus bound
+One heading name puts **a candidate 3,514 TC ids across 88 repositories** out of
+reach of the declaration. That census is not the section defect's causal size —
+CR-118 measured the section fix at **+83 rows**, the population being confounded
+with id-column mismatch (`agent-ix/quire-rs#318`). Either way, a corpus bound
 to a manifest whose heading always matches cannot exhibit that defect — which is
 why the synthetic module the ported cases arrived on was carried in
 `modules/variants/bench-legacy/` under a named ticket rather than here.

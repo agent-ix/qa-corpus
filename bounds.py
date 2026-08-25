@@ -695,9 +695,10 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     """The matrix, computed. `covered` iff a fixture exists for the cell."""
     # A fixture covers a cell only when it binds the ECOSYSTEM declaration.
     # One binding a relaxation variant exercises no ecosystem mode — a corpus
-    # whose manifest heading always matches cannot exhibit the defect that
-    # strands 3,514 TC ids — so it is still a GAP, and the reason names the
-    # ticket that will move it (FR-065 CON-3, #285).
+    # whose manifest heading always matches cannot exhibit the section defect
+    # at all (candidate census 3,514 TC ids; the section fix realised +83 rows,
+    # CR-118) — so it is still a GAP, and the reason names the ticket that will
+    # move it (FR-065 CON-3, #285).
     covered_by, on_variant = set(), {}
     for c in cases:
         # Only a FAILURE fixture covers a cell. A control asserts that healthy

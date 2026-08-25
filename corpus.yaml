@@ -192,24 +192,25 @@ behaviour_change_tickets:
 # right — see CR-119 for the figures. `pending:` still names #273 because that
 # ticket stays OPEN on its remaining acceptance.
 - agent-ix/quire-rs#273
-result_record:
-  description: The per-case record a runner emits. Field set and order are declared here so FR-065-AC-17's
-    byte-identity has a defined shape to be identical about.
-  fields:
-  - case
-  - mode
-  - language
-  - kind
-  - outcome
-  - level_reached
-  - level_lost
-  - pending
-  - mismatches
-  outcome:
-  - pass
-  - fail
-  - pending
-  - rejected
+# `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
+#
+# It declared a per-case output envelope — case/mode/language/kind/outcome/
+# level_reached/level_lost/pending/mismatches — and said the field set and order
+# were declared here so FR-065-AC-17's byte-identity had a defined shape to be
+# identical about.
+#
+# NO RUNNER EVER EMITTED IT. The only references were this declaration and the
+# prose describing it. TC-1019 compares two `CoverageReport::to_json()` payloads,
+# which is report determinism and a real property; it is not the declared record.
+# `verify.py` emits nothing of the kind either. So AC-17 was marked implemented
+# while its subject did not exist, and this block was the evidence for a contract
+# no code was under.
+#
+# Deleted rather than implemented, deliberately: the review's standing instruction
+# is to freeze FR-065 except for demonstrated defects, and a cross-runner record
+# is a want nothing has yet asked for. AC-17 is narrowed to what TC-1019 tests.
+# If a cross-runner join needs a record later, it arrives with the consumer that
+# needs it, and this comment is the note that it was once declared without one.
 inventory:
 - mode: minting
   case: section-name-mismatch
