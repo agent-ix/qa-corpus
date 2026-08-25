@@ -213,7 +213,12 @@ result_record:
 inventory:
 - mode: minting
   case: section-name-mismatch
-  source: 88 repos / 3,514 TC ids
+  # A CANDIDATE CENSUS, not the causal size of this defect. 3,514 TC ids across
+  # 88 repositories sit in matrices whose heading differs — but CR-118 measured
+  # the section fix at **+83 rows**, because that population is confounded with
+  # id-column mismatch, and `agent-ix/identity` (606 of the ids) turned out to
+  # be stranded by its COLUMN, not its heading. #318 owns the column half.
+  source: 88 repos / 3,514 TC ids (candidate census; section fix measured +83 rows, CR-118)
   languages:
   - python
   - rust

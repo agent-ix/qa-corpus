@@ -11,7 +11,7 @@ literals materialised to a tmpdir on the other.
 
 Worse, the JavaScript generator declared **its own manifest**: `section: Test Cases`
 where the ecosystem declares `Test Case Summary`. A corpus bound to a manifest whose
-heading always matches **cannot exhibit** the defect accounting for **3,514 unminted
+heading always matches **cannot exhibit** the defect whose candidate census is **3,514 unminted
 TC ids across 88 repositories**. Tier 1 never caught the dominant failure mode
 because tier 1 was built where that mode cannot occur.
 
@@ -124,8 +124,24 @@ which is what makes *case red before fix* workable rather than a choice between 
 red build and writing the fixture after the fix.
 
 A pending case that **passes** fails the run, naming the ticket that appears to have
-landed, so stale markers cannot accumulate. A pending case asserts **only** what is
-pending: anything already true belongs in the control, or the marker hides it.
+landed, so stale markers cannot accumulate.
+
+A pending case carries **two** blocks, and both are graded:
+
+| file | contract | must |
+| --- | --- | --- |
+| `expect.yaml` | what holds **today** | HOLD, for every case, pending or not |
+| `expect-pending.yaml` | what the ticket will make hold | NOT hold yet |
+
+Declaring one without the other is rejected.
+
+> **This retired an earlier rule** — *"a pending case asserts only what is pending;
+> anything already true belongs in the control"* — which this README carried until
+> the outside review of 2026-08-24 found it still here. That rule was a consequence
+> of `pending:` excusing a case's whole expectation block, and it left every live
+> fact unasserted: both minting fixtures could have regressed to minting nothing, in
+> three languages, and stayed green. A control cannot hold a failure case's live
+> facts, because its input is healthy. See FR-065's Behavior section.
 
 ## Detection is graded
 
