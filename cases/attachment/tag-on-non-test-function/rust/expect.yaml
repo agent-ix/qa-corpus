@@ -82,3 +82,26 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding
   - hollow-denominator
+
+# ── agent-ix/quire-rs#312 LANDED: what was the forward block is now live ──
+#
+# Folded in from `expect-pending.yaml` unchanged. Every count above is
+# untouched by the fix, which is what the forward block said it would be: a
+# DIAGNOSTIC ticket, not a behaviour change. The tag still does not bind and
+# it should not (CR-061) — the engine has stopped dropping it in silence.
+diagnostic_reasons:
+  - tag-on-non-binding-symbol
+diagnostic_paths:
+  tag-on-non-binding-symbol: src/lib.rs
+diagnostic_message_contains:
+  tag-on-non-binding-symbol:
+    # The id that was written, verbatim — without it the reader has a file and
+    # not a line.
+    - "TC-001"
+    # The symbol it landed on and its kind, which is the whole fix.
+    - "normalize_severity"
+    - "function"
+    # The channel that would have accepted an annotation on this symbol.
+    - "Implements:"
+    # And the consequence, so this is not read as a style note.
+    - "unbacked"

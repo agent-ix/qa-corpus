@@ -211,6 +211,23 @@ diagnostic_reasons:
   # and LOSE their section-matches-nothing while still minting zero.
   - section-holds-no-table
   - section-matches-nothing
+  # agent-ix/quire-rs#312, landed: a trace tag written on a symbol whose kind
+  # cannot bind it. `trace::bind` takes the `carries_implements()` branch and
+  # the tag reaches NO channel — `verifies` refuses it by kind, `implements`
+  # wants the literal keyword the comment does not carry, and `binding_census`
+  # never counts it, because a non-binding symbol is missing from `candidates`
+  # rather than counted as unbound. So `no-symbol-bound` and
+  # `low-symbol-binding` both read a denominator the defect has been removed
+  # from, and a repository whose tags are ALL in the wrong place reported a
+  # flawless 100%.
+  #
+  # Two rows share the token because the two predicates are exact COMPLEMENTS:
+  # `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget} and
+  # `carries_implements()` is {Function, Container} — five variants, disjoint,
+  # covering. `tag-at-module-scope` (the file's `Container`) and
+  # `tag-on-non-test-function` (a production `Function`) are dropped by the
+  # SAME branch.
+  - tag-on-non-binding-symbol
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
   # Tokens no engine emits YET, each naming the ticket that will add it. A
@@ -232,26 +249,6 @@ diagnostic_reasons:
     # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
     # because the symbol bound fine — to the wrong id.
     untracked-id-near-miss: agent-ix/quire-rs#307
-    # A tag attached to a symbol whose kind cannot bind it. `trace::bind` takes
-    # the `carries_implements()` branch at `trace.rs:261` and `continue`s at
-    # 271, BEFORE the census counts anything — so the symbol is missing from
-    # `candidates` rather than counted as an unbound one, and both
-    # `no-symbol-bound` and `low-symbol-binding` read a denominator the defect
-    # has been removed from.
-    #
-    # Two rows share it because the two predicates are exact COMPLEMENTS:
-    # `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget} and
-    # `carries_implements()` is {Function, Container} — five variants,
-    # disjoint, covering. So `tag-at-module-scope` (the file's `Container`) and
-    # `tag-on-non-test-function` (a production `Function`) are dropped by the
-    # SAME branch. The `!binds_trace_ids()` guard below it is dead code, which
-    # is why an earlier citation of it here would have sent #312's implementer
-    # to a line that cannot run.
-    # `untracked_symbols` cannot see it either: that channel is built from
-    # `graph.verifies` (`coverage.rs:1194`) and reports ids that BOUND and
-    # matched no row, so a tag that never bound is not in it. A repository
-    # whose tags are ALL in the wrong place therefore reads 100% bound.
-    tag-on-non-binding-symbol: agent-ix/quire-rs#312
   # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
   # not reach the payload on the input in question) nor `forward` (the literal
   # is already in `src/`, so TC-1026's scan finds it).

@@ -30,7 +30,7 @@
 # for a reason that holds in no real repository.
 #
 # THE ENGINE HAS THE LOCUS ALREADY. `unbound_example` names
-# `defaults every finding to warning` at src/coverage.test.ts:14 — the exact
+# `defaults every finding to warning` at src/coverage.test.ts:22 — the exact
 # test left unbound because its id was written six lines above it, at module
 # scope. Computed, carried, and never connected to the tag that explains it.
 total: 4
@@ -58,7 +58,7 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 1
-    unbound_example: src/coverage.test.ts:14
+    unbound_example: src/coverage.test.ts:22
 # The container the tag landed on IS one of these examined production symbols,
 # and it carried nothing the `implements` forms could read. The engine looked at
 # the right symbol for the wrong relation and reported a bare zero.
@@ -78,3 +78,23 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding
   - hollow-denominator
+
+# ── agent-ix/quire-rs#312 LANDED: what was the forward block is now live ──
+#
+# Folded in from `expect-pending.yaml` unchanged. Every count above is
+# untouched by the fix, which is what the forward block said it would be: a
+# DIAGNOSTIC ticket, not a behaviour change. The tag still does not bind and
+# it should not (CR-061) — the engine has stopped dropping it in silence.
+diagnostic_reasons:
+  - tag-on-non-binding-symbol
+diagnostic_paths:
+  tag-on-non-binding-symbol: src/coverage.test.ts
+diagnostic_message_contains:
+  tag-on-non-binding-symbol:
+    # The id that was written, verbatim — without it the reader has a file and
+    # not a line.
+    - "TC-001"
+    # The symbol it landed on, and the kind, which is the whole fix.
+    - "container"
+    # And the consequence, so this is not read as a style note.
+    - "unbacked"

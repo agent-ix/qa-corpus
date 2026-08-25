@@ -1,6 +1,14 @@
 // The shape is taken from quoin/tests/org-no-subprocess.test.ts:5 — a
 // comment-id at column 0, after the imports, with the tests further down the
-// file. The real one reads `// FR-025-AC-7: resolution executes no subprocess.`
+// file. The real one reads `// FR-NNN-AC-N: resolution executes no subprocess.`
+//
+// THE QUOTED ID IS REDACTED TO `FR-NNN-AC-N` ON PURPOSE, and restoring the real
+// one re-breaks this fixture. A container's span runs to EOF, so every id
+// anywhere in this file is inside it — including one quoted in THIS header to
+// describe another repository's line. `agent-ix/quire-rs#312` reported it,
+// correctly by its own rule and against this fixture's stated design of exactly
+// one defect. The sibling fixture says the same thing as a rule: "No id is
+// written anywhere in this header on purpose."
 //
 // MIXED on purpose — one tag at module scope beside one on the `it` itself.
 import { describe, it, expect } from "vitest";

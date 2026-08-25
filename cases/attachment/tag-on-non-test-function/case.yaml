@@ -5,7 +5,6 @@ case: tag-on-non-test-function
 issue_ref: agent-ix/quire-rs#312
 kind: failure
 findable: true
-pending: agent-ix/quire-rs#312
 pending_reason: >-
   `SymbolKind::Function.binds_trace_ids()` is false (CR-061), so a tag on production code is
   not even a binding CANDIDATE — `trace::bind` drops it at `trace.rs:261-271`, BEFORE the census

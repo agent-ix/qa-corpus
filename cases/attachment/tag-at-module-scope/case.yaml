@@ -5,7 +5,6 @@ case: tag-at-module-scope
 issue_ref: agent-ix/quire-rs#312
 kind: failure
 findable: true
-pending: agent-ix/quire-rs#312
 pending_reason: >-
   A tag at module scope lands inside the file's own `Container` symbol, which `python.rs` and
   `typescript.rs` emit spanning line 1 to EOF. `SymbolKind::Container.binds_trace_ids()` is
