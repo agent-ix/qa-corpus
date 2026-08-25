@@ -153,6 +153,25 @@ def discover() -> list[dict]:
     half-authored fixture reads as an absent one, and absent is what
     `gap_count` is supposed to mean.
     """
+    # `variant_forbidden` comes from the DECLARATION, not from a literal below.
+    # It was declared in `corpus.yaml` and read by nothing, while this function
+    # enforced the identical five names from a Python set — one contract, one
+    # reader, and no relationship between them (SR-055 FND-001,
+    # `agent-ix/quire-rs#342`). That is `result_record` with the sign flipped,
+    # in the commit whose change record says a second hand-written list in
+    # Python is the defect one level up.
+    #
+    # Absent is a HARD FAILURE, not a skip: a reader that enforces nothing when
+    # its rule is missing is indistinguishable from one that enforced it and
+    # found nothing, which is the confusion this corpus exists to end.
+    schema = (load_declaration() or {}).get("case_schema") or {}
+    protected = set(schema.get("variant_forbidden") or [])
+    if not protected:
+        raise CorpusError(
+            "corpus.yaml declares no `case_schema.variant_forbidden`, so a "
+            "variant could re-point the cell its fixture credits and nothing "
+            "would fire (FR-065-AC-22, agent-ix/quire-rs#342)")
+
     cases: list[dict] = []
     for case_yaml in sorted((ROOT / "cases").glob("*/*/case.yaml")):
         case_dir = case_yaml.parent
@@ -201,7 +220,6 @@ def discover() -> list[dict]:
             # `32/32, 0 mismatches, rc 0` and this matrix unmoved — a control
             # that exists to prove a check stays silent on healthy input,
             # converted into an expected failure by one line.
-            protected = {"case", "mode", "module", "kind", "pending"}
             declared = sorted(k for k in protected if k in per_case)
             if declared:
                 raise CorpusError(

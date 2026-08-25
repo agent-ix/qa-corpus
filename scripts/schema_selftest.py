@@ -95,6 +95,60 @@ CASES = [
         "`control_for` must be a list of strings",
     ),
     (
+        "a `by_kind` FORBIDDEN field is rejected",
+        # `by_kind.control.forbidden` is what stops a control declaring `case:`
+        # and claiming an inventory cell it cannot cover — a control measures
+        # nothing about its mode. The rule shipped implemented and unexercised:
+        # none of the six original mutations reached this branch, so it had
+        # never been observed to reject anything (SR-055 FND-005,
+        # agent-ix/quire-rs#345).
+        lambda t: mutate_yaml(
+            t, "cases/attachment/tag-at-module-scope-control/case.yaml",
+            "kind: control", "kind: control\ncase: tag-at-module-scope"),
+        "a `control` case may not declare `case`",
+    ),
+    (
+        "a `by_kind` VALUES constraint is rejected",
+        # The other half, and the one that carries real weight: a control with
+        # `findable: true` claims something is findable on healthy input, which
+        # inverts what the control is for. Also unexercised until now.
+        lambda t: mutate_yaml(
+            t, "cases/attachment/tag-at-module-scope-control/case.yaml",
+            "findable: false", "findable: true"),
+        "is not one of [False] for a `control` case",
+    ),
+    (
+        "an unknown `case_schema.types` spec is rejected, not skipped",
+        # The reader's own vocabulary. A type name it does not know reached a
+        # branch that appends a problem rather than silently skipping the
+        # field — right behaviour, never demonstrated. Without this, adding a
+        # type to the declaration and forgetting the reader would make every
+        # field of that type unchecked, silently.
+        lambda t: mutate_yaml(
+            t, "corpus.yaml", "    findable: bool", "    findable: boolean"),
+        "which is not a type this reader knows",
+    ),
+    (
+        "`variant_forbidden` is READ, not restated in Python",
+        # The one mutation that can tell "the gate follows the declaration"
+        # from "the gate happens to agree with it". `discover()` enforced these
+        # five names from a Python literal while `corpus.yaml` declared them and
+        # nothing read it (SR-055 FND-001, agent-ix/quire-rs#342), so editing
+        # the declaration changed nothing and the two were free to drift.
+        #
+        # ADDING a name rather than removing one, because removal proves
+        # nothing on its own: no variant declares `mode:`, so a shrunk list
+        # produces no failure to observe. Every one of the 49 per-language
+        # `case.yaml` files declares `reproduce` and only `reproduce` — so a
+        # declaration that forbids it must make this corpus fail, by name, and
+        # can only do so if the declaration is what the reader consults.
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "  variant_forbidden:\n  - case",
+            "  variant_forbidden:\n  - reproduce\n  - case"),
+        "a variant may not declare ['reproduce']",
+    ),
+    (
         "a `pending:` with no `pending_reason:` is rejected",
         lambda t: mutate_yaml(
             t, "cases/attachment/tag-on-describe-header/case.yaml",
@@ -170,15 +224,23 @@ def _scaffold(tree: pathlib.Path) -> list[str]:
     # control pointing at nothing, and the run would fail on FR-065-AC-13 rather
     # than on anything the scaffolder wrote — the test would be about the wrong
     # thing while still looking like it worked.
-    for case, kind in (
-        ("selftest-pair", "failure"),
-        ("selftest-pair", "control"),
-        ("selftest-pin", "regression"),
+    # The last row is a VARIANT module, and it is the row this check was missing.
+    # Every invocation here passed `--module ecosystem`, so the one argument that
+    # changes which schema rules apply was never exercised — and `--module
+    # variants/...` exited 0 writing a `case.yaml` `bounds.py` rejects for a
+    # missing `relaxation_ticket` (SR-055 FND-003, agent-ix/quire-rs#343). A
+    # check that only ever runs the default is a check with the same blind spot
+    # as the thing it checks.
+    for case, kind, module in (
+        ("selftest-pair", "failure", "ecosystem"),
+        ("selftest-pair", "control", "ecosystem"),
+        ("selftest-pin", "regression", "ecosystem"),
+        ("selftest-variant", "failure", "variants/no-implements-declaration"),
     ):
         done = subprocess.run(
             [sys.executable, "scripts/new_case.py",
              "--mode", "minting", "--case", case,
-             "--language", "rust", "--kind", kind, "--module", "ecosystem",
+             "--language", "rust", "--kind", kind, "--module", module,
              "--issue", "agent-ix/quire-rs#336"],
             cwd=tree, capture_output=True, text=True)
         if done.returncode != 0:

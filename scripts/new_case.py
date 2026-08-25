@@ -121,12 +121,27 @@ def main() -> int:
         "comment": "What this case is about, and the measurement that made it worth "
                    "a fixture.",
     }
-    # `case` names the INVENTORY ROW a fixture credits, and only a failure case
-    # credits one. It was written on every kind, including controls — where
-    # `case_schema` now forbids it, because a control measures nothing about the
-    # mode and a `case:` on one is a claim to a cell it cannot cover.
-    if args.kind == "failure" and args.case != case_id:
-        meta["case"] = args.case
+    # `relaxation_ticket` is REQUIRED whenever `module` is not `ecosystem`
+    # (`case_schema.conditional`, FR-065-CON-3 — a variant binding must name the
+    # ticket it is sizing). That conditional landed in the same change as the
+    # scaffolder check, and the scaffolder was not updated for it: `new_case.py
+    # --module variants/...` exited 0 writing a `case.yaml` `bounds.py` then
+    # rejected, and `check_scaffolder()` passed `--module ecosystem` every time
+    # so nothing saw it (SR-055 FND-003, agent-ix/quire-rs#343).
+    #
+    # A REQUIRED- placeholder rather than a blank, matching `issue_ref`: an
+    # empty string satisfies presence and records nothing, which is the state
+    # `validate_case`'s present-but-empty rule exists to catch.
+    if args.module != "ecosystem":
+        meta["relaxation_ticket"] = (
+            "REQUIRED — name the ticket this variant binding is sizing")
+    # `case:` is deliberately NOT written. It names the inventory row a fixture
+    # credits, both readers derive it when absent, and `case_schema` forbids it
+    # on a control — a control measures nothing about its mode, so a `case:` on
+    # one is a claim to a cell it cannot cover. The branch that used to write it
+    # was `args.kind == "failure" and args.case != case_id`, which is never true:
+    # `case_id` differs from `args.case` only for a control (SR-055 FND-008).
+    #
     # A LIST, always. This emitted a bare string, which every real control in
     # the corpus contradicts and `CaseMeta`'s `Option<Vec<String>>` refuses — so
     # `--kind control` produced a case the Rust reader could not read, and
