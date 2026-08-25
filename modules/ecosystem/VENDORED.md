@@ -13,10 +13,31 @@ fixture. The totals were identical either way, which is why it went unnoticed.
 
 | Module | Source path | Pinned SHA |
 |---|---|---|
-| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `fa56ced6d772dc6f95a4d61bd0b813762488405d` |
+| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `c197b1c0a10148164620ca0626d82ca5edd032bd` |
 | `spec-artifacts-iso` | `spec_artifacts_iso/manifest.yaml` | `3d871962b66db99a1854f40466e94ebabc7a6115` |
 
-Vendored 2026-08-24.
+Vendored 2026-08-24. `spec-artifacts-iso` was already at its upstream `HEAD` and
+is unchanged.
+
+## Why `spec-artifacts-process` moved from `fa56ced` to `c197b1c`
+
+**A corpus that vendors a stale declaration cannot measure a declaration-side
+fix.** `fa56ced` predates `2ed3bb9`, `feat(traceability): typescript reads a
+test's own title (#68)`, so at the old pin **no declared pattern could read a
+TypeScript test's name** and `cases/detection/test-name-id-in-call-title` would
+have bound nothing for a reason that has nothing to do with the engine.
+
+The refresh is measured, not assumed safe. `git diff fa56ced c197b1c --
+spec_artifacts_process/manifest.yaml` is **284 lines added, 0 removed, of which
+exactly 5 are not comments** — the `typescript-test-name-id` form and nothing
+else. Every other file in the directory is byte-identical (`rsync
+--itemize-changes` reports a content change on `manifest.yaml` alone). So the
+refresh adds one TypeScript-only marker form and changes no declared behaviour
+for any existing case, all 22 of which are Rust.
+
+`spec-artifacts-process#69` also landed in this range and is comment-only in
+this manifest: a written decision about five unminted id classes, with no
+change to a pattern, a vocabulary or a schema.
 
 ## Why a copy and not a submodule
 
