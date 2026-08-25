@@ -333,6 +333,109 @@ behaviour_change_tickets:
 # is a want nothing has yet asked for. AC-17 is narrowed to what TC-1019 tests.
 # If a cross-runner join needs a record later, it arrives with the consumer that
 # needs it, and this comment is the note that it was once declared without one.
+# THE MODE-SPECIFIC WITNESS. Which output channel constitutes DETECTION of a
+# defect of this family.
+#
+# WHY. FR-065-AC-42 requires a failure case's live block to produce at least one
+# mismatch against its control's payload. That closes empty blocks and assertions
+# true of every input, and the outside review of 2026-08-24 was right that it
+# stops there: it proves an assertion distinguishes THESE TWO PAYLOADS, not that
+# the assertion concerns the SEEDED DEFECT. Measured over the 34 controlled
+# failure cases at `801afd5`, 14 pairs differ in `total` — so for those, an
+# incidental row count satisfies the whole rule while saying nothing about the
+# family the case is named for.
+#
+# So AC-42 is graded TWICE: once over the whole block, and once over the block
+# RESTRICTED to these keys. The restriction must still mismatch. An assertion
+# that separates the trees only through a channel this mode is not about does
+# not detect this mode's defect.
+#
+# `total` APPEARS ONLY UNDER `minting`, deliberately, and that is the whole
+# point of the rule. A minted-row count IS the minting channel; everywhere else
+# it is the incidental global scalar the review named. `backed` is likewise
+# absent from `minting`: a row's minting and its backing are different facts,
+# and #318 is the standing example of confusing them.
+#
+# MEASURED BEFORE IT WAS WRITTEN. All 37 controlled failure blocks already name
+# at least one witness key for their mode, so this rule changes no fixture. The
+# four that name none — `vacuous-property-suite`, `oracle-copy`,
+# `mocked-confirmation`, `gate-that-gates-nothing`, which assert only
+# `backed`/`total`/`binding_census` — are all `skeptic`, all UNCONTROLLED, and
+# all already declared under `known_gaps.uncontrolled_failure_cases`. AC-42
+# cannot reach them at all, which is what that declaration means. `#286` giving
+# them controls is also what will first put this rule under load.
+# `validate_contains` / `validate_absent` ARE A WITNESS IN EVERY MODE, and the
+# reason is that they are not a coverage channel at all. `quire validate` is the
+# corpus's SECOND ORACLE: it reads the spec tree and reports structure, and a
+# defect visible only to it produces a coverage payload byte-identical to a
+# healthy one — `wrong-type-cell` is exactly that, an undeclared `Type` cell
+# whose whole claim is structural. Excluding those keys from a mode's set would
+# assert "a structural defect cannot be evidence for this family", which is
+# false for any family whose defect can be authored into the document rather
+# than into the code.
+#
+# This is a real weakening for structural cases and it is said out loud rather
+# than left for a reader to discover: within one mode, a case CAN satisfy AC-46
+# through the validate oracle alone. The rule's teeth are elsewhere — `total`,
+# `backed` and `groups` are barred as universal evasions, and those are what the
+# review actually caught being used.
+witness_channels:
+  # Did the declaration reach the rows it names, and did the engine say so?
+  minting: [total, groups, unbacked_rows, no_symbol_rows, validate_contains,
+            validate_absent, diagnostic_reasons, diagnostic_paths,
+            diagnostic_message_contains, absent_diagnostic_reasons]
+  # Did the tag reach the symbol, and WHICH channel received it?
+  #
+  # `metrics` is in this set because `coverage.implements` is literally "did
+  # this symbol's annotation attach to a requirement" — the attachment question
+  # asked of the other channel. `tag-on-non-test-function` is the case that
+  # proves it belongs: its control leaves the annotation exactly where it is and
+  # rewrites it as `/// Implements: FR-001-AC-1`, so `backed`, `groups`,
+  # `unbacked_rows` and the census are byte-identical across the pair and
+  # `coverage.implements` is the ONLY field that moves. The fixture's own
+  # comment says so — "THIS IS THE FIELD THAT DISCRIMINATES, and it is the only
+  # one" — which is why this is a correction to the rule and not a widening to
+  # accommodate a case.
+  attachment: [binding_census, backed, untracked_symbols, unbacked_rows, metrics,
+               diagnostic_reasons, diagnostic_paths, diagnostic_message_contains,
+               absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Did the scanner extract the symbol at all?
+  parser: [binding_census, backed, untracked_symbols, diagnostic_reasons,
+           diagnostic_paths, diagnostic_message_contains,
+           absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Did the tag and the minted id meet?
+  join: [backed, unbacked_rows, untracked_symbols, groups, diagnostic_reasons,
+         diagnostic_paths, diagnostic_message_contains,
+         absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Did the toolchain SURFACE the discrepancy — as a finding, or as a symbol
+  # with no home, or as a row with no evidence?
+  #
+  # `untracked_symbols` and `unbacked_rows` are detection channels, not
+  # bookkeeping. A stale test name mints `TC-999` and the only place that
+  # becomes visible is `untracked_symbols`; a `TC-1` / `TC-001` mismatch is
+  # visible as one id homeless and one row unbacked, in the same payload, which
+  # is #307's entire thesis. Neither raises a diagnostic today — that is the
+  # defect — so a set restricted to diagnostics would demand of these cases the
+  # very output the engine is missing.
+  #
+  # `total`, `backed` and `groups` stay OUT: they are population counts, and a
+  # population that happens to differ is the incidental scalar this rule exists
+  # to disqualify.
+  detection: [metrics, untracked_symbols, unbacked_rows, diagnostic_reasons,
+              diagnostic_paths, diagnostic_message_contains,
+              absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Was every authored row put in exactly one bucket?
+  disposition: [metrics, groups, unbacked_rows, untracked_symbols,
+                diagnostic_reasons, diagnostic_paths,
+                diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Does the payload say what produced it?
+  provenance: [metrics, binding_census, diagnostic_reasons, diagnostic_paths,
+               diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
+  # Did the skeptic layer flag the suite that proves nothing?
+  skeptic: [metrics, diagnostic_reasons, diagnostic_paths,
+            diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
+
+
 inventory:
 - mode: minting
   case: section-name-mismatch

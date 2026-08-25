@@ -437,6 +437,13 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
     """
     declaration = load_declaration()
     behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
+    witness = declaration.get("witness_channels") or {}
+    if not witness:
+        # Not a skip. A reader that silently grades nothing when its rules are
+        # absent is indistinguishable from one that graded and found nothing.
+        raise CorpusError(
+            "corpus.yaml declares no `witness_channels`, so FR-065-AC-46 cannot "
+            "be graded and AC-42 would silently fall back to the floor")
     pairs = controls_by_case(cases)
     by_key = {(c["id"], c.get("language")): c for c in cases}
     graded = 0
@@ -462,6 +469,37 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
                     f"so it does not separate its own input from healthy input "
                     f"(FR-065-AC-42)")
             graded += 1
+
+            # THE MODE-SPECIFIC WITNESS (FR-065-AC-46). The block above proves
+            # the assertion tells these two payloads apart; this proves it does
+            # so THROUGH THE CHANNEL THIS MODE IS ABOUT.
+            #
+            # Graded by RESTRICTION rather than by inspecting which mismatch
+            # fired: drop every key outside the mode's witness set and re-grade.
+            # Restriction is what makes the claim exactly "the witness channel
+            # itself discriminates" — a mismatch list would only tell us one
+            # fired somewhere, which is the weaker thing already asserted.
+            #
+            # `total` is a witness for `minting` and for nothing else, which is
+            # the rule the review asked for: an incidental global row count is
+            # not detection of an attachment, parser or join defect.
+            channels = set(witness.get(case.get("mode"), []))
+            restricted = {k: v for k, v in live.items() if k in channels}
+            if not restricted:
+                failures.append(
+                    f"{name}: its expect.yaml names no `{case.get('mode')}` witness "
+                    f"channel {sorted(channels)}, so nothing it asserts constitutes "
+                    f"detection of this defect family (FR-065-AC-46)")
+                continue
+            witnessed: list[str] = []
+            grade(restricted, healthy, case, name, witnessed,
+                  validate_meta=control, report_unknown=False)
+            if not witnessed:
+                failures.append(
+                    f"{name}: separates itself from {control['id']} only OUTSIDE its "
+                    f"`{case.get('mode')}` witness channels {sorted(channels)} — "
+                    f"restricted to them its block holds against healthy input, so "
+                    f"what it detects is not this defect family (FR-065-AC-46)")
 
             # A BEHAVIOUR-CHANGE forward block is held to the OPPOSITE rule, and
             # it is the strongest check available to one. The control is the

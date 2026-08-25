@@ -82,6 +82,23 @@ BLIND_LIVE = "total: 4\n"
 # `quire validate` reports about it and in none about the case's own tree.
 VALIDATE_SOURCE = f'total: 4\nvalidate_absent:\n  - "{CONTROL_INPUT}"\n'
 
+# FR-065-AC-46, both branches. `real-tests-zero-tags` is `disposition`, whose
+# witness channels are the dispositions themselves — `metrics`, `groups`,
+# `unbacked_rows`, `untracked_symbols` and the diagnostics. `backed` is not one:
+# a repository-wide backing count is the population, not the bucketing.
+#
+# NO WITNESS AT ALL. `backed: 0` against a control that reports 2 mismatches, so
+# it clears AC-42's floor — and names no disposition channel whatsoever, so
+# under AC-46 it detects nothing about this family.
+NO_WITNESS = "backed: 0\n"
+
+# A WITNESS THAT DOES NOT DISCRIMINATE. Same evasion, plus one real witness key
+# whose value holds for the control too. AC-42 passes on `backed`, the witness
+# set is non-empty, and restricted to it the block is blind — which is the
+# distinction AC-46 exists to draw and the one a "names a witness key" shape
+# check could not.
+BLIND_WITNESS = "backed: 0\nabsent_diagnostic_reasons:\n  - hollow-denominator\n"
+
 # (name, mutation or None, substring the failure must name — None means the
 #  corpus must STAY valid)
 CASES = [
@@ -104,6 +121,16 @@ CASES = [
         "the `validate_*` keys are graded over the CONTROL's tree",
         lambda t: write(t, FAILURE, VALIDATE_SOURCE),
         None,
+    ),
+    (
+        "AC-46 — a block that clears AC-42 and names NO witness channel",
+        lambda t: write(t, FAILURE, NO_WITNESS),
+        "names no `disposition` witness channel",
+    ),
+    (
+        "AC-46 — a witness channel that is named but does not discriminate",
+        lambda t: write(t, FAILURE, BLIND_WITNESS),
+        "only OUTSIDE its `disposition` witness channels",
     ),
 ]
 
@@ -172,9 +199,10 @@ def main() -> int:
             print(f"FAIL  {problem}")
         print(f"\n{len(failures)} of {len(CASES)} failed")
         return 1
-    print(f"{len(CASES)}/{len(CASES)} — 2 mutations rejected by name, 1 unmutated "
-          f"control accepted, and 1 case that passes only when the control's tree "
-          f"is the one validated")
+    rejecting = sum(1 for _, _, expect in CASES if expect is not None)
+    print(f"{len(CASES)}/{len(CASES)} — {rejecting} mutations rejected by name "
+          f"(2 for AC-42, 2 for AC-46), 1 unmutated control accepted, and 1 case "
+          f"that passes only when the control's tree is the one validated")
     return 0
 
 
