@@ -1,6 +1,15 @@
 # The corpus is data. These targets read it; none of them write a case.
 
-QUIRE ?= ../quire-cli/target/debug/quire
+# CARGO_TARGET_DIR MOVES THE ARTIFACT AND THIS DEFAULT DID NOT FOLLOW IT. With
+# it set, `cargo build` in quire-cli writes to `$CARGO_TARGET_DIR/debug/quire`
+# and `../quire-cli/target/` keeps whatever was there before the variable was
+# set. Measured: the in-repo path held a four-day-old binary reporting
+# `quire 0.23.0` while the real build reported `quire 0.30.2 (engine 00644b7)` —
+# one engine apart, and the default pointed at the stale one. Caught by
+# quire-cli#68's provenance guard refusing a binary that cannot name its engine,
+# which is the case for refusing rather than warning. Same defect and same fix
+# as `agent-ix/quoin`'s `bench-tier1` default.
+QUIRE ?= $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire
 CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 
 .PHONY: help
