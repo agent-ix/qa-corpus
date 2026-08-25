@@ -323,30 +323,21 @@ diagnostic_reasons:
 # list. Its case, `rows-across-many-headings`, folded its forward block into
 # `expect.yaml` re-measured, and the prediction held exactly: `total` 2 -> 4,
 # `backed` 1 -> 3, `untracked_symbols` emptied.
-behaviour_change_tickets:
-# Registers `describe()`/`suite()` headers as Containers, so a tag on the header
-# has something to attach to. No diagnostic added.
+# EMPTY, and kept for the same reason `forward` and `suppressed` are: the class
+# is real and its one member was resolved.
 #
-# PARTIALLY LANDED (CR-119, engine v0.33.0), and the case stays pending because
-# the half that landed moves no row. The header IS a symbol now — a `Container`
-# named by its title, parenting the registrations inside it — and the fixture
-# asserts that in its LIVE block as `coverage.implements examined 2`. But a
-# `Container` is refused by `binds_trace_ids()` and taken by
-# `carries_implements()`, so `trace::bind` returns at `trace.rs:271` and the tag
-# still reaches no channel. **[RAN]** 241 repositories, same binary, only that
-# change: rows minted 20,023 -> 20,023, rows backed 5,039 -> 5,039, backing
-# 25.17% -> 25.17%, every diagnostic count and every `binding_census` identical.
-# What moved is `coverage.implements examined` 49,855 -> 51,340 (+1,485 suite
-# containers across 93 repositories) — a DENOMINATOR growing, so that ratio gets
-# worse.
+# It named `agent-ix/quire-rs#273` — "registers `describe()`/`suite()` headers
+# as Containers, so a tag on the header has something to attach to" — and that
+# fixture's forward block demanded the tag BIND. It waited on
+# `agent-ix/quire-rs#312`, "which owns the channel question", and #312 landed
+# the OTHER answer: a tag on a symbol whose kind cannot bind it does not start
+# binding, it gets reported. So the forward block was demanding an outcome the
+# ecosystem had declined, and `tag-on-describe-header` is a live case asserting
+# `tag-on-non-binding-symbol` now.
 #
-# The forward block therefore waits on `agent-ix/quire-rs#312`, which owns the
-# channel question, and FR-051-AC-21 now declares the semantics #273 asked for:
-# a suite groups evidence and is not evidence. **[RAN]** with `Container` moved
-# into `binds_trace_ids()`, to check that the recommended reading was not simply
-# right — see CR-119 for the figures. `pending:` still names #273 because that
-# ticket stays OPEN on its remaining acceptance.
-- agent-ix/quire-rs#273
+# The next fixture pending on a ticket that changes what MINTS rather than
+# adding a diagnostic is declared here.
+behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
 # It declared a per-case output envelope — case/mode/language/kind/outcome/

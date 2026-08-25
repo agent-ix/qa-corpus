@@ -88,6 +88,35 @@ metrics:
     value: 0
     examined: 2
     matched: 0
+# ── agent-ix/quire-rs#312 ANSWERED THE CHANNEL QUESTION, so this case is no
+# longer pending on #273 ──
+#
+# The forward block this file used to carry demanded `backed 1 -> 2` — the tag
+# on the header BINDING. It waited on #312, "which owns the channel question",
+# and #312 landed the other answer: a tag on a symbol whose kind cannot bind it
+# does not start binding, it gets REPORTED. FR-051-AC-21 already declared the
+# semantics that way ("a suite groups evidence and is not evidence"), and
+# CR-119 had measured the alternative — 487 rows bought with 2,876 ids bound to
+# nothing.
+#
+# So the defect #273 was filed for is gone, and not by the route it proposed:
+# "It is silence, not a miss" was the ticket's own words, and this is no longer
+# silence.
+diagnostic_reasons:
+  - tag-on-non-binding-symbol
+diagnostic_paths:
+  tag-on-non-binding-symbol: src/coverage.test.ts
+diagnostic_message_contains:
+  tag-on-non-binding-symbol:
+    # The id that was written.
+    - "TC-001"
+    # The symbol it landed on — the suite's own registered title, which is the
+    # locus #273 asked for and the reason the header had to become a symbol at
+    # all (CR-119).
+    - "warning default"
+    - "container"
+    # And the consequence, so this is not read as a style note.
+    - "unbacked"
 absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding
