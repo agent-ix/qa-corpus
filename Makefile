@@ -9,7 +9,8 @@ help:
 	@echo "make bounds              the derived matrix, gap_count, and pending list"
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
-	@echo "make ci                  schema-selftest + bounds + verify"
+	@echo "make parity-selftest     prove the AC-42 differential can fail"
+	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
 
 # Every case, by the exact string in its own case.yaml. A documented command
 # that does not work fails the corpus rather than misleading a reader.
@@ -29,8 +30,17 @@ bounds:
 schema-selftest:
 	@python3 scripts/schema_selftest.py
 
+# The same argument for the AC-42 differential, which until #337 existed only in
+# the Rust harness: blind a fixture down to one incidental scalar and `verify.py`
+# reported `mismatches: 0`, exit 0, on a corpus `cargo test` rejected. Runs LAST
+# because it copies the corpus four times and runs the whole of `verify.py` over
+# each, and a plain `verify` failure should be read before this one.
+.PHONY: parity-selftest
+parity-selftest:
+	@QUIRE="$(QUIRE)" python3 scripts/parity_selftest.py
+
 .PHONY: ci
-ci: schema-selftest bounds verify
+ci: schema-selftest bounds verify parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

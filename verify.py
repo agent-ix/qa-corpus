@@ -20,7 +20,7 @@ import sys
 
 import yaml
 
-from bounds import CorpusError, discover
+from bounds import CorpusError, controls_by_case, discover, load_declaration
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
@@ -123,12 +123,20 @@ def is_hollow(metric: dict) -> bool:
 
 
 def validate_output(meta: dict, name: str, failures: list[str]) -> str:
-    """`quire validate` over the case's own spec tree.
+    """`quire validate` over the spec tree `meta` names.
 
     A second command, because a structural defect is not a coverage one. The
     seeded `Telepathy` cell produces a coverage payload byte-identical to the
     healthy control's — the family is only visible to `validate`, so a corpus
     that ran one command asserted nothing about it.
+
+    WHOSE tree is a parameter, not "the case being graded". `quire validate`
+    reads a spec TREE and cannot be recomputed from a coverage payload, so when
+    the differential grades a case's block against its CONTROL, these keys have
+    to be re-run over the control's tree or they contribute no discrimination at
+    all — `wrong-type-cell`'s entire claim is structural, and recomputing it
+    from its own tree would make it read as blind (FR-065-AC-42, and
+    `ValidateSource` in the Rust harness says the same thing).
     """
     tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
     env = dict(os.environ)
@@ -171,7 +179,7 @@ def find_diagnostic(diagnostics: list, key: str):
     return None
 
 
-def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
+def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | None = None) -> bool:
     """Run one DISCOVERED case and grade BOTH its contracts.
 
     `expect.yaml` is the LIVE contract and goes to `failures`: it must hold
@@ -206,6 +214,10 @@ def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False
     got = json.loads(done.stdout)
+    # Kept for the differential, which needs each CONTROL's payload and must not
+    # re-run 34 of them to get it. One run per case, exactly as before.
+    if payloads is not None:
+        payloads[(meta["id"], meta.get("language"))] = got
 
     live_path = pathlib.Path(meta["expect"])
     forward_path = case / "expect-pending.yaml"
@@ -223,16 +235,28 @@ def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
     return True
 
 
-def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -> None:
-    """Assert ONE expectation block against a payload."""
+def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
+          validate_meta: dict | None = None, report_unknown: bool = True) -> None:
+    """Assert ONE expectation block against a payload.
+
+    `validate_meta` is whose spec tree the `validate_*` keys are run over,
+    defaulting to `meta`'s. The differential passes the CONTROL's.
+
+    `report_unknown` is off in the differential. There, a mismatch is the
+    DESIRED outcome, so an "unhandled key" complaint would satisfy the
+    discrimination rule without any assertion having discriminated — a gate
+    passing on its own schema error, which is the shape this corpus keeps
+    finding. The live pass reports it, once, where it means something.
+    """
     case = pathlib.Path(meta["dir"])
 
-    unknown = set(expect) - KNOWN
-    if unknown:
-        failures.append(f"{name}: declares unhandled expectation key(s) {sorted(unknown)}")
+    if report_unknown:
+        unknown = set(expect) - KNOWN
+        if unknown:
+            failures.append(f"{name}: declares unhandled expectation key(s) {sorted(unknown)}")
 
     if expect.get("validate_contains") or expect.get("validate_absent"):
-        report = validate_output(meta, name, failures)
+        report = validate_output(validate_meta or meta, name, failures)
         for fragment in expect.get("validate_contains") or []:
             if fragment not in report:
                 failures.append(f"{name}: validate output lacks {fragment!r}")
@@ -374,6 +398,110 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str]) -
             failures.append(f"{name}: no_symbol_rows expected {wanted}, got {actual}")
 
 
+def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
+    """FR-065-AC-42 IN THIS READER. Returns the number of pairs graded.
+
+    THE CENTREPIECE CHECK, AND IT EXISTED IN ONE OF THE TWO READERS. The Rust
+    harness has graded every failure case's `expect.yaml` against its control's
+    payload since TC-1028 landed; this script ran each case once, against its
+    own payload, and never cross-graded anything. The loader checks that a
+    control is NAMED, which is a predicate on shape — the class of defect AC-42
+    exists to close. So the claimed two-reader independence stopped immediately
+    before the strongest rule (outside review, `agent-ix/quire-rs#337`).
+
+    WHAT IT ASSERTS. A failure case's live block, graded against the payload of
+    a control — healthy input, the same tree, the defect repaired — must produce
+    at least one mismatch. A block that cannot tell the two apart is not about
+    its defect, whatever its shape: an empty block cannot mismatch, a row count
+    true of the corpus is true of the control too, and a fixture whose `input/`
+    was swapped for a sibling's stops separating anything.
+
+    It is a FLOOR, not closure, and the floor is low. "Assert one fact that
+    differs" is weaker than "assert a fact about the defect", and measured here
+    over the 34 controlled failure cases at corpus `801afd5` with CLI 0.30.2 /
+    engine 0.33.0, **20 pairs share an identical `total`** — for those, the
+    incidental scalar is not even available as an evasion, and for the other 14
+    it is. A mode-specific witness is `agent-ix/quire-rs#301`, not this.
+
+    EVERY control that names the case, not one of them. Two name
+    `marker-form-mismatch`, and picking one picks it by iteration order.
+
+    `regression` cases are exempt by construction — this iterates `failure`
+    only. A regression case IS the healthy counterpart; there is no defect for a
+    control to be the repair of (FR-065-AC-43).
+
+    An uncontrolled failure case is skipped here and caught by the LOADER, which
+    requires it to be declared under `known_gaps.uncontrolled_failure_cases`.
+    No rule of this kind can reach it, which is why the exemption is a
+    declaration rather than a matter of taste.
+    """
+    declaration = load_declaration()
+    behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
+    pairs = controls_by_case(cases)
+    by_key = {(c["id"], c.get("language")): c for c in cases}
+    graded = 0
+
+    for case in cases:
+        if case.get("kind") != "failure":
+            continue
+        for control in pairs.get((case["id"], case.get("language")), []):
+            healthy = payloads.get((control["id"], control.get("language")))
+            if healthy is None:
+                failures.append(
+                    f"{case['id']}: its control {control['id']} produced no payload, "
+                    f"so FR-065-AC-42 could not be graded for this pair")
+                continue
+            name = f"{case['id']} ({case['issue_ref']})"
+            live = yaml.safe_load((ROOT / case["expect"]).read_text()) or {}
+            blind: list[str] = []
+            grade(live, healthy, case, name, blind,
+                  validate_meta=control, report_unknown=False)
+            if not blind:
+                failures.append(
+                    f"{name}: its expect.yaml HOLDS against {control['id']}'s payload, "
+                    f"so it does not separate its own input from healthy input "
+                    f"(FR-065-AC-42)")
+            graded += 1
+
+            # A BEHAVIOUR-CHANGE forward block is held to the OPPOSITE rule, and
+            # it is the strongest check available to one. The control is the
+            # repaired tree, which is what the engine should produce once the
+            # fix lands, so the forward block must HOLD against it. Without this
+            # the loader's shape rule ("re-state the live block's graded keys
+            # with one different value") is satisfied by `total: 999` —
+            # different from today, and wrong after the fix too.
+            #
+            # A TOKEN forward block is NOT held to it. AC-36 requires it to name
+            # a token AC-35 guarantees no engine emits, so it cannot hold
+            # against any payload and grading it here restates a theorem.
+            ticket = case.get("pending")
+            forward_path = ROOT / case["dir"] / "expect-pending.yaml"
+            if ticket in behaviour_change and forward_path.is_file():
+                ahead: list[str] = []
+                grade(yaml.safe_load(forward_path.read_text()) or {}, healthy,
+                      case, name, ahead, validate_meta=control, report_unknown=False)
+                if ahead:
+                    failures.append(
+                        f"{name}: its expect-pending.yaml does NOT hold against "
+                        f"{control['id']}'s payload. That control is the repaired "
+                        f"tree, which is what the engine should produce once "
+                        f"{ticket} lands, so a forward block failing against it "
+                        f"describes no reachable state (FR-065-AC-42): "
+                        + "; ".join(ahead))
+
+    # Non-vacuous. A resolution bug that paired nothing would otherwise report
+    # a clean differential over zero pairs, which is how this check would come
+    # to exist and assert nothing — the state it was just written to end.
+    if not graded:
+        failures.append(
+            "no failure case was graded against a control, so the FR-065-AC-42 "
+            "differential asserted nothing")
+    unused = sorted(k for k in pairs if k not in by_key)
+    if unused:
+        failures.append(f"controls resolved to cases that do not exist: {unused}")
+    return graded
+
+
 def main() -> int:
     print(f"engine: {check_engine()}")
     failures: list[str] = []
@@ -384,12 +512,13 @@ def main() -> int:
     cases = discover()
     ran = 0
     pending, now_passing = [], []
+    payloads: dict = {}
 
     for case in cases:
         meta = case
         mine: list[str] = []
         forward: list[str] = []
-        ran += check(case, mine, forward)
+        ran += check(case, mine, forward, payloads)
         # The LIVE contract is a failure for every case. Pending never excuses
         # it — that excuse is what left the live facts unasserted.
         failures.extend(mine)
@@ -401,7 +530,10 @@ def main() -> int:
         else:
             now_passing.append((meta["id"], ticket))
 
+    graded = differential(cases, payloads, failures)
+
     print(f"cases run: {ran}/{len(cases)}")
+    print(f"differential pairs graded: {graded}")
     for failure in failures:
         print("  MISMATCH", failure)
     print(f"mismatches: {len(failures)}")

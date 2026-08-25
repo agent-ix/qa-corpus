@@ -313,22 +313,67 @@ def check_known_gaps(declaration: dict) -> None:
                 f"a clause nobody removed when the last case was fixed.")
 
 
-def controlled_cases(cases: list[dict]) -> set:
-    """Every failure case, by id+language, that some control names."""
-    partners = {}
+def failure_partners(cases: list[dict]) -> dict:
+    """What a `control_for` NAME resolves to: `(name, language) -> failure case`.
+
+    ID FIRST, `case:` alias second. One case's alias can equal another case's
+    id — two do on this corpus — and an alias must never displace a real id.
+    Written as setdefault-the-aliases-then-overwrite-with-the-ids rather than as
+    a lookup order at each call site, because a single map is the thing three
+    callers can share without re-deriving the precedence and getting it
+    different.
+    """
+    partners: dict = {}
     for c in cases:
         if c.get("kind") == "failure" and c.get("case"):
             partners.setdefault((c["case"], c.get("language")), c)
     for c in cases:
         if c.get("kind") == "failure":
             partners[(c["id"], c.get("language"))] = c
-    return {
-        (partners[(p, c.get("language"))]["id"], c.get("language"))
-        for c in cases if c.get("kind") == "control"
-        and isinstance(c.get("control_for"), list)
-        for p in c["control_for"]
-        if (p, c.get("language")) in partners
-    }
+    return partners
+
+
+def controls_by_case(cases: list[dict]) -> dict:
+    """`(failure id, language) -> [every control that names it]`.
+
+    THE one resolution of "which control is this failure case's", shared by the
+    loader's AC-13 pairing check, by `controlled_cases`, and by `verify.py`'s
+    AC-42 differential. It was open-coded three times and the copies disagreed.
+
+    A LIST, not one control. Two controls legitimately name
+    `marker-form-mismatch` — `marker-form-declared` and
+    `marker-form-mismatch-control` — so any rule that picks ONE of them picks it
+    by iteration order: the Rust harness took the last, this reader would have
+    taken the first, and that is a differing verdict about one corpus from the
+    two readers that exist to make disagreement visible. Both now grade against
+    EVERY control that names the case, which is stronger and order-independent
+    (`agent-ix/quire-rs#337`).
+
+    Resolution runs through `failure_partners`, so `control_for: [x]` credits
+    the case whose **id** is `x` when one exists. The Rust harness instead keyed
+    on the raw `control_for` string and fell back to the failure case's `case:`
+    alias — which handed `marker-mismatch`, a case this corpus DECLARES under
+    `known_gaps.uncontrolled_failure_cases`, the control belonging to
+    `marker-form-mismatch`, so it never reached the declared-gap branch and was
+    counted as controlled. That is where FR-065's "35 controlled failure cases
+    at `3ff72c0`" came from; `bounds.py` counted 34 at the same revision.
+    """
+    partners = failure_partners(cases)
+    pairs: dict = {}
+    for c in cases:
+        if c.get("kind") != "control" or not isinstance(c.get("control_for"), list):
+            continue
+        for name in c["control_for"]:
+            failure = partners.get((name, c.get("language")))
+            if failure is None:
+                continue
+            pairs.setdefault((failure["id"], failure.get("language")), []).append(c)
+    return pairs
+
+
+def controlled_cases(cases: list[dict]) -> set:
+    """Every failure case, by id+language, that some control names."""
+    return set(controls_by_case(cases))
 
 
 def check_controls(cases: list[dict]) -> None:
@@ -362,16 +407,11 @@ def check_controls(cases: list[dict]) -> None:
     # later-sorted alias won. That misdiagnosed THREE controls as binding the
     # wrong module (they do not; their partners match exactly) and let a case
     # with no control of its own inherit somebody else's.
-    partners = {}
-    for c in cases:
-        if c.get("kind") != "failure":
-            continue
-        if c.get("case"):
-            partners.setdefault((c["case"], c.get("language")), c)
-    for c in cases:
-        if c.get("kind") != "failure":
-            continue
-        partners[(c["id"], c.get("language"))] = c
+    #
+    # SHARED with `controls_by_case` rather than open-coded here, which is how
+    # the precedence came to be written twice in this file and a third time in
+    # the Rust harness — where it was written differently (#337).
+    partners = failure_partners(cases)
     for c in cases:
         if c.get("kind") != "control":
             continue
@@ -429,13 +469,7 @@ def check_controls(cases: list[dict]) -> None:
     # `catch-all-properties` — left the loader green, because that case's
     # `case:` alias is also the ID of a bench-legacy fixture that has its own
     # control, so it silently inherited a stranger's.
-    controlled = {
-        (partners[(partner, c.get("language"))]["id"], c.get("language"))
-        for c in cases if c.get("kind") == "control"
-        and isinstance(c.get("control_for"), list)
-        for partner in c["control_for"]
-        if (partner, c.get("language")) in partners
-    }
+    controlled = controlled_cases(cases)
     for c in cases:
         # A regression case is exempt: AC-13 exists so a check cannot score
         # perfect recall against input with no healthy counterpart, and a
@@ -922,7 +956,18 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         for c in cases
         if c.get("pending")
     }
-    matrix, counts = [], {"covered": 0, "GAP": 0, "out-of-scope": 0}
+    # THE COUNTERS COME FROM THE DECLARATION (FR-065-AC-19). This was
+    # `{"covered": 0, "GAP": 0, "out-of-scope": 0}` — a second, compiled-in copy
+    # of `bounds_states`, so adding a state to `corpus.yaml` did not add a
+    # counter and a cell in it would have raised `KeyError` from the middle of
+    # the loop rather than being counted. Derived, a new state is counted, is
+    # included in the sum invariant, and is reported, with no edit here.
+    declared_states = list(declaration.get("bounds_states") or [])
+    if not declared_states:
+        raise CorpusError(
+            "corpus.yaml declares no `bounds_states`, so there is no vocabulary "
+            "to grade cells into (FR-065-AC-19)")
+    matrix, counts = [], {state: 0 for state in declared_states}
     covered_pending = 0
     for row in declaration["inventory"]:
         scoped_out = row.get("out_of_scope", {})
@@ -954,7 +999,13 @@ def build(declaration: dict, cases: list[dict]) -> dict:
                 }
             else:
                 cells[language] = {"state": "GAP"}
-            counts[cells[language]["state"]] += 1
+            state = cells[language]["state"]
+            if state not in counts:
+                raise CorpusError(
+                    f"{row['case']}/{language}: graded `{state}`, which "
+                    f"`corpus.yaml`'s `bounds_states` does not declare "
+                    f"{declared_states} (FR-065-AC-19)")
+            counts[state] += 1
             if cells[language]["state"] == "covered" and (
                 row["mode"], row["case"], language
             ) in pending_cases:
@@ -969,13 +1020,16 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     # itself — `x != x`, which can never fire. A cell dropped or double-counted
     # moved both sides together and stayed green.
     declared = sum(len(row["languages"]) for row in declaration["inventory"])
-    graded = counts["covered"] + counts["GAP"] + counts["out-of-scope"]
+    # Summed over the DECLARED states, not over three names written here. A
+    # state added to `corpus.yaml` and not to this sum would have made the
+    # invariant fire on a corpus that was fine.
+    graded = sum(counts[state] for state in declared_states)
     if graded != declared:
+        breakdown = ", ".join(f"{state} {counts[state]}" for state in declared_states)
         raise CorpusError(
             f"the sum invariant does not hold: the inventory declares {declared} "
-            f"cells and {graded} were graded (covered {counts['covered']}, GAP "
-            f"{counts['GAP']}, out-of-scope {counts['out-of-scope']}). A cell is "
-            f"in no state, or in two."
+            f"cells and {graded} were graded ({breakdown}). A cell is in no "
+            f"state, or in two."
         )
     duplicates = [
         row["case"] for row in declaration["inventory"]

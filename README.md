@@ -52,9 +52,11 @@ fails the corpus rather than misleading a reader.
 corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
                      (intent only — the case index and the matrix are DERIVED)
 bounds.py            derives the matrix and gap_count from the filesystem
-verify.py            runs every case by its own `reproduce` and diffs expect.yaml
+verify.py            runs every case by its own `reproduce`, diffs expect.yaml, and
+                     grades each failure case against its CONTROL's payload (AC-42)
 scripts/
   schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
+  parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
 modules/
   ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
   variants/<id>/     relaxation variants — each names the ticket it sizes
@@ -166,6 +168,27 @@ A detector that fires on everything scores perfect recall. `quire-rs#250` shippe
 check producing **549 suspicions from 551 candidates**, and recall alone called it
 excellent. A control is healthy input that must stay silent; a failure case names its
 control with `control_for`.
+
+**Naming one is not enough, and that is the point.** Your `expect.yaml` is also graded
+against your control's payload, and it must produce **at least one mismatch** there
+(FR-065-AC-42). A block that holds against healthy input is not about your defect,
+whatever its shape — an empty block cannot mismatch, and neither can a row count that
+is true of both trees. So assert the field that *separates the pair*, not the field
+that happens to be handy. Both readers do this since `agent-ix/quire-rs#337`; before
+it, only `cargo test` did, and `verify.py` reported `mismatches: 0` on a corpus the
+Rust harness rejected.
+
+Two consequences worth knowing before you write a fixture:
+
+* `validate_*` keys are re-run over the **control's** tree in that grading, because
+  `quire validate` reads a spec tree and cannot be recomputed from a payload.
+* If your case is `pending:` on a **behaviour-change** ticket — one that adds no
+  diagnostic — its `expect-pending.yaml` is held to the opposite rule: it must
+  **hold** against the control, which is the tree the engine should produce once the
+  fix lands. A forward block that fails against it describes no reachable state.
+
+`make parity-selftest` blinds a real fixture and requires the differential to reject
+it, so the rule is a behaviour rather than a claim.
 
 ## Licence
 
