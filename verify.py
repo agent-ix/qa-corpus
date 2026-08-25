@@ -526,7 +526,6 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
     behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
     witness = check_witness_channels(declaration)
     pairs = controls_by_case(cases)
-    by_key = {(c["id"], c.get("language")): c for c in cases}
     graded = 0
 
     for case in cases:
@@ -550,6 +549,42 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
                     f"so it does not separate its own input from healthy input "
                     f"(FR-065-AC-42)")
             graded += 1
+
+            # A BEHAVIOUR-CHANGE forward block is held to the OPPOSITE rule, and
+            # it is the strongest check available to one. The control is the
+            # repaired tree, which is what the engine should produce once the
+            # fix lands, so the forward block must HOLD against it. Without this
+            # the loader's shape rule ("re-state the live block's graded keys
+            # with one different value") is satisfied by `total: 999` —
+            # different from today, and wrong after the fix too.
+            #
+            # A TOKEN forward block is NOT held to it. AC-36 requires it to name
+            # a token AC-35 guarantees no engine emits, so it cannot hold
+            # against any payload and grading it here restates a theorem.
+            #
+            # BEFORE THE AC-46 BLOCK, and the ordering is the fix rather than a
+            # tidy-up. It used to sit after it, and the AC-46 `continue` taken
+            # when a block names no witness channel therefore skipped this rule
+            # in THIS reader and not in the Rust one, where the forward block is
+            # graded first (`tests/corpus_cases.rs`, TC-1028). Reach today is
+            # 1 pair — `tag-on-describe-header` is the only case pending on a
+            # `behaviour_change_ticket` — and it names a witness, so the
+            # divergence was unreachable. It was still a reader divergence in
+            # the file whose whole subject is reader divergence.
+            ticket = case.get("pending")
+            forward_path = ROOT / case["dir"] / "expect-pending.yaml"
+            if ticket in behaviour_change and forward_path.is_file():
+                ahead: list[str] = []
+                grade(yaml.safe_load(forward_path.read_text()) or {}, healthy,
+                      case, name, ahead, validate_meta=control, report_unknown=False)
+                if ahead:
+                    failures.append(
+                        f"{name}: its expect-pending.yaml does NOT hold against "
+                        f"{control['id']}'s payload. That control is the repaired "
+                        f"tree, which is what the engine should produce once "
+                        f"{ticket} lands, so a forward block failing against it "
+                        f"describes no reachable state (FR-065-AC-42): "
+                        + "; ".join(ahead))
 
             # THE MODE-SPECIFIC WITNESS (FR-065-AC-46). The block above proves
             # the assertion tells these two payloads apart; this proves it does
@@ -587,32 +622,6 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
                     f"restricted to them its block holds against healthy input, so "
                     f"what it detects is not this defect family (FR-065-AC-46)")
 
-            # A BEHAVIOUR-CHANGE forward block is held to the OPPOSITE rule, and
-            # it is the strongest check available to one. The control is the
-            # repaired tree, which is what the engine should produce once the
-            # fix lands, so the forward block must HOLD against it. Without this
-            # the loader's shape rule ("re-state the live block's graded keys
-            # with one different value") is satisfied by `total: 999` —
-            # different from today, and wrong after the fix too.
-            #
-            # A TOKEN forward block is NOT held to it. AC-36 requires it to name
-            # a token AC-35 guarantees no engine emits, so it cannot hold
-            # against any payload and grading it here restates a theorem.
-            ticket = case.get("pending")
-            forward_path = ROOT / case["dir"] / "expect-pending.yaml"
-            if ticket in behaviour_change and forward_path.is_file():
-                ahead: list[str] = []
-                grade(yaml.safe_load(forward_path.read_text()) or {}, healthy,
-                      case, name, ahead, validate_meta=control, report_unknown=False)
-                if ahead:
-                    failures.append(
-                        f"{name}: its expect-pending.yaml does NOT hold against "
-                        f"{control['id']}'s payload. That control is the repaired "
-                        f"tree, which is what the engine should produce once "
-                        f"{ticket} lands, so a forward block failing against it "
-                        f"describes no reachable state (FR-065-AC-42): "
-                        + "; ".join(ahead))
-
     # Non-vacuous. A resolution bug that paired nothing would otherwise report
     # a clean differential over zero pairs, which is how this check would come
     # to exist and assert nothing — the state it was just written to end.
@@ -620,9 +629,19 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
         failures.append(
             "no failure case was graded against a control, so the FR-065-AC-42 "
             "differential asserted nothing")
-    unused = sorted(k for k in pairs if k not in by_key)
-    if unused:
-        failures.append(f"controls resolved to cases that do not exist: {unused}")
+    # A guard for "a control resolved to a case that does not exist" USED TO SIT
+    # HERE, and it had reach 0 — it could not fire on any corpus. `pairs` is
+    # keyed on `(failure["id"], failure.get("language"))` where `failure` comes
+    # out of `controls_by_case`'s resolution through `failure_partners`, whose
+    # values are elements of `cases`; `by_key` was keyed identically over all of
+    # `cases`. Every key was present by construction. Deleted rather than left
+    # as reassurance, because a branch that cannot fire is a gate a reader
+    # counts and a corpus does not have (outside review, 2026-08-24).
+    #
+    # THE CLAIM IS NOT LOST, and it is checked where it has reach:
+    # `bounds.check_controls` rejects `control_for` naming a name that is no
+    # failure case in that language, at LOAD, before any binary runs — that is
+    # FR-065-AC-13/AC-26 and TC-1017. Mutation-verified when this was deleted.
     return graded
 
 
