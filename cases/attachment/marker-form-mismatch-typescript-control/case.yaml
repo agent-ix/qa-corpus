@@ -1,0 +1,18 @@
+id: marker-form-mismatch-typescript-control
+case: marker-form-mismatch
+issue_ref: agent-ix/spec-artifacts-process#59
+mode: attachment
+language: typescript
+module: ecosystem
+kind: control
+control_for: marker-form-mismatch-typescript
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-mismatch-typescript-control/input
+  --json
+tags:
+- attachment
+- binding
+- coverage
+- typescript
+comment: The same tree with the DECLARED marker, the `trace()` helper. It binds, the row is backed, and
+  nothing fires.

@@ -1,0 +1,19 @@
+id: section-name-mismatch-python
+case: section-name-mismatch
+issue_ref: agent-ix/quire-rs#270
+mode: minting
+language: python
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch-python/input
+  --json
+tags:
+- minting
+- coverage
+- python
+comment: 'The python spelling of the section-name-mismatch case. The defect is in the MARKDOWN — the
+  archetype matches and the declared `section: Test Case Summary` does not — so it should be independent
+  of what language the evidence is written in, and that independence is a claim the corpus had no way to
+  check while all 22 of its cases were Rust. Measured: `section-matches-nothing` fires identically here,
+  and the evidence symbol binds, so the diagnostic is about the table and not about the binder.'

@@ -1,0 +1,18 @@
+# The engine before/after, measured:
+#
+#   engine 84740d4   backed 0/2   binding_census ABSENT   diagnostics: none
+#   engine 816e187   backed 1/2   census python 1/1       diagnostics: none
+#
+# Healthy input, correctly tagged, and the tool was SILENT about reading none
+# of it. Silence is what makes this class of defect expensive: nothing in the
+# payload distinguished "no evidence exists" from "the evidence was never
+# parsed".
+backed: 1
+total: 2
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1

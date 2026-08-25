@@ -1,0 +1,16 @@
+# Measured at engine 816e187. At 84740d4 neither the diagnostic nor the metric
+# exists — that absence IS agent-ix/quire-rs#270, and is what the tier-1 runner
+# could not see (agent-ix/quoin#236).
+backed: 0
+total: 1
+diagnostic_reasons:
+- section-matches-nothing
+diagnostic_paths:
+  section-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  section-matches-nothing: "found no section matching 'Test Case Summary'"
+metrics:
+- name: minting.section_hit_rate
+  state: measured
+  examined: 2
+  matched: 1

@@ -170,7 +170,9 @@ inventory:
   case: marker-form-mismatch
   source: agent-ix/spec-artifacts-process#59
   languages:
+  - python
   - rust
+  - typescript
 - mode: detection
   case: catch-all-headline
   source: agent-ix/quire-rs#230
@@ -232,6 +234,32 @@ inventory:
   languages:
   - rust
 known_gaps:
+  # Which tier-1 families deliberately stayed single-language when the python
+  # and typescript columns were opened (agent-ix/quoin#236), and why. Recorded
+  # rather than filled: inventing a case that measures nothing is worse than a
+  # GAP, because a GAP is visible and a decorative fixture is not.
+  languages_not_declared:
+    wrong-type-cell: The defect is a Type cell outside the declared vocabulary — a MARKDOWN
+      table cell, rejected by `quire validate`. The coverage payload of such a case is
+      byte-identical to a healthy control's, and the source language of the evidence beside
+      it changes nothing that is read. A per-language copy would be the same assertion three
+      times.
+    vacuous-property-suite: '`coverage.suspicions` reads proptest/quickcheck suite shape.
+      Whether the skeptic reads `hypothesis` or `fast-check` at all is unmeasured here, so
+      declaring a python or typescript cell would declare a GAP against a detector nobody has
+      established exists for those languages. Establish that first, then declare the cells.'
+    oracle-copy: 'Same as above, and worse: the comparison ships in quire-rs `src/skeptic.rs`
+      with no production caller (agent-ix/quire-rs#236), so recall is 0 in every language.
+      Three more red cells would add no information.'
+    mocked-confirmation: quoin's own auditor, and its detector cannot fire at all — `AuditInput.injections`
+      is supplied by no caller (agent-ix/quoin#204, reopened). Language-independent by construction.
+    gate-that-gates-nothing: The gate is a shell script, so the case has no source language
+      to vary. No detector exists anywhere in the ecosystem either (agent-ix/quoin#197 workstream
+      4).
+    catch-all-headline: The criteria classifier reads acceptance-criterion PROSE in markdown.
+      It never looks at source. `catch-all-universal` already fires on every case in this corpus,
+      python and typescript included, which is the language-independence evidence a dedicated
+      fixture would have been written to produce.
   uncontrolled_failure_cases:
     cases:
     - greenfield-no-symbols

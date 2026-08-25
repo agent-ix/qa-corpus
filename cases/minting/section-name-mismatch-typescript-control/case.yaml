@@ -1,0 +1,17 @@
+id: section-name-mismatch-typescript-control
+case: section-name-mismatch
+issue_ref: agent-ix/quire-rs#270
+mode: minting
+language: typescript
+module: ecosystem
+kind: control
+control_for: section-name-mismatch-typescript
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-name-mismatch-typescript-control/input
+  --json
+tags:
+- minting
+- coverage
+- typescript
+comment: The same tree with the DECLARED heading. It mints the TC row and stays silent. Without it, a
+  `section-matches-nothing` that fired on every TestMatrix would score perfect recall.

@@ -1,0 +1,23 @@
+# The engine before/after, measured:
+#
+#   engine 84740d4   backed 0/2   binding_census ABSENT   diagnostics: none
+#   engine 816e187   backed 0/2   census python 1/0       no-symbol-bound + hollow-denominator
+#
+# `backed` is 0 on BOTH, which is why asserting it alone would have called this
+# case unchanged. The whole delta is that the symbol exists to be examined:
+# `candidates: 1` where there was no census at all, and a located finding where
+# there was silence.
+backed: 0
+total: 2
+diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+diagnostic_paths:
+  no-symbol-bound: src/lib.py
+diagnostic_message_contains:
+  no-symbol-bound: '`TestCoverage.test_covers_the_criterion` at src/lib.py:28'
+binding_census:
+- language: python
+  candidates: 1
+  bound: 0
+  unbound_example: src/lib.py:28

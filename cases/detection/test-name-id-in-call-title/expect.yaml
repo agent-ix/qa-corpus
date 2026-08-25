@@ -1,0 +1,13 @@
+# Identical at engine 84740d4 and engine 816e187: the form is DECLARED, not
+# implemented, so the engine axis cannot move it. The declaration axis does —
+# at the pre-#68 vendored module this same tree reads `backed: 0`, census
+# typescript 2/0, and `no-symbol-bound` + `hollow-denominator` fire.
+backed: 2
+total: 4
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+binding_census:
+- language: typescript
+  candidates: 2
+  bound: 2

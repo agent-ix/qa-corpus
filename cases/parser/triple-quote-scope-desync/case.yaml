@@ -1,0 +1,25 @@
+id: triple-quote-scope-desync
+case: triple-quote-scope-desync
+issue_ref: agent-ix/quire-rs#274
+mode: parser
+language: python
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync/input
+  --json
+tags:
+- parser
+- binding
+- coverage
+- python
+comment: 'An embedded triple-quoted fixture inverts the scope stack, and the seeded defect behind it becomes
+  invisible. `symbols/python.rs:40-42` tracked the delimiter only when it STARTED a line, so `source =
+  """` never entered string mode and the closing delimiter opened one; the embedded `class Settings` at
+  column 0 then popped `TestCoverage`, and every method after it was classified `Function` rather than
+  `TestFunction`. Observed in `agent-ix/catalog-service` `tests/test_scanner_service.py:164` and `usul-code/tests/unit/test_extractor.py:268`
+  — 2 files, the smallest number in Wave 3, and ranked last on purpose. The seeded defect here is an undeclared
+  marker spelling (`@pytest.mark.tracks`), so the case measures the thing that matters: at engine 84740d4
+  the symbol is not a candidate at all, `binding_census` is ABSENT and the tool reports nothing; at 816e187
+  the symbol is examined, `no-symbol-bound` fires and names `src/lib.py:28`. A corpus that looks clean
+  because nothing was read is exactly the failure this corpus exists to catch.'

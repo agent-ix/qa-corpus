@@ -1,0 +1,14 @@
+# Identical at engine 84740d4 and engine 816e187.
+#
+# `backed: 1` of 4 and NOT 2: the prose title binds nothing, which is the whole
+# claim. The bound one is TC-002; TC-001's row stays unbacked.
+backed: 1
+total: 4
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+binding_census:
+- language: typescript
+  candidates: 2
+  bound: 1
+  unbound_example: src/lib.test.ts:12

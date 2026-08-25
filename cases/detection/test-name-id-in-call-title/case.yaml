@@ -1,0 +1,25 @@
+id: test-name-id-in-call-title
+case: test-name-id-in-call-title
+issue_ref: agent-ix/spec-artifacts-process#68
+mode: detection
+language: typescript
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title/input
+  --json
+tags:
+- detection
+- binding
+- coverage
+- typescript
+comment: 'The id lives in the call''s own title string and nowhere else — `it("tc-001: …")`. Measured across
+  `agent-ix/filament-ide-rs`, 587 `it()`/`test()`/`describe()` sites under `ui/`: 476 (81%) carry the id
+  in the title, 61 (10%) in an attached comment, 45 (8%) only in a file-level docblock, 5 (1%) nowhere.
+  spec-artifacts-process#68 added `typescript-test-name-id`; before it, TypeScript declared four trace
+  forms and none of them read a test''s name. THIS CASE IS A DECLARATION-AXIS CASE, NOT AN ENGINE ONE:
+  the tier-1 runner varies the engine and holds the module fixed, so its verdict here is `held` on both
+  engines by construction. The delta is real and was measured separately — same engine 816e187, module
+  `fa56ced` (pre-#68) reports `backed 0/4` with `no-symbol-bound`, module `c197b1c` reports `backed 2/4`
+  and silence — and engine 84740d4 with the new module reports `backed 2/4` too, so the effect is entirely
+  the declaration''s.'

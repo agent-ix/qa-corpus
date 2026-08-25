@@ -1,0 +1,13 @@
+# Measured at engine 816e187. `backed`/`total` are identical at 84740d4; the
+# metric does not exist there.
+backed: 1
+total: 2
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+- section-matches-nothing
+metrics:
+- name: minting.section_hit_rate
+  state: measured
+  examined: 2
+  matched: 2

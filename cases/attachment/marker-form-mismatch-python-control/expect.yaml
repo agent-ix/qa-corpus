@@ -1,0 +1,10 @@
+# Identical at engine 84740d4 and engine 816e187.
+backed: 1
+total: 2
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1

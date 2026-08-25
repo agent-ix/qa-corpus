@@ -1,0 +1,21 @@
+# Measured at engine 816e187 AND at engine 84740d4 — identical on both.
+backed: 0
+total: 2
+diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+diagnostic_paths:
+  no-symbol-bound: src/lib.test.ts
+diagnostic_message_contains:
+  no-symbol-bound: 'at src/lib.test.ts:5'
+binding_census:
+- language: typescript
+  candidates: 1
+  bound: 0
+  unbound_example: src/lib.test.ts:5
+metrics:
+- name: coverage.backed
+  state: measured
+  examined: 1
+  matched: 0
+  hollow: true

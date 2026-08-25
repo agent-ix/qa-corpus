@@ -1,0 +1,21 @@
+id: triple-quote-scope-desync-control
+case: triple-quote-scope-desync
+issue_ref: agent-ix/quire-rs#274
+mode: parser
+language: python
+module: ecosystem
+kind: control
+control_for: triple-quote-scope-desync
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync-control/input
+  --json
+tags:
+- parser
+- binding
+- coverage
+- python
+comment: 'agent-ix/quire-rs#274''s own acceptance asks for this: a genuine docstring must still parse.
+  The file carries BOTH a plain method docstring and the embedded `source = """` fixture, and the test
+  after them carries the DECLARED marker. Post-fix it binds and the row is backed; at engine 84740d4 the
+  same file reports `backed: 0` with no census, because the correctly-tagged test was never a symbol.
+  So this control also records what the defect COST: healthy, correctly-tagged Python read as untagged.'

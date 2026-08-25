@@ -1,0 +1,19 @@
+id: marker-form-mismatch-python-control
+case: marker-form-mismatch
+issue_ref: agent-ix/spec-artifacts-process#59
+mode: attachment
+language: python
+module: ecosystem
+kind: control
+control_for: marker-form-mismatch-python
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-mismatch-python-control/input
+  --json
+tags:
+- attachment
+- binding
+- coverage
+- python
+comment: The same tree with the DECLARED marker, `@pytest.mark.trace`. It binds, the row is backed, and
+  nothing fires. Without it, a binder that reported `no-symbol-bound` on every Python file would score
+  perfect recall on the failure case beside this one.

@@ -1,0 +1,21 @@
+id: test-name-id-in-call-title-control
+case: test-name-id-in-call-title
+issue_ref: agent-ix/spec-artifacts-process#68
+mode: detection
+language: typescript
+module: ecosystem
+kind: control
+control_for: test-name-id-in-call-title
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-id-in-call-title-control/input
+  --json
+tags:
+- detection
+- binding
+- coverage
+- typescript
+comment: 'The PRECISION control for the test-name form: one title carries an id, one merely names one in
+  prose, and only the first may bind. `typescript-test-name-id` anchors on the opening quote, so `it("does
+  not verify tc-001, …")` matches nothing — which is the property that stops a test saying in plain English
+  that it does not verify a criterion from marking it backed. The unbound candidate is REPORTED (`unbound_example`
+  names `src/lib.test.ts:12`) and no diagnostic fires, because one of the two candidates did bind.'

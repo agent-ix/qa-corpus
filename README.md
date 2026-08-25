@@ -77,7 +77,7 @@ added, so a corpus could improve its number while the hard missing case stayed
 missing. Converting a `GAP` to `out-of-scope` moves the count — declaring something
 out of scope is a visible act.
 
-### Today: `gap_count: 42`, `covered: 1`
+### Today: `gap_count: 36`, `covered: 15`, across three languages
 
 Run `make bounds` — these numbers are **derived, never stored**, so they cannot go
 stale. Adding a fixture flips its own cell and moves the count with no edit to any
@@ -88,12 +88,33 @@ eleven bind the `bench-legacy` variant** — the synthetic manifest whose headin
 always matches. They therefore cover **no ecosystem mode**, and the matrix says so
 rather than crediting them. Rebinding them is `agent-ix/quire-rs#285`.
 
-The one covered cell is `minting/section-name-mismatch`, the first fixture bound to
-the real declaration.
-
 Starting near zero is the honest reading. A corpus that credited itself on day one
 for cases bound to a manifest that cannot fail is the exact defect this repository
 was created to end.
+
+### The Python and TypeScript columns are open
+
+The corpus was **22 of 22 `language: rust`**, and that was not a small thing: a
+before/after of `quire-rs` Wave 3 scored every family `held` and **two of the six
+fixes could not be exercised at all** — `quire-rs#274` (Python triple-quote scope)
+and `spec-artifacts-process#68` (the TypeScript test-name form). "No change" over a
+single-language corpus reads as a statement about the toolchain and is a statement
+about Rust (`agent-ix/quoin#236`).
+
+Twelve fixtures opened the other two columns: six failure cases and their six
+controls, all bound to the **ecosystem** declaration.
+
+| mode | case | languages added |
+|---|---|---|
+| `minting` | `section-name-mismatch` | python, typescript |
+| `attachment` | `marker-form-mismatch` | python, typescript |
+| `parser` | `triple-quote-scope-desync` | python (`quire-rs#274`) |
+| `detection` | `test-name-id-in-call-title` | typescript (`spec-artifacts-process#68`) |
+
+Which tier-1 families deliberately stayed single-language, and why, is written down
+in `corpus.yaml` under `known_gaps.languages_not_declared`. Inventing a case that
+measures nothing is worse than a `GAP`: a `GAP` is visible and a decorative fixture
+is not.
 
 ### A fixture may be red before its fix
 

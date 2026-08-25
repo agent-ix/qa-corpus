@@ -1,0 +1,19 @@
+id: marker-form-mismatch-typescript
+case: marker-form-mismatch
+issue_ref: agent-ix/spec-artifacts-process#59
+mode: attachment
+language: typescript
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-mismatch-typescript/input
+  --json
+tags:
+- attachment
+- binding
+- coverage
+- typescript
+comment: 'The TypeScript spelling of the Rust `marker-form-mismatch` case, bound to the REAL declaration.
+  `tracks("TC-001")` where the module declares the `trace()` helper. The corpus was 22 of 22 `language:
+  rust` at pin 088771b, so the tier-1 benchmark''s per-family precision and recall were statements about
+  Rust that read as statements about the toolchain (agent-ix/quoin#236).'

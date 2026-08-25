@@ -1,0 +1,21 @@
+id: marker-form-mismatch-python
+case: marker-form-mismatch
+issue_ref: agent-ix/spec-artifacts-process#59
+mode: attachment
+language: python
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-mismatch-python/input
+  --json
+tags:
+- attachment
+- binding
+- coverage
+- python
+comment: 'The Python spelling of the Rust `marker-form-mismatch` case, and bound to the REAL declaration
+  rather than the `bench-legacy` variant the Rust one still uses. `@pytest.mark.tracks(...)` where the
+  module declares `@pytest.mark.trace(...)`: a real test, a real tag, a marker the module never declared.
+  Authored because the corpus was 22 of 22 `language: rust` at pin 088771b, so every finding-quality number
+  the tier-1 benchmark published was a statement about Rust and read as a statement about the toolchain
+  (agent-ix/quoin#236).'
