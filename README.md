@@ -49,22 +49,24 @@ fails the corpus rather than misleading a reader.
 ## Layout
 
 ```
-corpus.yaml          schema version, vocabularies, and the INVENTORY (intent only —
-                     the case index and the matrix are DERIVED, see below)
+corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
+                     (intent only — the case index and the matrix are DERIVED)
 bounds.py            derives the matrix and gap_count from the filesystem
 verify.py            runs every case by its own `reproduce` and diffs expect.yaml
+scripts/
+  schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
 modules/
   ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
   variants/<id>/     relaxation variants — each names the ticket it sizes
 cases/<mode>/<case>/                       ONE language
-  case.yaml          id, case, issue_ref, mode, language, module, kind, findable,
-                     reproduce; control_for on a control; relaxation_ticket on a
-                     variant binding; pending on a case awaiting its fix
+  case.yaml          the fields `corpus.yaml`'s `case_schema` declares. Read it
+                     there rather than here: a list of required fields written in
+                     prose is a second declaration free to rot, and this one had
+                     (#336). `make new-case` scaffolds a complete skeleton.
   input/ expect.yaml
 
 cases/<mode>/<case>/                       a LANGUAGE SET
-  case.yaml          everything SHARED — identity: id, case, issue_ref, mode,
-                     module, kind, findable, control_for
+  case.yaml          everything SHARED — the identity fields
   <language>/
     case.yaml        only what VARIES: reproduce, per-language overrides
     input/ expect.yaml

@@ -57,6 +57,128 @@ case_kinds:
 # control stays silent and the pair keeps discriminating (FR-065-AC-43/44).
 - regression
 
+# THE CASE-METADATA SCHEMA. One declaration, both readers.
+#
+# WHY THIS EXISTS. Two readers implement this corpus on purpose, so that reader
+# drift is VISIBLE. An outside review checked whether it is, and it was not: the
+# Rust reader rejects a missing required field (serde) and duplicate ids (its own
+# test), and the Python reader checked neither. Reproduced — remove `issue_ref`
+# from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
+# 0 reporting all 77 fixtures either way (agent-ix/quire-rs#336).
+#
+# The fix is NOT a second hand-written list of required fields in Python. That is
+# the same defect one level up: two lists, free to disagree, with nothing
+# comparing them. The required set lives HERE, `bounds.py` validates against it
+# before deriving anything, and a Rust test asserts `CaseMeta` agrees with it —
+# so the day a field is added to one reader and not the other, a gate says so.
+#
+# WHAT THIS DESCRIBES is the EFFECTIVE record: a language set's shared
+# `case.yaml` merged with its per-language one, with `language` taken from the
+# directory name (CR-109). It is deliberately not "required in every file" —
+# a set splits the declaration across two, and requiring both would forbid sets.
+case_schema:
+  # Present and non-empty in every effective record.
+  #
+  # This is FR-065's own list — `id`, `issue_ref`, `mode`, `language`, `module`,
+  # `findable`, `reproduce`, `kind` — plus `tags`, which TC-1021 already requires
+  # to carry a `TC-` id and which was therefore required by a gate and by no
+  # declaration. `findable` and `reproduce` are required rather than DEFAULTED:
+  # a default silently supplies a field the author did not write, which is the
+  # mechanism behind the review's mutation. Both readers are held to this list;
+  # TC-1043 deletes each entry from a real declaration and requires the Rust
+  # reader to refuse it, so "required" is a behaviour rather than two lists.
+  required:
+  - id
+  - issue_ref
+  - mode
+  - module
+  - kind
+  - language
+  - reproduce
+  - findable
+  - tags
+  # Everything else a case may carry. Anything in neither list is REJECTED: an
+  # unmodelled field is a field nothing checks, which is how a typo'd
+  # expectation was once silently dropped by the CI gate itself.
+  #
+  # `comment` is here rather than in `required` on purpose. All 45 declare one
+  # and no gate asks for it, so requiring it would be promoting a convention to
+  # a rule because the count happened to be 45/45. `case` is in FR-065's
+  # required list and is NOT required here: no control declares one, and both
+  # readers DERIVE it from the id when absent — the requirement as written
+  # describes the effective record after derivation, not the file.
+  optional:
+  - case
+  - comment
+  - control_for
+  - pending
+  - pending_reason
+  - relaxation_ticket
+  # The type of every declared field. `str`, `bool`, or `[str]` for a list.
+  #
+  # Presence was not enough, and a mutation proved it rather than an argument:
+  # reverting `new_case.py` to write `control_for` as a bare STRING left this
+  # reader silent, because it only checked that the field was there and not
+  # empty. The Rust reader refuses the same file — `Option<Vec<String>>` — so
+  # the scaffolder could emit a case one reader loaded and the other could not,
+  # which is precisely the drift the pair exists to expose (#336).
+  types:
+    id: str
+    issue_ref: str
+    mode: str
+    module: str
+    kind: str
+    language: str
+    reproduce: str
+    findable: bool
+    tags: [str]
+    case: str
+    comment: str
+    control_for: [str]
+    pending: str
+    pending_reason: str
+    relaxation_ticket: str
+  by_kind:
+    failure:
+      # The only kind that may claim a defect is detectable, so the only kind
+      # with no `findable` constraint. All 24 today declare `findable: true`;
+      # a non-findable failure is an unexercised escape hatch that skips the
+      # AC-40 names-what-finds-it check, and is left legal deliberately.
+      forbidden: [control_for]
+    control:
+      # Healthy input. Nothing may be found on it, and it names the failure
+      # case(s) it is the repair of.
+      required: [control_for]
+      forbidden: [pending, pending_reason, case]
+      values: {findable: [false]}
+    regression:
+      # Pins behaviour a LANDED ticket established. No control, nothing to find,
+      # no pending ticket — the ticket is closed (CR-123).
+      forbidden: [control_for, pending, pending_reason]
+      values: {findable: [false]}
+  # Evaluated on the effective record, after `by_kind`.
+  conditional:
+  - if_present: pending
+    then_required: [pending_reason]
+    why: a marker with no reason is one nobody can decide whether to remove
+  - if_field_is_not: {module: ecosystem}
+    then_required: [relaxation_ticket]
+    why: FR-065-CON-3 — a variant binding must name the ticket it is sizing
+  # A variant declares only what VARIES. These say WHICH case this is, and the
+  # shared file is where that claim lives (FR-065-AC-22). PRESENCE is the test,
+  # not disagreement: an injected `pending:` on one control variant converted a
+  # silence-proving control into an expected failure and every gate stayed green.
+  variant_forbidden:
+  - case
+  - mode
+  - module
+  - kind
+  - pending
+  # Derived ids must be unique across the whole corpus. A collision silently
+  # merges two cases in every join keyed on id — the pending list, the baselines,
+  # any cross-runner record.
+  unique: [id]
+
 # EVERY diagnostic reason a fixture may name, and the only place a new token is
 # introduced. Both runners reject a token that appears in neither list.
 #

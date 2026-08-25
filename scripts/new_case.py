@@ -16,7 +16,38 @@ import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
-MODULE_YAML = "spec/tests.md"
+
+def resolve_module(module: str) -> str | None:
+    """`--module <dir>` for one module, `IX_FILAMENT_MODULES_PATH=<dir>` for a path.
+
+    `None` when the name resolves to neither.
+
+    This used to require `modules/<name>/manifest.yaml` and emit
+    `--module modules/<name>` unconditionally, which meant **`make new-case`
+    failed for `ecosystem` — its own default, and the module every real case
+    binds.** `modules/ecosystem/` holds `spec-artifacts-process` and
+    `spec-artifacts-iso` side by side, because archetypes reference their schema
+    files relative to a module root and the FR/TestMatrix archetypes live in the
+    second one (CR-108). It is a search PATH, and `--module` takes one
+    directory.
+
+    So the documented on-ramp — the thing whose Makefile comment says "the first
+    thing an author sees is a skeleton that runs, not a schema document" — could
+    not produce a single case, and had it somehow produced one, the invocation it
+    wrote would have been the exact broken `--module modules/ecosystem` form
+    CR-108 recorded as wrong for the third time: it exits 0 with no output, and a
+    reader concludes the case is clean.
+
+    The same one-or-a-path rule TC-1021 applies to `module:` (#336).
+    """
+    directory = ROOT / "modules" / module
+    if (directory / "manifest.yaml").is_file():
+        return f"--module modules/{module}"
+    if directory.is_dir() and any(
+        child.joinpath("manifest.yaml").is_file() for child in directory.iterdir()
+    ):
+        return f"IX_FILAMENT_MODULES_PATH=modules/{module}"
+    return None
 
 
 def main() -> int:
@@ -24,7 +55,8 @@ def main() -> int:
     ap.add_argument("--mode", required=True)
     ap.add_argument("--case", required=True)
     ap.add_argument("--language", default="rust")
-    ap.add_argument("--kind", default="failure", choices=["failure", "control"])
+    ap.add_argument("--kind", default="failure",
+                    choices=["failure", "control", "regression"])
     ap.add_argument("--module", default="ecosystem")
     ap.add_argument("--issue", default="", help="the filing this case regresses")
     args = ap.parse_args()
@@ -34,11 +66,13 @@ def main() -> int:
         print(f"`{args.mode}` is not a declared mode family: "
               f"{declaration['mode_families']}", file=sys.stderr)
         return 1
-    if not (ROOT / "modules" / args.module / "manifest.yaml").is_file():
-        print(f"module `{args.module}` has no manifest under modules/", file=sys.stderr)
+    selector = resolve_module(args.module)
+    if selector is None:
+        print(f"module `{args.module}` names neither a manifest nor a directory "
+              f"of them under modules/", file=sys.stderr)
         return 1
 
-    case_id = args.case if args.kind == "failure" else f"{args.case}-control"
+    case_id = f"{args.case}-control" if args.kind == "control" else args.case
     case_dir = ROOT / "cases" / args.mode / case_id
     if case_dir.exists():
         print(f"{case_dir.relative_to(ROOT)} already exists", file=sys.stderr)
@@ -64,23 +98,41 @@ def main() -> int:
     )
 
     relative = case_dir.relative_to(ROOT)
+    # A single module is selected with `--module` INSIDE the command; a module
+    # PATH with an `IX_FILAMENT_MODULES_PATH=` assignment BEFORE it, which both
+    # readers strip as a leading `KEY=value` token. TC-1020 requires the
+    # invocation to name the module the case declares, either way.
+    env, flag = (selector, "") if selector.startswith("IX_") else ("", selector)
+    reproduce = " ".join(
+        part for part in
+        (env, "quire coverage --scope", f"{relative}/input", flag, "--json")
+        if part
+    )
     meta = {
         "id": case_id,
-        "case": args.case,
         "issue_ref": args.issue or "REQUIRED — name the filing this case regresses",
         "mode": args.mode,
         "language": args.language,
         "module": args.module,
         "kind": args.kind,
         "findable": args.kind == "failure",
-        "reproduce": f"quire coverage --scope {relative}/input "
-                     f"--module modules/{args.module} --json",
+        "reproduce": reproduce,
         "tags": ["TC-REPLACE-ME"],
         "comment": "What this case is about, and the measurement that made it worth "
                    "a fixture.",
     }
+    # `case` names the INVENTORY ROW a fixture credits, and only a failure case
+    # credits one. It was written on every kind, including controls — where
+    # `case_schema` now forbids it, because a control measures nothing about the
+    # mode and a `case:` on one is a claim to a cell it cannot cover.
+    if args.kind == "failure" and args.case != case_id:
+        meta["case"] = args.case
+    # A LIST, always. This emitted a bare string, which every real control in
+    # the corpus contradicts and `CaseMeta`'s `Option<Vec<String>>` refuses — so
+    # `--kind control` produced a case the Rust reader could not read, and
+    # nothing ran the scaffolder to find out (#336).
     if args.kind == "control":
-        meta["control_for"] = args.case
+        meta["control_for"] = [args.case]
     (case_dir / "case.yaml").write_text(
         yaml.safe_dump(meta, sort_keys=False, width=100, allow_unicode=True))
 

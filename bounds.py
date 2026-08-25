@@ -40,6 +40,111 @@ def load_declaration() -> dict:
     return load_yaml(ROOT / "corpus.yaml")
 
 
+def validate_case(declared: dict, kind: str, where: str, schema: dict) -> list[str]:
+    """Grade ONE effective case record against `corpus.yaml`'s `case_schema`.
+
+    Returns every problem rather than raising on the first, because an author
+    who omitted three fields should be told three times, not once per run.
+
+    THE POINT OF THIS FUNCTION is that its rules are not written here. Two
+    readers implement this corpus so that reader drift is visible; an outside
+    review checked and found it was not — the Rust reader rejects a missing
+    required field (serde) and duplicate ids, and this one checked neither.
+    Reproduced: removing `issue_ref` from a `case.yaml`, and pointing two cases
+    at one id, each left `bounds.py` exiting 0 over all 77 fixtures
+    (agent-ix/quire-rs#336). A second hand-written list of required fields in
+    Python would be the same defect one level up, so the list lives in
+    `corpus.yaml` and both readers are held to it.
+
+    `declared` is the record AS WRITTEN — for a language set, the shared
+    `case.yaml` merged with the per-language one, plus the `language` taken from
+    the directory. NOT the derived record: `discover()` injects a `case`, and
+    grading the injection would make the "did the author write one?" checks
+    vacuous.
+    """
+    problems: list[str] = []
+    required = list(schema.get("required") or [])
+    optional = list(schema.get("optional") or [])
+
+    by_kind = (schema.get("by_kind") or {}).get(kind) or {}
+    if kind not in (schema.get("by_kind") or {}):
+        # Not this function's job to police the kind vocabulary — `case_kinds`
+        # does that — but silently applying no per-kind rule to an unknown kind
+        # would make every rule below optional for the price of a typo.
+        problems.append(
+            f"{where}: kind `{kind}` has no `case_schema.by_kind` entry, so no "
+            f"per-kind rule could be applied")
+
+    for field in required + list(by_kind.get("required") or []):
+        if field not in declared:
+            problems.append(f"{where}: required field `{field}` is missing")
+        elif declared[field] is None or (
+            isinstance(declared[field], (str, list, dict)) and not declared[field]
+        ):
+            # Empty is its own failure mode. `issue_ref: ""` satisfies a
+            # presence check and records nothing, which is the state this
+            # corpus's attribution rule exists to prevent.
+            problems.append(f"{where}: `{field}` is present but empty")
+
+    for field in by_kind.get("forbidden") or []:
+        if field in declared:
+            problems.append(
+                f"{where}: a `{kind}` case may not declare `{field}`")
+
+    for field, allowed in (by_kind.get("values") or {}).items():
+        if field in declared and declared[field] not in allowed:
+            problems.append(
+                f"{where}: `{field}: {declared[field]!r}` is not one of "
+                f"{allowed} for a `{kind}` case")
+
+    for field, spec in (schema.get("types") or {}).items():
+        if field not in declared:
+            continue
+        value = declared[field]
+        if spec == "str":
+            ok, want = isinstance(value, str), "a string"
+        elif spec == "bool":
+            ok, want = isinstance(value, bool), "true or false"
+        elif spec == ["str"]:
+            ok = isinstance(value, list) and all(isinstance(v, str) for v in value)
+            want = "a list of strings"
+        else:
+            problems.append(
+                f"{where}: `case_schema.types` declares `{field}: {spec!r}`, "
+                f"which is not a type this reader knows")
+            continue
+        if not ok:
+            # Presence alone let `control_for: <string>` through here while the
+            # Rust reader's `Option<Vec<String>>` refused it — one corpus, two
+            # readers, one of them wrong, and no gate between them (#336).
+            problems.append(
+                f"{where}: `{field}` must be {want}, got "
+                f"{type(value).__name__} {value!r}")
+
+    known = set(required) | set(optional) | {"language"}
+    for field in sorted(set(declared) - known):
+        problems.append(
+            f"{where}: `{field}` is in neither `required` nor `optional` — an "
+            f"unmodelled field is a field nothing checks")
+
+    for rule in schema.get("conditional") or []:
+        trigger = rule.get("if_present")
+        if trigger is not None:
+            fires = trigger in declared
+        else:
+            (field, value), = (rule.get("if_field_is_not") or {}).items()
+            fires = declared.get(field) != value
+        if not fires:
+            continue
+        for field in rule.get("then_required") or []:
+            if field not in declared:
+                because = rule.get("why") or "declared in `case_schema`"
+                problems.append(
+                    f"{where}: `{field}` is required here — {because}")
+
+    return problems
+
+
 def discover() -> list[dict]:
     """Every fixture on disk, in either layout.
 
@@ -68,7 +173,7 @@ def discover() -> list[dict]:
                     f"the other.")
             cases.append({
                 **shared, "dir": str(rel), "expect": str(rel / "expect.yaml"),
-                "_declared": shared,
+                "_declared": shared, "_where": str(rel),
             })
             continue
 
@@ -113,7 +218,7 @@ def discover() -> list[dict]:
             # Rust harness exactly. This honoured a variant-declared `id`
             # verbatim while Rust overwrote it, so one fixture had two
             # identities and nothing keyed on `id` — a pending ticket, a
-            # baseline row, a result record — could be joined across runners.
+            # baseline row, a baseline join — could be keyed across runners.
             base = merged.get("id", case_dir.name)
             merged["case"] = merged.get("case", base)
             merged["id"] = f"{base}-{language}"
@@ -123,12 +228,68 @@ def discover() -> list[dict]:
                 "expect": str(variant.relative_to(ROOT) / "expect.yaml"),
                 # The declaration AS WRITTEN. `merged` gains a derived `case`,
                 # so a check on whether the author wrote one needs the original.
-                "_declared": {**shared, **per_case},
+                # `language` comes from the directory and is part of the record
+                # even though no file declares it (CR-109).
+                "_declared": {**shared, **per_case, "language": language},
+                "_where": f"{rel}/{language}",
             })
-    check_known_gaps(load_declaration())
+    declaration = load_declaration()
+    check_case_schema(declaration, cases)
+    check_known_gaps(declaration)
     check_controls(cases)
     check_expectations(cases)
     return cases
+
+
+def check_case_schema(declaration: dict, cases: list[dict]) -> None:
+    """Hold every case to `corpus.yaml`'s `case_schema`, and ids to uniqueness.
+
+    Runs BEFORE anything derives a matrix from these records. A count computed
+    over a corpus that does not satisfy its own schema is a number about
+    something else.
+
+    Fails ONCE with every problem. An author who omitted three fields is told
+    three times rather than once per run, and a reviewer reads the whole state
+    of the tree instead of its alphabetically-first defect.
+    """
+    schema = declaration.get("case_schema")
+    if not schema:
+        # Not a skip. A reader that quietly does nothing when its rules are
+        # absent is indistinguishable from one that checked and found nothing,
+        # which is the exact confusion this corpus exists to end.
+        raise CorpusError(
+            "corpus.yaml declares no `case_schema`, so no case metadata can be "
+            "validated — the Rust reader would still reject what this one now "
+            "cannot see (agent-ix/quire-rs#336)")
+
+    problems: list[str] = []
+    for case in cases:
+        problems += validate_case(
+            case["_declared"], str(case["_declared"].get("kind")),
+            case["_where"], schema)
+
+    # Uniqueness on the DERIVED id, because that is what a join is keyed on —
+    # a language set's `<shared id>-<language>` is the id a baseline row, a
+    # pending entry or a cross-runner record carries. Two cases sharing one
+    # silently merge in every one of them.
+    for field in schema.get("unique") or []:
+        seen: dict[str, str] = {}
+        for case in cases:
+            value = case.get(field)
+            if value is None:
+                continue
+            if value in seen:
+                problems.append(
+                    f"{case['_where']}: `{field}` {value!r} is already used by "
+                    f"{seen[value]} — a collision merges two cases in every "
+                    f"join keyed on `{field}`")
+            else:
+                seen[value] = case["_where"]
+
+    if problems:
+        raise CorpusError(
+            f"{len(problems)} case-metadata problem(s):\n  "
+            + "\n  ".join(problems))
 
 
 def check_known_gaps(declaration: dict) -> None:

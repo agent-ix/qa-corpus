@@ -8,7 +8,8 @@ help:
 	@echo "make verify              run every case by its own recorded invocation"
 	@echo "make bounds              the derived matrix, gap_count, and pending list"
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
-	@echo "make ci                  bounds + verify"
+	@echo "make schema-selftest     prove the case-metadata gate can fail"
+	@echo "make ci                  schema-selftest + bounds + verify"
 
 # Every case, by the exact string in its own case.yaml. A documented command
 # that does not work fails the corpus rather than misleading a reader.
@@ -21,8 +22,15 @@ verify:
 bounds:
 	@python3 bounds.py
 
+# A gate never observed to reject anything is indistinguishable from one that
+# cannot. Six mutations, each requiring `bounds.py` to fail NAMING the defect,
+# plus an unmutated control so the suite cannot pass vacuously (#336).
+.PHONY: schema-selftest
+schema-selftest:
+	@python3 scripts/schema_selftest.py
+
 .PHONY: ci
-ci: bounds verify
+ci: schema-selftest bounds verify
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

@@ -4,6 +4,10 @@ module: ecosystem
 id: triple-quote-scope-desync
 issue_ref: agent-ix/quire-rs#274
 kind: regression
+# Declared, not defaulted. It read as `false` either way, which is why nobody
+# noticed it was absent — a default silently supplies a field the author did not
+# write, and `case_schema.required` now says so out loud (#336).
+findable: false
 tags:
 - TC-1014
 - parser

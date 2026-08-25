@@ -185,7 +185,12 @@ def check(meta: dict, failures: list[str], ahead: list[str]) -> bool:
     (reviewed, agent-ix/quire-rs#297).
     """
     case = pathlib.Path(meta["dir"])
-    name = meta["id"]
+    # The filing rides along with the id, so a red line says what to go and
+    # read. `issue_ref` is required of every case and was, until #336, declared
+    # and never once consumed by this reader — a required field nothing uses is
+    # a required field nobody notices the absence of. The Rust harness has
+    # printed it in `Outcome::report` since the ladder landed.
+    name = f"{meta['id']} ({meta['issue_ref']})"
 
     # The invocation may carry leading `KEY=value` assignments — the ecosystem
     # declaration is a module PATH, not a single module, so it is selected with
