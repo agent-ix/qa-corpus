@@ -65,7 +65,56 @@ COPY_ITEMS = ("bounds.py", "verify.py", "corpus.yaml", "cases", "modules")
 
 FAILURE = "cases/disposition/real-tests-zero-tags/rust/expect.yaml"
 CONTROL_INPUT = "real-tests-zero-tags-control/rust/input"
-FORWARD = "cases/attachment/tag-on-describe-header/expect-pending.yaml"
+# THE FORWARD SUBJECT IS SYNTHESIZED, NOT BORROWED.
+#
+# This named `cases/attachment/tag-on-describe-header/expect-pending.yaml`, and
+# on 2026-08-25 the corpus reached ZERO PENDING — every fixture's ticket landed
+# or was answered — so no forward block exists to mutate and this gate could not
+# run at all. A gate that works only while the backlog holds a specimen makes
+# the reward for fixing every known defect a red build.
+#
+# A pending case is built in the copy instead: any live case, made pending on a
+# ticket that does not exist, declared a behaviour change, with a forward block
+# restating its live measurement.
+FORWARD_CASE = "cases/attachment/tag-on-describe-header"
+FORWARD = f"{FORWARD_CASE}/expect-pending.yaml"
+FORWARD_TICKET = "agent-ix/quire-rs#999999"
+
+
+def graded_live(tree: pathlib.Path) -> str:
+    """`FORWARD_CASE`'s live block, reduced to its graded measurements.
+
+    Comments and diagnostic keys are dropped: a behaviour-change forward block
+    restates the SAME measurement after the fix, and a token the engine already
+    emits is refused there by a different rule.
+    """
+    out, skipping = [], False
+    for line in (tree / FORWARD_CASE / "expect.yaml").read_text().splitlines():
+        if line[:1] not in (" ", "\t", "-", "#") and ":" in line:
+            skipping = line.startswith(("diagnostic_", "absent_diagnostic_"))
+        if skipping or line.startswith("#") or not line.strip():
+            continue
+        out.append(line)
+    return "\n".join(out) + "\n"
+
+
+def make_pending(tree: pathlib.Path, forward_block: str) -> None:
+    """Make `FORWARD_CASE` pending on a synthetic behaviour-change ticket."""
+    case = tree / FORWARD_CASE / "case.yaml"
+    case.write_text(
+        case.read_text()
+        + f"pending: {FORWARD_TICKET}\n"
+        + "pending_reason: >-\n  A subject synthesized by parity_selftest so the"
+          " gate does not depend on the corpus holding one.\n"
+    )
+    decl = tree / "corpus.yaml"
+    decl.write_text(
+        decl.read_text().replace(
+            "behaviour_change_tickets: []",
+            f"behaviour_change_tickets:\n- {FORWARD_TICKET}",
+        )
+    )
+    write(tree, FORWARD, forward_block)
 
 
 def write(tree: pathlib.Path, rel: str, text: str) -> None:
@@ -127,7 +176,11 @@ CASES = [
     ),
     (
         "a behaviour-change forward block that no repaired tree could produce",
-        lambda t: replace(t, FORWARD, "backed: 2", "backed: 99"),
+        # The VALUE is read, not transcribed: pinning the literal `backed: 2`
+        # here made the mutation a no-op the moment the live block re-measured.
+        lambda t: make_pending(
+            t, re.sub(r"^backed: \d+$", "backed: 99", graded_live(t),
+                      count=1, flags=re.M)),
         "describes no reachable state",
     ),
     (

@@ -150,9 +150,19 @@ CASES = [
     ),
     (
         "a `pending:` with no `pending_reason:` is rejected",
+        # ADDS the marker rather than renaming an existing case's reason.
+        #
+        # This used to rename `pending_reason:` in
+        # `cases/attachment/tag-on-describe-header/case.yaml`, and on 2026-08-25
+        # the corpus reached ZERO PENDING — every fixture'"'"'s ticket landed or was
+        # answered — so the anchor vanished and the mutation could not apply.
+        # A mutation pinned to a specimen stops testing the moment the specimen
+        # is fixed, which makes the reward for burning the backlog down a red
+        # gate. `marker-mismatch` is not pending and does not need to be: adding
+        # `pending:` to any case must make `pending_reason` required.
         lambda t: mutate_yaml(
-            t, "cases/attachment/tag-on-describe-header/case.yaml",
-            "pending_reason:", "unused_reason:"),
+            t, "cases/attachment/marker-mismatch/case.yaml",
+            "kind: failure", "kind: failure\npending: agent-ix/quire-rs#999999"),
         "`pending_reason` is required here",
     ),
 ]
