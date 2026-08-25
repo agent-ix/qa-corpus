@@ -126,9 +126,11 @@ def validate_output(meta: dict, name: str, failures: list[str]) -> str:
     """`quire validate` over the spec tree `meta` names.
 
     A second command, because a structural defect is not a coverage one. The
-    seeded `Telepathy` cell produces a coverage payload byte-identical to the
-    healthy control's — the family is only visible to `validate`, so a corpus
-    that ran one command asserted nothing about it.
+    seeded `Telepathy` cell produces a coverage payload byte-identical to a
+    HEALTHY TREE's — `wrong-type-cell` has no control, so "the healthy
+    control's", which this sentence said until CR-132, named nothing. The
+    family is only visible to `validate`, so a corpus that ran one command
+    asserted nothing about it.
 
     WHOSE tree is a parameter, not "the case being graded". `quire validate`
     reads a spec TREE and cannot be recomputed from a coverage payload, so when
