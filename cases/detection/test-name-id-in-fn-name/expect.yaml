@@ -61,3 +61,16 @@ binding_census:
 absent_diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator
+
+# ── agent-ix/quire-rs#307 LANDED: what was the forward block is now live ──
+#
+# Folded in from `expect-pending.yaml` unchanged. Every count above is
+# untouched: the join is a DIAGNOSTIC over two halves the payload already
+# carried, not a change to what binds. `TC-1` is still homeless and
+# `TC-001` is still unbacked — the engine now says they are one id.
+diagnostic_reasons:
+  - untracked-id-near-miss
+diagnostic_message_contains:
+  untracked-id-near-miss:
+    - "TC-1"
+    - "TC-001"

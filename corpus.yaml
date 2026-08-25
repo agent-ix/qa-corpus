@@ -251,6 +251,18 @@ diagnostic_reasons:
   # `tag-on-non-test-function` (a production `Function`) are dropped by the
   # SAME branch.
   - tag-on-non-binding-symbol
+  # agent-ix/quire-rs#307, landed: an id in `untracked_symbols` that differs
+  # from one in `unbacked_rows` only by zero-padding, case or separator. The
+  # engine held both halves and joined neither — `rust-test-name-id` renders its
+  # captured digits verbatim, so `fn tc_1_…` mints `TC-1` while the row declares
+  # `TC-001`.
+  #
+  # Neither older diagnostic can fire, and both stand down for the SAME reason:
+  # `no-symbol-bound` needs `bound == 0` and `hollow-denominator` needs
+  # `matched == 0`, and here both are 1. From their vantage point the binding
+  # worked — it bound to the wrong id — so the repository reports a healthy
+  # census beside a zero backing ratio with nothing explaining the gap.
+  - untracked-id-near-miss
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
   # Tokens no engine emits YET, each naming the ticket that will add it. A
@@ -266,12 +278,13 @@ diagnostic_reasons:
   #
   # When a ticket lands, its token MOVES from `forward` to `emitted`. That edit
   # is the one that makes every pending fixture in its group go green at once.
-  forward:
-    # An id in `untracked_symbols` that differs from one in `unbacked_rows` only
-    # by zero-padding, case or separator. The engine holds both strings and
-    # joins neither; `no-symbol-bound` and `hollow-denominator` both stand down
-    # because the symbol bound fine — to the wrong id.
-    untracked-id-near-miss: agent-ix/quire-rs#307
+  # EMPTY, and kept for the same reason `suppressed` is: the class is real and
+  # every member has graduated. `tag-on-non-binding-symbol` (#312) and
+  # `untracked-id-near-miss` (#307) both landed and moved to `emitted`. The
+  # next fixture written red against a token no engine has yet is declared
+  # here, and until then TC-1026 proves the rule can still fail rather than
+  # requiring a member to exist.
+  forward: {}
 
   # Tokens the engine COMPUTES and then DISCARDS. Neither `emitted` (it does
   # not reach the payload on the input in question) nor `forward` (the literal
