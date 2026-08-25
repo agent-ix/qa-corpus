@@ -25,12 +25,25 @@ TWO OF THE CASES MUST STAY GREEN, and they are not padding.
 * The `validate_*` SOURCE case. `quire validate` reads a spec TREE and cannot be
   recomputed from a coverage payload, so the differential has to re-run it over
   the CONTROL's tree; recomputed from the case's own, those keys contribute no
-  discrimination and `wrong-type-cell` — whose coverage payload is byte-identical
-  to a healthy tree's and whose entire claim is structural — would read as blind.
-  That case blinds a fixture down to one incidental scalar plus a `validate_absent`
-  naming the control's own input path. It passes only if the control's tree was
-  the one validated: grade the case's own tree instead and nothing mismatches, the
-  block is blind, and the run goes red.
+  discrimination and a fixture whose whole claim is structural would read as
+  blind. That case blinds a fixture down to one incidental scalar plus a
+  `validate_absent` naming the control's own input path. It passes only if the
+  control's tree was the one validated: grade the case's own tree instead and
+  nothing mismatches, the block is blind, and the run goes red.
+
+  **THE RULE HAS REACH 0 OVER THE REAL CORPUS, and this case is why it is
+  tested at all** (CR-132, retracting the unhedged form this docstring used to
+  carry). **[RAN]** at `2bc486d`: two of 77 fixtures declare a `validate_*` key
+  — `wrong-type-cell`, an UNCONTROLLED failure declared under
+  `known_gaps.uncontrolled_failure_cases`, and `clean-control`, a control — and
+  **zero of the 35 graded pairs** carry one. `wrong-type-cell` was cited as the
+  rule's motivation in four places and it has never had a control (`git log -S
+  'wrong-type-cell' -- cases/`: one commit, its own introduction), so it cannot
+  reach the rule. The case below MANUFACTURES a `validate_absent` on
+  `real-tests-zero-tags` for exactly that reason: a correct rule with no current
+  subject still has to be shown capable of failing, or it is indistinguishable
+  from one that is not there. `#286` giving `wrong-type-cell` a control is what
+  raises the reach above zero.
 
 THE PARITY CONSTRUCTION the review asked for is case 2. Before #337 that mutated
 corpus was accepted by `verify.py` (`mismatches: 0`, exit 0) and rejected by

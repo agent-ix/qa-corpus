@@ -134,9 +134,28 @@ def validate_output(meta: dict, name: str, failures: list[str]) -> str:
     reads a spec TREE and cannot be recomputed from a coverage payload, so when
     the differential grades a case's block against its CONTROL, these keys have
     to be re-run over the control's tree or they contribute no discrimination at
-    all — `wrong-type-cell`'s entire claim is structural, and recomputing it
-    from its own tree would make it read as blind (FR-065-AC-42, and
-    `ValidateSource` in the Rust harness says the same thing).
+    all (FR-065-AC-42, and `ValidateSource` in the Rust harness says the same).
+
+    RETRACTION (CR-132), stated rather than quietly edited. This docstring used
+    to finish "`wrong-type-cell`'s entire claim is structural, and recomputing
+    it from its own tree would make it read as blind" — a claim about a fixture
+    that is in the differential. It is not in the differential. **[RAN]** at
+    `qa-corpus 2bc486d`: exactly two of the 77 fixtures declare a `validate_*`
+    key — `wrong-type-cell`, a `failure` listed under
+    `known_gaps.uncontrolled_failure_cases`, which no control names and which
+    both readers therefore skip, and `clean-control`, a `control`, which the
+    differential does not iterate (it iterates `kind == "failure"`). **Zero of
+    the 35 graded pairs carry a `validate_*` key**, in either reader, and
+    `git log -S 'wrong-type-cell' -- cases/` returns one commit — the fixture's
+    own introduction — so no `control_for` has ever named it.
+
+    THE RULE STAYS, and its reach over this corpus is 0 pairs of 35. It is
+    correct and it has no current subject: the moment `#286` gives
+    `wrong-type-cell` a control, validating its own tree is what would reject
+    it as blind. FR-065's requirement text is the hedged form — "would be
+    rejected as blind **the moment it gained a control**" — and this comment now
+    matches it instead of contradicting it. `parity_selftest.py` case 4
+    manufactures a `validate_absent` precisely because no fixture supplies one.
     """
     tokens = meta["reproduce"].replace("quire ", f"{QUIRE} ", 1).split()
     env = dict(os.environ)
@@ -504,11 +523,19 @@ def differential(cases: list[dict], payloads: dict, failures: list[str]) -> int:
     was swapped for a sibling's stops separating anything.
 
     It is a FLOOR, not closure, and the floor is low. "Assert one fact that
-    differs" is weaker than "assert a fact about the defect", and measured here
-    over the 34 controlled failure cases at corpus `801afd5` with CLI 0.30.2 /
-    engine 0.33.0, **20 pairs share an identical `total`** — for those, the
-    incidental scalar is not even available as an evasion, and for the other 14
-    it is. A mode-specific witness is `agent-ix/quire-rs#301`, not this.
+    differs" is weaker than "assert a fact about the defect". Method: run every
+    failure case and every control and compare `totals.total`. Population: the
+    whole controlled set, no sample, at corpus `2bc486d` (fixtures
+    byte-identical to `801afd5`) with CLI 0.30.2 / engine 0.33.0.
+
+        per CASE  (34 controlled failure cases):  20 share it, 14 differ
+        per PAIR  (35 case-control pairs):        21 share it, 14 differ
+
+    Where they share it the incidental scalar is not even available as an
+    evasion; for the 14 that differ it is. **THE UNIT WAS WRONG HERE UNTIL
+    CR-132**: this docstring published "20 pairs", which is 20 CASES — over
+    pairs it is 21. The 14 is right under both units, which is why only the noun
+    moved. A mode-specific witness is `agent-ix/quire-rs#301`, not this.
 
     EVERY control that names the case, not one of them. Two name
     `marker-form-mismatch`, and picking one picks it by iteration order.
