@@ -1,0 +1,21 @@
+# HEALTHY INPUT, and the assertion is that the rejection stays silent.
+#
+# `wrong-type-cell` is graded on `validate_contains`, because an undeclared
+# `Type` cell changes NO coverage number — the row still mints, still binds,
+# still backs. So the pair separates on `quire validate` and on nothing else,
+# and the coverage half of these two payloads is identical by construction.
+#
+# That is what makes this control load-bearing rather than decorative: a
+# rejection that fired on every `Type` cell would satisfy its partner's
+# assertion just as well, and only this file can tell the two apart.
+backed: 1
+total: 3
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1
+# THE HALF THAT MATTERS. `Unit` is in the declared vocabulary, so the validator
+# says nothing about it — while the same tree with `Telepathy` is rejected by
+# name.
+validate_absent:
+  - "is not one of"

@@ -1,0 +1,22 @@
+id: wrong-type-cell-control
+issue_ref: agent-ix/quire-rs#286
+mode: minting
+language: rust
+module: ecosystem
+findable: false
+kind: control
+control_for:
+- wrong-type-cell
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/wrong-type-cell-control/input
+  --json
+tags:
+- TC-1006
+- minting
+- finding-quality
+comment: >-
+  The control for `wrong-type-cell`: the identical tree with the one `Type` cell spelled as a value the
+  vocabulary declares. ONE CHARACTER RANGE DIFFERS — `Telepathy` becomes `Unit` — and nothing else, so the
+  pair separates on the rejection and on nothing incidental. It is the harder control of the two shapes
+  this corpus writes: the defect is STRUCTURAL, visible only to `quire validate`, and the coverage payload
+  of the failure case is byte-identical to this one's. CR-132 recorded that the case's own comment said
+  "the healthy control's" while no control existed and none had ever named it; this is that control.

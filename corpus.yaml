@@ -851,16 +851,23 @@ known_gaps:
     reason: >-
       FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
       fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
-      DOWN FROM ELEVEN, by agent-ix/quire-rs#285. `greenfield-no-symbols` and
-      `stale-name-correct-trace` now have controls; `implements-never-asked` and
-      `tests-directory-topology` are `regression` pins, which AC-43 exempts because a regression
-      case IS the healthy counterpart and there is no defect for a control to be the healthy
-      version OF.
+      DOWN FROM ELEVEN by agent-ix/quire-rs#285, and from SEVEN by agent-ix/quire-rs#286: `wrong-type-cell`,
+      `marker-mismatch` and `hollow-metric` have controls now, each the identical tree with one
+      token repaired, each mutation-verified by reintroducing the defect and watching the control
+      go red.
+      THE FOUR THAT REMAIN ARE BLOCKED ON A DETECTOR, NOT ON AUTHORING EFFORT, and it is the same
+      four that `findable_but_undetected` lists. Each asserts NO diagnostic and no validate finding,
+      because nothing in the ecosystem detects it — `gate-that-gates-nothing` has `source: none` in
+      quoin's family table, and the other three ship live blocks true of any healthy three-row
+      corpus. So a control for one of them would produce a payload IDENTICAL to its partner's, and
+      FR-065-AC-42 would reject the pair, correctly: there is nothing for the two trees to separate
+      on. Writing them is downstream of agent-ix/quire-rs#301, which decides for each whether to
+      build the detector or stop calling it findable.
+      `implements-never-asked` and `tests-directory-topology` left this list by another route: they
+      are `regression` pins, which AC-43 exempts because a regression case IS the healthy
+      counterpart and there is no defect for a control to be the healthy version OF.
     cases:
     - gate-that-gates-nothing
-    - hollow-metric
-    - marker-mismatch
     - mocked-confirmation
     - oracle-copy
     - vacuous-property-suite
-    - wrong-type-cell

@@ -1,0 +1,19 @@
+# HEALTHY INPUT: the marker is the declared one, so the tag is read.
+#
+# `candidates 1 / bound 1` against the partner's `1 / 0` is the discriminator,
+# and it is the field that carries the defect: the symbol was always a
+# candidate — a real test, found by the walk — and the only question was
+# whether any declared form matched the tag written on it.
+backed: 1
+total: 3
+binding_census:
+  - language: rust
+    candidates: 1
+    bound: 1
+# BOTH must stay silent. `no-symbol-bound` fires when nothing bound at all and
+# `hollow-denominator` when a ratio was published over input the binder could
+# not read; on a tree where the tag binds, either firing would be a check that
+# cannot stay quiet on healthy input.
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator

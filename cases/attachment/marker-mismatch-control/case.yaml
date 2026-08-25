@@ -1,0 +1,21 @@
+id: marker-mismatch-control
+issue_ref: agent-ix/quire-rs#286
+mode: attachment
+language: rust
+module: ecosystem
+findable: false
+kind: control
+control_for:
+- marker-mismatch
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-mismatch-control/input
+  --json
+tags:
+- TC-1006
+- attachment
+- finding-quality
+comment: >-
+  The control for `marker-mismatch`: the identical tree with `#[tracks(…)]` spelled `#[trace(…)]`, the
+  form the module declares. ONE IDENTIFIER DIFFERS and nothing else, so the pair separates on whether a
+  written tag was READ and on nothing incidental — which is the whole of the defect its partner seeds.
+  Distinct from `marker-form-mismatch-control` on purpose: that control repairs a different tree, and one
+  control standing in for two failure cases would let either partner's tree drift without a gate noticing.
