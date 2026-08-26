@@ -33,6 +33,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 #
 # Pass an explicit binary: `QUIRE=/path/to/quire make verify`.
 QUIRE = os.environ.get("QUIRE", "")
+QUOIN = os.environ.get("QUOIN", "")
 
 # What a run of this corpus rests on. A binary lacking one of these cannot
 # produce the payload the fixtures assert, so the run ABORTS naming the token
@@ -106,6 +107,43 @@ def check_engine() -> str:
 # can disagree with itself, which is the defect agent-ix/quire-rs#349 records
 # one list over.
 KNOWN = KNOWN_EXPECT_KEYS
+
+
+def inspect_external(meta: dict, name: str, failures: list[str]) -> list[dict]:
+    """Run Quoin's read-only source producer for an external witness block."""
+    if not QUOIN:
+        failures.append(
+            f"{name}: declares external_observations but QUOIN is unset; "
+            "refusing to grade an external finding as absent")
+        return []
+    repo = str(ROOT / meta["dir"] / "input")
+    done = subprocess.run(
+        [QUOIN, "evidence", "inspect-mocks", "--repo", repo,
+         "--suite", "SUITE-CORPUS", "--commit", "0" * 40,
+         "--dry-run", "--json"],
+        cwd=ROOT, capture_output=True, text=True,
+        env={**os.environ, "CI": "1"},
+    )
+    if done.returncode != 0:
+        failures.append(
+            f"{name}: external producer failed: {done.stderr.strip()[:300]}")
+        return []
+    try:
+        payload = json.loads(done.stdout)
+    except json.JSONDecodeError:
+        failures.append(
+            f"{name}: external producer emitted no JSON: {done.stdout[:200]!r}")
+        return []
+    return [
+        {
+            "kind": "mock-injection-observed",
+            "path": item.get("path"),
+            "line": item.get("line"),
+            "symbol": item.get("symbol"),
+            "injects": item.get("injects") or [],
+        }
+        for item in payload.get("injections", [])
+    ]
 
 
 def is_hollow(metric: dict) -> bool:
@@ -235,14 +273,17 @@ def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | No
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False
     got = json.loads(done.stdout)
+    live_path = pathlib.Path(meta["expect"])
+    live = yaml.safe_load(live_path.read_text()) or {}
+    if "external_observations" in live:
+        got["external_observations"] = inspect_external(meta, name, failures)
     # Kept for the differential, which needs each CONTROL's payload and must not
     # re-run 34 of them to get it. One run per case, exactly as before.
     if payloads is not None:
         payloads[(meta["id"], meta.get("language"))] = got
 
-    live_path = pathlib.Path(meta["expect"])
     forward_path = case / "expect-pending.yaml"
-    grade(yaml.safe_load(live_path.read_text()) or {}, got, meta, name, failures)
+    grade(live, got, meta, name, failures)
 
     # The pairing itself is the LOADER's check (`bounds.check_expectations`,
     # FR-065-AC-26) and reaching here means it held. Asserted, not assumed: an
@@ -345,6 +386,13 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             failures.append(
                 f"{name}: suspicion `{kind}` fired on input that must stay silent"
             )
+
+    if "external_observations" in expect:
+        wanted = expect.get("external_observations") or []
+        actual = got.get("external_observations") or []
+        if actual != wanted:
+            failures.append(
+                f"{name}: external_observations expected {wanted}, got {actual}")
 
     # L2: the finding names the right place.
     for reason, want in (expect.get("diagnostic_paths") or {}).items():

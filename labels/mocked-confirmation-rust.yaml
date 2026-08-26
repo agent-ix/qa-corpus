@@ -1,0 +1,12 @@
+case: mocked-confirmation-rust
+family: mocked-confirmation
+summary: The only evidence substitutes the confirmation behaviour the criterion verifies.
+defects:
+- id: MC-RS
+  family: mocked-confirmation
+  location: src/lib.rs:22
+  row_id: TC-001
+  findable: true
+  expect_reason: mocked-confirmation
+  note: The bound test injects `Confirmation::allow()`; the store-backed auditor names this exact locus.
+  confirmed_at: detected through quoin evidence audit after quoin#204

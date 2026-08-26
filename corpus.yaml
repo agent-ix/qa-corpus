@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=144> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=149> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -369,7 +369,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=69>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=72>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -387,11 +387,11 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=70> `kind: failure`
-# fixtures, of which <derived:controlled_failures=68> are controlled. The
-# remaining uncontrolled skeptic cases name no witness because their detectors
-# do not exist yet; `oracle-copy` left that population when #236 supplied a
-# production finding and #286 supplied its three controls.
+# controlled ones. Population: <derived:failure_fixtures=72> `kind: failure`
+# fixtures, of which <derived:controlled_failures=71> are controlled. The one
+# remaining uncontrolled skeptic case names no witness because its detector
+# does not exist yet; `mocked-confirmation` left that population when #204
+# supplied a production finding and three language-matched controls.
 #
 # THIS SENTENCE READ "All 37 controlled failure blocks" UNTIL CR-132, which is
 # a population error: 37 is out of 41 failure blocks, not out of the 34
@@ -476,7 +476,7 @@ witness_channels:
   # time, asserting `backed`/`total`/`binding_census` — true of any healthy
   # three-row tree — which is why it was byte-identical to two other fixtures
   # and why swapping their input trees left `make ci` green.
-  skeptic: [suspicions, absent_suspicions, metrics, diagnostic_reasons, diagnostic_paths,
+  skeptic: [suspicions, absent_suspicions, external_observations, metrics, diagnostic_reasons, diagnostic_paths,
             diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
 
 
@@ -1063,17 +1063,16 @@ known_gaps:
     reason: >-
       These findable skeptic cases still assert no finding because no production detector can
       emit one. `oracle-copy` left this list when #236 wired its existing comparison into coverage
-      and the corpus asserted the resulting suspicion in all three languages. #301 owns the
-      remaining detector-or-reclassify decisions.
+      and the corpus asserted the resulting suspicion in all three languages. `mocked-confirmation`
+      left when #204 supplied the store-backed producer/auditor path. #301 owns the remaining
+      detector-or-reclassify decision.
     cases:
     - gate-that-gates-nothing
-    - mocked-confirmation
   uncontrolled_failure_cases:
     reason: >-
       The remaining cases cannot yet discriminate from a healthy partner through the skeptic
       channel because their detectors are absent. #286 owns the controls after #204/#224 provide
-      findings; #301 owns the detector-or-reclassify decision. `oracle-copy` left this list with
-      three controls whose only relevant difference is the copied expression.
+      findings; #301 owns the detector-or-reclassify decision. `oracle-copy` and
+      `mocked-confirmation` left this list with three language-matched controls apiece.
     cases:
     - gate-that-gates-nothing
-    - mocked-confirmation

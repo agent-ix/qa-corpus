@@ -2,15 +2,16 @@ id: mocked-confirmation
 case: mocked-confirmation
 issue_ref: agent-ix/quoin#227
 mode: skeptic
-language: rust
 module: ecosystem
 kind: failure
 findable: true
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/mocked-confirmation/input
-  --json
 tags:
 - TC-1014
+- TC-1062
+- TC-1065
 - skeptic
 - finding-quality
-comment: 'The behaviour a criterion verifies, substituted by the test that verifies it. Pass 2''s case:
-  FR-017-AC-7''s trusted-UI confirmation had no implementation and its test passed by injecting `Confirmation::allow()`.'
+comment: >-
+  The behaviour a criterion verifies is substituted by the test that verifies it. The producer must
+  locate the explicit stand-in and the store-backed auditor must join it to the obligation in every
+  supported source language.

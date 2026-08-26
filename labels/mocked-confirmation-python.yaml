@@ -1,0 +1,12 @@
+case: mocked-confirmation-python
+family: mocked-confirmation
+summary: The only evidence substitutes the confirmation behaviour the criterion verifies.
+defects:
+- id: MC-PY
+  family: mocked-confirmation
+  location: src/test_shell.py:13
+  row_id: TC-001
+  findable: true
+  expect_reason: mocked-confirmation
+  note: The bound test injects `Confirmation.allow()`; the store-backed auditor names this exact locus.
+  confirmed_at: detected through quoin evidence audit after quoin#204

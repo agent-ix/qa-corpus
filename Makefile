@@ -10,6 +10,7 @@
 # which is the case for refusing rather than warning. Same defect and same fix
 # as `agent-ix/quoin`'s `bench-tier1` default.
 QUIRE ?= $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire
+QUOIN ?= ../quoin/bin/quoin.js
 CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 
 .PHONY: help
@@ -25,7 +26,7 @@ help:
 # that does not work fails the corpus rather than misleading a reader.
 .PHONY: verify
 verify:
-	@QUIRE="$(QUIRE)" python3 verify.py
+	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 verify.py
 
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
@@ -46,7 +47,7 @@ schema-selftest:
 # each, and a plain `verify` failure should be read before this one.
 .PHONY: parity-selftest
 parity-selftest:
-	@QUIRE="$(QUIRE)" python3 scripts/parity_selftest.py
+	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 scripts/parity_selftest.py
 
 .PHONY: ci
 ci: schema-selftest bounds verify parity-selftest

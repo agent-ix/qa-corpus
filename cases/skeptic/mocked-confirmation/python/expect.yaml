@@ -1,0 +1,13 @@
+backed: 1
+total: 3
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1
+external_observations:
+- kind: mock-injection-observed
+  path: src/test_shell.py
+  line: 13
+  symbol: test_covers
+  injects:
+  - Confirmation.allow

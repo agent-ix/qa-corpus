@@ -851,7 +851,7 @@ def asserts_something(block: dict) -> bool:
 # The keys graded EXACTLY — presence is an assertion and an empty list is a
 # claim, so these are what a behaviour-change forward block must re-state.
 EXACTLY_GRADED = ("backed", "total", "unbacked_rows", "groups", "no_symbol_rows",
-                  "untracked_symbols")
+                  "untracked_symbols", "external_observations")
 
 KNOWN_EXPECT_KEYS = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
@@ -866,6 +866,11 @@ KNOWN_EXPECT_KEYS = {
     # `src/lib.rs:7` while asserting `backed`/`total`/`binding_census`, true of
     # any healthy three-row tree and byte-identical to two other fixtures.
     "suspicions", "absent_suspicions",
+    # Findings/observations produced by a validator other than Quire. The
+    # Python verifier executes the named producer; the Quire-only Rust reader
+    # parses and explicitly delegates this channel rather than pretending the
+    # observation came from `coverage`.
+    "external_observations",
 }
 
 

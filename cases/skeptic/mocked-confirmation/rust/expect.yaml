@@ -7,3 +7,10 @@ binding_census:
 - language: rust
   candidates: 1
   bound: 1
+external_observations:
+- kind: mock-injection-observed
+  path: src/lib.rs
+  line: 22
+  symbol: covers
+  injects:
+  - Confirmation::allow
