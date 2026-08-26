@@ -43,7 +43,11 @@ QUIRE = os.environ.get("QUIRE", "")
 # parse error with a confident, wrong diagnosis.
 ENV_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
-REQUIRED_CAPABILITIES = ("binding_census", "metrics_envelope")
+REQUIRED_CAPABILITIES = (
+    "binding_census",
+    "binding_census.tagged",
+    "metrics_envelope",
+)
 
 
 def check_engine() -> str:
