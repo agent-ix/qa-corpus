@@ -645,6 +645,11 @@ inventory:
   - rust
   - typescript
   out_of_scope:
+    python: >-
+      `symbols/python.rs` emits declarations, not JavaScript-style registration
+      calls, so it has no `describe()` header symbol for this defect. A tag
+      above a top-level call attaches to the file container and is covered by
+      `attachment/tag-at-module-scope` instead.
     rust: >-
       `symbols/rust.rs` mints a `Container` for `mod`, `struct`, `enum` and `trait` and has
       no registration-call form at all — there is no `describe()` for a tag to sit above.
