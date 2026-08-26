@@ -1,0 +1,12 @@
+total: 2
+backed: 1
+diagnostic_reasons: [low-symbol-binding]
+diagnostic_paths:
+  low-symbol-binding: src/lib.rs
+diagnostic_message_contains:
+  low-symbol-binding: ["1 of 21 rust evidence symbols", "cannot distinguish sparse tagging", "src/lib.rs"]
+absent_diagnostic_reasons: [no-symbol-bound]
+binding_census:
+  - language: rust
+    candidates: 21
+    bound: 1

@@ -1,0 +1,11 @@
+id: low-symbol-binding-control
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: rust
+module: ecosystem
+kind: control
+control_for: [low-symbol-binding]
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/low-symbol-binding-control/input --json
+tags: [TC-1058, coverage, binding]
+comment: The same 21 candidates with a second bound test, moving above the 5% observation floor.

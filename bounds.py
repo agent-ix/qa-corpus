@@ -555,6 +555,8 @@ def check_expectations(cases: list[dict]) -> None:
     undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
     controlled = controlled_cases(cases)
     behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
+    asserted_present: set[str] = set()
+    asserted_absent: set[str] = set()
 
     for case in cases:
         directory = ROOT / case["dir"]
@@ -608,6 +610,13 @@ def check_expectations(cases: list[dict]) -> None:
             raise CorpusError(
                 f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}.")
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
+        positive = set(live.get("diagnostic_reasons") or [])
+        positive.update(live.get("diagnostic_paths") or {})
+        positive.update(live.get("diagnostic_message_contains") or {})
+        asserted_present.update(reason.rsplit("/", 1)[-1] for reason in positive)
+        asserted_absent.update(
+            reason.rsplit("/", 1)[-1]
+            for reason in (live.get("absent_diagnostic_reasons") or []))
 
         if not forward_path.is_file():
             check_findable(name, case, live, {}, undetected, controlled)
@@ -702,6 +711,14 @@ def check_expectations(cases: list[dict]) -> None:
                 f"nothing ever tells you the fixture went stale.")
 
         check_findable(name, case, live, ahead, undetected, controlled)
+
+    missing_positive = sorted(emitted - asserted_present)
+    missing_negative = sorted(emitted - asserted_absent)
+    if missing_positive or missing_negative:
+        raise CorpusError(
+            "diagnostic reason coverage is incomplete: "
+            f"asserted present missing {missing_positive}; "
+            f"asserted absent missing {missing_negative}")
 
 
 def check_regression(name: str, case: dict, forward_path) -> None:

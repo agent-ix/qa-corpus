@@ -165,6 +165,22 @@ CASES = [
             "kind: failure", "kind: failure\npending: agent-ix/quire-rs#999999"),
         "`pending_reason` is required here",
     ),
+    (
+        "a variant cannot be both temporary and the declaration under test",
+        lambda t: mutate_yaml(
+            t, "cases/provenance/implements-never-asked/case.yaml",
+            "declaration_under_test:",
+            "relaxation_ticket: agent-ix/quire-rs#330\ndeclaration_under_test:"),
+        "must declare exactly one of `relaxation_ticket` or `declaration_under_test`",
+    ),
+    (
+        "every emitted diagnostic reason needs positive and negative coverage",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "  - undeclared-coverage-vocabulary\n  # Tokens no engine emits YET",
+            "  - undeclared-coverage-vocabulary\n  - zzz-unasserted\n  # Tokens no engine emits YET"),
+        "asserted present missing ['zzz-unasserted']",
+    ),
 ]
 
 

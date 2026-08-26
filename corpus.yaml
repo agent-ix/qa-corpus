@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=87> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=97> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -369,7 +369,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=42>**. The pair count
+# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=47>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -387,9 +387,9 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=44> `kind: failure`
-# fixtures, of which <derived:controlled_failures=41> are controlled. **37 of
-# the 41 already named at least one witness key for their mode** when this was
+# controlled ones. Population: <derived:failure_fixtures=49> `kind: failure`
+# fixtures, of which <derived:controlled_failures=46> are controlled. **37 of
+# the 46 already named at least one witness key for their mode** when this was
 # written, so the rule changed no fixture. The three that still name none —
 # `oracle-copy`, `mocked-confirmation`, `gate-that-gates-nothing`, which assert
 # only `backed`/`total`/`binding_census`
@@ -866,6 +866,26 @@ inventory:
   - python
   - rust
   - typescript
+- mode: detection
+  case: low-symbol-binding
+  source: agent-ix/quire-rs#359 — one of 21 candidates binds, below the declared 5% observation floor
+  languages: [rust]
+- mode: detection
+  case: obligation-row-states-nothing
+  source: agent-ix/quire-rs#359 — the ecosystem obligation declaration reads an empty Criteria cell
+  languages: [n/a]
+- mode: detection
+  case: uncatalogued-verification-method
+  source: agent-ix/quire-rs#359 — a real obligation names a method absent from the ecosystem catalog
+  languages: [n/a]
+- mode: detection
+  case: model-mints-nothing
+  source: agent-ix/quire-rs#359 — a declared traceability model has no trace targets
+  languages: [n/a]
+- mode: detection
+  case: undeclared-coverage-vocabulary
+  source: agent-ix/quire-rs#359 — a vocabulary declaration names no schema field
+  languages: [n/a]
 - mode: provenance
   case: engine-lacks-capability
   source: the 0.29.0 failure — census must abort
@@ -1029,6 +1049,13 @@ standing_adjudications:
     there is a fact about the fixture's own subject.
 
 known_gaps:
+  control_binds_another_module:
+    reason: >-
+      #359 tests declaration-level diagnostics. Their healthy controls must vary the
+      declaration itself; an input-only repair cannot remove a module defect.
+    cases:
+    - model-mints-nothing-control
+    - undeclared-coverage-vocabulary-control
   findable_but_undetected:
     reason: >-
       A `findable` case tells a recall-scoring consumer to expect a finding on that

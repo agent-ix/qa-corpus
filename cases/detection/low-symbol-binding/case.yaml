@@ -1,0 +1,10 @@
+id: low-symbol-binding
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: rust
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/low-symbol-binding/input --json
+tags: [TC-1058, coverage, binding]
+comment: One of 21 real test candidates binds; the 4.8% rate is below the declared 5% observation floor.

@@ -1,0 +1,11 @@
+id: undeclared-coverage-vocabulary
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: variants/dead-coverage-vocabulary
+declaration_under_test: The declared field is absent from the archetype schema.
+kind: failure
+findable: true
+reproduce: quire coverage --scope cases/detection/undeclared-coverage-vocabulary/input --module modules/variants/dead-coverage-vocabulary --json
+tags: [TC-1062, coverage, vocabulary]
+comment: A coverage declaration names missing_quality_attribute, which its schema does not define.

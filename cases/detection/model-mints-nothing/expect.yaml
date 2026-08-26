@@ -1,0 +1,3 @@
+diagnostic_reasons: [model-mints-nothing]
+diagnostic_message_contains:
+  model-mints-nothing: ["has no trace_targets", "mints no ids"]

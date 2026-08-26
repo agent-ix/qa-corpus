@@ -1,0 +1,5 @@
+diagnostic_reasons: [uncatalogued-verification-method]
+diagnostic_paths:
+  uncatalogued-verification-method: spec/FR-001.md
+diagnostic_message_contains:
+  uncatalogued-verification-method: ["Telepathy", "neither a declared verification_catalog method id nor a declared class"]

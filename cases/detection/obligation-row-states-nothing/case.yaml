@@ -1,0 +1,10 @@
+id: obligation-row-states-nothing
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/obligation-row-states-nothing/input --json
+tags: [TC-1059, coverage, obligation]
+comment: The ecosystem obligation declaration selects a row whose Criteria cell is empty.

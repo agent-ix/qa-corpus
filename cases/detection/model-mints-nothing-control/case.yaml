@@ -1,0 +1,12 @@
+id: model-mints-nothing-control
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: variants/one-trace-target
+declaration_under_test: The one-target declaration is the healthy counterpart used to control the no-target variant.
+kind: control
+control_for: [model-mints-nothing]
+findable: false
+reproduce: quire coverage --scope cases/detection/model-mints-nothing-control/input --module modules/variants/one-trace-target --json
+tags: [TC-1061, coverage, minting]
+comment: The same document under a model with one real trace target.

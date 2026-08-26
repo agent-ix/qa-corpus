@@ -1,0 +1,7 @@
+total: 2
+backed: 1
+absent_diagnostic_reasons: [low-symbol-binding, no-symbol-bound]
+binding_census:
+  - language: rust
+    candidates: 21
+    bound: 2
