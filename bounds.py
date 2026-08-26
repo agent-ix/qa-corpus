@@ -778,7 +778,10 @@ def check_findable(
     claims = any(
         block.get(key)
         for block in (live, ahead)
-        for key in ("diagnostic_reasons", "validate_contains", "suspicions")
+        for key in (
+            "diagnostic_reasons", "validate_contains", "suspicions",
+            "external_observations",
+        )
     )
     if claims or (case.get("case") or case["id"]) in undetected:
         return
