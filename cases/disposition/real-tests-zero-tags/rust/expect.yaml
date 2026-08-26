@@ -122,6 +122,7 @@ diagnostic_message_contains:
 binding_census:
   - language: rust
     candidates: 2
+    tagged: 0
     bound: 0
     unbound_example: src/lib.rs:17
 # The metric the second diagnostic is about, as data: a RATIO whose population is
@@ -129,6 +130,13 @@ binding_census:
 # triple is `Metric::is_hollow` exactly, and asserting it is what stops the
 # diagnostic and the metric it is about drifting apart.
 metrics:
+  - name: authoring.tag_rate
+    state: measured
+    value: 0
+    population: 2
+    examined: 2
+    matched: 2
+    hollow: false
   - name: coverage.backed
     state: measured
     value: 0

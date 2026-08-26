@@ -3,8 +3,10 @@ binding_census:
   -
     language: rust
     candidates: 1
+    tagged: 1
     bound: 0
     unbound_example: src/lib.rs:5
+    unmatched_example: src/lib.rs:5
 diagnostic_reasons:
   - no-symbol-bound
   - hollow-denominator

@@ -421,7 +421,7 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             failures.append(
                 f"{name}: no `{want['language']}` census in {got.get('binding_census')}")
             continue
-        for key in ("language", "candidates", "bound"):
+        for key in ("language", "candidates", "tagged", "bound"):
             if key in want and want[key] != census.get(key):
                 failures.append(
                     f"{name}: binding_census.{key} expected {want[key]}, got {census.get(key)}")
@@ -431,6 +431,12 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             if want["unbound_example"] != actual:
                 failures.append(
                     f"{name}: unbound_example expected {want['unbound_example']}, got {actual}")
+        if "unmatched_example" in want:
+            example = census.get("unmatched_example")
+            actual = f"{example['path']}:{example['line']}" if example else None
+            if want["unmatched_example"] != actual:
+                failures.append(
+                    f"{name}: unmatched_example expected {want['unmatched_example']}, got {actual}")
 
     for want in expect.get("metrics") or []:
         metric = next((m for m in got.get("metrics", []) if m["name"] == want["name"]), None)
