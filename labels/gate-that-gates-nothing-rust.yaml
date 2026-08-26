@@ -1,0 +1,12 @@
+case: gate-that-gates-nothing-rust
+family: gate-that-gates-nothing
+summary: A wired Rust-repository gate counts a forbidden call but never asserts the count.
+defects:
+- id: GN-RS
+  family: gate-that-gates-nothing
+  location: scripts/check_unwrap.sh:4
+  row_id: FR-001-AC-1
+  findable: true
+  expect_reason: gate-that-gates-nothing
+  note: The validator joins the declared claim, Makefile wiring, and unasserted count.
+  confirmed_at: detected through quoin validate after quoin#224

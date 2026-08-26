@@ -109,41 +109,63 @@ def check_engine() -> str:
 KNOWN = KNOWN_EXPECT_KEYS
 
 
-def inspect_external(meta: dict, name: str, failures: list[str]) -> list[dict]:
-    """Run Quoin's read-only source producer for an external witness block."""
+def inspect_external(meta: dict, expected: list[dict], name: str,
+                     failures: list[str]) -> list[dict]:
+    """Run the Quoin producer(s) named by an external witness block."""
     if not QUOIN:
         failures.append(
             f"{name}: declares external_observations but QUOIN is unset; "
             "refusing to grade an external finding as absent")
         return []
     repo = str(ROOT / meta["dir"] / "input")
-    done = subprocess.run(
-        [QUOIN, "evidence", "inspect-mocks", "--repo", repo,
+    kinds = {item.get("kind") for item in expected}
+    observations = []
+
+    def produce(args: list[str], producer: str) -> dict:
+        done = subprocess.run(
+            [QUOIN, *args], cwd=ROOT, capture_output=True, text=True,
+            env={**os.environ, "CI": "1"})
+        if done.returncode != 0:
+            failures.append(
+                f"{name}: {producer} failed: {done.stderr.strip()[:300]}")
+            return {}
+        try:
+            return json.loads(done.stdout)
+        except json.JSONDecodeError:
+            failures.append(
+                f"{name}: {producer} emitted no JSON: {done.stdout[:200]!r}")
+            return {}
+
+    # Run every registered producer, including for an expected empty list. An
+    # empty expectation means "looked and found none", not "selected no tool".
+    payload = produce(
+        ["evidence", "inspect-mocks", "--repo", repo,
          "--suite", "SUITE-CORPUS", "--commit", "0" * 40,
-         "--dry-run", "--json"],
-        cwd=ROOT, capture_output=True, text=True,
-        env={**os.environ, "CI": "1"},
-    )
-    if done.returncode != 0:
-        failures.append(
-            f"{name}: external producer failed: {done.stderr.strip()[:300]}")
-        return []
-    try:
-        payload = json.loads(done.stdout)
-    except json.JSONDecodeError:
-        failures.append(
-            f"{name}: external producer emitted no JSON: {done.stdout[:200]!r}")
-        return []
-    return [
-        {
-            "kind": "mock-injection-observed",
-            "path": item.get("path"),
-            "line": item.get("line"),
-            "symbol": item.get("symbol"),
-            "injects": item.get("injects") or [],
-        }
-        for item in payload.get("injections", [])
-    ]
+         "--dry-run", "--json"], "mock inspection")
+    observations.extend({
+        "kind": "mock-injection-observed",
+        "path": item.get("path"),
+        "line": item.get("line"),
+        "symbol": item.get("symbol"),
+        "injects": item.get("injects") or [],
+    } for item in payload.get("injections", []))
+
+    payload = produce(["validate", "--repo", repo, "--json"],
+                      "gate validation")
+    observations.extend({
+        "kind": item.get("kind"),
+        "obligation": item.get("obligation"),
+        "path": item.get("path"),
+        "line": item.get("line"),
+    } for item in payload.get("findings", [])
+      if item.get("kind") == "gate-that-gates-nothing")
+
+    known = {"mock-injection-observed", "gate-that-gates-nothing"}
+    unknown = sorted(str(kind) for kind in kinds - known)
+    if unknown:
+        failures.append(f"{name}: no external producer owns {unknown}")
+    return sorted(observations, key=lambda item: (
+        item.get("kind") or "", item.get("path") or "", item.get("line") or 0))
 
 
 def is_hollow(metric: dict) -> bool:
@@ -276,7 +298,8 @@ def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | No
     live_path = pathlib.Path(meta["expect"])
     live = yaml.safe_load(live_path.read_text()) or {}
     if "external_observations" in live:
-        got["external_observations"] = inspect_external(meta, name, failures)
+        got["external_observations"] = inspect_external(
+            meta, live.get("external_observations") or [], name, failures)
     # Kept for the differential, which needs each CONTROL's payload and must not
     # re-run 34 of them to get it. One run per case, exactly as before.
     if payloads is not None:

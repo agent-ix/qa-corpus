@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=149> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=154> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -369,7 +369,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=72>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=75>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -387,11 +387,10 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=72> `kind: failure`
-# fixtures, of which <derived:controlled_failures=71> are controlled. The one
-# remaining uncontrolled skeptic case names no witness because its detector
-# does not exist yet; `mocked-confirmation` left that population when #204
-# supplied a production finding and three language-matched controls.
+# controlled ones. Population: <derived:failure_fixtures=74> `kind: failure`
+# fixtures, all <derived:controlled_failures=74> controlled. The last three
+# uncontrolled skeptic cells gained language-matched controls when #224 added
+# the claim+wiring+capability validator.
 #
 # THIS SENTENCE READ "All 37 controlled failure blocks" UNTIL CR-132, which is
 # a population error: 37 is out of 41 failure blocks, not out of the 34
@@ -986,7 +985,7 @@ inventory:
   - typescript
 - mode: skeptic
   case: gate-that-gates-nothing
-  source: agent-ix/quoin#227 — a gate that cannot fail
+  source: agent-ix/quoin#224 — a declared, wired gate that never asserts its count
   languages:
   - python
   - rust
@@ -1059,20 +1058,3 @@ known_gaps:
     cases:
     - model-mints-nothing-control
     - undeclared-coverage-vocabulary-control
-  findable_but_undetected:
-    reason: >-
-      These findable skeptic cases still assert no finding because no production detector can
-      emit one. `oracle-copy` left this list when #236 wired its existing comparison into coverage
-      and the corpus asserted the resulting suspicion in all three languages. `mocked-confirmation`
-      left when #204 supplied the store-backed producer/auditor path. #301 owns the remaining
-      detector-or-reclassify decision.
-    cases:
-    - gate-that-gates-nothing
-  uncontrolled_failure_cases:
-    reason: >-
-      The remaining cases cannot yet discriminate from a healthy partner through the skeptic
-      channel because their detectors are absent. #286 owns the controls after #204/#224 provide
-      findings; #301 owns the detector-or-reclassify decision. `oracle-copy` and
-      `mocked-confirmation` left this list with three language-matched controls apiece.
-    cases:
-    - gate-that-gates-nothing

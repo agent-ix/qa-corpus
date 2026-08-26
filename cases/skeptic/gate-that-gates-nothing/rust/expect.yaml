@@ -1,0 +1,10 @@
+# Derived from a real run against the COMPLETE ecosystem declaration —
+# spec-artifacts-process AND spec-artifacts-iso, whole module directories
+# including their schemas (agent-ix/quire-rs#292).
+backed: 0
+total: 3
+external_observations:
+- kind: gate-that-gates-nothing
+  obligation: FR-001-AC-1
+  path: scripts/check_unwrap.sh
+  line: 4
