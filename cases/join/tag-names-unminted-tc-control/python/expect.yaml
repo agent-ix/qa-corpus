@@ -1,0 +1,21 @@
+total: 4
+backed: 2
+groups:
+- document: spec/FR-001.md
+  target: acceptance-criterion
+  backed: 0
+  total: 2
+- document: spec/tests.md
+  target: test-case
+  backed: 2
+  total: 2
+unbacked_rows: []
+untracked_symbols: []
+binding_census:
+- language: python
+  candidates: 2
+  bound: 2
+absent_diagnostic_reasons:
+- no-symbol-bound
+- low-symbol-binding
+- hollow-denominator

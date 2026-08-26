@@ -1,0 +1,15 @@
+mode: join
+module: ecosystem
+id: tag-names-unminted-tc
+case: tag-names-unminted-tc
+issue_ref: agent-ix/quire-rs#268
+kind: failure
+findable: true
+tags:
+- TC-1014
+- join
+- binding
+comment: >-
+  A valid TC tag binds to a test but names no row in the test matrix. The
+  engine must publish its exact locus instead of treating the test as evidence
+  for a different row.
