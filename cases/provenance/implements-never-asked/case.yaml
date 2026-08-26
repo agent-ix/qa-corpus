@@ -3,7 +3,7 @@ issue_ref: agent-ix/quire-rs#226
 mode: provenance
 language: rust
 module: variants/no-implements-declaration
-relaxation_ticket: agent-ix/quire-rs#330
+declaration_under_test: The absent implements declaration is the measured condition; the ecosystem declaration intentionally cannot exhibit not_computed.
 findable: false
 kind: regression
 reproduce: quire coverage --scope cases/provenance/implements-never-asked/input --module modules/variants/no-implements-declaration

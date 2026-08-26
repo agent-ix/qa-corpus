@@ -950,7 +950,10 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         if c.get("module") == "ecosystem":
             covered_by.add(key)
         else:
-            on_variant[key] = (c.get("id"), c.get("module"), c.get("relaxation_ticket"))
+            on_variant[key] = (
+                c.get("id"), c.get("module"), c.get("relaxation_ticket"),
+                c.get("declaration_under_test"),
+            )
     have = covered_by
 
     # #289 acceptance: a case naming a module with no manifest is REJECTED.
@@ -974,13 +977,15 @@ def build(declaration: dict, cases: list[dict]) -> dict:
                 f"{c.get('id')}: module `{c.get('module')}` has no manifest under "
                 f"modules/{module}/")
         c["module"] = module
-        # FR-065-CON-3 / AC-15: a variant binding names its relaxation ticket.
-        if module != "ecosystem" and not c.get("relaxation_ticket"):
+        relaxation = c.get("relaxation_ticket")
+        subject = c.get("declaration_under_test")
+        if module != "ecosystem" and bool(relaxation) == bool(subject):
             raise CorpusError(
-                f"{c.get('id')}: binds variant `{module}` and names no "
-                f"`relaxation_ticket`. A corpus whose manifest always matches "
-                f"cannot exhibit a declaration defect, so an unticketed "
-                f"relaxation is the state CON-3 forbids.")
+                f"{c.get('id')}: binds variant `{module}` and must declare exactly one "
+                f"of `relaxation_ticket` or `declaration_under_test`.")
+        if module == "ecosystem" and (relaxation or subject):
+            raise CorpusError(
+                f"{c.get('id')}: binds the ecosystem module but declares variant metadata.")
 
     # A cell covered by a PENDING fixture is covered — a case exists and
     # exercises the mode — but the engine demonstrably fails it. Reported
@@ -1025,13 +1030,20 @@ def build(declaration: dict, cases: list[dict]) -> dict:
             elif (row["mode"], row["case"], language) in have:
                 cells[language] = {"state": "covered"}
             elif (row["mode"], row["case"], language) in on_variant:
-                fixture, module, ticket = on_variant[(row["mode"], row["case"], language)]
-                cells[language] = {
-                    "state": "GAP",
-                    "reason": f"`{fixture}` ships but binds `{module}` rather than the "
-                              f"ecosystem declaration, so it exercises no ecosystem "
-                              f"mode ({ticket or 'no relaxation ticket named'})",
-                }
+                fixture, module, ticket, subject = on_variant[(
+                    row["mode"], row["case"], language)]
+                if subject:
+                    cells[language] = {
+                        "state": "out-of-scope",
+                        "reason": f"`{fixture}` tests variant declaration `{module}`: {subject}",
+                    }
+                else:
+                    cells[language] = {
+                        "state": "GAP",
+                        "reason": f"`{fixture}` ships but binds `{module}` rather than the "
+                                  f"ecosystem declaration, so it exercises no ecosystem "
+                                  f"mode ({ticket})",
+                    }
             else:
                 cells[language] = {"state": "GAP"}
             state = cells[language]["state"]

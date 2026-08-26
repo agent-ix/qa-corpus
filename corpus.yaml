@@ -114,6 +114,7 @@ case_schema:
   - pending
   - pending_reason
   - relaxation_ticket
+  - declaration_under_test
   # The type of every declared field. `str`, `bool`, or `[str]` for a list.
   #
   # Presence was not enough, and a mutation proved it rather than an argument:
@@ -138,6 +139,7 @@ case_schema:
     pending: str
     pending_reason: str
     relaxation_ticket: str
+    declaration_under_test: str
   by_kind:
     failure:
       # The only kind that may claim a defect is detectable, so the only kind
@@ -161,9 +163,6 @@ case_schema:
   - if_present: pending
     then_required: [pending_reason]
     why: a marker with no reason is one nobody can decide whether to remove
-  - if_field_is_not: {module: ecosystem}
-    then_required: [relaxation_ticket]
-    why: FR-065-CON-3 — a variant binding must name the ticket it is sizing
   # A variant declares only what VARIES. These say WHICH case this is, and the
   # shared file is where that claim lives (FR-065-AC-22). PRESENCE is the test,
   # not disagreement: an injected `pending:` on one control variant converted a

@@ -1,6 +1,6 @@
 # `no-implements-declaration` — a declaration under test, not a relaxation
 
-**Relaxation ticket: `agent-ix/quire-rs#330`.**
+**Classification: declaration under test.**
 
 This variant is the ecosystem declaration with **one** thing taken out:
 `traceability.trace_tags.implements`.
@@ -27,19 +27,8 @@ forms.
 | this variant | `state: not_computed`, no value, no counts |
 | `modules/ecosystem` | `state: measured`, `value: 0`, `examined: 1`, `matched: 0` |
 
-Both are correct and they are different claims. So the absent declaration is
-not a defect awaiting a fix — it is **what the fixture measures**, and
-`agent-ix/quire-rs#285` could not migrate this case the way it migrated the
-other **ten**. (This read "eleven" and was wrong. Counted from the derived
-matrix at `db55b05`, the commit before the migration: `bounds.py --json`
-reports **eleven** fixtures with `module != ecosystem` — nine on `bench-legacy`
-and two on `bench-no-symbol-vocab` — of which ten moved and this one did not.
-The twelfth never existed; the corpus grew from 75 to 77 fixtures because the
-migration also authored two controls `#286` had asked for, and those were
-counted as migrations they were not.) `#330` owns whether FR-065 should say
-that in a word of its own;
-until it decides, `relaxation_ticket` names `#330` rather than a ticket that
-would never close.
+Both are correct and different. The absent declaration is the fixture's
+subject, so no migration ticket exists or should be invented for it (#330).
 
 ## Why exactly one axis
 
@@ -51,6 +40,6 @@ about is spelled the way `modules/ecosystem/spec-artifacts-process/manifest.yaml
 spells it, so the only reading this variant admits and the ecosystem does not is
 the one the case is named for.
 
-The fixture's cell is a `GAP` on the bounds matrix, and stays one: there is no
-ecosystem reading of this mode for the corpus to be missing, and `#330` is where
-that gets decided rather than assumed.
+The fixture's ecosystem cell is `out-of-scope`, with the reason carried in the
+derived matrix. There is no ecosystem reading of this mode for the corpus to be
+missing.
