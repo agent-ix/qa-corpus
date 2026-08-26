@@ -1,8 +1,8 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "94cd4e8af67d4bdd3f9e85d6130afe6f3fc6b237",
-  "gap_count": 16,
+  "corpus_revision": "70e20db26a7de76abbb6b9be4a67d343e22ee7b5",
+  "gap_count": 6,
   "rows": [
     {
       "mode": "attachment",
@@ -10,7 +10,7 @@
       "level": "L1",
       "reached": 3,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -21,7 +21,7 @@
       "level": "L2",
       "reached": 3,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -32,7 +32,7 @@
       "level": "L3",
       "reached": 3,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -43,7 +43,7 @@
       "level": "L1",
       "reached": 3,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-rust"
       ]
@@ -54,7 +54,7 @@
       "level": "L2",
       "reached": 2,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "marker-mismatch",
         "tag-inside-string-literal-rust"
@@ -66,7 +66,7 @@
       "level": "L3",
       "reached": 2,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "marker-mismatch",
         "tag-inside-string-literal-rust"
@@ -78,7 +78,7 @@
       "level": "L1",
       "reached": 4,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -89,7 +89,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -100,7 +100,7 @@
       "level": "L3",
       "reached": 4,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -111,7 +111,7 @@
       "level": "L1",
       "reached": 4,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -120,7 +120,7 @@
       "level": "L2",
       "reached": 2,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -132,11 +132,38 @@
       "level": "L3",
       "reached": 2,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
       ]
+    },
+    {
+      "mode": "detection",
+      "language": "python",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "detection",
+      "language": "python",
+      "level": "L2",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "detection",
+      "language": "python",
+      "level": "L3",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 6,
+      "misses": []
     },
     {
       "mode": "detection",
@@ -144,7 +171,7 @@
       "level": "L1",
       "reached": 5,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -153,7 +180,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "catch-all-properties"
       ]
@@ -164,10 +191,39 @@
       "level": "L3",
       "reached": 3,
       "population": 5,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "catch-all-properties",
-        "stale-name-correct-trace"
+        "stale-name-correct-trace-rust"
+      ]
+    },
+    {
+      "mode": "detection",
+      "language": "typescript",
+      "level": "L1",
+      "reached": 2,
+      "population": 2,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "detection",
+      "language": "typescript",
+      "level": "L2",
+      "reached": 2,
+      "population": 2,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "detection",
+      "language": "typescript",
+      "level": "L3",
+      "reached": 1,
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "stale-name-correct-trace-typescript"
       ]
     },
     {
@@ -175,27 +231,33 @@
       "language": "python",
       "level": "L1",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-python"
+      ]
     },
     {
       "mode": "disposition",
       "language": "python",
       "level": "L2",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-python"
+      ]
     },
     {
       "mode": "disposition",
       "language": "python",
       "level": "L3",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-python"
+      ]
     },
     {
       "mode": "disposition",
@@ -203,9 +265,9 @@
       "level": "L1",
       "reached": 1,
       "population": 2,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "greenfield-no-symbols"
+        "greenfield-no-symbols-rust"
       ]
     },
     {
@@ -214,9 +276,9 @@
       "level": "L2",
       "reached": 1,
       "population": 2,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "greenfield-no-symbols"
+        "greenfield-no-symbols-rust"
       ]
     },
     {
@@ -225,9 +287,9 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "greenfield-no-symbols"
+        "greenfield-no-symbols-rust"
       ]
     },
     {
@@ -235,27 +297,33 @@
       "language": "typescript",
       "level": "L1",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-typescript"
+      ]
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "level": "L2",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-typescript"
+      ]
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "level": "L3",
       "reached": 1,
-      "population": 1,
-      "gap_count": 16,
-      "misses": []
+      "population": 2,
+      "gap_count": 6,
+      "misses": [
+        "greenfield-no-symbols-typescript"
+      ]
     },
     {
       "mode": "join",
@@ -263,7 +331,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -272,7 +340,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -281,7 +349,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-names-bare-fr-python",
         "tag-names-undeclared-section-python",
@@ -294,7 +362,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -303,7 +371,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -312,7 +380,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-names-bare-fr-rust",
         "tag-names-undeclared-section-rust",
@@ -325,7 +393,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -334,7 +402,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -343,7 +411,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "tag-names-bare-fr-typescript",
         "tag-names-undeclared-section-typescript",
@@ -355,18 +423,21 @@
       "language": "python",
       "level": "L1",
       "reached": 6,
-      "population": 6,
-      "gap_count": 16,
-      "misses": []
+      "population": 7,
+      "gap_count": 6,
+      "misses": [
+        "no-symbol-method-in-the-verification-column-python"
+      ]
     },
     {
       "mode": "minting",
       "language": "python",
       "level": "L2",
       "reached": 5,
-      "population": 6,
-      "gap_count": 16,
+      "population": 7,
+      "gap_count": 6,
       "misses": [
+        "no-symbol-method-in-the-verification-column-python",
         "wrong-type-cell-python"
       ]
     },
@@ -375,9 +446,10 @@
       "language": "python",
       "level": "L3",
       "reached": 5,
-      "population": 6,
-      "gap_count": 16,
+      "population": 7,
+      "gap_count": 6,
       "misses": [
+        "no-symbol-method-in-the-verification-column-python",
         "wrong-type-cell-python"
       ]
     },
@@ -387,9 +459,9 @@
       "level": "L1",
       "reached": 6,
       "population": 7,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "no-symbol-method-in-the-verification-column"
+        "no-symbol-method-in-the-verification-column-rust"
       ]
     },
     {
@@ -398,9 +470,9 @@
       "level": "L2",
       "reached": 5,
       "population": 7,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "no-symbol-method-in-the-verification-column",
+        "no-symbol-method-in-the-verification-column-rust",
         "wrong-type-cell-rust"
       ]
     },
@@ -410,9 +482,9 @@
       "level": "L3",
       "reached": 5,
       "population": 7,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "no-symbol-method-in-the-verification-column",
+        "no-symbol-method-in-the-verification-column-rust",
         "wrong-type-cell-rust"
       ]
     },
@@ -421,18 +493,21 @@
       "language": "typescript",
       "level": "L1",
       "reached": 6,
-      "population": 6,
-      "gap_count": 16,
-      "misses": []
+      "population": 7,
+      "gap_count": 6,
+      "misses": [
+        "no-symbol-method-in-the-verification-column-typescript"
+      ]
     },
     {
       "mode": "minting",
       "language": "typescript",
       "level": "L2",
       "reached": 5,
-      "population": 6,
-      "gap_count": 16,
+      "population": 7,
+      "gap_count": 6,
       "misses": [
+        "no-symbol-method-in-the-verification-column-typescript",
         "wrong-type-cell-typescript"
       ]
     },
@@ -441,10 +516,42 @@
       "language": "typescript",
       "level": "L3",
       "reached": 5,
-      "population": 6,
-      "gap_count": 16,
+      "population": 7,
+      "gap_count": 6,
       "misses": [
+        "no-symbol-method-in-the-verification-column-typescript",
         "wrong-type-cell-typescript"
+      ]
+    },
+    {
+      "mode": "provenance",
+      "language": "python",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "provenance",
+      "language": "python",
+      "level": "L2",
+      "reached": 0,
+      "population": 1,
+      "gap_count": 6,
+      "misses": [
+        "hollow-metric-python"
+      ]
+    },
+    {
+      "mode": "provenance",
+      "language": "python",
+      "level": "L3",
+      "reached": 0,
+      "population": 1,
+      "gap_count": 6,
+      "misses": [
+        "hollow-metric-python"
       ]
     },
     {
@@ -453,7 +560,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": []
     },
     {
@@ -462,9 +569,9 @@
       "level": "L2",
       "reached": 0,
       "population": 1,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "hollow-metric"
+        "hollow-metric-rust"
       ]
     },
     {
@@ -473,9 +580,40 @@
       "level": "L3",
       "reached": 0,
       "population": 1,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
-        "hollow-metric"
+        "hollow-metric-rust"
+      ]
+    },
+    {
+      "mode": "provenance",
+      "language": "typescript",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 6,
+      "misses": []
+    },
+    {
+      "mode": "provenance",
+      "language": "typescript",
+      "level": "L2",
+      "reached": 0,
+      "population": 1,
+      "gap_count": 6,
+      "misses": [
+        "hollow-metric-typescript"
+      ]
+    },
+    {
+      "mode": "provenance",
+      "language": "typescript",
+      "level": "L3",
+      "reached": 0,
+      "population": 1,
+      "gap_count": 6,
+      "misses": [
+        "hollow-metric-typescript"
       ]
     },
     {
@@ -484,7 +622,7 @@
       "level": "L1",
       "reached": 1,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
@@ -497,7 +635,7 @@
       "level": "L2",
       "reached": 1,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
@@ -510,7 +648,7 @@
       "level": "L3",
       "reached": 1,
       "population": 4,
-      "gap_count": 16,
+      "gap_count": 6,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
