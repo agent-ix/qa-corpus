@@ -2,15 +2,13 @@ id: wrong-type-cell
 case: wrong-type-cell
 issue_ref: agent-ix/quoin#227
 mode: minting
-language: rust
 module: ecosystem
 kind: failure
 findable: true
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/wrong-type-cell/input
-  --json
 tags:
 - TC-1014
 - minting
 - finding-quality
-comment: A `Type` cell naming a verification method the vocabulary has no word for. 128 such rows in filament-ide-rs,
-  and the `Inspection` ones were reported as status lies because no declared type said what they are.
+comment: >-
+  A TestMatrix Type cell names a verification method outside the declared
+  vocabulary. Validation must name both the value and the affected row.
