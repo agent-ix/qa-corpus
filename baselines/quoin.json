@@ -1,8 +1,8 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quoin",
-  "corpus_revision": "70e20db26a7de76abbb6b9be4a67d343e22ee7b5",
-  "gap_count": 6,
+  "corpus_revision": "f2320ed145d5c19cf8e40fdb2d6b3e4ee28e3af9",
+  "gap_count": 0,
   "rows": [
     {
       "mode": "attachment",
@@ -11,7 +11,7 @@
       "reached": 3,
       "population": 4,
       "rate": 0.75,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -23,7 +23,7 @@
       "reached": 3,
       "population": 4,
       "rate": 0.75,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -35,7 +35,7 @@
       "reached": 3,
       "population": 4,
       "rate": 0.75,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -47,7 +47,7 @@
       "reached": 3,
       "population": 4,
       "rate": 0.75,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-rust"
       ]
@@ -59,7 +59,7 @@
       "reached": 3,
       "population": 4,
       "rate": 0.75,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-rust"
       ]
@@ -71,7 +71,7 @@
       "reached": 2,
       "population": 4,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "marker-mismatch",
         "tag-inside-string-literal-rust"
@@ -84,7 +84,7 @@
       "reached": 4,
       "population": 5,
       "rate": 0.8,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -96,7 +96,7 @@
       "reached": 4,
       "population": 5,
       "rate": 0.8,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -108,7 +108,7 @@
       "reached": 4,
       "population": 5,
       "rate": 0.8,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -120,7 +120,7 @@
       "reached": 4,
       "population": 4,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -130,7 +130,7 @@
       "reached": 2,
       "population": 4,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -143,7 +143,7 @@
       "reached": 2,
       "population": 4,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -156,7 +156,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -166,7 +166,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -176,7 +176,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -186,7 +186,7 @@
       "reached": 5,
       "population": 5,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -196,7 +196,7 @@
       "reached": 5,
       "population": 5,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -206,7 +206,7 @@
       "reached": 3,
       "population": 5,
       "rate": 0.6,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "catch-all-properties",
         "stale-name-correct-trace-rust"
@@ -219,7 +219,7 @@
       "reached": 2,
       "population": 2,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -229,7 +229,7 @@
       "reached": 2,
       "population": 2,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -239,7 +239,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "stale-name-correct-trace-typescript"
       ]
@@ -251,7 +251,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -263,7 +263,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -275,7 +275,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -287,7 +287,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -299,7 +299,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -311,7 +311,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -323,7 +323,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -335,7 +335,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -347,7 +347,7 @@
       "reached": 1,
       "population": 2,
       "rate": 0.5,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -359,7 +359,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -369,7 +369,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -379,7 +379,7 @@
       "reached": 0,
       "population": 3,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-names-bare-fr-python",
         "tag-names-undeclared-section-python",
@@ -393,7 +393,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -403,7 +403,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -413,7 +413,7 @@
       "reached": 0,
       "population": 3,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-names-bare-fr-rust",
         "tag-names-undeclared-section-rust",
@@ -427,7 +427,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -437,7 +437,7 @@
       "reached": 3,
       "population": 3,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -447,7 +447,7 @@
       "reached": 0,
       "population": 3,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "tag-names-bare-fr-typescript",
         "tag-names-undeclared-section-typescript",
@@ -461,7 +461,7 @@
       "reached": 6,
       "population": 7,
       "rate": 0.857,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-python"
       ]
@@ -473,7 +473,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-python",
         "no-testmatrix-document-python"
@@ -486,7 +486,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-python",
         "no-testmatrix-document-python"
@@ -499,7 +499,7 @@
       "reached": 6,
       "population": 7,
       "rate": 0.857,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust"
       ]
@@ -511,7 +511,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust",
         "no-testmatrix-document-rust"
@@ -524,7 +524,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust",
         "no-testmatrix-document-rust"
@@ -537,7 +537,7 @@
       "reached": 6,
       "population": 7,
       "rate": 0.857,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript"
       ]
@@ -549,7 +549,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript",
         "no-testmatrix-document-typescript"
@@ -562,7 +562,7 @@
       "reached": 5,
       "population": 7,
       "rate": 0.714,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript",
         "no-testmatrix-document-typescript"
@@ -575,7 +575,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -585,7 +585,7 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-python"
       ]
@@ -597,7 +597,7 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-python"
       ]
@@ -609,7 +609,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -619,7 +619,7 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-rust"
       ]
@@ -631,7 +631,7 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-rust"
       ]
@@ -643,7 +643,7 @@
       "reached": 1,
       "population": 1,
       "rate": 1,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": []
     },
     {
@@ -653,7 +653,7 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-typescript"
       ]
@@ -665,51 +665,108 @@
       "reached": 0,
       "population": 1,
       "rate": 0,
-      "gap_count": 6,
+      "gap_count": 0,
       "misses": [
         "hollow-metric-typescript"
       ]
     },
     {
       "mode": "skeptic",
+      "language": "python",
+      "level": "L1",
+      "reached": 3,
+      "population": 3,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "python",
+      "level": "L2",
+      "reached": 3,
+      "population": 3,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "python",
+      "level": "L3",
+      "reached": 1,
+      "population": 3,
+      "rate": 0.333,
+      "gap_count": 0,
+      "misses": [
+        "gate-that-gates-nothing-python",
+        "mocked-confirmation-python"
+      ]
+    },
+    {
+      "mode": "skeptic",
       "language": "rust",
       "level": "L1",
-      "reached": 1,
+      "reached": 4,
       "population": 4,
-      "rate": 0.25,
-      "gap_count": 6,
-      "misses": [
-        "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
-      ]
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "level": "L2",
-      "reached": 1,
+      "reached": 4,
       "population": 4,
-      "rate": 0.25,
-      "gap_count": 6,
-      "misses": [
-        "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
-      ]
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 4,
-      "rate": 0.25,
-      "gap_count": 6,
+      "rate": 0.5,
+      "gap_count": 0,
       "misses": [
-        "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
+        "gate-that-gates-nothing-rust",
+        "mocked-confirmation-rust"
+      ]
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L1",
+      "reached": 3,
+      "population": 3,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L2",
+      "reached": 3,
+      "population": 3,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L3",
+      "reached": 1,
+      "population": 3,
+      "rate": 0.333,
+      "gap_count": 0,
+      "misses": [
+        "gate-that-gates-nothing-typescript",
+        "mocked-confirmation-typescript"
       ]
     }
   ]
