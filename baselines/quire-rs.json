@@ -1,8 +1,8 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "70e20db26a7de76abbb6b9be4a67d343e22ee7b5",
-  "gap_count": 6,
+  "corpus_revision": "7db6573fe721eb622ec4502f736a8c19f4a3e215",
+  "gap_count": 4,
   "rows": [
     {
       "mode": "attachment",
@@ -10,7 +10,7 @@
       "level": "L1",
       "reached": 3,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -21,7 +21,7 @@
       "level": "L2",
       "reached": 3,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -32,7 +32,7 @@
       "level": "L3",
       "reached": 3,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -43,7 +43,7 @@
       "level": "L1",
       "reached": 3,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-rust"
       ]
@@ -54,7 +54,7 @@
       "level": "L2",
       "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "marker-mismatch",
         "tag-inside-string-literal-rust"
@@ -66,7 +66,7 @@
       "level": "L3",
       "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "marker-mismatch",
         "tag-inside-string-literal-rust"
@@ -78,7 +78,7 @@
       "level": "L1",
       "reached": 4,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -89,7 +89,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -100,7 +100,7 @@
       "level": "L3",
       "reached": 4,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -111,7 +111,7 @@
       "level": "L1",
       "reached": 4,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -120,7 +120,7 @@
       "level": "L2",
       "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -132,7 +132,7 @@
       "level": "L3",
       "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -144,7 +144,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -153,7 +153,7 @@
       "level": "L2",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -162,7 +162,7 @@
       "level": "L3",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -171,7 +171,7 @@
       "level": "L1",
       "reached": 5,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -180,7 +180,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "catch-all-properties"
       ]
@@ -191,7 +191,7 @@
       "level": "L3",
       "reached": 3,
       "population": 5,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "catch-all-properties",
         "stale-name-correct-trace-rust"
@@ -203,7 +203,7 @@
       "level": "L1",
       "reached": 2,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -212,7 +212,7 @@
       "level": "L2",
       "reached": 2,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -221,7 +221,7 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "stale-name-correct-trace-typescript"
       ]
@@ -232,7 +232,7 @@
       "level": "L1",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -243,7 +243,7 @@
       "level": "L2",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -254,7 +254,7 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-python"
       ]
@@ -265,7 +265,7 @@
       "level": "L1",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -276,7 +276,7 @@
       "level": "L2",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -287,7 +287,7 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-rust"
       ]
@@ -298,7 +298,7 @@
       "level": "L1",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -309,7 +309,7 @@
       "level": "L2",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -320,7 +320,7 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "greenfield-no-symbols-typescript"
       ]
@@ -331,7 +331,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -340,7 +340,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -349,7 +349,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-names-bare-fr-python",
         "tag-names-undeclared-section-python",
@@ -362,7 +362,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -371,7 +371,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -380,7 +380,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-names-bare-fr-rust",
         "tag-names-undeclared-section-rust",
@@ -393,7 +393,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -402,7 +402,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -411,7 +411,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "tag-names-bare-fr-typescript",
         "tag-names-undeclared-section-typescript",
@@ -424,7 +424,7 @@
       "level": "L1",
       "reached": 6,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-python"
       ]
@@ -435,7 +435,7 @@
       "level": "L2",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-python",
         "wrong-type-cell-python"
@@ -447,7 +447,7 @@
       "level": "L3",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-python",
         "wrong-type-cell-python"
@@ -459,7 +459,7 @@
       "level": "L1",
       "reached": 6,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust"
       ]
@@ -470,7 +470,7 @@
       "level": "L2",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust",
         "wrong-type-cell-rust"
@@ -482,7 +482,7 @@
       "level": "L3",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-rust",
         "wrong-type-cell-rust"
@@ -494,7 +494,7 @@
       "level": "L1",
       "reached": 6,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript"
       ]
@@ -505,7 +505,7 @@
       "level": "L2",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript",
         "wrong-type-cell-typescript"
@@ -517,7 +517,7 @@
       "level": "L3",
       "reached": 5,
       "population": 7,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "no-symbol-method-in-the-verification-column-typescript",
         "wrong-type-cell-typescript"
@@ -529,7 +529,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -538,7 +538,7 @@
       "level": "L2",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-python"
       ]
@@ -549,7 +549,7 @@
       "level": "L3",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-python"
       ]
@@ -560,7 +560,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -569,7 +569,7 @@
       "level": "L2",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-rust"
       ]
@@ -580,7 +580,7 @@
       "level": "L3",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-rust"
       ]
@@ -591,7 +591,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": []
     },
     {
@@ -600,7 +600,7 @@
       "level": "L2",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-typescript"
       ]
@@ -611,49 +611,100 @@
       "level": "L3",
       "reached": 0,
       "population": 1,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "hollow-metric-typescript"
       ]
     },
     {
       "mode": "skeptic",
-      "language": "rust",
+      "language": "python",
       "level": "L1",
       "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "python",
+      "level": "L2",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "python",
+      "level": "L3",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "rust",
+      "level": "L1",
+      "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
+        "mocked-confirmation"
       ]
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "level": "L2",
-      "reached": 1,
+      "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
+        "mocked-confirmation"
       ]
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 4,
-      "gap_count": 6,
+      "gap_count": 4,
       "misses": [
         "gate-that-gates-nothing",
-        "mocked-confirmation",
-        "oracle-copy"
+        "mocked-confirmation"
       ]
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L2",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
+    },
+    {
+      "mode": "skeptic",
+      "language": "typescript",
+      "level": "L3",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 4,
+      "misses": []
     }
   ]
 }
