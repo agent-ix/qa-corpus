@@ -1,8 +1,8 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "624dadb5724a426dacc6cdcb875f4262460a541f",
-  "gap_count": 24,
+  "corpus_revision": "70957a6f64a66ec5a4df77ca86de6c40eb7a2267",
+  "gap_count": 23,
   "rows": [
     {
       "mode": "attachment",
@@ -10,7 +10,7 @@
       "level": "L1",
       "reached": 3,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -21,7 +21,7 @@
       "level": "L2",
       "reached": 3,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -32,7 +32,7 @@
       "level": "L3",
       "reached": 3,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-python"
       ]
@@ -43,7 +43,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -52,7 +52,7 @@
       "level": "L2",
       "reached": 2,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "marker-mismatch"
       ]
@@ -63,7 +63,7 @@
       "level": "L3",
       "reached": 2,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "marker-mismatch"
       ]
@@ -74,7 +74,7 @@
       "level": "L1",
       "reached": 4,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -85,7 +85,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -96,7 +96,7 @@
       "level": "L3",
       "reached": 4,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-inside-string-literal-typescript"
       ]
@@ -107,7 +107,7 @@
       "level": "L1",
       "reached": 4,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -116,7 +116,7 @@
       "level": "L2",
       "reached": 2,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -128,7 +128,7 @@
       "level": "L3",
       "reached": 2,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "model-mints-nothing",
         "undeclared-coverage-vocabulary"
@@ -140,7 +140,7 @@
       "level": "L1",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -149,7 +149,7 @@
       "level": "L2",
       "reached": 4,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "catch-all-properties"
       ]
@@ -160,7 +160,7 @@
       "level": "L3",
       "reached": 3,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "catch-all-properties",
         "stale-name-correct-trace"
@@ -172,7 +172,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -181,7 +181,7 @@
       "level": "L2",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -190,7 +190,7 @@
       "level": "L3",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -199,7 +199,7 @@
       "level": "L1",
       "reached": 1,
       "population": 2,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "greenfield-no-symbols"
       ]
@@ -210,7 +210,7 @@
       "level": "L2",
       "reached": 1,
       "population": 2,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "greenfield-no-symbols"
       ]
@@ -221,7 +221,7 @@
       "level": "L3",
       "reached": 1,
       "population": 2,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "greenfield-no-symbols"
       ]
@@ -232,7 +232,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -241,7 +241,7 @@
       "level": "L2",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -250,7 +250,7 @@
       "level": "L3",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -259,7 +259,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -268,7 +268,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -277,7 +277,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-names-bare-fr-python",
         "tag-names-undeclared-section-python",
@@ -290,7 +290,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -299,7 +299,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -308,7 +308,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-names-bare-fr-rust",
         "tag-names-undeclared-section-rust",
@@ -321,7 +321,7 @@
       "level": "L1",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -330,7 +330,7 @@
       "level": "L2",
       "reached": 3,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -339,7 +339,7 @@
       "level": "L3",
       "reached": 0,
       "population": 3,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "tag-names-bare-fr-typescript",
         "tag-names-undeclared-section-typescript",
@@ -352,7 +352,7 @@
       "level": "L1",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -361,7 +361,7 @@
       "level": "L2",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -370,7 +370,7 @@
       "level": "L3",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -379,7 +379,7 @@
       "level": "L1",
       "reached": 6,
       "population": 7,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "no-symbol-method-in-the-verification-column"
       ]
@@ -390,7 +390,7 @@
       "level": "L2",
       "reached": 5,
       "population": 7,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "no-symbol-method-in-the-verification-column",
         "wrong-type-cell"
@@ -402,7 +402,7 @@
       "level": "L3",
       "reached": 5,
       "population": 7,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "no-symbol-method-in-the-verification-column",
         "wrong-type-cell"
@@ -414,7 +414,7 @@
       "level": "L1",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -423,7 +423,7 @@
       "level": "L2",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -432,7 +432,7 @@
       "level": "L3",
       "reached": 5,
       "population": 5,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -441,7 +441,7 @@
       "level": "L1",
       "reached": 1,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": []
     },
     {
@@ -450,7 +450,7 @@
       "level": "L2",
       "reached": 0,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "hollow-metric"
       ]
@@ -461,7 +461,7 @@
       "level": "L3",
       "reached": 0,
       "population": 1,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "hollow-metric"
       ]
@@ -472,7 +472,7 @@
       "level": "L1",
       "reached": 1,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
@@ -485,7 +485,7 @@
       "level": "L2",
       "reached": 1,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
@@ -498,7 +498,7 @@
       "level": "L3",
       "reached": 1,
       "population": 4,
-      "gap_count": 24,
+      "gap_count": 23,
       "misses": [
         "gate-that-gates-nothing",
         "mocked-confirmation",
