@@ -1,0 +1,29 @@
+# THE WHOLE CLAIM IS `unbacked_rows`. `TC-002` sits inside a string literal in
+# a test's own span, so it must NOT bind — the test asserts about the text, it
+# does not verify the row.
+#
+# Measured pre-fix at engine `d55c987`: `backed 2/3`, `unbacked_rows: []`. The
+# id bound from the string and the row read as verified.
+backed: 1
+total: 3
+unbacked_rows:
+- document: spec/tests.md
+  row_id: TC-002
+  target_ids:
+  - FR-001-AC-2
+  - TC-002
+
+# BOTH tests are candidates and exactly ONE binds. This is what separates the
+# defect from "the tag was never written": a census of 2/1 says the binder read
+# both symbols and made a decision about each.
+binding_census:
+- language: typescript
+  candidates: 2
+  bound: 1
+
+# The tag reached no channel by being data, not by being misplaced, so the
+# non-binding-symbol diagnostic must stay silent: a string literal is not a
+# symbol of the wrong kind (#312 is a different defect).
+absent_diagnostic_reasons:
+- tag-on-non-binding-symbol
+- no-symbol-bound

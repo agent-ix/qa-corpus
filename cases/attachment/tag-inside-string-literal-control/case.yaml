@@ -1,0 +1,19 @@
+id: tag-inside-string-literal-control
+issue_ref: agent-ix/quire-rs#323
+mode: attachment
+module: ecosystem
+kind: control
+control_for:
+- tag-inside-string-literal
+findable: false
+tags:
+- TC-1014
+- attachment
+- binding
+comment: >-
+  ONE LINE MOVED, out of the string and into a comment. Both trees have two tests, both
+  carry a string literal, both name `TC-002` somewhere — and here the naming is a TAG rather
+  than data, so the row is genuinely backed. That is what makes the pair discriminate in the
+  direction that matters: the mask must blank a string's CONTENTS and leave comments intact,
+  and a mask that blanked both would turn this control red while leaving its partner green.
+  A detector written as "a trace id anywhere near a string literal" fires here and is wrong.

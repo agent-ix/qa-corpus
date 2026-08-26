@@ -1,0 +1,20 @@
+id: tag-inside-string-literal
+case: tag-inside-string-literal
+issue_ref: agent-ix/quire-rs#323
+mode: attachment
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1014
+- attachment
+- binding
+comment: >-
+  A LEGACY TRACE FORM INSIDE A STRING LITERAL, in a test's own span. Rust has masked string
+  contents before matching legacy forms since the mask was written — `src/symbols/trace.rs`
+  gated it on `SourceLanguage::Rust` and every other language fell through to the raw span.
+  So a Python or TypeScript test that carries tag-shaped text as DATA bound it, and the row
+  read as verified by a test that never touches it. Measured on this fixture at engine
+  `d55c987`: `backed 2/3` with nothing unbacked, which is invented coverage nobody authored.
+  The repair is the mask, not the fixture: the text is a legitimate thing for a test to
+  assert about.

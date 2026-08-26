@@ -1,0 +1,18 @@
+# THE TAG IS A TAG, so the row binds. Every count is its partner's except the
+# two that carry the whole claim — `backed` and `unbacked_rows` — which is the
+# strongest shape a pair can have: one repair, one field.
+backed: 2
+total: 3
+unbacked_rows: []
+
+# BOTH candidates bound, against the partner's 2/1. A mask that blanked comment
+# text as well as string contents would leave this at 2/1 and the pair would
+# stop separating in the direction that matters.
+binding_census:
+- language: typescript
+  candidates: 2
+  bound: 2
+
+absent_diagnostic_reasons:
+- tag-on-non-binding-symbol
+- no-symbol-bound
