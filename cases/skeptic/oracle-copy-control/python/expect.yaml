@@ -1,0 +1,8 @@
+backed: 1
+total: 3
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1
+absent_suspicions:
+- oracle-resembles-implementation

@@ -1,0 +1,15 @@
+id: oracle-copy-control
+issue_ref: agent-ix/quire-rs#286
+mode: skeptic
+module: ecosystem
+findable: false
+kind: control
+control_for:
+- oracle-copy
+tags:
+- TC-1061
+- skeptic
+- finding-quality
+comment: >-
+  The same direct-call assertion shape with an independently stated expectation. It must not report
+  oracle resemblance in any supported language.
