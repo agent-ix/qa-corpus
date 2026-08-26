@@ -2,6 +2,15 @@
   "$comment": "The metric dictionary, versioned with the corpus rather than inside either tool's bench/. Seeded with the one metric this corpus publishes about itself; finding-quality metrics arrive with the labels/ ground truth.",
   "schema_version": 1,
   "metrics": {
+    "detection.recall": {
+      "measurement_plan": "assurance/MP-202-detection-recall.md",
+      "unit": "seeded failure",
+      "population": "findable failure cases in qa-corpus, partitioned independently by grading level, failure mode, and language",
+      "method": "cases for which the runner emits the expected finding at L1, the expected locus at L2, and the expected actionable message fragments at L3, divided by seeded cases in the same mode-language partition; levels are never collapsed",
+      "shape": "ratio",
+      "direction": "higher-is-better",
+      "note": "Every observation carries bounds.gap_count beside it. Missing L2 or L3 ground truth scores as not reached, so adding a shallow fixture cannot manufacture deep recall."
+    },
     "bounds.gap_count": {
       "measurement_plan": "assurance/MP-201-gap-count.md",
       "unit": "mode-language cell",
