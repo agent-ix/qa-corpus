@@ -1,0 +1,26 @@
+id: section-holds-no-table
+case: section-holds-no-table
+issue_ref: agent-ix/quire-rs#320
+mode: minting
+module: ecosystem
+language: rust
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-holds-no-table/input
+  --json
+tags:
+- TC-1014
+- minting
+- coverage
+comment: >-
+  THE HEADING IS RIGHT AND HOLDS NO TABLE. The archetype matches, `section: Test Case
+  Summary` matches, the section's body is prose — so the target reaches exactly what it
+  asked for and mints nothing. Both diagnostics that would explain it stand down by
+  construction: the section WAS found, so `section-matches-nothing` is satisfied, and there
+  is no table, so there is no id column for `id-column-matches-nothing` to miss. The
+  document minted nothing and said nothing.
+
+  agent-ix/quire-rs#320 was found by ADVERSARIAL REVIEW of #272 while `make ci` was green
+  and 17 of 17 corpus cases passed — a regression the widening introduced and the corpus
+  could not see. The token has been emitted since `204dca4` and, until this fixture, no case
+  asserted it in either direction: it was landed, published, and unheld.

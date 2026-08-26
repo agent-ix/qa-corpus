@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=81> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=83> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -370,7 +370,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=39>**. The pair count
+# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=40>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -388,8 +388,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=41> `kind: failure`
-# fixtures, of which <derived:controlled_failures=38> are controlled. **37 of
+# controlled ones. Population: <derived:failure_fixtures=42> `kind: failure`
+# fixtures, of which <derived:controlled_failures=39> are controlled. **37 of
 # the 41 already named at least one witness key for their mode** when this was
 # written, so the rule changed no fixture. The three that still name none —
 # `oracle-copy`, `mocked-confirmation`, `gate-that-gates-nothing`, which assert
@@ -486,6 +486,45 @@ witness_channels:
             diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
 
 
+# THE INVENTORY declares which (mode, case, language) cells SHOULD exist. Every
+# cell it does not name is invisible to `gap_count` — so an undeclared hole and
+# a filled one look identical from the outside, which is the conflation this
+# whole file exists to end, applied to itself.
+#
+# **`gap_count` 4 -> 31. THIS IS A CORRECTION, NOT A REGRESSION.**
+#
+# 18 of the 29 rows declared a single language and none of them said why. 37 of
+# the 87 mode x case x language cells were not declared at all, so the corpus
+# reported `gap_count: 4` over a space it had defined to be almost entirely
+# covered. Declaring the space moves the count to what was already true:
+#
+#     declared cells   50 -> 88     covered 46     out-of-scope 1 -> 11     GAP 4 -> 31
+#
+# (88 rather than 85 because `section-holds-no-table` joined the inventory in
+# the same pass — a Wave 3 token, landed in `204dca4`, published, and asserted
+# by no fixture in either direction until then.)
+#
+# EVERY EXCLUSION IS GROUNDED IN CODE OR IN THE DECLARATION, not in judgement
+# about what would be tedious to write. A cell is `out_of_scope` only where the
+# defect cannot be expressed in that language or the detector deliberately does
+# not run there:
+#
+#   * `test-name-id-*` — the manifest declares `rust-test-name-id` and
+#     `typescript-test-name-id` and NO python sibling, and the two forms read
+#     different things (a function name, a call title), which is why they are
+#     two rows rather than one language set.
+#   * `tag-at-module-scope` / `tag-on-describe-header` — `symbols/rust.rs` emits
+#     no file-level container and no registration-call form.
+#   * `triple-quote-scope-desync` — neither Rust nor TypeScript has a
+#     triple-quoted string literal.
+#   * `vacuous-property-suite` — `narrowing_guards_for` returns an EMPTY list
+#     for Python and TypeScript by deliberate decision (CR-102), measured at 549
+#     false suspicions from 551 candidates when it did not.
+#
+# Everything else is a GAP, including cases whose detector does not exist in ANY
+# language. Scoping those out would be recording "we have not built it" as "it
+# does not apply", and the difference between those two sentences is the whole
+# subject of `known_gaps`.
 inventory:
 - mode: minting
   case: section-name-mismatch
@@ -521,6 +560,18 @@ inventory:
   - rust
   - typescript
 - mode: minting
+  case: section-holds-no-table
+  # The archetype matched, the SECTION matched, and the section's body is prose.
+  # Both diagnostics that would explain the silence stand down by construction,
+  # which is why #320 was invisible to a green `make ci` and 17/17 corpus cases.
+  # Measured over 241 repositories: 2 repos once `section:` is widened, 0 before
+  # — the widening is what makes a heading reachable and then empty.
+  source: agent-ix/quire-rs#320 — found by adversarial review of #272, 2 repos at 241
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: minting
   case: no-testmatrix-document
   source: 47 repos
   languages:
@@ -531,7 +582,18 @@ inventory:
   case: test-name-id-in-call-title
   source: spec-artifacts-process#68, 81% of a repo
   languages:
+  - python
+  - rust
   - typescript
+  out_of_scope:
+    python: >-
+      the declaration declares NO python test-name-id form. `manifest.yaml` carries
+      `rust-test-name-id` and `typescript-test-name-id` and no python sibling, so there is
+      no form for a python fixture to write the defect in.
+    rust: >-
+      `rust-test-name-id` reads the FUNCTION NAME, not a call title — Rust has no
+      registration call to put a title in. The Rust shape of this defect is
+      `detection/test-name-id-in-fn-name`, which is its own row.
 - mode: detection
   # CENSUSED, and the premise this row was filed under is STALE. `rust-test-name-id`
   # binds the underscore spelling today — CR-034 landed as spec-artifacts-process
@@ -547,7 +609,16 @@ inventory:
   case: test-name-id-in-fn-name
   source: CR-034 (LANDED, cf7b4e2) — regression pin, 3952/3960 sites bind
   languages:
+  - python
   - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      the declaration declares no python test-name-id form at all — see the same exclusion
+      on `test-name-id-in-call-title`.
+    typescript: >-
+      `typescript-test-name-id` reads the CALL TITLE, not a function name, which is the
+      sibling row `detection/test-name-id-in-call-title`.
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
   # ENTIRELY on headers. The fixture models the MIXED case instead — one
@@ -571,7 +642,16 @@ inventory:
   case: tag-on-describe-header
   source: 162 occurrences / 18 roots against 1,004 above an it/test (CR-119 re-measure; #273's 209/9 vs 2,396 does not reproduce)
   languages:
+  - python
+  - rust
   - typescript
+  out_of_scope:
+    rust: >-
+      `symbols/rust.rs` mints a `Container` for `mod`, `struct`, `enum` and `trait` and has
+      no registration-call form at all — there is no `describe()` for a tag to sit above.
+      The Rust shape closest to this is a tag above a `mod`, which is
+      `attachment/tag-at-module-scope`, and that row excludes Rust for its own measured
+      reason.
 - mode: attachment
   # RE-MEASURED. The row was filed naming two repos and no number. Censused over
   # ~/dev with worktrees, -task<N> copies, node_modules, build and virtualenv
@@ -590,7 +670,14 @@ inventory:
   source: 125 occurrences / 23 repos — python 96/18, typescript 4/3 (rust excluded, see above)
   languages:
   - python
+  - rust
   - typescript
+  out_of_scope:
+    rust: >-
+      `symbols/rust.rs` emits NO file-level container, so a column-0 comment there sits
+      inside no symbol at all and there is nothing for the tag to attach to wrongly. The
+      defect requires a container that exists and cannot bind, which Rust does not have at
+      file scope.
 - mode: attachment
   # MEASURED. The row was filed naming a code predicate and no population.
   # Censused over ~/dev with worktrees, -task<N> copies, node_modules, build and
@@ -639,6 +726,17 @@ inventory:
     is recovery rather than inflation.
   languages:
   - python
+  - rust
+  - typescript
+  out_of_scope:
+    rust: >-
+      neither language has a triple-quoted string literal, so the scope-stack inversion this
+      pins cannot be written in it. `symbols/rust.rs` tracks braces; the defect was a
+      quoting state machine.
+    typescript: >-
+      neither language has a triple-quoted string literal. A TypeScript template literal is
+      a different construct and, if it desynchronises the scanner, is its own case with its
+      own measurement.
 - mode: join
   # RE-SCOPED, and `tag-names-con-inv-sc-vc` is gone. That row bundled four
   # prefixes on the strength of one number — "123 tags" — and MEASURED WITH THE
@@ -765,67 +863,104 @@ inventory:
   case: marker-form-mismatch
   source: agent-ix/spec-artifacts-process#59
   languages:
+  - python
   - rust
+  - typescript
 - mode: detection
   case: catch-all-headline
   source: agent-ix/quire-rs#230
   languages:
+  - python
   - rust
+  - typescript
 - mode: detection
   case: stale-name-correct-trace
   source: agent-ix/quire-rs#227
   languages:
+  - python
   - rust
+  - typescript
 - mode: disposition
   case: greenfield-no-symbols
   source: agent-ix/quire-rs#229
   languages:
+  - python
   - rust
+  - typescript
 - mode: minting
   case: no-symbol-method-in-the-verification-column
   source: agent-ix/quire-rs#259
   languages:
+  - python
   - rust
+  - typescript
 - mode: provenance
   case: implements-never-asked
   source: agent-ix/quire-rs#226
   languages:
+  - python
   - rust
+  - typescript
 - mode: attachment
   case: tests-directory-topology
   source: agent-ix/quire-rs#267
   languages:
+  - python
   - rust
+  - typescript
 - mode: minting
   case: wrong-type-cell
   source: agent-ix/quoin#227 — a Type cell outside the declared vocabulary
   languages:
+  - python
   - rust
+  - typescript
 - mode: skeptic
   case: vacuous-property-suite
   source: agent-ix/quoin#227 — every assertion behind a narrowing guard
   languages:
+  - python
   - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      the detector CANNOT FIRE here by deliberate decision. `narrowing_guards_for` returns
+      `NO_MEASURED_GUARDS` — empty — for Python and TypeScript (CR-102): neither has a
+      binding-and-testing construct like `if let`, and what the equivalent shape is has not
+      been measured. A fixture would assert a silence that means nothing about the defect.
+    typescript: >-
+      same, and it is the measured half. Sharing Rust's guard list made `=> {` — a match arm
+      in Rust, an ARROW FUNCTION in TypeScript — open a guard on every `it("…", () => {…})`
+      body: 549 suspicions from 551 candidates on `agent-ix/quoin`, sampled three, all rule,
+      none real. The narrowing is justified independently of the count.
 - mode: skeptic
   case: oracle-copy
   source: agent-ix/quoin#227 — the oracle is a copy of the code under test
   languages:
+  - python
   - rust
+  - typescript
 - mode: skeptic
   case: mocked-confirmation
   source: agent-ix/quoin#227 — the test confirms its own mock
   languages:
+  - python
   - rust
+  - typescript
 - mode: skeptic
   case: gate-that-gates-nothing
   source: agent-ix/quoin#227 — a gate that cannot fail
   languages:
+  - python
   - rust
+  - typescript
 - mode: provenance
   case: hollow-metric
   source: agent-ix/quoin#227 — a ratio over input the binder could not read
   languages:
+  - python
   - rust
+  - typescript
 # DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
 #
 # This block was read by NO CODE. It listed three uncontrolled failure cases
