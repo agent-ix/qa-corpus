@@ -1,0 +1,37 @@
+# L1 the token, L2 the document, L3 the two things a reader has to act on: WHAT
+# was found, and WHAT the declaration asked for.
+diagnostic_reasons:
+- test-case/section-holds-no-table
+diagnostic_paths:
+  test-case/section-holds-no-table: spec/tests.md
+diagnostic_message_contains:
+  test-case/section-holds-no-table:
+  - Test Case Summary
+  - not one of them holds a table
+  # The remedy, named. A diagnostic that says a table is missing and not what to
+  # do instead is one a reader closes.
+  - declare those
+
+# THE TWO SILENCES ARE THE POINT. `#320` exists because both of these were
+# satisfied while the document minted nothing: the section WAS found, and there
+# is no table for an id column to be missing from. Asserting the token without
+# asserting these would not separate this case from `section-name-mismatch`.
+absent_diagnostic_reasons:
+- test-case/section-matches-nothing
+- test-case/id-column-matches-nothing
+
+# Nothing minted from the TestMatrix at all — `groups` holds only the criteria
+# target. The tag on the test binds fine; there is simply no row for it to back,
+# which is why `untracked_symbols` is empty rather than holding the test.
+total: 1
+backed: 0
+groups:
+- document: spec/FR-001.md
+  target: acceptance-criterion
+  backed: 0
+  total: 1
+untracked_symbols: []
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1

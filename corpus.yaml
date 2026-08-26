@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=107> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=111> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -369,7 +369,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=52>**. The pair count
+# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=54>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -387,8 +387,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=54> `kind: failure`
-# fixtures, of which <derived:controlled_failures=51> are controlled. **37 of
+# controlled ones. Population: <derived:failure_fixtures=56> `kind: failure`
+# fixtures, of which <derived:controlled_failures=53> are controlled. **37 of
 # the 46 already named at least one witness key for their mode** when this was
 # written, so the rule changed no fixture. The three that still name none —
 # `oracle-copy`, `mocked-confirmation`, `gate-that-gates-nothing`, which assert
