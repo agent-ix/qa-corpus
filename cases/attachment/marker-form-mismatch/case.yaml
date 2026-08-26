@@ -1,23 +1,15 @@
 id: marker-form-mismatch
+case: marker-form-mismatch
 issue_ref: agent-ix/spec-artifacts-process#59
 mode: attachment
-language: rust
 module: ecosystem
 findable: true
 kind: failure
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-form-mismatch/input
-  --json
 tags:
 - TC-1006
 - TC-992
 - binding
 - coverage
-comment: 'Real tests, real tags, a marker spelling the module never declared. filament-ide-rs: 1,292 such
-  symbols, 0 bound, reported as 555/2389 (23%) with nothing saying so. #256: and it must name ONE of them
-  — `src/lib.rs:5`, the annotation line, not the `fn` line, because a marker that failed to match is written
-  where the annotation is and that is what the reader edits. The diagnostic named the LANGUAGE and nothing
-  else, so a reader with 1,292 unbound symbols was told to search Rust. MIGRATED off `bench-legacy` onto
-  the real declaration (#285). The ecosystem declares FIVE rust forms against the variant''s one, so the
-  census now walks `rust-trace-attribute, rust-trace-line, rust-comment-id, rust-test-name-id,
-  rust-doc-comment-id` and `#[tracks("TC-001")]` matches none of them — which is the stronger reading of
-  the same defect, and the L2/L3 assertions below are re-measured and unchanged.'
+comment: A real test carries a plausible marker spelling the ecosystem module does not declare. The case
+  must report the unread marker at its authored line in every supported language; its paired control changes
+  only the marker to the declared spelling.
