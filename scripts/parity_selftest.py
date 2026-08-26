@@ -31,19 +31,25 @@ TWO OF THE CASES MUST STAY GREEN, and they are not padding.
   control's tree was the one validated: grade the case's own tree instead and
   nothing mismatches, the block is blind, and the run goes red.
 
-  **THE RULE HAS REACH 0 OVER THE REAL CORPUS, and this case is why it is
-  tested at all** (CR-132, retracting the unhedged form this docstring used to
-  carry). **[RAN]** at `2bc486d`: two of 77 fixtures declare a `validate_*` key
-  — `wrong-type-cell`, an UNCONTROLLED failure declared under
-  `known_gaps.uncontrolled_failure_cases`, and `clean-control`, a control — and
-  **zero of the 35 graded pairs** carry one. `wrong-type-cell` was cited as the
-  rule's motivation in four places and it has never had a control (`git log -S
-  'wrong-type-cell' -- cases/`: one commit, its own introduction), so it cannot
-  reach the rule. The case below MANUFACTURES a `validate_absent` on
-  `real-tests-zero-tags` for exactly that reason: a correct rule with no current
-  subject still has to be shown capable of failing, or it is indistinguishable
-  from one that is not there. `#286` giving `wrong-type-cell` a control is what
-  raises the reach above zero.
+  **THE RULE HAS NEARLY NO REACH OVER THE REAL CORPUS, and this case is why it
+  is tested at all** (CR-132, retracting the unhedged form this docstring used
+  to carry).
+
+  RETRACTED AGAIN, and this time by the tree rather than by a reader. This
+  paragraph said "two of 77 fixtures declare a `validate_*` key … zero of the 35
+  graded pairs carry one", and ended by naming `#286` giving `wrong-type-cell` a
+  control as what would raise the reach above zero. **#286 did that.** Three
+  files declare a `validate_*` key now, `wrong-type-cell` has a control, that
+  pair is graded, and the reach is 1 pair — not 0 of 35, and not over 35 pairs.
+  The prediction came true and the sentence describing the world before it kept
+  being published, which is the same defect as the fixture counts one file over
+  (<derived:fixtures=81> today).
+
+  The case below still MANUFACTURES a `validate_absent` on
+  `real-tests-zero-tags`, and still should: one pair is not a demonstration that
+  the rule can fail on demand, and a correct rule with almost no subject has to
+  be shown capable of failing or it is indistinguishable from one that is not
+  there.
 
 THE PARITY CONSTRUCTION the review asked for is case 2. Before #337 that mutated
 corpus was accepted by `verify.py` (`mismatches: 0`, exit 0) and rejected by
@@ -161,6 +167,21 @@ NO_WITNESS = "backed: 0\n"
 # check could not.
 BLIND_WITNESS = "backed: 0\nabsent_diagnostic_reasons:\n  - hollow-denominator\n"
 
+# THE SKEPTIC PAIR, whose ONLY discriminator is the suspicion channel
+# (agent-ix/quire-rs#358). `vacuous-property-suite` and its control have
+# identical `backed`, `total` and `binding_census` by construction — that
+# identity is the point, because it is exactly the payload the failure case
+# published for months while asserting nothing about its own defect.
+#
+# So this mutation is the one that would have caught the original bug: strip
+# `suspicions`/`absent_suspicions` and the two blocks are indistinguishable,
+# which is what a reader that silently ignored an unmodelled key would produce.
+# Written as the counts alone rather than as a deletion, so the block still
+# satisfies every SHAPE rule — non-empty, known keys, controlled case — and
+# fails only on the differential.
+SKEPTIC_FAILURE = "cases/skeptic/vacuous-property-suite/expect.yaml"
+BLIND_SKEPTIC = "backed: 1\ntotal: 3\n"
+
 # (name, mutation or None, substring the failure must name — None means the
 #  corpus must STAY valid)
 CASES = [
@@ -197,6 +218,11 @@ CASES = [
         "AC-46 — a witness channel that is named but does not discriminate",
         lambda t: write(t, FAILURE, BLIND_WITNESS),
         "only OUTSIDE its `disposition` witness channels",
+    ),
+    (
+        "a reader that drops the `suspicions` channel",
+        lambda t: write(t, SKEPTIC_FAILURE, BLIND_SKEPTIC),
+        "HOLDS against vacuous-property-suite-control's payload",
     ),
 ]
 

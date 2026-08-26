@@ -1,0 +1,25 @@
+mode: skeptic
+module: ecosystem
+id: vacuous-property-suite-control
+language: rust
+issue_ref: agent-ix/quire-rs#358
+kind: control
+control_for:
+- vacuous-property-suite
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/vacuous-property-suite-control/input
+  --json
+tags:
+- TC-1014
+- skeptic
+- finding-quality
+comment: >-
+  THE GUARD IS GONE AND NOTHING ELSE MOVED. The same test, the same tag, the same two documents,
+  the same one bound symbol — the assertion is simply reached on every input instead of only on
+  the ones that enter an `if let`. Every coverage count is identical to its partner's by design:
+  `backed 1`, `total 3`, `binding_census rust 1/1`, which is precisely the payload the failure
+  case published for months while asserting nothing about its own defect. The whole separation
+  is `suspicions`, which is the channel neither reader could name until agent-ix/quire-rs#358.
+  This is also the harder control: a detector written as "a test whose body contains a
+  conditional" fires here and is wrong, because the question is whether an assertion can be
+  SKIPPED, not whether a branch exists.

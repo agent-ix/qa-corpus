@@ -184,8 +184,9 @@ and the restriction must still mismatch. So "assert the field that separates the
 is not the whole rule: the field also has to be one your mode declares. `total` is a
 witness for `minting` and for **nothing else** — a minted-row count *is* the minting
 channel, and everywhere else it is an incidental global scalar. Measured over the whole
-controlled population, 14 of the 35 (case, control) pairs differ in `total` while being
-about something else entirely, which is what this closes.
+controlled population, 13 of the <derived:pairs=39> (case, control) pairs differ in `total`
+while being about something else entirely, which is what this closes. The pair count is
+gated against the tree; the 13 is a measurement at engine `e5a6ccc` and is not.
 
 Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
 A block that names none of them is rejected by name; so is one that separates the pair
@@ -197,8 +198,9 @@ Three more consequences worth knowing before you write a fixture:
 * `validate_*` keys are re-run over the **control's** tree in that grading, because
   `quire validate` reads a spec tree and cannot be recomputed from a payload. They are
   a witness in **every** mode: `quire validate` is a second oracle, not a coverage
-  channel. No fixture with a control uses them today — the rule's reach is 0 pairs of
-  35 — so if yours is the first, that is the rule you are the subject of.
+  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=39>: it read
+  "0 of 35" until `wrong-type-cell` gained a control, and nothing was holding that
+  sentence to the tree.
 * If your case is `pending:` on a **behaviour-change** ticket — one that adds no
   diagnostic — its `expect-pending.yaml` is held to the opposite rule: it must
   **hold** against the control, which is the tree the engine should produce once the

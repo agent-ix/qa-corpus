@@ -64,7 +64,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all 77 fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=81> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -366,12 +366,15 @@ behaviour_change_tickets: []
 # stops there: it proves an assertion distinguishes THESE TWO PAYLOADS, not that
 # the assertion concerns the SEEDED DEFECT. Measured by running every case and
 # every control and comparing `totals.total`, over the whole controlled
-# population at `801afd5` (fixtures byte-identical at `2bc486d`): **14 of the 35
-# (case, control) pairs differ in `total`** — equivalently 14 of the 34
-# controlled cases — so for those, an incidental row count satisfies the whole
-# rule while saying nothing about the family the case is named for. The
-# complement is 21 of 35 pairs, or 20 of 34 cases; CR-132 fixes the places that
-# published that 20 as a pair count.
+# population at `801afd5`: **14 of the 35 (case, control) pairs differed in
+# `total`** — so for those, an incidental row count satisfies the whole rule
+# while saying nothing about the family the case is named for.
+#
+# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=39>**. The pair count
+# is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
+# every control, which means running the engine, which `bounds.py` deliberately
+# does not do. `verify.py` is where that number can be re-derived. It is dated
+# rather than gated, and this sentence says which.
 #
 # So AC-42 is graded TWICE: once over the whole block, and once over the block
 # RESTRICTED to these keys. The restriction must still mismatch. An assertion
@@ -385,11 +388,12 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: 41 `kind: failure` fixtures, of which 34 are
-# controlled. **37 of the 41 already name at least one witness key for their
-# mode**, so this rule changes no fixture. The four that name none —
-# `vacuous-property-suite`, `oracle-copy`, `mocked-confirmation`,
-# `gate-that-gates-nothing`, which assert only `backed`/`total`/`binding_census`
+# controlled ones. Population: <derived:failure_fixtures=41> `kind: failure`
+# fixtures, of which <derived:controlled_failures=38> are controlled. **37 of
+# the 41 already named at least one witness key for their mode** when this was
+# written, so the rule changed no fixture. The three that still name none —
+# `oracle-copy`, `mocked-confirmation`, `gate-that-gates-nothing`, which assert
+# only `backed`/`total`/`binding_census`
 # — are all `skeptic`, all UNCONTROLLED, and all already declared under
 # `known_gaps.uncontrolled_failure_cases`. AC-42 cannot reach them at all, which
 # is what that declaration means. `#286` giving them controls is also what will
@@ -459,7 +463,8 @@ witness_channels:
   # to disqualify.
   detection: [metrics, untracked_symbols, unbacked_rows, diagnostic_reasons,
               diagnostic_paths, diagnostic_message_contains,
-              absent_diagnostic_reasons, validate_contains, validate_absent]
+              absent_diagnostic_reasons, validate_contains, validate_absent,
+              suspicions, absent_suspicions]
   # Was every authored row put in exactly one bucket?
   disposition: [metrics, groups, unbacked_rows, untracked_symbols,
                 diagnostic_reasons, diagnostic_paths,
@@ -468,7 +473,16 @@ witness_channels:
   provenance: [metrics, binding_census, diagnostic_reasons, diagnostic_paths,
                diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the skeptic layer flag the suite that proves nothing?
-  skeptic: [metrics, diagnostic_reasons, diagnostic_paths,
+  #
+  # `suspicions` and `absent_suspicions` were MISSING here, and that is the
+  # whole of agent-ix/quire-rs#358: the skeptic layer reports on
+  # `coverage.suspicions`, this list named every channel EXCEPT that one, and so
+  # the mode family whose entire subject is suspicions could not name its own
+  # subject. `vacuous-property-suite` was detected at `src/lib.rs:7` the whole
+  # time, asserting `backed`/`total`/`binding_census` — true of any healthy
+  # three-row tree — which is why it was byte-identical to two other fixtures
+  # and why swapping their input trees left `make ci` green.
+  skeptic: [suspicions, absent_suspicions, metrics, diagnostic_reasons, diagnostic_paths,
             diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
 
 
@@ -822,15 +836,66 @@ inventory:
 # rejected, and an entry naming no case is rejected too. So the list cannot go
 # stale in either direction: a new violation fails the run, and burning one
 # down means deleting a line.
+# STANDING ADJUDICATIONS — a ruling made once, about the whole corpus, rather
+# than 300 times in 76 files.
+#
+# WHY THIS EXISTS. `agent-ix/quoin#245` made a scoring consumer publish, per
+# advisory family, the count of firings NOBODY HAS RULED ON — and the first
+# measurement was **316 of 319** for `archetype-matches-nothing`. That number is
+# honest and the obvious way to move it is wrong: adding the token to 76
+# `expect.yaml` files would be 300 edits made to satisfy a counter, which is
+# corpus-tuning wearing adjudication's clothes.
+#
+# The right ruling is one sentence, because the fact is one fact. This corpus
+# binds the REAL ecosystem declaration (`agent-ix/quire-rs#292`), which declares
+# targets for `Inspections`, `SuiteRegistry`, `NFR` and `StR`. A three-file
+# minimal fixture carries none of those documents, so those four declarations
+# correctly match nothing on nearly every case in the tree. It is a fact about
+# FIXTURE SIZE, exactly as it is a fact about the ecosystem that almost nobody
+# writes `suites.md` — 484 of 741 findings over 245 repositories, filed as
+# `agent-ix/spec-artifacts-process#75`.
+#
+# A consumer reads this and treats a firing it covers as ruled-correct. What it
+# does NOT cover stays unadjudicated and stays counted: `test-case`, the
+# declaration `#304` is actually about, is deliberately absent from the
+# `declarations` list below, so a `test-case/archetype-matches-nothing` on a
+# case that carries a TestMatrix remains a firing somebody has to rule on.
+standing_adjudications:
+- reason: archetype-matches-nothing
+  verdict: correct
+  # The four declarations whose archetypes no minimal fixture carries. NOT a
+  # wildcard: the point of the ruling is that these four are uninformative and
+  # `test-case` is not.
+  declarations:
+  - inspection
+  - suite
+  - nfr-acceptance-criterion
+  - stakeholder-validation-criterion
+  reason_why: >-
+    The corpus binds the real ecosystem declaration, which declares targets for
+    Inspections, SuiteRegistry, NFR and StR. A minimal fixture carries none of
+    those documents, so these four match nothing on nearly every case — a fact
+    about fixture size, not a detection event. `test-case` is excluded on
+    purpose: it is the declaration agent-ix/quire-rs#304 is about, and a firing
+    there is a fact about the fixture's own subject.
+
 known_gaps:
   findable_but_undetected:
     reason: >-
       A `findable` case tells a recall-scoring consumer to expect a finding on that
-      input. These four require none, in either block, so their cells read `covered` for a mode
-      nothing measures — three of them (`mocked-confirmation`, `oracle-copy`,
-      `vacuous-property-suite`) ship byte-identical live blocks true of any healthy three-row
-      corpus, and swapping one's whole `input/` tree for another's leaves every gate green.
+      input. These THREE require none, in either block, so their cells read `covered` for a mode
+      nothing measures — two of them (`mocked-confirmation`, `oracle-copy`) still ship
+      byte-identical live blocks true of any healthy three-row corpus, and swapping one's whole
+      `input/` tree for another's leaves every gate green.
       Deciding each — write the assertion, or stop calling it findable — is agent-ix/quire-rs#301.
+      DOWN FROM FOUR, and the fourth is the one worth reading. `vacuous-property-suite` was never
+      undetected: the engine has raised `vacuous-under-guard` on it, at `src/lib.rs:7` with a
+      symbol and an evidence string, the whole time. The CORPUS had no key to say so — `coverage`
+      emits on `diagnostics[]` and on `suspicions[]`, and both readers could assert only the
+      first, so the `skeptic` mode family could not name its own subject (agent-ix/quire-rs#358).
+      It now asserts the suspicion at L1/L2/L3 and has a control that differs by one construct.
+      Three of the four reasons a fixture could sit on this list were real engine gaps; the
+      fourth was the corpus not being able to write the sentence.
       All four are ALSO uncontrolled, and that is the sharper fact: with no control there is
       nothing to discriminate against, so FR-065-AC-42 cannot reach them either. Writing the
       missing controls (agent-ix/quire-rs#286) dissolves both lists at once —
@@ -846,7 +911,6 @@ known_gaps:
     - gate-that-gates-nothing
     - mocked-confirmation
     - oracle-copy
-    - vacuous-property-suite
   uncontrolled_failure_cases:
     reason: >-
       FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
@@ -855,14 +919,20 @@ known_gaps:
       `marker-mismatch` and `hollow-metric` have controls now, each the identical tree with one
       token repaired, each mutation-verified by reintroducing the defect and watching the control
       go red.
-      THE FOUR THAT REMAIN ARE BLOCKED ON A DETECTOR, NOT ON AUTHORING EFFORT, and it is the same
-      four that `findable_but_undetected` lists. Each asserts NO diagnostic and no validate finding,
+      THE THREE THAT REMAIN ARE BLOCKED ON A DETECTOR, NOT ON AUTHORING EFFORT, and it is the same
+      three that `findable_but_undetected` lists. Each asserts NO diagnostic and no validate finding,
       because nothing in the ecosystem detects it — `gate-that-gates-nothing` has `source: none` in
-      quoin's family table, and the other three ship live blocks true of any healthy three-row
+      quoin's family table, and the other two ship live blocks true of any healthy three-row
       corpus. So a control for one of them would produce a payload IDENTICAL to its partner's, and
       FR-065-AC-42 would reject the pair, correctly: there is nothing for the two trees to separate
       on. Writing them is downstream of agent-ix/quire-rs#301, which decides for each whether to
-      build the detector or stop calling it findable.
+      build the detector or stop calling it findable. The three reasons are DIFFERENT and worth
+      keeping apart: `oracle-copy`'s detector ships and has no production caller
+      (agent-ix/quire-rs#236), `mocked-confirmation`'s has no producer (agent-ix/quoin#204), and
+      `gate-that-gates-nothing`'s does not exist (agent-ix/quoin#224).
+      DOWN FROM FOUR by agent-ix/quire-rs#358, which removed the fourth reason from that list —
+      *the corpus had no way to say it*. `vacuous-property-suite` asserted nothing because
+      `suspicions` was a channel neither reader could name, not because nothing detected it.
       `implements-never-asked` and `tests-directory-topology` left this list by another route: they
       are `regression` pins, which AC-43 exempts because a regression case IS the healthy
       counterpart and there is no defect for a control to be the healthy version OF.
@@ -870,4 +940,3 @@ known_gaps:
     - gate-that-gates-nothing
     - mocked-confirmation
     - oracle-copy
-    - vacuous-property-suite

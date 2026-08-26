@@ -1,0 +1,23 @@
+# EVERY COUNT IS ITS PARTNER'S, DELIBERATELY. `backed 1`, `total 3`,
+# `binding_census rust 1/1` — the exact payload the failure case published
+# while asserting nothing about its own defect, which is how it stayed
+# byte-identical to two unrelated fixtures for months.
+#
+# The whole separation is `absent_suspicions`. That channel did not exist in
+# either reader until agent-ix/quire-rs#358, so this pair could not have been
+# authored before it: FR-065-AC-42 would have rejected two blocks that differ
+# in nothing.
+backed: 1
+total: 3
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 1
+
+# BOTH kinds silent. `vacuous-under-guard` because the assertion is now reached
+# on every input; `oracle-resembles-implementation` because the oracle judges a
+# value it did not compute, and naming it here is what stops
+# agent-ix/quire-rs#236's detector landing green on input it should not touch.
+absent_suspicions:
+- vacuous-under-guard
+- oracle-resembles-implementation

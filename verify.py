@@ -20,7 +20,8 @@ import sys
 
 import yaml
 
-from bounds import CorpusError, controls_by_case, discover, load_declaration
+from bounds import (KNOWN_EXPECT_KEYS, CorpusError, controls_by_case, discover,
+                    load_declaration)
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
@@ -93,19 +94,14 @@ def check_engine() -> str:
         )
     return f"{engine.get('cli')} (engine {engine.get('engine')})"
 
-# Every key `expect.yaml` may carry. A key here with no handler below is a
-# silently-unasserted expectation, so the set is closed and checked.
-KNOWN = {
-    "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
-    "diagnostic_paths", "diagnostic_message_contains", "binding_census",
-    "metrics", "no_symbol_rows", "unbacked_rows", "groups", "untracked_symbols",
-    # `quire validate` findings, for cases whose family is a STRUCTURAL defect
-    # rather than a coverage one. `undeclared-type-value` is the first: a cell
-    # outside the declared vocabulary is rejected by `validate`, and the
-    # coverage payload of such a case is byte-identical to a healthy control —
-    # so a corpus that only ran `coverage` asserted nothing about it at all.
-    "validate_contains", "validate_absent",
-}
+# Every key `expect.yaml` may carry, READ FROM THE LOADER rather than restated.
+#
+# This was a second hand-written copy of `bounds.KNOWN_EXPECT_KEYS`, and the two
+# drifted the moment a key was added to one: `suspicions` landed in the loader
+# and this reader rejected it as unhandled. A rule stated twice is a rule that
+# can disagree with itself, which is the defect agent-ix/quire-rs#349 records
+# one list over.
+KNOWN = KNOWN_EXPECT_KEYS
 
 
 def is_hollow(metric: dict) -> bool:
@@ -300,6 +296,51 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
     for reason in expect.get("absent_diagnostic_reasons") or []:
         if reason in have:
             failures.append(f"{name}: `{reason}` fired on input that must stay silent")
+
+    # Suspicions, graded on the same ladder as a diagnostic: the kind is L1,
+    # the locus L2, the message L3 (agent-ix/quire-rs#358). A fixture pinning
+    # only `kind` is making the L1 claim and no more, which is the same choice
+    # `diagnostic_reasons` and `diagnostic_paths` already offer.
+    suspicions = got.get("suspicions", [])
+    kinds = [s.get("kind") for s in suspicions]
+    for want in expect.get("suspicions") or []:
+        if isinstance(want, str):
+            # A bare string would assert the kind and silently drop any locus
+            # the author meant to write. Rejected rather than coerced, for the
+            # reason `diagnostic_message_contains` rejects a scalar: two readers
+            # must take the same input.
+            failures.append(
+                f"{name}: `suspicions` entries are mappings with a `kind`, not "
+                f"bare strings; got {want!r}"
+            )
+            continue
+        found = next((s for s in suspicions if s.get("kind") == want["kind"]), None)
+        if found is None:
+            failures.append(
+                f"{name}: suspicion `{want['kind']}` did not fire; got {kinds}"
+            )
+            continue
+        for field in ("path", "line", "symbol"):
+            if field in want and found.get(field) != want[field]:
+                failures.append(
+                    f"{name}: suspicion `{want['kind']}` {field} expected "
+                    f"{want[field]!r}, got {found.get(field)!r}"
+                )
+        for fragment in want.get("message_contains") or []:
+            # The evidence counts as message here: `Suspicion` splits the prose
+            # from the numbers behind it, and both are rendered to the reader.
+            if fragment not in (found.get("message") or "") and fragment not in (
+                found.get("evidence") or ""
+            ):
+                failures.append(
+                    f"{name}: suspicion `{want['kind']}` names neither "
+                    f"{fragment!r} in its message nor its evidence"
+                )
+    for kind in expect.get("absent_suspicions") or []:
+        if kind in kinds:
+            failures.append(
+                f"{name}: suspicion `{kind}` fired on input that must stay silent"
+            )
 
     # L2: the finding names the right place.
     for reason, want in (expect.get("diagnostic_paths") or {}).items():

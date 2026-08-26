@@ -1,9 +1,41 @@
 # Derived from a real run against the COMPLETE ecosystem declaration —
 # spec-artifacts-process AND spec-artifacts-iso, whole module directories
 # including their schemas (agent-ix/quire-rs#292).
+#
+# THIS BLOCK USED TO BE THE THREE LINES BELOW AND NOTHING ELSE — `backed: 1`,
+# `total: 3`, `binding_census: [rust 1/1]` — which is true of any healthy
+# three-row Rust tree with one bound tag. It was byte-identical to
+# `oracle-copy` and `mocked-confirmation` (md5 bcb3ce17d8eae3007297e4a4677034ab)
+# and swapping their `input/` trees left `make ci` green.
+#
+# The engine was finding the defect the whole time. The corpus had no key to
+# say so: `coverage` emits on `diagnostics[]` and on `suspicions[]`, and until
+# agent-ix/quire-rs#358 both readers could assert only the first.
 backed: 1
 total: 3
 binding_census:
 - language: rust
   candidates: 1
   bound: 1
+
+# L1 the kind, L2 the locus, L3 the numbers behind the claim.
+#
+# `evidence` is asserted as well as `message` because a suspicion a reader
+# cannot check in one look is one they learn to scroll past — `1 of 1
+# assertions guarded` is the whole argument, and a detector that dropped it
+# would still name the right line.
+suspicions:
+- kind: vacuous-under-guard
+  path: src/lib.rs
+  symbol: tests::covers
+  line: 7
+  message_contains:
+  - "1 of 1 assertions guarded"
+  - guard
+
+# The OTHER skeptic kind must stay silent. This tree's oracle judges a value it
+# did not compute, so a detector firing `oracle-resembles-implementation` here
+# would be wrong — and once agent-ix/quire-rs#236 wires that detector up, this
+# line is what stops it landing green on input it should not touch.
+absent_suspicions:
+- oracle-resembles-implementation

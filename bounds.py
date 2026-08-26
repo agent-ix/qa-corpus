@@ -753,10 +753,15 @@ def check_findable(
     # through `no_symbol_rows` and names no diagnostic at all.
     if (case["id"], case.get("language")) in controlled:
         return
+    # `suspicions` counts as naming what detects it (agent-ix/quire-rs#358).
+    # It is the channel the whole `skeptic` mode reports on, and leaving it out
+    # meant a fixture asserting the exact suspicion the engine raises still read
+    # as "requires no finding" — which is the accusation this function exists to
+    # make, aimed at a case that had answered it.
     claims = any(
         block.get(key)
         for block in (live, ahead)
-        for key in ("diagnostic_reasons", "validate_contains")
+        for key in ("diagnostic_reasons", "validate_contains", "suspicions")
     )
     if claims or (case.get("case") or case["id"]) in undetected:
         return
@@ -837,6 +842,13 @@ KNOWN_EXPECT_KEYS = {
     "metrics", "no_symbol_rows", "unbacked_rows", "groups",
     "untracked_symbols",
     "validate_contains", "validate_absent",
+    # THE SECOND FINDING CHANNEL (agent-ix/quire-rs#358). `coverage` emits on
+    # `diagnostics[]` and on `suspicions[]`, and this set named only the first —
+    # so the `skeptic` mode family, whose entire subject IS suspicions, could
+    # not name its own subject. `vacuous-property-suite` was detected at
+    # `src/lib.rs:7` while asserting `backed`/`total`/`binding_census`, true of
+    # any healthy three-row tree and byte-identical to two other fixtures.
+    "suspicions", "absent_suspicions",
 }
 
 
@@ -1071,11 +1083,80 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     }
 
 
+# A count published in prose, tagged so it can be checked against the tree.
+#
+# WHY THIS EXISTS. Six figures in `corpus.yaml`, `README.md` and a self-test
+# docstring described a corpus they had drifted from: "all 77 fixtures" against
+# 81, "14 of the 35 (case, control) pairs" against 13 of 39, "41 failure
+# fixtures, of which 34 are controlled" against 42 of 38. Every one of them was
+# true when written. None was under a gate, and the file that teaches a fixture
+# author how the corpus works was teaching them from stale numbers.
+#
+# The rule this corpus already applies to its own cells — a stored count can go
+# stale, a derived one cannot disagree with the tree it describes — applied to
+# its prose. Tag the number, and the tag is checked:
+#
+#     # <derived:fixtures=81>
+#
+# Deliberately an explicit marker rather than a regex over prose. A regex
+# guessing which "41" in a paragraph is a fixture count produces false failures
+# on unrelated sentences, and a gate that cries wolf is a gate people delete.
+DERIVED_MARKER = re.compile(r"<derived:([a-z_]+)=(\d+)>")
+
+# Files whose prose carries tagged counts. Not a glob: a file added here is a
+# deliberate claim that its numbers are checked, and a glob would silently start
+# and stop covering files as the tree changed.
+COUNTED_FILES = ("corpus.yaml", "README.md", "scripts/parity_selftest.py")
+
+
+def derived_counts(cases: list[dict]) -> dict[str, int]:
+    """The structural counts the tree supports, for `check_published_counts`.
+
+    STRUCTURAL ONLY. `pairs differing in total` is not here and cannot be: it
+    needs a payload from every control, which means running the engine, which
+    this loader deliberately does not do. That figure stays prose and says so.
+    """
+    failures = [c for c in cases if c.get("kind") == "failure"]
+    controlled = controls_by_case(cases)
+    return {
+        "fixtures": len(cases),
+        "failure_fixtures": len(failures),
+        "controlled_failures": sum(
+            1 for c in failures if (c["id"], c.get("language")) in controlled
+        ),
+        "pairs": sum(len(v) for v in controlled.values()),
+    }
+
+
+def check_published_counts(cases: list[dict]) -> None:
+    """Every tagged count in the docs equals what the tree yields."""
+    counts = derived_counts(cases)
+    wrong = []
+    for rel in COUNTED_FILES:
+        path = ROOT / rel
+        if not path.is_file():
+            continue
+        for number, line in enumerate(path.read_text().splitlines(), start=1):
+            for name, written in DERIVED_MARKER.findall(line):
+                if name not in counts:
+                    wrong.append(
+                        f"{rel}:{number}: `{name}` is not a derived count; "
+                        f"known: {', '.join(sorted(counts))}")
+                elif int(written) != counts[name]:
+                    wrong.append(
+                        f"{rel}:{number}: publishes {name}={written}, tree has "
+                        f"{counts[name]}")
+    if wrong:
+        raise CorpusError(
+            "published counts disagree with the tree:\n  " + "\n  ".join(wrong))
+
+
 def main() -> int:
     try:
         declaration = load_declaration()
         cases = discover()
         bounds = build(declaration, cases)
+        check_published_counts(cases)
     except CorpusError as error:
         print(f"corpus: {error}", file=sys.stderr)
         return 1
