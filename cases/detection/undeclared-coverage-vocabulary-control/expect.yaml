@@ -1,1 +1,1 @@
-absent_diagnostic_reasons: [undeclared-coverage-vocabulary]
+absent_diagnostic_reasons: [undeclared-coverage-vocabulary, model-mints-nothing]

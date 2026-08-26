@@ -6,6 +6,11 @@ archetypes:
   name: NFR
   frontmatter_schema_ref: schemas/nfr.schema.json
 traceability:
+  trace_targets:
+  - name: nfr
+    archetype: NFR
+    section: Quality Coverage
+    id_column: ID
   vocabulary_coverage:
   - name: quality-characteristics
     from: NFR

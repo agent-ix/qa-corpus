@@ -1,3 +1,4 @@
 diagnostic_reasons: [undeclared-coverage-vocabulary]
 diagnostic_message_contains:
   undeclared-coverage-vocabulary: ["missing_quality_attribute", "declares no such enum"]
+absent_diagnostic_reasons: [model-mints-nothing]
