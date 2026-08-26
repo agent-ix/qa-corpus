@@ -1,0 +1,10 @@
+backed: 2
+total: 3
+unbacked_rows: []
+binding_census:
+- language: rust
+  candidates: 2
+  bound: 2
+absent_diagnostic_reasons:
+- tag-on-non-binding-symbol
+- no-symbol-bound

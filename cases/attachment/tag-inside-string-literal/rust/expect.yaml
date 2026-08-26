@@ -1,0 +1,15 @@
+backed: 1
+total: 3
+unbacked_rows:
+- document: spec/tests.md
+  row_id: TC-002
+  target_ids:
+  - FR-001-AC-2
+  - TC-002
+binding_census:
+- language: rust
+  candidates: 2
+  bound: 1
+absent_diagnostic_reasons:
+- tag-on-non-binding-symbol
+- no-symbol-bound
