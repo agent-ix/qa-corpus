@@ -3,6 +3,7 @@
   "schema_version": 1,
   "metrics": {
     "bounds.gap_count": {
+      "measurement_plan": "assurance/MP-201-gap-count.md",
       "unit": "mode-language cell",
       "population": "every cell declared in corpus.yaml's bounds matrix",
       "method": "count of cells in state GAP",
