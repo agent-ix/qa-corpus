@@ -61,5 +61,13 @@ traceability:
       language: rust
       pattern: '#\[trace\(((?:\s*"[^"]*"\s*,?)+)\)\]'
       template: '#[trace({ids})]'
+    - name: pytest-trace-marker
+      language: python
+      pattern: '@pytest\.mark\.trace\(((?:\s*"[^"]*"\s*,?)+)\)'
+      template: '@pytest.mark.trace({ids})'
+    - name: ts-trace-helper
+      language: typescript
+      pattern: '\btrace\(((?:\s*"[^"]*"\s*,?)+)\)'
+      template: 'trace({ids})'
     # DELIBERATELY ABSENT: `implements:`. That absence is the fixture's whole
     # subject — see VARIANT.md.

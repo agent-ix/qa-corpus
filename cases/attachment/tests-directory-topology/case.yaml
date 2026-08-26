@@ -1,24 +1,13 @@
 id: tests-directory-topology
 issue_ref: agent-ix/quire-rs#267
 mode: attachment
-language: rust
 module: ecosystem
 kind: regression
 findable: false
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tests-directory-topology/input
-  --json
 tags:
 - TC-1011
 - topology
 - coverage
-comment: 'Evidence in `tests/`, not `src/`. The pre-port harness materialised every case under a hardcoded
-  `src/` (corpus_case/mod.rs `run()`), so a repository with this topology was INEXPRESSIBLE — which is
-  why #266 called the limit out and #267''s acceptance asks for exactly this case. The tag binds from
-  `tests/`, proving the input directory is the topology rather than three fixed folders. MIGRATED off
-  `bench-legacy` onto the real declaration (#285), and RECLASSIFIED `regression` in the same change.
-  #267 LANDED, so there is no defect left to seed: the healthy counterpart of "the tag binds from
-  `tests/`" is "the tag binds from `src/`", and both bind, so the pair would be equivalent and
-  FR-065-AC-42 would reject it — the same reclassification #274''s and #272''s fixtures took. What is
-  worth keeping is the topology itself, and the ecosystem declaration sharpens it: `test-case` excludes
-  `tests/**` from DOCUMENT selection, so this case now also pins that the exclusion does not reach the
-  SOURCE walk. That reading was unavailable on the variant, which declares no `exclude:` at all.'
+comment: >-
+  Evidence in tests/, not src/. This regression proves the corpus preserves real filesystem topology
+  and that the declaration's tests/** document exclusion does not suppress the source walk.

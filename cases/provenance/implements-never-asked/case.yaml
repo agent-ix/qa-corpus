@@ -1,29 +1,15 @@
 id: implements-never-asked
 issue_ref: agent-ix/quire-rs#226
 mode: provenance
-language: rust
 module: variants/no-implements-declaration
 declaration_under_test: The absent implements declaration is the measured condition; the ecosystem declaration intentionally cannot exhibit not_computed.
 findable: false
 kind: regression
-reproduce: quire coverage --scope cases/provenance/implements-never-asked/input --module modules/variants/no-implements-declaration
-  --json
 tags:
 - TC-995
 - coverage
 - metric
-comment: 'A module declaring no `implements` forms. An empty list and an uncomputed one are the same bytes;
-  the metric says which. `not_computed` carries no numbers at all, so there is no zero to be read as an
-  answer. THE ONE CASE #285 COULD NOT MIGRATE, and the reason is a fact about the declaration rather than
-  about this fixture: `coverage.implements` reaches `not_computed` only when the loaded module declares
-  no `implements` forms, and the vendored ecosystem declares three
-  (`modules/ecosystem/spec-artifacts-process/manifest.yaml:1185-1197`). MEASURED against
-  `modules/ecosystem`: the same tree reports `state: measured, value 0, examined 1` — a different claim,
-  and re-pointing the fixture at it would have retired this one by fiat. So the case moves to a variant
-  that relaxes exactly ONE axis instead: `modules/variants/no-implements-declaration` carries the
-  ecosystem''s `Test Case Summary` / `Test ID` spelling and omits only the `implements:` block, so the
-  input below is the real declaration''s in every respect the fixture is not about. `agent-ix/quire-rs#330`
-  owns the question of whether a variant that is a case''s SUBJECT should be spelled as a relaxation at
-  all. RECLASSIFIED `regression` in the same change: #226 landed, no defect reproduces, and no control is
-  possible — the condition this case removes lives in the module, and a control binding another module is
-  the departure `known_gaps.control_binds_another_module` used to exist for.'
+comment: >-
+  A module declaring no implements forms must report not_computed, not a measured zero. The module
+  variant is the subject of this regression because the ecosystem declaration intentionally declares
+  implements forms and cannot exhibit this state.
