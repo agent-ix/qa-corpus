@@ -1,21 +1,15 @@
 id: hollow-metric-control
 issue_ref: agent-ix/quire-rs#286
 mode: provenance
-language: rust
 module: ecosystem
 findable: false
 kind: control
 control_for:
 - hollow-metric
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/provenance/hollow-metric-control/input
-  --json
 tags:
 - TC-1006
 - provenance
 - finding-quality
 comment: >-
-  The control for `hollow-metric`: the identical tree with the declared marker written on the test that was
-  carrying none. Its partner publishes `coverage.backed` as a ratio over rows the binder could read NOTHING
-  of — a number that is arithmetic over nothing rather than a low score — and the repair is the one line
-  that makes the denominator real. The pair separates on `binding_census.bound` and on the two diagnostics,
-  which is what makes `hollow-denominator` a check rather than a constant.
+  The same tree with a declared marker on the test. The real denominator makes both hollow-denominator
+  and no-symbol-bound stand down.

@@ -1,24 +1,15 @@
 id: no-symbol-method-in-the-verification-column-control
 issue_ref: agent-ix/quire-rs#259
 mode: minting
-language: rust
 module: ecosystem
 findable: false
 kind: control
 control_for:
 - no-symbol-method-in-the-verification-column
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column-control/input
-  --json
 tags:
 - TC-1008
 - coverage
 - no-source-symbol
-comment: 'The control: the identical tree with AC-2 verified by `Test` instead. Without it the assertion
-  above is satisfied by an exemption that fires on every row — and an exemption that cannot stay silent
-  is a coverage backdoor, not a check. MIGRATED onto the real declaration with its partner (#285), and
-  the claim it makes is now SHARPER than the one it made on `bench-no-symbol-vocab`. There it read "no
-  row names a declared no-symbol method, so nothing is exempted", which was true only because the variant
-  declared no `traces-to` reference and could not see the matrix at all. The ecosystem reads the matrix,
-  and this tree''s `TC-002` row is typed `Inspection` in BOTH halves of the pair — so both are exempt on
-  that row and the two payloads differ by exactly one entry, `FR-001-AC-2`. One cell, one difference:
-  the Verification column, which is the whole case.'
+comment: >-
+  The same tree with the criterion verified by Test. Only FR-001-AC-2 leaves no_symbol_rows; the
+  Inspection-typed matrix row remains exempt in both halves.

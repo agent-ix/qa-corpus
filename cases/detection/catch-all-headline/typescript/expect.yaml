@@ -1,0 +1,15 @@
+metrics:
+  -
+    name: coverage.specific_shaped
+    state: measured
+    value: 0
+  -
+    name: coverage.property_shaped
+    state: measured
+diagnostic_reasons:
+  - catch-all-universal
+diagnostic_paths:
+  catch-all-universal: spec/FR-001.md
+diagnostic_message_contains:
+  catch-all-universal:
+    - "`FR-001-AC-1` at spec/FR-001.md:10"

@@ -1,25 +1,13 @@
 id: no-symbol-method-in-the-verification-column
 issue_ref: agent-ix/quire-rs#259
 mode: minting
-language: rust
 module: ecosystem
 findable: true
 kind: failure
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column/input
-  --json
 tags:
 - TC-1008
 - coverage
 - no-source-symbol
-comment: 'CR-041''s exemption read `test_type_column` and nothing else, so the same declared vocabulary
-  governed two columns and was consulted for one. Measured on filament-ide-rs @ 6f87a7e: 21 matrix rows
-  exempt, 15 FR criteria rows naming the identical method NOT exempt. And the compare was exact, so `Inspection
-  (TC-002)` would miss even reading the right column — eleven of the fifteen are annotated that way.
-  MIGRATED off `bench-no-symbol-vocab` onto the real declaration (#285). The variant existed only to
-  carry `no_source_symbol: [Inspection]`, which `spec-artifacts-process` has declared since CR-035 —
-  `no_source_symbol: [Eval, Manual, Inspection, Analysis]`, `test_type_column: Type` — so the relaxation
-  had already been retired upstream and nothing was left for it to relax. RE-MEASURED, and the payload
-  moved: the ecosystem declares a `traces-to` reference on the matrix that the variant did not, so the
-  matrix''s own `TC-002` row (typed `Inspection`) is now exempt too. Both halves of the pair gain that
-  row; what still separates them is `FR-001-AC-2`, whose Verification cell reads `Inspection (TC-002)` —
-  the column CR-041 did not consult.'
+comment: >-
+  A no-source-symbol method in an acceptance criterion's Verification cell must exempt that criterion,
+  including annotated forms such as Inspection (TC-002). The matrix row is exempt in both halves.
