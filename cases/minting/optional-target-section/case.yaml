@@ -3,7 +3,7 @@ issue_ref: agent-ix/quire-rs#327
 mode: minting
 language: n/a
 module: variants/optional-target-section
-declaration_under_test: A trace target declares that its section is optional.
+declaration_under_test: optional minting sections
 kind: regression
 findable: false
 reproduce: quire coverage --scope cases/minting/optional-target-section/input --module modules/variants/optional-target-section --json
