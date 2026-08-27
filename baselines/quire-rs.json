@@ -1,7 +1,7 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "9e0d016aef6e7fd3409cf04bfcd636a3331116f5",
+  "corpus_revision": "f0acb2613c4f285fc148ac85c767d1628c4bbdab",
   "gap_count": 0,
   "rows": [
     {
@@ -142,7 +142,7 @@
       "mode": "detection",
       "language": "python",
       "level": "L1",
-      "reached": 1,
+      "reached": 2,
       "population": 1,
       "gap_count": 0,
       "misses": []
@@ -351,7 +351,6 @@
       "population": 3,
       "gap_count": 0,
       "misses": [
-        "tag-names-undeclared-section-python",
         "tag-names-unminted-tc-python"
       ]
     },
@@ -377,11 +376,10 @@
       "mode": "join",
       "language": "rust",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 3,
       "gap_count": 0,
       "misses": [
-        "tag-names-undeclared-section-rust",
         "tag-names-unminted-tc-rust"
       ]
     },
@@ -407,11 +405,10 @@
       "mode": "join",
       "language": "typescript",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 3,
       "gap_count": 0,
       "misses": [
-        "tag-names-undeclared-section-typescript",
         "tag-names-unminted-tc-typescript"
       ]
     },
