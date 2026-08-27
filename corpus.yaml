@@ -1099,24 +1099,18 @@ standing_adjudications:
   - suite
   - nfr-acceptance-criterion
   - stakeholder-validation-criterion
+  - source-id
   reason_why: >-
     The corpus binds the real ecosystem declaration, which declares targets for
     Inspections, SuiteRegistry, NFR and StR. A minimal fixture carries none of
     those documents, so these four match nothing on nearly every case — a fact
     about fixture size, not a detection event. `test-case` is excluded on
     purpose: it is the declaration agent-ix/quire-rs#304 is about, and a firing
-    there is a fact about the fixture's own subject.
-- reason: archetype-matches-nothing
-  verdict: correct
-  declarations:
-  - source-id
-  reason_why: >-
-    The reference-postures variant deliberately declares a reference-only and
-    a source-evidence target together. The reference-only failure input carries
-    only ReferenceFR, so the source-id declaration correctly reports that no
-    SourceFR document exists; its paired control carries SourceFR and the
-    finding disappears. This is fixture topology, not the #363 defect, and the
-    ruling is restricted to the variant's source-id declaration.
+    there is a fact about the fixture's own subject. `source-id` is the same
+    fixture-topology class in the reference-postures variant: its reference-only
+    failure input intentionally carries ReferenceFR and no SourceFR, while the
+    paired control carries SourceFR. The ruling is restricted to those five
+    declarations; it is not a reason-wide wildcard.
 
 known_gaps:
   control_binds_another_module:
