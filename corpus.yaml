@@ -1106,6 +1106,17 @@ standing_adjudications:
     about fixture size, not a detection event. `test-case` is excluded on
     purpose: it is the declaration agent-ix/quire-rs#304 is about, and a firing
     there is a fact about the fixture's own subject.
+- reason: archetype-matches-nothing
+  verdict: correct
+  declarations:
+  - source-id
+  reason_why: >-
+    The reference-postures variant deliberately declares a reference-only and
+    a source-evidence target together. The reference-only failure input carries
+    only ReferenceFR, so the source-id declaration correctly reports that no
+    SourceFR document exists; its paired control carries SourceFR and the
+    finding disappears. This is fixture topology, not the #363 defect, and the
+    ruling is restricted to the variant's source-id declaration.
 
 known_gaps:
   control_binds_another_module:
