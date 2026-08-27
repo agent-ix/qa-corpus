@@ -16,6 +16,7 @@ CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 .PHONY: help
 help:
 	@echo "make verify              run every case by its own recorded invocation"
+	@echo "make verify-reporting    run the reporter cases over static records"
 	@echo "make bounds              the derived matrix, gap_count, and pending list"
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
@@ -27,6 +28,10 @@ help:
 .PHONY: verify
 verify:
 	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 verify.py
+
+.PHONY: verify-reporting
+verify-reporting:
+	@QUOIN="$(QUOIN)" python3 scripts/verify_reporting.py
 
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
@@ -50,7 +55,7 @@ parity-selftest:
 	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 scripts/parity_selftest.py
 
 .PHONY: ci
-ci: schema-selftest bounds verify parity-selftest
+ci: schema-selftest bounds verify verify-reporting parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

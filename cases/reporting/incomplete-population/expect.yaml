@@ -1,0 +1,54 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "status": "compared",
+    "reason": null,
+    "before": {
+      "collectionId": "before",
+      "timestamp": "2026-08-26T00:00:00.000Z",
+      "toolIdentity": "fixture producer",
+      "toolVersion": "fixture 1 (engine a1)",
+      "configDigest": "sha256:config-a",
+      "sourceRevision": "before-aaaaaaaa",
+      "corpusRevision": "corpus-276",
+      "corpusGaps": 2,
+      "path": "cases/reporting/incomplete-population/input/spec/evidence/measurements/before.json"
+    },
+    "after": {
+      "collectionId": "after",
+      "timestamp": "2026-08-26T01:00:00.000Z",
+      "toolIdentity": "fixture producer",
+      "toolVersion": "fixture 1 (engine a1)",
+      "configDigest": "sha256:config-a",
+      "sourceRevision": "after-bbbbbbbb",
+      "corpusRevision": "corpus-276",
+      "corpusGaps": 0,
+      "path": "cases/reporting/incomplete-population/input/spec/evidence/measurements/after.json"
+    },
+    "comparisons": [
+      {
+        "metric": "quality.example",
+        "dimensions": {},
+        "before": 0.5,
+        "after": 0,
+        "delta": null,
+        "status": "incomparable",
+        "reasons": [
+          {
+            "code": "incomplete_population",
+            "message": "quality.example: ratio matched none of a non-empty examined population, or collection marked it incomplete",
+            "blocking": true
+          },
+          {
+            "code": "population_changed",
+            "message": "quality.example: population changed; delta is shown with this warning",
+            "blocking": false
+          }
+        ]
+      }
+    ]
+  },
+  "stderr_contains": [],
+  "byte_identical": true
+}
+

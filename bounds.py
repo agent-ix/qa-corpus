@@ -254,8 +254,9 @@ def discover() -> list[dict]:
     declaration = load_declaration()
     check_case_schema(declaration, cases)
     check_known_gaps(declaration)
-    check_controls(cases)
-    check_expectations(cases)
+    detection = [case for case in cases if case.get("mode") != "reporting"]
+    check_controls(detection)
+    check_expectations(detection)
     return cases
 
 
@@ -948,6 +949,23 @@ def check_reasons(
 
 def build(declaration: dict, cases: list[dict]) -> dict:
     """The matrix, computed. `covered` iff a fixture exists for the cell."""
+    declared_modes = set(declaration.get("mode_families") or []) | set(
+        declaration.get("reporting_modes") or []
+    )
+    if not declared_modes:
+        raise CorpusError("corpus.yaml declares no detection or reporting modes")
+    unknown_case_modes = sorted(
+        {str(case.get("mode")) for case in cases} - declared_modes
+    )
+    unknown_inventory_modes = sorted(
+        {str(row.get("mode")) for row in declaration.get("inventory") or []}
+        - declared_modes
+    )
+    if unknown_case_modes or unknown_inventory_modes:
+        raise CorpusError(
+            f"undeclared modes: cases {unknown_case_modes}; inventory "
+            f"{unknown_inventory_modes}"
+        )
     # A fixture covers a cell only when it binds the ECOSYSTEM declaration.
     # One binding a relaxation variant exercises no ecosystem mode — a corpus
     # whose manifest heading always matches cannot exhibit the section defect
@@ -1153,8 +1171,9 @@ def derived_counts(cases: list[dict]) -> dict[str, int]:
     needs a payload from every control, which means running the engine, which
     this loader deliberately does not do. That figure stays prose and says so.
     """
-    failures = [c for c in cases if c.get("kind") == "failure"]
-    controlled = controls_by_case(cases)
+    detection = [c for c in cases if c.get("mode") != "reporting"]
+    failures = [c for c in detection if c.get("kind") == "failure"]
+    controlled = controls_by_case(detection)
     return {
         "fixtures": len(cases),
         "failure_fixtures": len(failures),

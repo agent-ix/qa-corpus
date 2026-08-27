@@ -1,0 +1,11 @@
+id: no-prior-record
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: regression
+findable: false
+tags:
+- TC-1110
+reproduce: quoin report --repo cases/reporting/no-prior-record/input --since missing --format json
+

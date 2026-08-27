@@ -1,0 +1,11 @@
+id: population-changed
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1104
+reproduce: quoin report --repo cases/reporting/population-changed/input --since before --format json
+

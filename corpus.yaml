@@ -33,6 +33,28 @@ mode_families:
 - disposition
 - provenance
 - skeptic
+# A separate population, graded by Quoin rather than by the Quire coverage
+# harness. It shares this inventory and GAP ratchet without becoming a false
+# member of detection recall.
+reporting_modes:
+- reporting
+# The reporting runner reads this list. Required cases and refusal controls are
+# declarations here, not literals hidden in a script, so adding or removing a
+# contract row changes the gate in the same review.
+reporting_contract:
+  required_cases:
+  - definition-version-changed
+  - config-digest-changed
+  - population-changed
+  - metric-stopped-being-computed
+  - tool-version-differs
+  - incomplete-population
+  - identical-inputs-rerendered
+  - no-prior-record
+  refusal_cases:
+  - definition-version-changed
+  - config-digest-changed
+  - incomplete-population
 bounds_states:
 - covered
 - out-of-scope
@@ -64,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=154> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=165> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -997,6 +1019,38 @@ inventory:
   - python
   - rust
   - typescript
+- mode: reporting
+  case: definition-version-changed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: config-digest-changed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: population-changed
+  source: agent-ix/quire-rs#276 / agent-ix/quire-rs#272
+  languages: [data]
+- mode: reporting
+  case: metric-stopped-being-computed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: tool-version-differs
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: incomplete-population
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: identical-inputs-rerendered
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: no-prior-record
+  source: agent-ix/quire-rs#276
+  languages: [data]
 # DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
 #
 # This block was read by NO CODE. It listed three uncontrolled failure cases

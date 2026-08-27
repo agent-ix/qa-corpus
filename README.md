@@ -22,6 +22,7 @@ runs:
 
 ```bash
 make verify                     # every case, by its own recorded invocation
+make verify-reporting           # Quoin report over static record pairs
 make bounds                     # the derived matrix and gap_count
 ```
 
@@ -46,6 +47,19 @@ Each case's own invocation is recorded in its `case.yaml` under `reproduce`, and
 `make verify` runs exactly that string — so a documented command that does not work
 fails the corpus rather than misleading a reader.
 
+Reporting cases are equally direct. For example:
+
+```bash
+quoin report \
+  --repo cases/reporting/definition-version-changed/input \
+  --since before --format json
+```
+
+They are a separate measured population: Quoin compares two checked-in
+MeasurementCollections and `verify-reporting` grades the exact JSON twice. The
+second render must be byte-identical. They share the inventory and GAP ratchet,
+but never enter Quire detection recall or Quoin Tier-1 finding scores.
+
 ## Layout
 
 ```
@@ -55,6 +69,7 @@ bounds.py            derives the matrix and gap_count from the filesystem
 verify.py            runs every case by its own `reproduce`, diffs expect.yaml, and
                      grades each failure case against its CONTROL's payload (AC-42)
 scripts/
+  verify_reporting.py grades reporter output over static MeasurementCollections
   schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
   parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
 modules/
@@ -72,6 +87,11 @@ cases/<mode>/<case>/                       a LANGUAGE SET
   <language>/
     case.yaml        only what VARIES: reproduce, per-language overrides
     input/ expect.yaml
+
+cases/reporting/<case>/                    a REPORTING case (`language: data`)
+  case.yaml          a hand-runnable `quoin report` invocation
+  input/spec/evidence/measurements/*.json  two static collections (one for no-prior)
+  expect.yaml        exact machine report and byte-identity requirement
 
 `language` comes from the DIRECTORY NAME, never a declared field. A variant's id
 is `<shared id>-<language>` in every reader, and a variant may not override
@@ -104,13 +124,11 @@ Run `make bounds` — these numbers are **derived, never stored**, so they canno
 stale. Adding a fixture flips its own cell and moves the count with no edit to any
 central file.
 
-`agent-ix/quire-rs#285` migrated the last of the ported `quire-rs` cases off
-`bench-legacy` — the synthetic manifest whose heading always matches — and deleted
-it. Every fixture binds the vendored ecosystem declaration now, with one exception
-that the matrix still reports as a `GAP`: `provenance/implements-never-asked`
-asserts a metric state (`coverage.implements: not_computed`) that only a module
-declaring no `implements` forms can produce, so it binds a variant relaxing that one
-axis (`agent-ix/quire-rs#330`).
+`agent-ix/quire-rs#285` migrated the ported detection cases off `bench-legacy` —
+the synthetic manifest whose heading always matches — and deleted it. Detection
+fixtures bind either the vendored ecosystem declaration or an explicitly attributed
+declaration-under-test variant; reporting fixtures exercise Quoin and do not load a
+traceability module despite retaining the common metadata field.
 
 A cell covered by a **pending** fixture is reported separately: a case exists and
 the engine fails it, and `covered` read as `working` is the conflation this

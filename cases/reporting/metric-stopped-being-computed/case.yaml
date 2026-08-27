@@ -1,0 +1,11 @@
+id: metric-stopped-being-computed
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1105
+reproduce: quoin report --repo cases/reporting/metric-stopped-being-computed/input --since before --format json
+

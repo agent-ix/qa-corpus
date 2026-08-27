@@ -69,7 +69,9 @@ def check_engine() -> str:
     # `case.yaml` and read `reproduce` off it — a language SET's shared
     # declaration has none, so the first set sorting before a single-language
     # case would have killed this with a bare `KeyError` before a case ran.
-    sample = next(iter(discover()), None)
+    sample = next(
+        (case for case in discover() if case.get("mode") != "reporting"), None
+    )
     if sample is None:
         raise SystemExit("verify: the corpus has no cases to probe with")
     meta = sample
@@ -803,7 +805,7 @@ def main() -> int:
     # and so could not see a language SET — it found the case-level `case.yaml`,
     # looked for an `expect.yaml` beside it, and died. Two readers of one corpus
     # disagreeing about what a case IS is the drift FR-065 exists to prevent.
-    cases = discover()
+    cases = [case for case in discover() if case.get("mode") != "reporting"]
     ran = 0
     pending, now_passing = [], []
     payloads: dict = {}

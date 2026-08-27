@@ -1,0 +1,23 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "status": "not_computed",
+    "reason": "no baseline measurement collection for source revision missing",
+    "before": null,
+    "after": {
+      "collectionId": "after",
+      "timestamp": "2026-08-26T01:00:00.000Z",
+      "toolIdentity": "fixture producer",
+      "toolVersion": "fixture 1 (engine a1)",
+      "configDigest": "sha256:config-a",
+      "sourceRevision": "after-bbbbbbbb",
+      "corpusRevision": "corpus-276",
+      "corpusGaps": 0,
+      "path": "cases/reporting/no-prior-record/input/spec/evidence/measurements/after.json"
+    },
+    "comparisons": []
+  },
+  "stderr_contains": [],
+  "byte_identical": true
+}
+

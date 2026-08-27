@@ -1,0 +1,52 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "status": "compared",
+    "reason": null,
+    "before": {
+      "collectionId": "before",
+      "timestamp": "2026-08-26T00:00:00.000Z",
+      "toolIdentity": "fixture producer",
+      "toolVersion": "fixture 1 (engine a1)",
+      "configDigest": "sha256:config-a",
+      "sourceRevision": "before-aaaaaaaa",
+      "corpusRevision": "corpus-276",
+      "corpusGaps": 2,
+      "path": "cases/reporting/metric-stopped-being-computed/input/spec/evidence/measurements/before.json"
+    },
+    "after": {
+      "collectionId": "after",
+      "timestamp": "2026-08-26T01:00:00.000Z",
+      "toolIdentity": "fixture producer",
+      "toolVersion": "fixture 1 (engine a1)",
+      "configDigest": "sha256:config-a",
+      "sourceRevision": "after-bbbbbbbb",
+      "corpusRevision": "corpus-276",
+      "corpusGaps": 0,
+      "path": "cases/reporting/metric-stopped-being-computed/input/spec/evidence/measurements/after.json"
+    },
+    "comparisons": [
+      {
+        "metric": "quality.example",
+        "dimensions": {},
+        "before": 0.5,
+        "after": null,
+        "delta": null,
+        "status": "not_computed",
+        "reasons": []
+      },
+      {
+        "metric": "quality.helper",
+        "dimensions": {},
+        "before": null,
+        "after": 1,
+        "delta": null,
+        "status": "not_computed",
+        "reasons": []
+      }
+    ]
+  },
+  "stderr_contains": [],
+  "byte_identical": true
+}
+

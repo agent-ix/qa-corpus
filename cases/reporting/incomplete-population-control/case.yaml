@@ -1,0 +1,13 @@
+id: incomplete-population-control
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: control
+control_for:
+- incomplete-population
+findable: false
+tags:
+- TC-1108
+reproduce: quoin report --repo cases/reporting/incomplete-population-control/input --since before --format json
+
