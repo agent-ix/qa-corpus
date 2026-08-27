@@ -27,6 +27,8 @@ runs:
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
+make measurement-collection OUTPUT=/tmp/qa-corpus.json
+                                # derive the two plan-owned collection families
 ```
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
@@ -120,6 +122,14 @@ shipped two `high` defects straight through the empty Python and TypeScript colu
 added, so a corpus could improve its number while the hard missing case stayed
 missing. Converting a `GAP` to `out-of-scope` moves the count — declaring something
 out of scope is a visible act.
+
+The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
+definitions and stores their collections here. `scripts/export_measurements.py`
+accepts no values: it derives bounds from the filesystem and recall from the
+Quire and Quoin runner-produced baselines, retaining the runner boundary in
+every observation. Quire and Quoin own their engine- and finding-quality plans;
+engineering-assurance and spec-artifacts-process intentionally own no producer
+or measurement store in this QA program.
 
 ### Today: run `make bounds`
 

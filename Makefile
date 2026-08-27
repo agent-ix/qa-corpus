@@ -21,6 +21,8 @@ help:
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
+	@echo "make measurement-selftest prove both active plans have derived output"
+	@echo "make measurement-collection OUTPUT=... export a governed collection"
 	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
 
 # Every case, by the exact string in its own case.yaml. A documented command
@@ -54,8 +56,16 @@ schema-selftest:
 parity-selftest:
 	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 scripts/parity_selftest.py
 
+.PHONY: measurement-selftest
+measurement-selftest:
+	@python3 scripts/measurement_selftest.py
+
+.PHONY: measurement-collection
+measurement-collection:
+	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",)
+
 .PHONY: ci
-ci: schema-selftest bounds verify verify-reporting parity-selftest
+ci: schema-selftest bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one
