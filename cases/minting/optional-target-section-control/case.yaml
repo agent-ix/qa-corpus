@@ -1,4 +1,5 @@
 id: optional-target-section-control
+case: optional-target-section
 issue_ref: agent-ix/quire-rs#327
 mode: minting
 language: n/a
