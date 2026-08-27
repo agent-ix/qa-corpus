@@ -10,11 +10,34 @@ from __future__ import annotations
 
 import argparse
 import pathlib
+import shutil
 import sys
 
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
+def evidence_file(language: str) -> tuple[str, str]:
+    """A minimal evidence symbol in the language the author requested."""
+    if language == "rust":
+        return "lib.rs", (
+            "//! Replace with the miniature repository this case is about.\n\n"
+            "#[cfg(test)]\nmod tests {\n    #[trace(\"TC-001\")]\n    #[test]\n"
+            "    fn covers_the_criterion() {\n        assert_eq!(1 + 1, 2);\n    }\n}\n"
+        )
+    if language == "python":
+        return "test_example.py", (
+            "def test_covers_the_criterion():\n"
+            "    # TC-001: this tag names the matrix row.\n"
+            "    assert 1 + 1 == 2\n"
+        )
+    return "example.test.ts", (
+        'import { expect, it } from "vitest";\n\n'
+        'it("TC-001 covers the criterion", () => {\n'
+        "  expect(1 + 1).toBe(2);\n"
+        "});\n"
+    )
 
 
 def resolve_module(module: str) -> str | None:
@@ -54,7 +77,11 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--mode", required=True)
     ap.add_argument("--case", required=True)
-    ap.add_argument("--language", default="rust")
+    ap.add_argument(
+        "--language",
+        default="rust",
+        choices=["rust", "python", "typescript"],
+    )
     ap.add_argument("--kind", default="failure",
                     choices=["failure", "control", "regression"])
     ap.add_argument("--module", default="ecosystem")
@@ -68,36 +95,103 @@ def main() -> int:
         return 1
     selector = resolve_module(args.module)
     if selector is None:
-        print(f"module `{args.module}` names neither a manifest nor a directory "
-              f"of them under modules/", file=sys.stderr)
+        print(
+            f"module `{args.module}` names neither a manifest nor a directory "
+            f"of them under modules/",
+            file=sys.stderr,
+        )
         return 1
 
     case_id = f"{args.case}-control" if args.kind == "control" else args.case
     case_dir = ROOT / "cases" / args.mode / case_id
-    if case_dir.exists():
-        print(f"{case_dir.relative_to(ROOT)} already exists", file=sys.stderr)
-        return 1
+    adding_language = case_dir.exists()
+    shared: dict = {}
+    if adding_language:
+        shared_path = case_dir / "case.yaml"
+        if not shared_path.is_file():
+            print(
+                f"{case_dir.relative_to(ROOT)} has no shared case.yaml",
+                file=sys.stderr,
+            )
+            return 1
+        shared = yaml.safe_load(shared_path.read_text()) or {}
+        for field, requested in (
+            ("mode", args.mode), ("kind", args.kind), ("module", args.module)
+        ):
+            if shared.get(field) != requested:
+                print(
+                    f"{case_dir.relative_to(ROOT)} declares {field}={shared.get(field)!r}, "
+                    f"not {requested!r}", file=sys.stderr)
+                return 1
+
+        # The first scaffold uses the compact layout. Adding a language turns
+        # it into the already-supported language-set layout without losing the
+        # first tree or its expectations.
+        if (case_dir / "input").is_dir():
+            old_language = shared.get("language")
+            if old_language == args.language:
+                print(f"{case_dir.relative_to(ROOT)} already has {args.language}",
+                      file=sys.stderr)
+                return 1
+            if old_language not in {"rust", "python", "typescript"}:
+                print(
+                    f"{case_dir.relative_to(ROOT)} has no valid language to migrate",
+                    file=sys.stderr,
+                )
+                return 1
+            old_variant = case_dir / old_language
+            if old_variant.exists():
+                print(
+                    f"{old_variant.relative_to(ROOT)} already exists",
+                    file=sys.stderr,
+                )
+                return 1
+            old_variant.mkdir()
+            shutil.move(str(case_dir / "input"), str(old_variant / "input"))
+            if (case_dir / "expect.yaml").is_file():
+                shutil.move(
+                    str(case_dir / "expect.yaml"),
+                    str(old_variant / "expect.yaml"),
+                )
+            (old_variant / "case.yaml").write_text(
+                yaml.safe_dump(
+                    {"reproduce": shared["reproduce"]}, sort_keys=False, width=100
+                )
+            )
+            shared.pop("language", None)
+            shared.pop("reproduce", None)
+            shared_path.write_text(
+                yaml.safe_dump(
+                    shared, sort_keys=False, width=100, allow_unicode=True
+                )
+            )
+
+        variant_dir = case_dir / args.language
+        if variant_dir.exists():
+            print(
+                f"{variant_dir.relative_to(ROOT)} already exists", file=sys.stderr
+            )
+            return 1
+    else:
+        variant_dir = case_dir
 
     for sub in ("spec", "src"):
-        (case_dir / "input" / sub).mkdir(parents=True)
+        (variant_dir / "input" / sub).mkdir(parents=True)
 
-    (case_dir / "input" / "spec" / "FR-001.md").write_text(
+    (variant_dir / "input" / "spec" / "FR-001.md").write_text(
         "---\nid: FR-001\ntype: FR\n---\n\n## Acceptance Criteria\n\n"
         "| ID | Criteria | Verification |\n|----|----------|--------------|\n"
         "| FR-001-AC-1 | Every finding shall default to warning. | Test (TC-001) |\n"
     )
-    (case_dir / "input" / "spec" / "tests.md").write_text(
+    (variant_dir / "input" / "spec" / "tests.md").write_text(
         "---\nid: TM-001\ntype: TestMatrix\n---\n\n## Test Case Summary\n\n"
         "| Test ID | Traces To | Status |\n|---------|-----------|--------|\n"
         "| TC-001 | FR-001-AC-1 | 🚧 |\n"
     )
-    (case_dir / "input" / "src" / "lib.rs").write_text(
-        "//! Replace with the miniature repository this case is about.\n\n"
-        "#[cfg(test)]\nmod tests {\n    #[trace(\"TC-001\")]\n    #[test]\n"
-        "    fn covers_the_criterion() {\n        assert_eq!(1 + 1, 2);\n    }\n}\n"
-    )
+    filename, source = evidence_file(args.language)
+    (variant_dir / "input" / "src" / filename).write_text(source)
 
-    relative = case_dir.relative_to(ROOT)
+    relative = variant_dir.relative_to(ROOT)
     # A single module is selected with `--module` INSIDE the command; a module
     # PATH with an `IX_FILAMENT_MODULES_PATH=` assignment BEFORE it, which both
     # readers strip as a leading `KEY=value` token. TC-1020 requires the
@@ -148,10 +242,14 @@ def main() -> int:
     # nothing ran the scaffolder to find out (#336).
     if args.kind == "control":
         meta["control_for"] = [args.case]
-    (case_dir / "case.yaml").write_text(
-        yaml.safe_dump(meta, sort_keys=False, width=100, allow_unicode=True))
+    if adding_language:
+        (variant_dir / "case.yaml").write_text(
+            yaml.safe_dump({"reproduce": reproduce}, sort_keys=False, width=100))
+    else:
+        (case_dir / "case.yaml").write_text(
+            yaml.safe_dump(meta, sort_keys=False, width=100, allow_unicode=True))
 
-    (case_dir / "expect.yaml").write_text(
+    (variant_dir / "expect.yaml").write_text(
         "# Assert ONLY what this case is about. Every field is optional, and a\n"
         "# corpus where each case pins the whole envelope fails forty cases on one\n"
         "# unrelated change and is then relaxed wholesale.\n"
@@ -161,7 +259,7 @@ def main() -> int:
     )
 
     print(f"scaffolded {relative}")
-    print(f"  run it:  {meta['reproduce']}")
+    print(f"  run it:  {reproduce}")
     print(f"  then:    fill expect.yaml from what it printed, and set issue_ref")
     return 0
 

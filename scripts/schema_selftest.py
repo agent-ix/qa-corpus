@@ -263,8 +263,25 @@ def check_scaffolder() -> list[str]:
             shutil.copytree(src, dst) if src.is_dir() else shutil.copy2(src, dst)
         problems += _scaffold(tree)
         for path in sorted(tree.glob("cases/*/selftest-*/case.yaml")):
-            declared = yaml.safe_load(path.read_text()) or {}
-            problems += validate_scaffolded(declared, path, tree, schema)
+            shared = yaml.safe_load(path.read_text()) or {}
+            case_dir = path.parent
+            variants = sorted(
+                directory
+                for directory in case_dir.iterdir()
+                if (directory / "input").is_dir()
+            )
+            if (case_dir / "input").is_dir():
+                problems += validate_scaffolded(shared, path, tree, schema)
+            else:
+                for variant in variants:
+                    per_case_path = variant / "case.yaml"
+                    per_case = (
+                        yaml.safe_load(per_case_path.read_text()) or {}
+                        if per_case_path.is_file()
+                        else {}
+                    )
+                    effective = {**shared, **per_case, "language": variant.name}
+                    problems += validate_scaffolded(effective, per_case_path, tree, schema)
         if not list(tree.glob("cases/*/selftest-*/case.yaml")):
             problems.append(
                 "the scaffolder wrote no case.yaml, so nothing below was checked")
@@ -311,6 +328,52 @@ def _scaffold(tree: pathlib.Path) -> list[str]:
             problems.append(
                 f"`new_case.py --kind {kind}` exited {done.returncode}: "
                 f"{(done.stdout + done.stderr).strip()[:300]}")
+
+    # The EPIC grows one inventory row across languages. The on-ramp used to
+    # reject this exact second call as "already exists" and always wrote Rust
+    # source even when --language said Python (agent-ix/quoin#241).
+    done = subprocess.run(
+        [
+            sys.executable,
+            "scripts/new_case.py",
+            "--mode",
+            "minting",
+            "--case",
+            "selftest-pair",
+            "--language",
+            "python",
+            "--kind",
+            "failure",
+            "--module",
+            "ecosystem",
+            "--issue",
+            "agent-ix/quoin#241",
+        ],
+        cwd=tree,
+        capture_output=True,
+        text=True,
+    )
+    if done.returncode != 0:
+        problems.append(
+            "`new_case.py` could not add Python to an existing case: "
+            f"{(done.stdout + done.stderr).strip()[:300]}")
+    else:
+        pair = tree / "cases" / "minting" / "selftest-pair"
+        shared = yaml.safe_load((pair / "case.yaml").read_text())
+        if "language" in shared or "reproduce" in shared:
+            problems.append("language-specific fields remained in the shared case metadata")
+        if not (pair / "rust" / "input" / "src" / "lib.rs").is_file():
+            problems.append("adding Python did not preserve the original Rust tree")
+        if not (pair / "python" / "input" / "src" / "test_example.py").is_file():
+            problems.append("--language python did not scaffold Python evidence")
+        if (pair / "python" / "input" / "src" / "lib.rs").exists():
+            problems.append("--language python still scaffolded Rust evidence")
+        variant = yaml.safe_load((pair / "python" / "case.yaml").read_text())
+        reproduce = str((variant or {}).get("reproduce", ""))
+        if not reproduce.startswith("IX_FILAMENT_MODULES_PATH=modules/ecosystem "):
+            problems.append("the second-language reproduce line does not load the module path")
+        if "selftest-pair/python/input" not in reproduce:
+            problems.append("the second-language reproduce line names the wrong input tree")
     return problems
 
 
