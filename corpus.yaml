@@ -394,7 +394,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=77>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=76>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -412,8 +412,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=76> `kind: failure`
-# fixtures, all <derived:controlled_failures=76> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=75> `kind: failure`
+# fixtures, all <derived:controlled_failures=75> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
