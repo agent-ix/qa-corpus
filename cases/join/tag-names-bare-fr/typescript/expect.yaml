@@ -65,6 +65,12 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 2
+diagnostic_reasons:
+  - untracked-id-has-minted-children
+diagnostic_paths:
+  untracked-id-has-minted-children: src/coverage.test.ts
+diagnostic_message_contains:
+  untracked-id-has-minted-children: [FR-001-AC-1]
 # None of these may fire: the binder read this tree correctly and said so.
 # Crediting a binding diagnostic here would be crediting it for noise.
 absent_diagnostic_reasons:

@@ -1,0 +1,12 @@
+name: optional-target-section
+version: 0.1.0
+description: Trace target whose minting section is optional per document
+artifact_types:
+- name: OptionalFR
+traceability:
+  trace_targets:
+  - name: constraint
+    archetype: OptionalFR
+    section: Constraints
+    id_column: ID
+    required: false

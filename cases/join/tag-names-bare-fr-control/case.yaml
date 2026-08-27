@@ -1,13 +1,13 @@
 mode: join
 module: ecosystem
 id: tag-names-bare-fr-control
-issue_ref: agent-ix/quire-rs#268
+issue_ref: agent-ix/quire-rs#328
 kind: control
 control_for:
 - tag-names-bare-fr
 findable: false
 tags:
-- TC-1014
+- TC-1077
 - TC-1017
 - join
 - binding
