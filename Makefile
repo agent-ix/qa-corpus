@@ -9,15 +9,15 @@
 # quire-cli#68's provenance guard refusing a binary that cannot name its engine,
 # which is the case for refusing rather than warning. Same defect and same fix
 # as `agent-ix/quoin`'s `bench-tier1` default.
-QUIRE ?= $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire
-QUOIN ?= ../quoin/bin/quoin.js
+QUIRE ?= $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire)
+QUOIN ?= $(abspath ../quoin/bin/quoin.js)
 CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 
 .PHONY: help
 help:
 	@echo "make verify              run every case by its own recorded invocation"
 	@echo "make verify-reporting    run the reporter cases over static records"
-	@echo "make bounds              the derived matrix, gap_count, and pending list"
+	@echo "make bounds              derive the matrix and reject every applicable GAP"
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
@@ -36,7 +36,7 @@ verify-reporting:
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
 bounds:
-	@python3 bounds.py
+	@python3 bounds.py --require-complete
 
 # A gate never observed to reject anything is indistinguishable from one that
 # cannot. Six mutations, each requiring `bounds.py` to fail NAMING the defect,

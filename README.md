@@ -3,6 +3,9 @@
 The controlled corpus for the `quire` / `quoin` toolchain. **Static files, read in
 place, language-neutral.** Contract: [`agent-ix/quire-rs` FR-065](https://github.com/agent-ix/quire-rs/blob/main/spec/functional/FR-065-controlled-corpus-contract.md).
 
+Case-before-fix, language, control, and Tier-2 pin policy lives in
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Why this repository exists
 
 Both previous corpora were embedded in code and neither could be read without
@@ -23,7 +26,7 @@ runs:
 ```bash
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
-make bounds                     # the derived matrix and gap_count
+make bounds                     # derive the matrix; reject every applicable GAP
 ```
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:

@@ -1138,6 +1138,29 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     }
 
 
+def require_complete(bounds: dict) -> None:
+    """Reject every applicable inventory cell that has no corpus case.
+
+    The ordinary report keeps GAP as a useful authoring state. CI uses this
+    stricter policy: a declared applicable language is either covered by a
+    case or explicitly out of scope with a reason. Otherwise a newly added row
+    can make the matrix honestly say GAP while the gate still passes.
+    """
+    gaps = [
+        f"{row['mode']}/{row['case']}/{language}"
+        for row in bounds["matrix"]
+        for language, cell in row["cells"].items()
+        if cell["state"] == "GAP"
+    ]
+    if gaps:
+        raise CorpusError(
+            f"{len(gaps)} applicable mode-language cell(s) have no case: "
+            + ", ".join(gaps)
+            + ". Add the case, or mark the cell out-of-scope with a non-empty "
+              "reason when the mode genuinely cannot occur in that language."
+        )
+
+
 # A count published in prose, tagged so it can be checked against the tree.
 #
 # WHY THIS EXISTS. Six figures in `corpus.yaml`, `README.md` and a self-test
@@ -1213,6 +1236,8 @@ def main() -> int:
         cases = discover()
         bounds = build(declaration, cases)
         check_published_counts(cases)
+        if "--require-complete" in sys.argv:
+            require_complete(bounds)
     except CorpusError as error:
         print(f"corpus: {error}", file=sys.stderr)
         return 1

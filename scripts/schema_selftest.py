@@ -50,6 +50,14 @@ def mutate_yaml(tree: pathlib.Path, rel: str, old: str, new: str) -> None:
     path.write_text(text.replace(old, new, 1))
 
 
+def remove_path(tree: pathlib.Path, rel: str) -> None:
+    """Remove one fixture from a disposable corpus copy."""
+    path = tree / rel
+    if not path.exists():
+        raise AssertionError(f"{rel}: removal target not found")
+    shutil.rmtree(path) if path.is_dir() else path.unlink()
+
+
 # (name, mutation or None for the control, substring the failure must name)
 CASES = [
     (
@@ -63,6 +71,36 @@ CASES = [
             t, "cases/attachment/tests-directory-topology/case.yaml",
             "issue_ref:", "not_issue_ref:"),
         "required field `issue_ref` is missing",
+    ),
+    (
+        "an applicable language with no case is rejected by the CI policy",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "# DEPARTURES FROM THE CONTRACT, declared and ENFORCED.",
+            "- mode: detection\n"
+            "  case: policy-selftest-missing\n"
+            "  source: agent-ix/quire-rs#278\n"
+            "  languages: [rust]\n"
+            "# DEPARTURES FROM THE CONTRACT, declared and ENFORCED."),
+        "detection/policy-selftest-missing/rust",
+    ),
+    (
+        "an out-of-scope language needs a written reason",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "    python: >-\n"
+            "      the declaration declares NO python test-name-id form. `manifest.yaml` carries\n"
+            "      `rust-test-name-id` and `typescript-test-name-id` and no python sibling, so there is\n"
+            "      no form for a python fixture to write the defect in.\n"
+            "    rust: >-",
+            "    python: \"\"\n"
+            "    rust: >-"),
+        "test-name-id-in-call-title/python: out-of-scope with no reason",
+    ),
+    (
+        "every failure case needs a language-matched control",
+        lambda t: remove_path(t, "cases/detection/low-symbol-binding-control"),
+        "low-symbol-binding: no control names it",
     ),
     (
         "a duplicate derived id is rejected (the review's mutation 2)",
@@ -186,7 +224,7 @@ CASES = [
 
 def run_bounds(tree: pathlib.Path) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "bounds.py"], cwd=tree,
+        [sys.executable, "bounds.py", "--require-complete"], cwd=tree,
         capture_output=True, text=True)
 
 

@@ -38,6 +38,7 @@ controls, labels, bounds matrix, and the Python/Rust readers that grade it.
 Apply it to any change that adds, removes, reclassifies, or reinterprets a case.
 The corpus is recursively assurance-critical because Quire and Quoin use it to
 claim their own detectors and metrics work.
+Follow the case-before-fix and Tier-2 pin procedure in `CONTRIBUTING.md`.
 
 ## Assurance Concerns
 
