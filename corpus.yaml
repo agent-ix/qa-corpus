@@ -857,10 +857,8 @@ inventory:
   # produce the untracked entry this row is about. 714 occurrences across 50
   # repos: python 504/38, rust 179/3, typescript 31/10.
   #
-  # The engine DETECTS this one, at L2: the id lands in `untracked_symbols` with
-  # the symbol and the path, and the rows it fails to answer sit in
-  # `unbacked_rows`. No diagnostic reason fires, and none should — the census is
-  # an honest 100%, because the tag really did bind.
+  # The engine detects this at L3: the exact untracked locus is retained and
+  # model-grounded children are named without automatically backing them.
   case: tag-names-bare-fr
   source: 714 occurrences / 50 repos in test files — python 504/38, rust 179/3, typescript 31/10
   languages:

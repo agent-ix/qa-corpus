@@ -36,12 +36,9 @@
 # 23,059 rows / 5,452 backed to 23,387 / 5,453. The site is repaired by renaming
 # that section in `identity`, which is what the control does one token at a time.
 #
-# DETECTION REACHES L2, NOT L1. No diagnostic reason fires and none should —
-# `no-symbol-bound` needs `bound == 0` and `low-symbol-binding` needs under 5%.
-# What the engine publishes instead is the LOCUS, and it is exact:
-# `untracked_symbols` names the symbol, the id it bound, and the file. What it
-# does NOT publish is the disposition — this id and a typo'd `TC-1207` arrive in
-# the same list looking identical, which is `agent-ix/quire-rs#123`.
+# DETECTION REACHES L3. The diagnostic names the exact locus and model-grounded
+# siblings, but it must not turn an invariant into false AC evidence: it tells
+# the author not to substitute and to correct the id or declare its class.
 #
 # THE PAYLOAD CARRIES A LINE (15) THAT THIS BLOCK CANNOT ASSERT. Both graders
 # compare `untracked_symbols` on (symbol, trace_id, path) only, deliberately —
@@ -79,8 +76,17 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 2
-# None of these may fire: the binder read this tree correctly and said so.
-# Crediting a binding diagnostic here would be crediting it for noise.
+diagnostic_reasons:
+  - untracked-id-has-minted-children
+diagnostic_paths:
+  untracked-id-has-minted-children: src/coverage.test.ts
+diagnostic_message_contains:
+  untracked-id-has-minted-children:
+    - FR-001-AC-1
+    - do not substitute
+    - declare a trace target for its class
+# These binder-health reasons stay silent; the actionable id guidance above is
+# the only expected diagnostic.
 #
 # `section-matches-nothing` is listed because it is the reason a reader would
 # EXPECT here and it is genuinely absent: a trace target fires it when a
