@@ -356,10 +356,8 @@ diagnostic_reasons:
 # ecosystem had declined, and `tag-on-describe-header` is a live case asserting
 # `tag-on-non-binding-symbol` now.
 #
-# The next fixture pending on a ticket that changes what MINTS rather than
-# adding a diagnostic is declared here.
-behaviour_change_tickets:
-- agent-ix/quire-rs#363
+# No fixture currently predicts a ticket that changes what mints.
+behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
 # It declared a per-case output envelope — case/mode/language/kind/outcome/
