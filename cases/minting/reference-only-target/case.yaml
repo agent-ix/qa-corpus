@@ -5,7 +5,7 @@ language: n/a
 module: variants/reference-postures
 declaration_under_test: A trace target explicitly declares evidence reference-only.
 kind: failure
-findable: true
+findable: false
 reproduce: quire coverage --scope cases/minting/reference-only-target/input --module modules/variants/reference-postures --json
 tags: [TC-1075, coverage, reference-integrity]
 comment: A referenceable ID registry is not a source-evidence obligation and must not dilute coverage.
