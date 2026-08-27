@@ -1,0 +1,11 @@
+id: oracle-helper-copy-control
+issue_ref: agent-ix/quire-rs#236
+mode: skeptic
+module: ecosystem
+kind: control
+control_for: [oracle-helper-copy]
+findable: false
+tags: [TC-1080, skeptic, finding-quality, wild-regression]
+comment: >-
+  The same test calls a helper that answers containment independently. Shared
+  nouns and an equality assertion are insufficient to report a copied oracle.

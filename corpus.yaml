@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=171> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=173> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -398,7 +398,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=77>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=78>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -416,8 +416,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=76> `kind: failure`
-# fixtures, all <derived:controlled_failures=76> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=77> `kind: failure`
+# fixtures, all <derived:controlled_failures=77> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -1015,6 +1015,22 @@ inventory:
   - python
   - rust
   - typescript
+- mode: skeptic
+  case: oracle-helper-copy
+  source: agent-ix/filament-ide-rs@59a180a7 TC-1598 — a copied helper oracle with no expected binding
+  languages:
+  - python
+  - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      This regression is the Rust `prop_assert_eq!` helper-oracle path retained
+      from TC-1598. Python has no invocation of that macro, and the existing
+      language-neutral expected-binding family remains covered separately.
+    typescript: >-
+      This regression is the Rust `prop_assert_eq!` helper-oracle path retained
+      from TC-1598. TypeScript has no invocation of that macro, and the existing
+      language-neutral expected-binding family remains covered separately.
 - mode: skeptic
   case: mocked-confirmation
   source: agent-ix/quoin#227 — the test confirms its own mock
