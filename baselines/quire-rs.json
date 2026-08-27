@@ -1,7 +1,7 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "9e0d016aef6e7fd3409cf04bfcd636a3331116f5",
+  "corpus_revision": "388e86d7ce2dfb5479f7c9cfe99e7e49312701e0",
   "gap_count": 0,
   "rows": [
     {
@@ -411,6 +411,33 @@
       "misses": [
         "tag-names-unminted-tc-typescript"
       ]
+    },
+    {
+      "mode": "minting",
+      "language": "n/a",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "minting",
+      "language": "n/a",
+      "level": "L2",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "minting",
+      "language": "n/a",
+      "level": "L3",
+      "reached": 1,
+      "population": 1,
+      "gap_count": 0,
+      "misses": []
     },
     {
       "mode": "minting",

@@ -1,0 +1,13 @@
+id: status-column-mismatch
+issue_ref: agent-ix/quire-rs#341
+mode: minting
+language: n/a
+module: ecosystem
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/status-column-mismatch/input --json
+tags: [TC-1079, minting, coverage, status]
+comment: >-
+  The ecosystem configures `Status`, while the selected reference table exposes
+  `Coverage Status`. Before #341 the row was read but its status classification
+  silently skipped. The finding now names both headers and the table to repair.
