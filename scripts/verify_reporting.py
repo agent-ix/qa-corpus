@@ -18,7 +18,72 @@ from bounds import CorpusError, controls_by_case, discover, load_declaration
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 QUOIN = os.environ.get("QUOIN", "")
-EXPECT_KEYS = {"exit_code", "stdout", "stderr_contains", "byte_identical"}
+EXPECT_KEYS = {
+    "exit_code",
+    "stdout",
+    "stderr_contains",
+    "byte_identical",
+    "ratio_consistent",
+}
+
+
+def check_ratio_consistency(
+    case: dict, expectation: dict, tokens: list[str], failures: list[str]
+) -> None:
+    """Check opted-in ratio records against their own counted population."""
+    rule = expectation.get("ratio_consistent")
+    if rule is None:
+        return
+    name = f"{case['id']} ({case['issue_ref']})"
+    if not isinstance(rule, dict) or not isinstance(rule.get("decimals"), int):
+        failures.append(f"{name}: ratio_consistent requires integer `decimals`")
+        return
+    try:
+        repo = tokens[tokens.index("--repo") + 1]
+    except (ValueError, IndexError):
+        failures.append(f"{name}: ratio_consistent requires a `--repo` input")
+        return
+
+    checked = 0
+    measurements = ROOT / repo / "spec/evidence/measurements"
+    for path in sorted(measurements.glob("*.json")):
+        record = json.loads(path.read_text())
+        for observation in record.get("observations") or []:
+            population = observation.get("population") or {}
+            if (
+                observation.get("state") != "measured"
+                or observation.get("shape") != "ratio"
+            ):
+                continue
+            examined = population.get("examined")
+            matched = population.get("matched")
+            if (
+                not isinstance(examined, (int, float))
+                or examined <= 0
+                or not isinstance(matched, (int, float))
+            ):
+                failures.append(
+                    f"{name}: {path.name} {observation.get('metric')} has no "
+                    "positive examined/matched population"
+                )
+                continue
+            scale = {"fraction": 1, "percent": 100}.get(observation.get("unit"))
+            if scale is None:
+                failures.append(
+                    f"{name}: {path.name} {observation.get('metric')} uses "
+                    f"unsupported ratio unit {observation.get('unit')!r}"
+                )
+                continue
+            expected = round(matched / examined * scale, rule["decimals"])
+            if observation.get("value") != expected:
+                failures.append(
+                    f"{name}: {path.name} {observation.get('metric')} value "
+                    f"{observation.get('value')} disagrees with "
+                    f"{matched}/{examined} = {expected}"
+                )
+            checked += 1
+    if checked == 0:
+        failures.append(f"{name}: ratio_consistent checked no ratio observations")
 
 
 def run_case(case: dict, failures: list[str]) -> None:
@@ -34,6 +99,7 @@ def run_case(case: dict, failures: list[str]) -> None:
         failures.append(f"{name}: reproduce must invoke `quoin report`")
         return
     tokens[0] = QUOIN
+    check_ratio_consistency(case, expectation, tokens, failures)
     first = subprocess.run(tokens, cwd=ROOT, capture_output=True, text=True)
     second = subprocess.run(tokens, cwd=ROOT, capture_output=True, text=True)
 
@@ -82,7 +148,7 @@ def main() -> int:
         return 1
 
     failures: list[str] = []
-    contract = (load_declaration().get("reporting_contract") or {})
+    contract = load_declaration().get("reporting_contract") or {}
     required = set(contract.get("required_cases") or [])
     refusal = set(contract.get("refusal_cases") or [])
     failure_cases = {
@@ -90,24 +156,22 @@ def main() -> int:
         for case in cases
         if case.get("kind") == "failure"
     }
-    missing = sorted(required - failure_cases - {
-        case["id"] for case in cases if case.get("kind") == "regression"
-    })
+    missing = sorted(
+        required
+        - failure_cases
+        - {case["id"] for case in cases if case.get("kind") == "regression"}
+    )
     if missing:
         failures.append(f"required reporting cases have no fixture: {missing}")
 
     controls = controls_by_case(cases)
     for case_id in sorted(refusal):
-        subject = next(
-            (case for case in cases if case["id"] == case_id), None
-        )
+        subject = next((case for case in cases if case["id"] == case_id), None)
         if subject is None:
             continue
         partners = controls.get((subject["id"], subject.get("language")), [])
         if not partners:
-            failures.append(
-                f"{case_id}: refusal case has no comparable-runs control"
-            )
+            failures.append(f"{case_id}: refusal case has no comparable-runs control")
             continue
         for control in partners:
             expected = yaml.safe_load((ROOT / control["expect"]).read_text()) or {}
