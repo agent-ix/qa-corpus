@@ -4,7 +4,7 @@ summary: >-
   The retained TC-1598 shape calls a same-file helper whose decision copies a
   private Rust production predicate instead of judging it independently.
 defects:
-- id: OHC-RS
+- id: OH-RS
   family: oracle-is-code-copy
   location: tests/property_suite.rs:16
   row_id: TC-001
