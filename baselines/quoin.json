@@ -1,7 +1,7 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quoin",
-  "corpus_revision": "f2320ed145d5c19cf8e40fdb2d6b3e4ee28e3af9",
+  "corpus_revision": "257d2aeb5e677ff8a477e5d49cdaaa278c93d14c",
   "gap_count": 0,
   "rows": [
     {
@@ -12,9 +12,7 @@
       "population": 4,
       "rate": 0.75,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": ["tag-inside-string-literal-python"]
     },
     {
       "mode": "attachment",
@@ -24,9 +22,7 @@
       "population": 4,
       "rate": 0.75,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": ["tag-inside-string-literal-python"]
     },
     {
       "mode": "attachment",
@@ -36,9 +32,7 @@
       "population": 4,
       "rate": 0.75,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": ["tag-inside-string-literal-python"]
     },
     {
       "mode": "attachment",
@@ -48,9 +42,7 @@
       "population": 4,
       "rate": 0.75,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": ["tag-inside-string-literal-rust"]
     },
     {
       "mode": "attachment",
@@ -60,9 +52,7 @@
       "population": 4,
       "rate": 0.75,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": ["tag-inside-string-literal-rust"]
     },
     {
       "mode": "attachment",
@@ -72,10 +62,7 @@
       "population": 4,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "marker-mismatch",
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": ["marker-mismatch", "tag-inside-string-literal-rust"]
     },
     {
       "mode": "attachment",
@@ -85,9 +72,7 @@
       "population": 5,
       "rate": 0.8,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": ["tag-inside-string-literal-typescript"]
     },
     {
       "mode": "attachment",
@@ -97,9 +82,7 @@
       "population": 5,
       "rate": 0.8,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": ["tag-inside-string-literal-typescript"]
     },
     {
       "mode": "attachment",
@@ -109,9 +92,7 @@
       "population": 5,
       "rate": 0.8,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": ["tag-inside-string-literal-typescript"]
     },
     {
       "mode": "detection",
@@ -131,10 +112,7 @@
       "population": 4,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "model-mints-nothing",
-        "undeclared-coverage-vocabulary"
-      ]
+      "misses": ["model-mints-nothing", "undeclared-coverage-vocabulary"]
     },
     {
       "mode": "detection",
@@ -144,10 +122,7 @@
       "population": 4,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "model-mints-nothing",
-        "undeclared-coverage-vocabulary"
-      ]
+      "misses": ["model-mints-nothing", "undeclared-coverage-vocabulary"]
     },
     {
       "mode": "detection",
@@ -207,10 +182,7 @@
       "population": 5,
       "rate": 0.6,
       "gap_count": 0,
-      "misses": [
-        "catch-all-properties",
-        "stale-name-correct-trace-rust"
-      ]
+      "misses": ["catch-all-properties", "stale-name-correct-trace-rust"]
     },
     {
       "mode": "detection",
@@ -240,9 +212,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "stale-name-correct-trace-typescript"
-      ]
+      "misses": ["stale-name-correct-trace-typescript"]
     },
     {
       "mode": "disposition",
@@ -252,9 +222,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": ["greenfield-no-symbols-python"]
     },
     {
       "mode": "disposition",
@@ -264,9 +232,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": ["greenfield-no-symbols-python"]
     },
     {
       "mode": "disposition",
@@ -276,9 +242,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": ["greenfield-no-symbols-python"]
     },
     {
       "mode": "disposition",
@@ -288,9 +252,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": ["greenfield-no-symbols-rust"]
     },
     {
       "mode": "disposition",
@@ -300,9 +262,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": ["greenfield-no-symbols-rust"]
     },
     {
       "mode": "disposition",
@@ -312,9 +272,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": ["greenfield-no-symbols-rust"]
     },
     {
       "mode": "disposition",
@@ -324,9 +282,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": ["greenfield-no-symbols-typescript"]
     },
     {
       "mode": "disposition",
@@ -336,9 +292,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": ["greenfield-no-symbols-typescript"]
     },
     {
       "mode": "disposition",
@@ -348,9 +302,7 @@
       "population": 2,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": ["greenfield-no-symbols-typescript"]
     },
     {
       "mode": "join",
@@ -376,15 +328,11 @@
       "mode": "join",
       "language": "python",
       "level": "L3",
-      "reached": 0,
+      "reached": 2,
       "population": 3,
-      "rate": 0,
+      "rate": 0.667,
       "gap_count": 0,
-      "misses": [
-        "tag-names-bare-fr-python",
-        "tag-names-undeclared-section-python",
-        "tag-names-unminted-tc-python"
-      ]
+      "misses": ["tag-names-unminted-tc-python"]
     },
     {
       "mode": "join",
@@ -410,15 +358,11 @@
       "mode": "join",
       "language": "rust",
       "level": "L3",
-      "reached": 0,
+      "reached": 2,
       "population": 3,
-      "rate": 0,
+      "rate": 0.667,
       "gap_count": 0,
-      "misses": [
-        "tag-names-bare-fr-rust",
-        "tag-names-undeclared-section-rust",
-        "tag-names-unminted-tc-rust"
-      ]
+      "misses": ["tag-names-unminted-tc-rust"]
     },
     {
       "mode": "join",
@@ -444,15 +388,11 @@
       "mode": "join",
       "language": "typescript",
       "level": "L3",
-      "reached": 0,
+      "reached": 2,
       "population": 3,
-      "rate": 0,
+      "rate": 0.667,
       "gap_count": 0,
-      "misses": [
-        "tag-names-bare-fr-typescript",
-        "tag-names-undeclared-section-typescript",
-        "tag-names-unminted-tc-typescript"
-      ]
+      "misses": ["tag-names-unminted-tc-typescript"]
     },
     {
       "mode": "minting",
@@ -462,9 +402,7 @@
       "population": 7,
       "rate": 0.857,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-python"
-      ]
+      "misses": ["no-symbol-method-in-the-verification-column-python"]
     },
     {
       "mode": "minting",
@@ -500,9 +438,7 @@
       "population": 7,
       "rate": 0.857,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-rust"
-      ]
+      "misses": ["no-symbol-method-in-the-verification-column-rust"]
     },
     {
       "mode": "minting",
@@ -538,9 +474,7 @@
       "population": 7,
       "rate": 0.857,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-typescript"
-      ]
+      "misses": ["no-symbol-method-in-the-verification-column-typescript"]
     },
     {
       "mode": "minting",
@@ -586,9 +520,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-python"
-      ]
+      "misses": ["hollow-metric-python"]
     },
     {
       "mode": "provenance",
@@ -598,9 +530,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-python"
-      ]
+      "misses": ["hollow-metric-python"]
     },
     {
       "mode": "provenance",
@@ -620,9 +550,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-rust"
-      ]
+      "misses": ["hollow-metric-rust"]
     },
     {
       "mode": "provenance",
@@ -632,9 +560,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-rust"
-      ]
+      "misses": ["hollow-metric-rust"]
     },
     {
       "mode": "provenance",
@@ -654,9 +580,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-typescript"
-      ]
+      "misses": ["hollow-metric-typescript"]
     },
     {
       "mode": "provenance",
@@ -666,9 +590,7 @@
       "population": 1,
       "rate": 0,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-typescript"
-      ]
+      "misses": ["hollow-metric-typescript"]
     },
     {
       "mode": "skeptic",
@@ -698,10 +620,7 @@
       "population": 3,
       "rate": 0.333,
       "gap_count": 0,
-      "misses": [
-        "gate-that-gates-nothing-python",
-        "mocked-confirmation-python"
-      ]
+      "misses": ["gate-that-gates-nothing-python", "mocked-confirmation-python"]
     },
     {
       "mode": "skeptic",
@@ -731,10 +650,7 @@
       "population": 4,
       "rate": 0.5,
       "gap_count": 0,
-      "misses": [
-        "gate-that-gates-nothing-rust",
-        "mocked-confirmation-rust"
-      ]
+      "misses": ["gate-that-gates-nothing-rust", "mocked-confirmation-rust"]
     },
     {
       "mode": "skeptic",
