@@ -1,0 +1,7 @@
+total: 1
+backed: 0
+groups:
+- document: spec/FR-001.md
+  target: reference-id
+  backed: 0
+  total: 1

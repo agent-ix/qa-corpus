@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=165> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=167> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -358,7 +358,8 @@ diagnostic_reasons:
 #
 # The next fixture pending on a ticket that changes what MINTS rather than
 # adding a diagnostic is declared here.
-behaviour_change_tickets: []
+behaviour_change_tickets:
+- agent-ix/quire-rs#363
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
 # It declared a per-case output envelope — case/mode/language/kind/outcome/
@@ -391,7 +392,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=75>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=76>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -409,8 +410,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=74> `kind: failure`
-# fixtures, all <derived:controlled_failures=74> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=75> `kind: failure`
+# fixtures, all <derived:controlled_failures=75> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -541,6 +542,10 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
+- mode: minting
+  case: reference-only-target
+  source: agent-ix/quire-rs#363 — SUITE rows were reference registries misreported as repository authoring backlog
+  languages: [n/a]
 - mode: minting
   case: section-name-mismatch
   # A CANDIDATE CENSUS, not the causal size of this defect. 3,514 TC ids across
