@@ -13,28 +13,17 @@ fixture. The totals were identical either way, which is why it went unnoticed.
 
 | Module | Source path | Pinned SHA |
 |---|---|---|
-| `spec-artifacts-process` | `spec_artifacts_process/manifest.yaml` | `62d691f` (`feat/68-typescript-test-name-form`) |
-| `spec-artifacts-iso` | `spec_artifacts_iso/manifest.yaml` | `3d871962b66db99a1854f40466e94ebabc7a6115` |
+| `spec-artifacts-process` | `spec_artifacts_process/` | `995288d609a47ab5a25f300ac0fa600d390b348c` |
+| `spec-artifacts-iso` | `spec_artifacts_iso/` | `a6b1c70be8c22e9f7cb432e4410b7a3a280d0217` |
 
-Vendored 2026-08-24.
+Vendored 2026-08-26 from the Project 18 tracking branches.
 
-## Two ways this copy is AHEAD of the SHA it names — read them before trusting it
+## Tracking status
 
-1. **`typescript-test-name-id` is on a BRANCH, not on `main`.** `62d691f` is
-   `agent-ix/spec-artifacts-process#71`, open against `main`. The SHA is recorded
-   rather than the branch name because a branch moves; repoint to the squash
-   commit when #71 merges.
-
-2. **The `section:` widening is in NO spec-artifacts-process commit at all.**
-   `test-case` and `traces-to` here declare
-   `section: ["*Test Case Summary*", Integration Test Matrix]`, while every ref
-   of that repository — checked across `refs/heads` and `refs/remotes` — still
-   declares the single name `Test Case Summary`. It was authored corpus-side by
-   `d272ad7` ("#272 landed — rows across many headings mint") and never
-   upstreamed. So this file is not a verbatim copy of any commit, and the CR-118
-   half of it has no home in the module it claims to vendor. Flagged, not
-   normalised: fixing it means an upstream ticket, and doing it silently here
-   would move what every case mints.
+These SHAs are tracking-branch commits, not `main` releases. The process source
+now owns both `typescript-test-name-id` and the CR-118 section family; the ISO
+source owns the matching `SectionNames` schema. There are no corpus-only
+declaration deltas.
 
 ## Why a copy and not a submodule
 
@@ -69,17 +58,16 @@ SHA rather than a silent fetch.
 ```yaml
 - name: test-case
   archetype: TestMatrix
-  section: Test Case Summary     # NOT "Test Cases"
+  section:
+  - "*Test Case Summary*"
+  - Integration Test Matrix      # NOT "Test Cases"
   id_column: Test ID             # NOT "ID"
 ```
 
-One heading name puts **a candidate 3,514 TC ids across 88 repositories** out of
-reach of the declaration. That census is not the section defect's causal size —
-CR-118 measured the section fix at **+83 rows**, the population being confounded
-with id-column mismatch (`agent-ix/quire-rs#318`). Either way, a corpus bound
-to a manifest whose heading always matches cannot exhibit that defect — which is
-why the synthetic module the ported cases arrived on was carried in
-`modules/variants/bench-legacy/` under a named ticket rather than here.
+CR-118's isolated, same-engine measurement was **+83 minted rows / +1 backed**;
+the earlier 3,514 figure counted id-shaped strings rather than mintable cells
+and is retracted by `agent-ix/quire-rs#351`. The corpus keeps the heading and
+id-column faults separate so each reports the setting an author can change.
 
 `agent-ix/quire-rs#285` migrated the last case off it and **deleted it**. Every
 fixture in this corpus now binds this declaration except one, and that one binds
