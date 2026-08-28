@@ -262,6 +262,25 @@ def find_diagnostic(diagnostics: list, key: str):
     return None
 
 
+def finding_text(finding: dict) -> str:
+    """All producer-owned text a reader sees for L3 guidance.
+
+    Human messages remain part of the contract, but action guidance now has
+    typed fields so consumers need not parse prose. Old payloads still grade
+    on `message`; current payloads may satisfy a controlled fragment through
+    their subject, change target, remedy, or safe diagnostic step.
+    """
+    fields = (
+        "message", "evidence", "subject", "change_target", "changeTarget",
+        "remedy", "next_diagnostic_step", "nextDiagnosticStep",
+    )
+    return " ".join(
+        value.strip()
+        for field in fields
+        if isinstance((value := finding.get(field)), str) and value.strip()
+    )
+
+
 def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | None = None) -> bool:
     """Run one DISCOVERED case and grade BOTH its contracts.
 
@@ -397,14 +416,10 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
                     f"{want[field]!r}, got {found.get(field)!r}"
                 )
         for fragment in want.get("message_contains") or []:
-            # The evidence counts as message here: `Suspicion` splits the prose
-            # from the numbers behind it, and both are rendered to the reader.
-            if fragment not in (found.get("message") or "") and fragment not in (
-                found.get("evidence") or ""
-            ):
+            if fragment not in finding_text(found):
                 failures.append(
-                    f"{name}: suspicion `{want['kind']}` names neither "
-                    f"{fragment!r} in its message nor its evidence"
+                    f"{name}: suspicion `{want['kind']}` finding text lacks "
+                    f"{fragment!r}"
                 )
     for kind in expect.get("absent_suspicions") or []:
         if kind in kinds:
@@ -441,10 +456,11 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
                 f"takes a LIST of substrings (FR-065-AC-29)")
             continue
         found = find_diagnostic(diagnostics, reason)
-        message = found["message"] if found else None
+        text = finding_text(found) if found else None
         for fragment in fragments:
-            if message is None or fragment not in message:
-                failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")
+            if text is None or fragment not in text:
+                failures.append(
+                    f"{name}: {reason} finding text lacks {fragment!r}; got {text!r}")
 
     # L2. EXACT, both directions, and the field that tells two minting defects
     # apart. A wrong section name strands the whole table — nothing mints, so

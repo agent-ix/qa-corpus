@@ -8,5 +8,7 @@ defects:
   row_id: TC-001
   findable: true
   expect_reason: mocked-confirmation
+  actionable_fragments:
+  - add or bind an independent test
   note: The bound test injects `Confirmation.allow()`; the store-backed auditor names this exact locus.
   confirmed_at: detected through quoin evidence audit after quoin#204
