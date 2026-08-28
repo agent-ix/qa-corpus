@@ -1,7 +1,7 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "b8fe571b9a60813fb85074a9fb3115ce564fccf1",
+  "corpus_revision": "1f24f18fcf739d9dcccb6244a40d9dfa3cde1451",
   "gap_count": 0,
   "rows": [
     {
@@ -9,101 +9,81 @@
       "language": "python",
       "level": "L1",
       "reached": 3,
-      "population": 4,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "python",
       "level": "L2",
       "reached": 3,
-      "population": 4,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "python",
       "level": "L3",
       "reached": 3,
-      "population": 4,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-python"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "rust",
       "level": "L1",
       "reached": 3,
-      "population": 4,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "rust",
       "level": "L2",
-      "reached": 2,
-      "population": 4,
+      "reached": 3,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "marker-mismatch",
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "rust",
       "level": "L3",
-      "reached": 2,
-      "population": 4,
+      "reached": 3,
+      "population": 3,
       "gap_count": 0,
-      "misses": [
-        "marker-mismatch",
-        "tag-inside-string-literal-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "typescript",
       "level": "L1",
       "reached": 4,
-      "population": 5,
+      "population": 4,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "typescript",
       "level": "L2",
       "reached": 4,
-      "population": 5,
+      "population": 4,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "attachment",
       "language": "typescript",
       "level": "L3",
       "reached": 4,
-      "population": 5,
+      "population": 4,
       "gap_count": 0,
-      "misses": [
-        "tag-inside-string-literal-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "detection",
@@ -118,25 +98,19 @@
       "mode": "detection",
       "language": "n/a",
       "level": "L2",
-      "reached": 2,
+      "reached": 4,
       "population": 4,
       "gap_count": 0,
-      "misses": [
-        "model-mints-nothing",
-        "undeclared-coverage-vocabulary"
-      ]
+      "misses": []
     },
     {
       "mode": "detection",
       "language": "n/a",
       "level": "L3",
-      "reached": 2,
+      "reached": 4,
       "population": 4,
       "gap_count": 0,
-      "misses": [
-        "model-mints-nothing",
-        "undeclared-coverage-vocabulary"
-      ]
+      "misses": []
     },
     {
       "mode": "detection",
@@ -178,24 +152,19 @@
       "mode": "detection",
       "language": "rust",
       "level": "L2",
+      "reached": 5,
+      "population": 5,
+      "gap_count": 0,
+      "misses": []
+    },
+    {
+      "mode": "detection",
+      "language": "rust",
+      "level": "L3",
       "reached": 4,
-      "population": 5,
+      "population": 4,
       "gap_count": 0,
-      "misses": [
-        "catch-all-properties"
-      ]
-    },
-    {
-      "mode": "detection",
-      "language": "rust",
-      "level": "L3",
-      "reached": 3,
-      "population": 5,
-      "gap_count": 0,
-      "misses": [
-        "catch-all-properties",
-        "stale-name-correct-trace-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "detection",
@@ -220,110 +189,90 @@
       "language": "typescript",
       "level": "L3",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "stale-name-correct-trace-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "python",
       "level": "L1",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "python",
       "level": "L2",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "python",
       "level": "L3",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-python"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "rust",
       "level": "L1",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "rust",
       "level": "L2",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "rust",
       "level": "L3",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "level": "L1",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "level": "L2",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "level": "L3",
       "reached": 1,
-      "population": 2,
+      "population": 1,
       "gap_count": 0,
-      "misses": [
-        "greenfield-no-symbols-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "join",
@@ -348,11 +297,9 @@
       "language": "python",
       "level": "L3",
       "reached": 2,
-      "population": 3,
+      "population": 2,
       "gap_count": 0,
-      "misses": [
-        "tag-names-unminted-tc-python"
-      ]
+      "misses": []
     },
     {
       "mode": "join",
@@ -377,11 +324,9 @@
       "language": "rust",
       "level": "L3",
       "reached": 2,
-      "population": 3,
+      "population": 2,
       "gap_count": 0,
-      "misses": [
-        "tag-names-unminted-tc-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "join",
@@ -406,11 +351,9 @@
       "language": "typescript",
       "level": "L3",
       "reached": 2,
-      "population": 3,
+      "population": 2,
       "gap_count": 0,
-      "misses": [
-        "tag-names-unminted-tc-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
@@ -444,105 +387,81 @@
       "language": "python",
       "level": "L1",
       "reached": 6,
-      "population": 7,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-python"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "python",
       "level": "L2",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-python",
-        "wrong-type-cell-python"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "python",
       "level": "L3",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-python",
-        "wrong-type-cell-python"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "rust",
       "level": "L1",
       "reached": 6,
-      "population": 7,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "rust",
       "level": "L2",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-rust",
-        "wrong-type-cell-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "rust",
       "level": "L3",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-rust",
-        "wrong-type-cell-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "typescript",
       "level": "L1",
       "reached": 6,
-      "population": 7,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "typescript",
       "level": "L2",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-typescript",
-        "wrong-type-cell-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "minting",
       "language": "typescript",
       "level": "L3",
-      "reached": 5,
-      "population": 7,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
-      "misses": [
-        "no-symbol-method-in-the-verification-column-typescript",
-        "wrong-type-cell-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "provenance",
@@ -556,24 +475,11 @@
     {
       "mode": "provenance",
       "language": "python",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "gap_count": 0,
-      "misses": [
-        "hollow-metric-python"
-      ]
-    },
-    {
-      "mode": "provenance",
-      "language": "python",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-python"
-      ]
+      "misses": []
     },
     {
       "mode": "provenance",
@@ -587,24 +493,11 @@
     {
       "mode": "provenance",
       "language": "rust",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "gap_count": 0,
-      "misses": [
-        "hollow-metric-rust"
-      ]
-    },
-    {
-      "mode": "provenance",
-      "language": "rust",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-rust"
-      ]
+      "misses": []
     },
     {
       "mode": "provenance",
@@ -618,24 +511,11 @@
     {
       "mode": "provenance",
       "language": "typescript",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "gap_count": 0,
-      "misses": [
-        "hollow-metric-typescript"
-      ]
-    },
-    {
-      "mode": "provenance",
-      "language": "typescript",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
       "gap_count": 0,
-      "misses": [
-        "hollow-metric-typescript"
-      ]
+      "misses": []
     },
     {
       "mode": "skeptic",
