@@ -5,7 +5,6 @@ binding_census:
   candidates: 1
   bound: 1
   self_named: 1
-  self_named_bound: 0
   self_named_unbound_example: src/lib.rs:7
 diagnostic_reasons:
 - marker-form-mismatch

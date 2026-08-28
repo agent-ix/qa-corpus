@@ -358,6 +358,8 @@
         "cases/detection/catch-all-headline/python/input/spec/FR-001.md",
         "cases/detection/catch-all-headline/rust/input/spec/FR-001.md",
         "cases/detection/catch-all-headline/typescript/input/spec/FR-001.md",
+        "cases/detection/self-name-form-mismatch/input/spec/FR-001.md",
+        "cases/detection/self-name-form-mismatch-control/input/spec/FR-001.md",
         "cases/detection/stale-name-correct-trace/rust/input/spec/FR-001.md",
         "cases/detection/stale-name-correct-trace/typescript/input/spec/FR-001.md",
         "cases/detection/stale-name-correct-trace-control/rust/input/spec/FR-001.md",
@@ -690,6 +692,8 @@
       "paths": [
         "cases/detection/low-symbol-binding/input/spec/tests.md",
         "cases/detection/low-symbol-binding-control/input/spec/tests.md",
+        "cases/detection/self-name-form-mismatch/input/spec/tests.md",
+        "cases/detection/self-name-form-mismatch-control/input/spec/tests.md",
         "cases/detection/test-name-id-in-call-title/input/spec/tests.md",
         "cases/detection/test-name-id-in-fn-name/input/spec/tests.md",
         "cases/detection/test-name-id-in-fn-name-control/input/spec/tests.md",

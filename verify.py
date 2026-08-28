@@ -48,6 +48,7 @@ ENV_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 REQUIRED_CAPABILITIES = (
     "action_guidance.structured",
     "binding_census",
+    "binding_census.self_named",
     "binding_census.tagged",
     "declaration_origins",
     "metrics_envelope",
