@@ -65,6 +65,10 @@ diagnostic_reasons:
   # token also fires for the archetypes this three-file tree has no document
   # of; naming `test-case` is what asserts the fact this case is about.
   - test-case/archetype-matches-nothing
+diagnostic_paths:
+  test-case/archetype-matches-nothing: spec-artifacts-process/manifest.yaml
+diagnostic_lines:
+  test-case/archetype-matches-nothing: 673
 diagnostic_message_contains:
   test-case/archetype-matches-nothing:
     - "test-case"

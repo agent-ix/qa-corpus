@@ -434,12 +434,31 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             failures.append(
                 f"{name}: external_observations expected {wanted}, got {actual}")
 
-    # L2: the finding names the right place.
+    # L2: the finding names the right place. Declaration diagnostics carry an
+    # absolute manifest path because their source may live outside the input
+    # tree; corpus expectations stay relocatable by naming its repository-
+    # relative suffix.
     for reason, want in (expect.get("diagnostic_paths") or {}).items():
         found = find_diagnostic(diagnostics, reason)
         actual = found.get("path") if found else None
-        if actual != want:
+        matches = actual == want or (
+            isinstance(actual, str)
+            and isinstance(want, str)
+            and not pathlib.PurePath(want).is_absolute()
+            and pathlib.PurePath(actual).parts[-len(pathlib.PurePath(want).parts):]
+                == pathlib.PurePath(want).parts
+        )
+        if not matches:
             failures.append(f"{name}: {reason} path expected {want!r}, got {actual!r}")
+
+    # A path without its authored line is not exact locality. Keep line as a
+    # typed integer rather than smuggling it into the path string, matching the
+    # diagnostic payload contract.
+    for reason, want in (expect.get("diagnostic_lines") or {}).items():
+        found = find_diagnostic(diagnostics, reason)
+        actual = found.get("line") if found else None
+        if actual != want:
+            failures.append(f"{name}: {reason} line expected {want!r}, got {actual!r}")
 
     # L3: the message names the things to change. A LIST, because L3 for a
     # mismatch is two facts — found and declared — and one substring is

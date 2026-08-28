@@ -721,6 +721,7 @@ def check_expectations(cases: list[dict]) -> None:
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
         positive = set(live.get("diagnostic_reasons") or [])
         positive.update(live.get("diagnostic_paths") or {})
+        positive.update(live.get("diagnostic_lines") or {})
         positive.update(live.get("diagnostic_message_contains") or {})
         asserted_present.update(reason.rsplit("/", 1)[-1] for reason in positive)
         asserted_absent.update(
@@ -805,6 +806,7 @@ def check_expectations(cases: list[dict]) -> None:
 
         claimed = set(ahead.get("diagnostic_reasons") or [])
         claimed |= set(ahead.get("diagnostic_paths") or {})
+        claimed |= set(ahead.get("diagnostic_lines") or {})
         claimed |= set(ahead.get("diagnostic_message_contains") or {})
         # A claim may be spelled `reason` or `declaration/reason`; both graders
         # accept the scoped form and resolve it the same way, so the registry
@@ -967,7 +969,7 @@ EXACTLY_GRADED = ("backed", "total", "unbacked_rows", "groups", "no_symbol_rows"
 
 KNOWN_EXPECT_KEYS = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
-    "diagnostic_paths", "diagnostic_message_contains", "binding_census",
+    "diagnostic_paths", "diagnostic_lines", "diagnostic_message_contains", "binding_census",
     "metrics", "no_symbol_rows", "unbacked_rows", "groups",
     "untracked_symbols",
     "validate_contains", "validate_absent",
@@ -1001,6 +1003,7 @@ def check_reasons(
 
     present = [token(k) for k in (block.get("diagnostic_reasons") or [])]
     present += [token(k) for k in (block.get("diagnostic_paths") or {})]
+    present += [token(k) for k in (block.get("diagnostic_lines") or {})]
     present += [token(k) for k in (block.get("diagnostic_message_contains") or {})]
     absent = [token(k) for k in (block.get("absent_diagnostic_reasons") or [])]
 

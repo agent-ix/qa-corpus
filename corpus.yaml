@@ -447,7 +447,7 @@ witness_channels:
   # Did the declaration reach the rows it names, and did the engine say so?
   minting: [total, groups, unbacked_rows, no_symbol_rows, validate_contains,
             validate_absent, diagnostic_reasons, diagnostic_paths,
-            diagnostic_message_contains, absent_diagnostic_reasons]
+            diagnostic_lines, diagnostic_message_contains, absent_diagnostic_reasons]
   # Did the tag reach the symbol, and WHICH channel received it?
   #
   # `metrics` is in this set because `coverage.implements` is literally "did
@@ -461,15 +461,15 @@ witness_channels:
   # one" — which is why this is a correction to the rule and not a widening to
   # accommodate a case.
   attachment: [binding_census, backed, untracked_symbols, unbacked_rows, metrics,
-               diagnostic_reasons, diagnostic_paths, diagnostic_message_contains,
+               diagnostic_reasons, diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
                absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the scanner extract the symbol at all?
   parser: [binding_census, backed, untracked_symbols, diagnostic_reasons,
-           diagnostic_paths, diagnostic_message_contains,
+           diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
            absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the tag and the minted id meet?
   join: [backed, unbacked_rows, untracked_symbols, groups, diagnostic_reasons,
-         diagnostic_paths, diagnostic_message_contains,
+         diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
          absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the toolchain SURFACE the discrepancy — as a finding, or as a symbol
   # with no home, or as a row with no evidence?
@@ -486,16 +486,16 @@ witness_channels:
   # population that happens to differ is the incidental scalar this rule exists
   # to disqualify.
   detection: [metrics, untracked_symbols, unbacked_rows, diagnostic_reasons,
-              diagnostic_paths, diagnostic_message_contains,
+              diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
               absent_diagnostic_reasons, validate_contains, validate_absent,
               suspicions, absent_suspicions]
   # Was every authored row put in exactly one bucket?
   disposition: [metrics, groups, unbacked_rows, untracked_symbols,
-                diagnostic_reasons, diagnostic_paths,
+                diagnostic_reasons, diagnostic_paths, diagnostic_lines,
                 diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
   # Does the payload say what produced it?
   provenance: [metrics, binding_census, diagnostic_reasons, diagnostic_paths,
-               diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
+               diagnostic_lines, diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the skeptic layer flag the suite that proves nothing?
   #
   # `suspicions` and `absent_suspicions` were MISSING here, and that is the
@@ -506,7 +506,7 @@ witness_channels:
   # time, asserting `backed`/`total`/`binding_census` — true of any healthy
   # three-row tree — which is why it was byte-identical to two other fixtures
   # and why swapping their input trees left `make ci` green.
-  skeptic: [suspicions, absent_suspicions, external_observations, metrics, diagnostic_reasons, diagnostic_paths,
+  skeptic: [suspicions, absent_suspicions, external_observations, metrics, diagnostic_reasons, diagnostic_paths, diagnostic_lines,
             diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
 
 

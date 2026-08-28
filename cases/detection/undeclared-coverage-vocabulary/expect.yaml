@@ -1,4 +1,8 @@
 diagnostic_reasons: [undeclared-coverage-vocabulary]
+diagnostic_paths:
+  undeclared-coverage-vocabulary: dead-coverage-vocabulary/manifest.yaml
+diagnostic_lines:
+  undeclared-coverage-vocabulary: 15
 diagnostic_message_contains:
   undeclared-coverage-vocabulary: ["missing_quality_attribute", "declares no such enum"]
 absent_diagnostic_reasons: [model-mints-nothing]
