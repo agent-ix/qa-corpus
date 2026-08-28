@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=173> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=175> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -247,6 +247,10 @@ diagnostic_reasons:
   # row whose `row_id` is null — and agree in every field a reader looks at.
   - id-column-matches-nothing
   - low-symbol-binding
+  # agent-ix/quire-rs#367: mixed binding channels can keep the aggregate
+  # census healthy while a repository's self-named test convention binds
+  # nothing. This token is specific to that retained subpopulation.
+  - marker-form-mismatch
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
@@ -400,7 +404,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=78>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=79>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -418,8 +422,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=77> `kind: failure`
-# fixtures, all <derived:controlled_failures=77> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=78> `kind: failure`
+# fixtures, all <derived:controlled_failures=78> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -655,6 +659,10 @@ inventory:
     typescript: >-
       `typescript-test-name-id` reads the CALL TITLE, not a function name, which is the
       sibling row `detection/test-name-id-in-call-title`.
+- mode: detection
+  case: self-name-form-mismatch
+  source: agent-ix/filament-ide-rs@fc5d644b — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
+  languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
   # ENTIRELY on headers. The fixture models the MIXED case instead — one

@@ -1,0 +1,26 @@
+total: 2
+backed: 1
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 1
+  self_named: 1
+  self_named_bound: 0
+  self_named_unbound_example: src/lib.rs:7
+diagnostic_reasons:
+- marker-form-mismatch
+- hollow-denominator
+diagnostic_paths:
+  marker-form-mismatch: src/lib.rs
+diagnostic_lines:
+  marker-form-mismatch: 7
+diagnostic_message_contains:
+  marker-form-mismatch:
+  - evidence symbols carry an id in their own name
+  - test_tc_001_every_finding_defaults_to_warning
+metrics:
+- name: coverage.self_named_binding.rust
+  state: measured
+  examined: 1
+  matched: 0
+  hollow: true

@@ -1,7 +1,7 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "1f24f18fcf739d9dcccb6244a40d9dfa3cde1451",
+  "corpus_revision": "aef956f7007f348f16446c826efea325c160b92f",
   "gap_count": 0,
   "rows": [
     {
@@ -143,8 +143,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L1",
-      "reached": 5,
-      "population": 5,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
       "misses": []
     },
@@ -152,8 +152,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L2",
-      "reached": 5,
-      "population": 5,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
       "misses": []
     },
@@ -161,8 +161,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L3",
-      "reached": 4,
-      "population": 4,
+      "reached": 5,
+      "population": 5,
       "gap_count": 0,
       "misses": []
     },
