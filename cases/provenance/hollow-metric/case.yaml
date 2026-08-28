@@ -4,6 +4,12 @@ issue_ref: agent-ix/quoin#227
 mode: provenance
 module: ecosystem
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: not_applicable, reason: "the finding concerns an aggregate metric and has no unique source line"}
+    L3: {state: required}
 findable: true
 tags:
 - TC-1014

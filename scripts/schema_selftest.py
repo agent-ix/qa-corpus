@@ -133,6 +133,36 @@ CASES = [
         "`control_for` must be a list of strings",
     ),
     (
+        "a findable failure cannot omit its grading contract",
+        lambda t: mutate_yaml(
+            t, "cases/detection/low-symbol-binding/case.yaml",
+            "grading_contract:", "not_grading_contract:"),
+        "must declare `grading_contract`",
+    ),
+    (
+        "a grading level cannot use an unknown applicability state",
+        lambda t: mutate_yaml(
+            t, "cases/detection/low-symbol-binding/case.yaml",
+            "L2: {state: required}", "L2: {state: maybe}"),
+        "grading_contract.levels.L2.state 'maybe' is not one of",
+    ),
+    (
+        "a locality exclusion must carry a non-empty reason",
+        lambda t: mutate_yaml(
+            t, "cases/provenance/hollow-metric/case.yaml",
+            "L2: {state: not_applicable, reason: \"the finding concerns an aggregate metric and has no unique source line\"}",
+            "L2: {state: not_applicable}"),
+        "excludes the case without a non-empty reason",
+    ),
+    (
+        "a behavior channel cannot require a finding level",
+        lambda t: mutate_yaml(
+            t, "cases/disposition/greenfield-no-symbols/case.yaml",
+            "L1: {state: not_applicable, reason: \"graded through the honest zero-population metric payload; no finding is expected\"}",
+            "L1: {state: required}"),
+        "a behavior case must exclude all finding levels",
+    ),
+    (
         "a `by_kind` FORBIDDEN field is rejected",
         # `by_kind.control.forbidden` is what stops a control declaring `case:`
         # and claiming an inventory cell it cannot cover — a control measures

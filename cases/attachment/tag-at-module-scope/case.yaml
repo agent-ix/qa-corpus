@@ -4,6 +4,12 @@ id: tag-at-module-scope
 case: tag-at-module-scope
 issue_ref: agent-ix/quire-rs#312
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 pending_reason: >-
   A tag at module scope lands inside the file's own `Container` symbol, which `python.rs` and

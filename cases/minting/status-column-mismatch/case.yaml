@@ -4,6 +4,12 @@ mode: minting
 language: n/a
 module: ecosystem
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/status-column-mismatch/input --json
 tags: [TC-1079, minting, coverage, status]

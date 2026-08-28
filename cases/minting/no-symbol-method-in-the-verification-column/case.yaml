@@ -4,6 +4,12 @@ mode: minting
 module: ecosystem
 findable: true
 kind: failure
+grading_contract:
+  channel: behavior
+  levels:
+    L1: {state: not_applicable, reason: "graded through no_symbol_rows; the declared exemption must not emit a finding"}
+    L2: {state: not_applicable, reason: "the exempt row intentionally has no finding locus"}
+    L3: {state: not_applicable, reason: "the exempt row intentionally has no finding guidance"}
 tags:
 - TC-1008
 - coverage

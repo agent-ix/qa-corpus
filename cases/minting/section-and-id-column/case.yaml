@@ -4,6 +4,12 @@ id: section-and-id-column
 case: section-and-id-column
 issue_ref: agent-ix/quire-rs#270
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 tags:
 - TC-1014

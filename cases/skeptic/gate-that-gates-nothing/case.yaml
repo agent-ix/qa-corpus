@@ -4,6 +4,12 @@ issue_ref: agent-ix/quoin#224
 mode: skeptic
 module: ecosystem
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 tags:
 - TC-1014

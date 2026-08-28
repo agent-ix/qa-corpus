@@ -4,6 +4,12 @@ id: tag-on-non-test-function
 case: tag-on-non-test-function
 issue_ref: agent-ix/quire-rs#312
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 pending_reason: >-
   `SymbolKind::Function.binds_trace_ids()` is false (CR-061), so a tag on production code is

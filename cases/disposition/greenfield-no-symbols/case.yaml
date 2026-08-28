@@ -4,6 +4,12 @@ mode: disposition
 module: ecosystem
 findable: true
 kind: failure
+grading_contract:
+  channel: behavior
+  levels:
+    L1: {state: not_applicable, reason: "graded through the honest zero-population metric payload; no finding is expected"}
+    L2: {state: not_applicable, reason: "no finding is expected, so there is no finding locus to grade"}
+    L3: {state: not_applicable, reason: "no finding is expected, so there is no finding guidance to grade"}
 tags:
 - TC-994
 - coverage

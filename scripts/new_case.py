@@ -215,6 +215,15 @@ def main() -> int:
         "comment": "What this case is about, and the measurement that made it worth "
                    "a fixture.",
     }
+    if args.kind == "failure":
+        meta["grading_contract"] = {
+            "channel": "finding",
+            "levels": {
+                "L1": {"state": "required"},
+                "L2": {"state": "required"},
+                "L3": {"state": "required"},
+            },
+        }
     # `relaxation_ticket` is REQUIRED whenever `module` is not `ecosystem`
     # (`case_schema.conditional`, FR-065-CON-3 — a variant binding must name the
     # ticket it is sizing). That conditional landed in the same change as the

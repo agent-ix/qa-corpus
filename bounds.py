@@ -108,6 +108,9 @@ def validate_case(declared: dict, kind: str, where: str, schema: dict) -> list[s
         elif spec == ["str"]:
             ok = isinstance(value, list) and all(isinstance(v, str) for v in value)
             want = "a list of strings"
+        elif spec == "grading_contract":
+            ok = isinstance(value, dict)
+            want = "a grading contract mapping"
         else:
             problems.append(
                 f"{where}: `case_schema.types` declares `{field}: {spec!r}`, "
@@ -252,12 +255,117 @@ def discover() -> list[dict]:
                 "_where": f"{rel}/{language}",
             })
     declaration = load_declaration()
+    check_grading_contracts(declaration, cases)
     check_case_schema(declaration, cases)
     check_known_gaps(declaration)
     detection = [case for case in cases if case.get("mode") != "reporting"]
     check_controls(detection)
     check_expectations(detection)
     return cases
+
+
+def check_grading_contracts(declaration: dict, cases: list[dict]) -> None:
+    """Require explicit finding-recall applicability on every scored failure.
+
+    A behavior fixture and a finding fixture are both intentionally
+    `findable`: one is found through a directly graded payload and the other
+    through a producer finding. Treating the shared boolean as a promise that
+    all three finding levels apply manufactured locality misses. The contract
+    below makes that distinction authored data and refuses silent exclusions.
+    """
+    channels = {"finding", "direct-observation", "behavior"}
+    levels = tuple(declaration.get("grading_levels") or [])
+    states = {"required", "not_applicable"}
+    problems: list[str] = []
+
+    for case in cases:
+        if (
+            case.get("kind") != "failure"
+            or not case.get("findable")
+            or case.get("mode") == "reporting"
+        ):
+            continue
+        contract = case.get("grading_contract")
+        if not isinstance(contract, dict):
+            problems.append(
+                f"{case['id']}: a findable failure must declare "
+                "`grading_contract` rather than inheriting finding levels "
+                "from its fixture shape")
+            continue
+        unknown = set(contract) - {"channel", "levels"}
+        if unknown:
+            problems.append(
+                f"{case['id']}: grading_contract has unknown keys "
+                f"{sorted(unknown)}")
+        channel = contract.get("channel")
+        if channel not in channels:
+            problems.append(
+                f"{case['id']}: grading_contract.channel {channel!r} is not "
+                f"one of {sorted(channels)}")
+        declared_levels = contract.get("levels")
+        if not isinstance(declared_levels, dict):
+            problems.append(
+                f"{case['id']}: grading_contract.levels must be a mapping")
+            continue
+        missing = set(levels) - set(declared_levels)
+        extra = set(declared_levels) - set(levels)
+        if missing or extra:
+            problems.append(
+                f"{case['id']}: grading_contract.levels missing "
+                f"{sorted(missing)} and adds {sorted(extra)}")
+        for level in levels:
+            entry = declared_levels.get(level)
+            if not isinstance(entry, dict):
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} must be "
+                    "a mapping")
+                continue
+            unknown_entry = set(entry) - {"state", "reason"}
+            if unknown_entry:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} has "
+                    f"unknown keys {sorted(unknown_entry)}")
+            state = entry.get("state")
+            if state not in states:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level}.state "
+                    f"{state!r} is not one of {sorted(states)}")
+            reason = entry.get("reason")
+            if state == "not_applicable" and not (
+                isinstance(reason, str) and reason.strip()
+            ):
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} excludes "
+                    "the case without a non-empty reason")
+            if state == "required" and "reason" in entry:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} is "
+                    "required and therefore may not carry an exclusion reason")
+
+        states_by_level = {
+            level: (declared_levels.get(level) or {}).get("state")
+            for level in levels
+        }
+        if channel == "behavior" and any(
+            state != "not_applicable" for state in states_by_level.values()
+        ):
+            problems.append(
+                f"{case['id']}: a behavior case must exclude all finding "
+                "levels; its payload expectations remain the oracle")
+        if channel == "direct-observation" and states_by_level != {
+            "L1": "required", "L2": "required", "L3": "not_applicable"
+        }:
+            problems.append(
+                f"{case['id']}: a direct observation requires L1/L2 and "
+                "excludes finding-level L3")
+        if channel == "finding" and states_by_level.get("L1") != "required":
+            problems.append(
+                f"{case['id']}: a finding channel must require L1")
+
+    if problems:
+        raise CorpusError(
+            f"{len(problems)} grading-contract problem(s):\n  "
+            + "\n  ".join(problems))
 
 
 def check_case_schema(declaration: dict, cases: list[dict]) -> None:

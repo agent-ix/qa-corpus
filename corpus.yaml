@@ -137,6 +137,7 @@ case_schema:
   - pending_reason
   - relaxation_ticket
   - declaration_under_test
+  - grading_contract
   # The type of every declared field. `str`, `bool`, or `[str]` for a list.
   #
   # Presence was not enough, and a mutation proved it rather than an argument:
@@ -162,6 +163,7 @@ case_schema:
     pending_reason: str
     relaxation_ticket: str
     declaration_under_test: str
+    grading_contract: grading_contract
   by_kind:
     failure:
       # The only kind that may claim a defect is detectable, so the only kind

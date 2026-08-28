@@ -4,6 +4,12 @@ mode: detection
 module: ecosystem
 findable: true
 kind: failure
+grading_contract:
+  channel: direct-observation
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: not_applicable, reason: "untracked_symbols is a located direct payload, not a repair-guidance finding"}
 tags:
 - TC-993
 - coverage
