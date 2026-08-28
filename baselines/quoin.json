@@ -1,19 +1,71 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quoin",
-  "corpus_revision": "6146d880222b203c443bc974e34142708ef4cd43",
+  "corpus_revision": "afcd9c7fadcf266e86f219807c7de4e0095f3579",
   "gap_count": 0,
   "rows": [
     {
       "mode": "attachment",
       "language": "python",
+      "family": "behavior",
+      "level": "L1",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-python",
+          "reason": "graded by proving tag-like string data is ignored; a finding would be a false positive"
+        }
+      ]
+    },
+    {
+      "mode": "attachment",
+      "language": "python",
+      "family": "behavior",
+      "level": "L2",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-python",
+          "reason": "ignored string data intentionally produces no finding locus"
+        }
+      ]
+    },
+    {
+      "mode": "attachment",
+      "language": "python",
+      "family": "behavior",
+      "level": "L3",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-python",
+          "reason": "ignored string data intentionally produces no finding guidance"
+        }
+      ]
+    },
+    {
+      "mode": "attachment",
+      "language": "python",
       "family": "marker-form-mismatch",
       "level": "L1",
       "reached": 1,
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -24,7 +76,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -35,7 +88,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -46,7 +100,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -57,7 +112,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -68,40 +124,59 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L1",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-rust",
+          "reason": "graded by proving tag-like string data is ignored; a finding would be a false positive"
+        }
+      ]
     },
     {
       "mode": "attachment",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-rust",
+          "reason": "ignored string data intentionally produces no finding locus"
+        }
+      ]
     },
     {
       "mode": "attachment",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-rust",
+          "reason": "ignored string data intentionally produces no finding guidance"
+        }
+      ]
     },
     {
       "mode": "attachment",
@@ -112,7 +187,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -123,18 +199,20 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
       "language": "rust",
       "family": "marker-form-mismatch",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 2,
-      "rate": 0.5,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["marker-mismatch"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -145,7 +223,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -156,7 +235,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -167,40 +247,59 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L1",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-typescript",
+          "reason": "graded by proving tag-like string data is ignored; a finding would be a false positive"
+        }
+      ]
     },
     {
       "mode": "attachment",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-typescript",
+          "reason": "ignored string data intentionally produces no finding locus"
+        }
+      ]
     },
     {
       "mode": "attachment",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-inside-string-literal-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-inside-string-literal-typescript",
+          "reason": "ignored string data intentionally produces no finding guidance"
+        }
+      ]
     },
     {
       "mode": "attachment",
@@ -211,7 +310,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -222,7 +322,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -233,7 +334,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -244,7 +346,8 @@
       "population": 3,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -255,7 +358,8 @@
       "population": 3,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "attachment",
@@ -266,40 +370,8 @@
       "population": 3,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
-    },
-    {
-      "mode": "attachment",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L1",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["tag-inside-string-literal-typescript"]
-    },
-    {
-      "mode": "attachment",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["tag-inside-string-literal-typescript"]
-    },
-    {
-      "mode": "attachment",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L3",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["tag-inside-string-literal-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -310,29 +382,32 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
       "language": "n/a",
       "family": "model-mints-nothing",
       "level": "L2",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["model-mints-nothing"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
       "language": "n/a",
       "family": "model-mints-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["model-mints-nothing"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -343,7 +418,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -354,7 +430,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -365,7 +442,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -376,7 +454,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -387,7 +466,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -398,7 +478,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -409,29 +490,32 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
       "language": "n/a",
       "family": "undeclared-coverage-vocabulary",
       "level": "L2",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["undeclared-coverage-vocabulary"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
       "language": "n/a",
       "family": "undeclared-coverage-vocabulary",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["undeclared-coverage-vocabulary"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -442,7 +526,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -453,7 +538,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -464,7 +550,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -475,7 +562,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -486,18 +574,20 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
       "language": "rust",
       "family": "catch-all-universal",
       "level": "L3",
-      "reached": 1,
+      "reached": 2,
       "population": 2,
-      "rate": 0.5,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["catch-all-properties"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -508,7 +598,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -519,7 +610,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -527,10 +619,16 @@
       "family": "direct-observation",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["stale-name-correct-trace-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "stale-name-correct-trace-rust",
+          "reason": "untracked_symbols is a located direct payload, not a repair-guidance finding"
+        }
+      ]
     },
     {
       "mode": "detection",
@@ -541,7 +639,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -552,7 +651,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -563,7 +663,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -574,7 +675,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -585,7 +687,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -596,7 +699,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -607,7 +711,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -618,7 +723,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -629,7 +735,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -640,7 +747,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -651,7 +759,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "detection",
@@ -659,10 +768,67 @@
       "family": "direct-observation",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["stale-name-correct-trace-typescript"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "stale-name-correct-trace-typescript",
+          "reason": "untracked_symbols is a located direct payload, not a repair-guidance finding"
+        }
+      ]
+    },
+    {
+      "mode": "disposition",
+      "language": "python",
+      "family": "behavior",
+      "level": "L1",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-python",
+          "reason": "graded through the honest zero-population metric payload; no finding is expected"
+        }
+      ]
+    },
+    {
+      "mode": "disposition",
+      "language": "python",
+      "family": "behavior",
+      "level": "L2",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-python",
+          "reason": "no finding is expected, so there is no finding locus to grade"
+        }
+      ]
+    },
+    {
+      "mode": "disposition",
+      "language": "python",
+      "family": "behavior",
+      "level": "L3",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-python",
+          "reason": "no finding is expected, so there is no finding guidance to grade"
+        }
+      ]
     },
     {
       "mode": "disposition",
@@ -673,7 +839,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
@@ -684,7 +851,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
@@ -695,40 +863,59 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L1",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-rust",
+          "reason": "graded through the honest zero-population metric payload; no finding is expected"
+        }
+      ]
     },
     {
       "mode": "disposition",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-rust",
+          "reason": "no finding is expected, so there is no finding locus to grade"
+        }
+      ]
     },
     {
       "mode": "disposition",
-      "language": "python",
-      "family": "unclaimed",
+      "language": "rust",
+      "family": "behavior",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-rust",
+          "reason": "no finding is expected, so there is no finding guidance to grade"
+        }
+      ]
     },
     {
       "mode": "disposition",
@@ -739,7 +926,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
@@ -750,7 +938,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
@@ -761,106 +950,95 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L1",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-typescript",
+          "reason": "graded through the honest zero-population metric payload; no finding is expected"
+        }
+      ]
     },
     {
       "mode": "disposition",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-typescript",
+          "reason": "no finding is expected, so there is no finding locus to grade"
+        }
+      ]
     },
     {
       "mode": "disposition",
-      "language": "rust",
-      "family": "unclaimed",
+      "language": "typescript",
+      "family": "behavior",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-rust"]
-    },
-    {
-      "mode": "disposition",
-      "language": "typescript",
-      "family": "marker-form-mismatch",
-      "level": "L1",
-      "reached": 1,
-      "population": 1,
-      "rate": 1,
-      "gap_count": 0,
-      "misses": []
-    },
-    {
-      "mode": "disposition",
-      "language": "typescript",
-      "family": "marker-form-mismatch",
-      "level": "L2",
-      "reached": 1,
-      "population": 1,
-      "rate": 1,
-      "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "greenfield-no-symbols-typescript",
+          "reason": "no finding is expected, so there is no finding guidance to grade"
+        }
+      ]
     },
     {
       "mode": "disposition",
       "language": "typescript",
       "family": "marker-form-mismatch",
-      "level": "L3",
+      "level": "L1",
       "reached": 1,
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
       "language": "typescript",
-      "family": "unclaimed",
-      "level": "L1",
-      "reached": 0,
+      "family": "marker-form-mismatch",
+      "level": "L2",
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "disposition",
       "language": "typescript",
-      "family": "unclaimed",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["greenfield-no-symbols-typescript"]
-    },
-    {
-      "mode": "disposition",
-      "language": "typescript",
-      "family": "unclaimed",
+      "family": "marker-form-mismatch",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["greenfield-no-symbols-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -871,7 +1049,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -882,7 +1061,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -890,10 +1070,16 @@
       "family": "direct-observation",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-names-unminted-tc-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-names-unminted-tc-python",
+          "reason": "untracked_symbols is a located direct payload, not a repair-guidance finding"
+        }
+      ]
     },
     {
       "mode": "join",
@@ -904,7 +1090,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -915,7 +1102,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -926,7 +1114,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -937,7 +1126,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -948,7 +1138,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -956,10 +1147,16 @@
       "family": "direct-observation",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-names-unminted-tc-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-names-unminted-tc-rust",
+          "reason": "untracked_symbols is a located direct payload, not a repair-guidance finding"
+        }
+      ]
     },
     {
       "mode": "join",
@@ -970,7 +1167,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -981,7 +1179,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -992,7 +1191,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -1003,7 +1203,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -1014,7 +1215,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -1022,10 +1224,16 @@
       "family": "direct-observation",
       "level": "L3",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["tag-names-unminted-tc-typescript"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "tag-names-unminted-tc-typescript",
+          "reason": "untracked_symbols is a located direct payload, not a repair-guidance finding"
+        }
+      ]
     },
     {
       "mode": "join",
@@ -1036,7 +1244,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -1047,7 +1256,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "join",
@@ -1058,7 +1268,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1069,7 +1280,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1080,7 +1292,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1091,7 +1304,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1102,29 +1316,83 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "python",
       "family": "archetype-matches-nothing",
       "level": "L2",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-python"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "python",
       "family": "archetype-matches-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-python"]
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "minting",
+      "language": "python",
+      "family": "behavior",
+      "level": "L1",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-python",
+          "reason": "graded through no_symbol_rows; the declared exemption must not emit a finding"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "python",
+      "family": "behavior",
+      "level": "L2",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-python",
+          "reason": "the exempt row intentionally has no finding locus"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "python",
+      "family": "behavior",
+      "level": "L3",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-python",
+          "reason": "the exempt row intentionally has no finding guidance"
+        }
+      ]
     },
     {
       "mode": "minting",
@@ -1135,7 +1403,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1146,7 +1415,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1157,7 +1427,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1168,7 +1439,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1179,7 +1451,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1190,7 +1463,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1201,7 +1475,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1212,7 +1487,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1223,40 +1499,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
-    },
-    {
-      "mode": "minting",
-      "language": "python",
-      "family": "unclaimed",
-      "level": "L1",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-python"]
-    },
-    {
-      "mode": "minting",
-      "language": "python",
-      "family": "unclaimed",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-python"]
-    },
-    {
-      "mode": "minting",
-      "language": "python",
-      "family": "unclaimed",
-      "level": "L3",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-python"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1267,7 +1511,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1278,7 +1523,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1289,7 +1535,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1300,29 +1547,83 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "rust",
       "family": "archetype-matches-nothing",
       "level": "L2",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-rust"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "rust",
       "family": "archetype-matches-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-rust"]
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "minting",
+      "language": "rust",
+      "family": "behavior",
+      "level": "L1",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-rust",
+          "reason": "graded through no_symbol_rows; the declared exemption must not emit a finding"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "rust",
+      "family": "behavior",
+      "level": "L2",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-rust",
+          "reason": "the exempt row intentionally has no finding locus"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "rust",
+      "family": "behavior",
+      "level": "L3",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-rust",
+          "reason": "the exempt row intentionally has no finding guidance"
+        }
+      ]
     },
     {
       "mode": "minting",
@@ -1333,7 +1634,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1344,7 +1646,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1355,7 +1658,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1366,7 +1670,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1377,7 +1682,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1388,7 +1694,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1399,7 +1706,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1410,7 +1718,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1421,40 +1730,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
-    },
-    {
-      "mode": "minting",
-      "language": "rust",
-      "family": "unclaimed",
-      "level": "L1",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-rust"]
-    },
-    {
-      "mode": "minting",
-      "language": "rust",
-      "family": "unclaimed",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-rust"]
-    },
-    {
-      "mode": "minting",
-      "language": "rust",
-      "family": "unclaimed",
-      "level": "L3",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-rust"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1465,7 +1742,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1476,7 +1754,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1487,7 +1766,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1498,29 +1778,83 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "typescript",
       "family": "archetype-matches-nothing",
       "level": "L2",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
       "language": "typescript",
       "family": "archetype-matches-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["no-testmatrix-document-typescript"]
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "minting",
+      "language": "typescript",
+      "family": "behavior",
+      "level": "L1",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-typescript",
+          "reason": "graded through no_symbol_rows; the declared exemption must not emit a finding"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "typescript",
+      "family": "behavior",
+      "level": "L2",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-typescript",
+          "reason": "the exempt row intentionally has no finding locus"
+        }
+      ]
+    },
+    {
+      "mode": "minting",
+      "language": "typescript",
+      "family": "behavior",
+      "level": "L3",
+      "reached": 0,
+      "population": 0,
+      "rate": null,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "no-symbol-method-in-the-verification-column-typescript",
+          "reason": "the exempt row intentionally has no finding guidance"
+        }
+      ]
     },
     {
       "mode": "minting",
@@ -1531,7 +1865,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1542,7 +1877,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1553,7 +1889,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1564,7 +1901,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1575,7 +1913,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1586,7 +1925,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1597,7 +1937,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1608,7 +1949,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1619,40 +1961,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
-    },
-    {
-      "mode": "minting",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L1",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-typescript"]
-    },
-    {
-      "mode": "minting",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L2",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-typescript"]
-    },
-    {
-      "mode": "minting",
-      "language": "typescript",
-      "family": "unclaimed",
-      "level": "L3",
-      "reached": 0,
-      "population": 1,
-      "rate": 0,
-      "gap_count": 0,
-      "misses": ["no-symbol-method-in-the-verification-column-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1663,7 +1973,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1674,7 +1985,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "minting",
@@ -1685,7 +1997,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1696,7 +2009,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1704,21 +2018,28 @@
       "family": "hollow-denominator",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["hollow-metric-python"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "hollow-metric-python",
+          "reason": "the finding concerns an aggregate metric and has no unique source line"
+        }
+      ]
     },
     {
       "mode": "provenance",
       "language": "python",
       "family": "hollow-denominator",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["hollow-metric-python"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1729,7 +2050,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1737,21 +2059,28 @@
       "family": "hollow-denominator",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["hollow-metric-rust"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "hollow-metric-rust",
+          "reason": "the finding concerns an aggregate metric and has no unique source line"
+        }
+      ]
     },
     {
       "mode": "provenance",
       "language": "rust",
       "family": "hollow-denominator",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["hollow-metric-rust"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1762,7 +2091,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "provenance",
@@ -1770,21 +2100,28 @@
       "family": "hollow-denominator",
       "level": "L2",
       "reached": 0,
-      "population": 1,
-      "rate": 0,
+      "population": 0,
+      "rate": null,
       "gap_count": 0,
-      "misses": ["hollow-metric-typescript"]
+      "misses": [],
+      "exclusions": [
+        {
+          "case": "hollow-metric-typescript",
+          "reason": "the finding concerns an aggregate metric and has no unique source line"
+        }
+      ]
     },
     {
       "mode": "provenance",
       "language": "typescript",
       "family": "hollow-denominator",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["hollow-metric-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1795,7 +2132,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1806,18 +2144,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "python",
       "family": "gate-that-gates-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["gate-that-gates-nothing-python"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1828,7 +2168,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1839,18 +2180,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "python",
       "family": "mocked-confirmation",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["mocked-confirmation-python"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1861,7 +2204,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1872,7 +2216,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1883,7 +2228,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1894,7 +2240,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1905,18 +2252,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "family": "gate-that-gates-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["gate-that-gates-nothing-rust"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1927,7 +2276,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1938,18 +2288,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "rust",
       "family": "mocked-confirmation",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["mocked-confirmation-rust"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1960,7 +2312,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1971,7 +2324,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1982,7 +2336,8 @@
       "population": 2,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -1993,7 +2348,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2004,7 +2360,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2015,7 +2372,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2026,7 +2384,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2037,18 +2396,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "typescript",
       "family": "gate-that-gates-nothing",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["gate-that-gates-nothing-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2059,7 +2420,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2070,18 +2432,20 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
       "language": "typescript",
       "family": "mocked-confirmation",
       "level": "L3",
-      "reached": 0,
+      "reached": 1,
       "population": 1,
-      "rate": 0,
+      "rate": 1,
       "gap_count": 0,
-      "misses": ["mocked-confirmation-typescript"]
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2092,7 +2456,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2103,7 +2468,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     },
     {
       "mode": "skeptic",
@@ -2114,7 +2480,8 @@
       "population": 1,
       "rate": 1,
       "gap_count": 0,
-      "misses": []
+      "misses": [],
+      "exclusions": []
     }
   ]
 }
