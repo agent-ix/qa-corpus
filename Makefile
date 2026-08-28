@@ -23,7 +23,7 @@ help:
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make measurement-selftest prove both active plans have derived output"
-	@echo "make measurement-collection OUTPUT=... export a governed collection"
+	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
 	@echo "make duplicate-census    reject unexplained fixture-copy drift"
 	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
@@ -65,7 +65,8 @@ measurement-selftest:
 
 .PHONY: measurement-collection
 measurement-collection:
-	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",)
+	@test -n "$(VERIFICATION_STACK)" || { echo "VERIFICATION_STACK= is required"; exit 1; }
+	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
 
 .PHONY: duplicate-census
 duplicate-census:

@@ -27,7 +27,8 @@ runs:
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
-make measurement-collection OUTPUT=/tmp/qa-corpus.json
+make measurement-collection OUTPUT=/tmp/qa-corpus.json \
+  VERIFICATION_STACK=/path/to/attestation.json
                                 # derive the two plan-owned collection families
 make duplicate-census           # reject unexplained copied-fixture divergence/groups
 make external-channel           # validate exact non-Quire producer/invocations
@@ -140,6 +141,12 @@ Quire and Quoin runner-produced baselines, retaining the runner boundary in
 every observation. Quire and Quoin own their engine- and finding-quality plans;
 engineering-assurance and spec-artifacts-process intentionally own no producer
 or measurement store in this QA program.
+
+New collections are schema v2 and fail closed unless the caller supplies a
+`verification-stack-attestation-v1` whose clean `qa-corpus` source matches this
+checkout exactly. The exporter records that full source SHA as `toolVersion`,
+so scorer movement cannot hide behind a constant label. Retained schema-v1
+collections are historical evidence and are never regenerated.
 
 ### Today: run `make bounds`
 
