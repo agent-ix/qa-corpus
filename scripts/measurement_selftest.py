@@ -29,9 +29,15 @@ def main() -> int:
         problems.append("the collection does not retain both runner boundaries")
     for row in recall:
         population = row["population"]
-        expected = round(population["matched"] / population["examined"], 6)
-        if row["value"] != expected:
-            problems.append(f"{row['dimensions']}: recall was not derived from counts")
+        if population["examined"] == 0:
+            if row["state"] != "not_computed" or row["value"] is not None:
+                problems.append(f"{row['dimensions']}: zero population is not explicitly uncomputed")
+            if population["matched"] != 0 or not population["identity"].get("exclusions"):
+                problems.append(f"{row['dimensions']}: zero population lost its exclusions")
+        else:
+            expected = round(population["matched"] / population["examined"], 6)
+            if row["state"] != "measured" or row["value"] != expected:
+                problems.append(f"{row['dimensions']}: recall was not derived from counts")
     if problems:
         print("measurement self-test: FAIL", file=sys.stderr)
         for problem in problems:

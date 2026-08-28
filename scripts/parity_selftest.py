@@ -67,7 +67,7 @@ import sys
 import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-COPY_ITEMS = ("bounds.py", "verify.py", "corpus.yaml", "cases", "modules")
+COPY_ITEMS = ("bounds.py", "verify.py", "corpus.yaml", "cases", "modules", "config")
 
 FAILURE = "cases/disposition/real-tests-zero-tags/rust/expect.yaml"
 CONTROL_INPUT = "real-tests-zero-tags-control/rust/input"

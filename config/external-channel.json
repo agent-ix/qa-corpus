@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "qa-external-channel-v1",
+  "producer": {
+    "identity": "agent-ix/quoin",
+    "sourceRevision": "d3ed56a9f89710ed55ef72bf0e37d090bf994fad",
+    "versionOutput": "0.21.9-76-gd3ed56a"
+  },
+  "channels": {
+    "mock-injection-observed": {
+      "command": ["evidence", "inspect-mocks", "--repo", "{repo}", "--suite", "SUITE-CORPUS", "--commit", "0000000000000000000000000000000000000000", "--dry-run", "--json"],
+      "owner": "quoin evidence inspect-mocks"
+    },
+    "gate-that-gates-nothing": {
+      "command": ["validate", "--repo", "{repo}", "--json"],
+      "owner": "quoin validate"
+    }
+  }
+}

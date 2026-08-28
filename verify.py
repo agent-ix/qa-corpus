@@ -24,6 +24,7 @@ from bounds import (KNOWN_EXPECT_KEYS, CorpusError, controls_by_case, discover,
                     load_declaration)
 
 ROOT = pathlib.Path(__file__).resolve().parent
+EXTERNAL_CHANNEL = json.loads((ROOT / "config/external-channel.json").read_text())
 
 # NOT a PATH lookup. `quire` on PATH is whatever somebody installed — measured
 # at 0.29.0 on this machine, which pins engine v0.42.0 and predates
@@ -45,9 +46,12 @@ QUOIN = os.environ.get("QUOIN", "")
 ENV_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
 REQUIRED_CAPABILITIES = (
+    "action_guidance.structured",
     "binding_census",
     "binding_census.tagged",
+    "declaration_origins",
     "metrics_envelope",
+    "property_spans.safe_refusal",
 )
 
 
@@ -61,6 +65,38 @@ def check_engine() -> str:
             "somebody put there, and grading a corpus with an unidentified "
             "binary is the defect this corpus exists to catch."
         )
+    provenance = subprocess.run(
+        [QUIRE, "provenance", "--json"], cwd=ROOT, capture_output=True, text=True)
+    try:
+        tool = json.loads(provenance.stdout)
+    except json.JSONDecodeError as error:
+        raise SystemExit(
+            f"verify: {QUIRE} emitted invalid machine provenance: {error}") from error
+    if provenance.returncode != 0 or tool.get("schemaVersion") != "quire-tool-provenance-v1":
+        raise SystemExit(
+            f"verify: {QUIRE} does not implement quire-tool-provenance-v1; refusing to run cases")
+    for component in ("cli", "engine"):
+        identity = tool.get(component) or {}
+        revision = identity.get("sourceRevision")
+        if identity.get("sourceState") != "clean":
+            raise SystemExit(
+                f"verify: {component} source state is {identity.get('sourceState')!r}, not clean")
+        if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+            raise SystemExit(f"verify: {component} source revision is not a full SHA: {revision!r}")
+    expected = {
+        "cli": os.environ.get("EXPECTED_QUIRE_CLI_REVISION"),
+        "engine": os.environ.get("EXPECTED_QUIRE_ENGINE_REVISION"),
+    }
+    for component, revision in expected.items():
+        if revision and tool[component]["sourceRevision"] != revision:
+            raise SystemExit(
+                f"verify: {component} revision drift: expected {revision}, "
+                f"got {tool[component]['sourceRevision']}")
+    missing = [t for t in REQUIRED_CAPABILITIES if t not in tool.get("capabilities", [])]
+    if missing:
+        raise SystemExit(
+            f"verify: {QUIRE} lacks required provenance capability token(s): {', '.join(missing)}")
+
     # Probed over a REAL case, with its module. A scope carrying no
     # traceability model errors and emits no payload, which the first version
     # then read as "no provenance block" — accusing a perfectly good binary of
@@ -99,7 +135,10 @@ def check_engine() -> str:
             f"{', '.join(missing)}. It reports {engine.get('capabilities')}. "
             f"Aborting rather than grading against a payload with holes in it."
         )
-    return f"{engine.get('cli')} (engine {engine.get('engine')})"
+    return (
+        f"{tool['cli']['version']}@{tool['cli']['sourceRevision'][:8]} "
+        f"(engine {tool['engine']['version']}@{tool['engine']['sourceRevision'][:8]})"
+    )
 
 # Every key `expect.yaml` may carry, READ FROM THE LOADER rather than restated.
 #
@@ -118,6 +157,15 @@ def inspect_external(meta: dict, expected: list[dict], name: str,
         failures.append(
             f"{name}: declares external_observations but QUOIN is unset; "
             "refusing to grade an external finding as absent")
+        return []
+    producer = EXTERNAL_CHANNEL.get("producer") or {}
+    version = subprocess.run(
+        [QUOIN, "--version"], cwd=ROOT, capture_output=True, text=True, check=False)
+    actual_version = version.stdout.strip()
+    if version.returncode != 0 or actual_version != producer.get("versionOutput"):
+        failures.append(
+            f"{name}: external producer drift: expected {producer.get('versionOutput')!r} "
+            f"from {producer.get('sourceRevision')}, got {actual_version!r}")
         return []
     repo = str(ROOT / meta["dir"] / "input")
     kinds = {item.get("kind") for item in expected}
@@ -140,10 +188,13 @@ def inspect_external(meta: dict, expected: list[dict], name: str,
 
     # Run every registered producer, including for an expected empty list. An
     # empty expectation means "looked and found none", not "selected no tool".
-    payload = produce(
-        ["evidence", "inspect-mocks", "--repo", repo,
-         "--suite", "SUITE-CORPUS", "--commit", "0" * 40,
-         "--dry-run", "--json"], "mock inspection")
+    channels = EXTERNAL_CHANNEL.get("channels") or {}
+
+    def command(kind: str) -> list[str]:
+        declared = (channels.get(kind) or {}).get("command") or []
+        return [str(token).replace("{repo}", repo) for token in declared]
+
+    payload = produce(command("mock-injection-observed"), "mock inspection")
     observations.extend({
         "kind": "mock-injection-observed",
         "path": item.get("path"),
@@ -152,8 +203,7 @@ def inspect_external(meta: dict, expected: list[dict], name: str,
         "injects": item.get("injects") or [],
     } for item in payload.get("injections", []))
 
-    payload = produce(["validate", "--repo", repo, "--json"],
-                      "gate validation")
+    payload = produce(command("gate-that-gates-nothing"), "gate validation")
     observations.extend({
         "kind": item.get("kind"),
         "obligation": item.get("obligation"),
@@ -162,7 +212,7 @@ def inspect_external(meta: dict, expected: list[dict], name: str,
     } for item in payload.get("findings", [])
       if item.get("kind") == "gate-that-gates-nothing")
 
-    known = {"mock-injection-observed", "gate-that-gates-nothing"}
+    known = set(channels)
     unknown = sorted(str(kind) for kind in kinds - known)
     if unknown:
         failures.append(f"{name}: no external producer owns {unknown}")

@@ -33,6 +33,8 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
+from bounds import validate_case
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COPY_ITEMS = ("bounds.py", "corpus.yaml", "cases", "modules")
 
@@ -71,6 +73,13 @@ CASES = [
             t, "cases/attachment/tests-directory-topology/case.yaml",
             "issue_ref:", "not_issue_ref:"),
         "required field `issue_ref` is missing",
+    ),
+    (
+        "a malformed if_field_is_not rule is a stable schema diagnostic",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml", "  conditional:\n",
+            "  conditional:\n  - if_field_is_not: [kind, control]\n    then_required: [control_for]\n"),
+        "case_schema.conditional[0].if_field_is_not must be a one-entry mapping",
     ),
     (
         "an applicable language with no case is rejected by the CI policy",
@@ -252,6 +261,24 @@ CASES = [
 ]
 
 
+def check_conditional_library_surface() -> None:
+    schema = {
+        "required": ["kind"],
+        "optional": ["ticket"],
+        "by_kind": {"failure": {}, "control": {}},
+        "conditional": [
+            {"if_field_is_not": {"kind": "control"}, "then_required": ["ticket"]}
+        ],
+    }
+    assert validate_case({"kind": "control"}, "control", "control-case", schema) == []
+    problems = validate_case({"kind": "failure"}, "failure", "failure-case", schema)
+    assert any("`ticket` is required" in problem for problem in problems), problems
+
+    schema["conditional"][0]["if_field_is_not"] = ["kind", "control"]
+    problems = validate_case({"kind": "failure"}, "failure", "failure-case", schema)
+    assert any("one-entry mapping" in problem and "failure-case" in problem for problem in problems)
+
+
 def run_bounds(tree: pathlib.Path) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, "bounds.py", "--require-complete"], cwd=tree,
@@ -409,6 +436,12 @@ def _scaffold(tree: pathlib.Path) -> list[str]:
 
 def main() -> int:
     failures: list[str] = []
+
+    try:
+        check_conditional_library_surface()
+        print("  ok   conditional rule library surface accepts valid and diagnoses malformed shapes")
+    except AssertionError as error:
+        failures.append(f"conditional rule library surface: {error}")
 
     scaffolder = check_scaffolder()
     if scaffolder:

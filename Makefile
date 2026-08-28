@@ -9,8 +9,9 @@
 # quire-cli#68's provenance guard refusing a binary that cannot name its engine,
 # which is the case for refusing rather than warning. Same defect and same fix
 # as `agent-ix/quoin`'s `bench-tier1` default.
-QUIRE ?= $(abspath $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire)
-QUOIN ?= $(abspath ../quoin/bin/quoin.js)
+CORPUS_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+QUIRE ?= $(shell command -v quire 2>/dev/null)
+QUOIN ?= $(shell command -v quoin 2>/dev/null)
 CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 
 .PHONY: help
@@ -23,6 +24,8 @@ help:
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make measurement-selftest prove both active plans have derived output"
 	@echo "make measurement-collection OUTPUT=... export a governed collection"
+	@echo "make duplicate-census    reject unexplained fixture-copy drift"
+	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
 
 # Every case, by the exact string in its own case.yaml. A documented command
@@ -64,8 +67,16 @@ measurement-selftest:
 measurement-collection:
 	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",)
 
+.PHONY: duplicate-census
+duplicate-census:
+	@python3 scripts/duplicate_census.py
+
+.PHONY: external-channel
+external-channel:
+	@python3 scripts/external_channel_selftest.py
+
 .PHONY: ci
-ci: schema-selftest bounds verify verify-reporting measurement-selftest parity-selftest
+ci: schema-selftest duplicate-census external-channel bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

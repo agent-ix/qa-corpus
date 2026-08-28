@@ -95,7 +95,7 @@ def detection_observations(values: dict[str, dict[str, Any]]) -> list[dict[str, 
             population = row.get("population")
             if not isinstance(reached, int) or not isinstance(population, int):
                 raise ExportError(f"{runner}: recall row lacks integer counts")
-            if population <= 0 or reached < 0 or reached > population:
+            if population < 0 or reached < 0 or reached > population:
                 raise ExportError(
                     f"{runner}: invalid recall population {reached}/{population}"
                 )
@@ -104,13 +104,20 @@ def detection_observations(values: dict[str, dict[str, Any]]) -> list[dict[str, 
                 for key in ("runner", "mode", "language", "level")
             }
             dimensions["runner"] = runner
+            exclusions = row.get("exclusions", [])
+            if not isinstance(exclusions, list):
+                raise ExportError(f"{runner}: recall exclusions are not a list")
+            if population == 0 and (reached != 0 or not exclusions):
+                raise ExportError(
+                    f"{runner}: zero recall population must retain exclusions and zero reached"
+                )
             observations.append(
                 {
                     "metric": "detection.recall",
                     "planId": "MP-202",
                     "definitionVersion": "detection-recall-v1",
-                    "state": "measured",
-                    "value": round(reached / population, 6),
+                    "state": "not_computed" if population == 0 else "measured",
+                    "value": None if population == 0 else round(reached / population, 6),
                     "unit": "fraction of seeded failure cases",
                     "shape": "ratio",
                     "population": {
@@ -120,6 +127,7 @@ def detection_observations(values: dict[str, dict[str, Any]]) -> list[dict[str, 
                         "identity": {
                             **dimensions,
                             "misses": row.get("misses", []),
+                            "exclusions": exclusions,
                         },
                     },
                     "dimensions": dimensions,

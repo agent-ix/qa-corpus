@@ -130,12 +130,23 @@ def validate_case(declared: dict, kind: str, where: str, schema: dict) -> list[s
             f"{where}: `{field}` is in neither `required` nor `optional` — an "
             f"unmodelled field is a field nothing checks")
 
-    for rule in schema.get("conditional") or []:
+    for index, rule in enumerate(schema.get("conditional") or []):
+        if not isinstance(rule, dict):
+            problems.append(
+                f"corpus.yaml: case_schema.conditional[{index}] must be a mapping, "
+                f"got {type(rule).__name__} {rule!r}")
+            continue
         trigger = rule.get("if_present")
         if trigger is not None:
             fires = trigger in declared
         else:
-            (field, value), = (rule.get("if_field_is_not") or {}).items()
+            condition = rule.get("if_field_is_not")
+            if not isinstance(condition, dict) or len(condition) != 1:
+                problems.append(
+                    f"corpus.yaml: case_schema.conditional[{index}].if_field_is_not "
+                    f"must be a one-entry mapping, got {condition!r}; while validating {where}")
+                continue
+            (field, value), = condition.items()
             fires = declared.get(field) != value
         if not fires:
             continue

@@ -29,6 +29,8 @@ make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
 make measurement-collection OUTPUT=/tmp/qa-corpus.json
                                 # derive the two plan-owned collection families
+make duplicate-census           # reject unexplained copied-fixture divergence/groups
+make external-channel           # validate exact non-Quire producer/invocations
 ```
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
@@ -108,6 +110,14 @@ labels/              hand-labelled ground truth for finding-quality scoring
 config/              the metric dictionary
 baselines/           per-runner baselines, versioned with the corpus
 ```
+
+`config/duplicate-census.json` classifies every byte-identical fixture group.
+Cases stay self-contained, so intentional support files are copied rather than
+symlinked; their invariant is that copies move together unless the seeded defect
+requires divergence. When a reviewed fixture change intentionally alters group
+membership, run `python3 scripts/duplicate_census.py --update`, inspect the exact
+paths/digests, and commit the fixture and census in one change. A new group, a
+disappeared group, or unexplained membership change fails CI.
 
 ## The bounds matrix is the point
 
