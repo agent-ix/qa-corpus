@@ -88,7 +88,7 @@ def git_remote(root: pathlib.Path) -> str:
 def load_verification_stack(
     path: pathlib.Path,
     *,
-    source_revision: str,
+    source_revision: str | None = None,
     source_remote: str,
 ) -> dict[str, Any]:
     try:
@@ -125,7 +125,7 @@ def load_verification_stack(
     own_source = sources.get("qa-corpus")
     if not isinstance(own_source, dict):
         raise ExportError("verification-stack has no qa-corpus source")
-    if own_source["revision"] != source_revision:
+    if source_revision is not None and own_source["revision"] != source_revision:
         raise ExportError(
             "verification-stack qa-corpus revision does not match exporter source"
         )
@@ -160,6 +160,61 @@ def load_verification_stack(
             "verification-stack toolchains must pin node, rust, and python"
         )
     return value
+
+
+def validate_source_against_stack(
+    root: pathlib.Path, verification_stack: dict[str, Any]
+) -> str:
+    """Return the locked source revision after rejecting all non-evidence drift."""
+    head = git_revision(root)
+    locked = verification_stack["sources"]["qa-corpus"]["revision"]
+    if head == locked:
+        return locked
+    ancestor = subprocess.run(
+        ["git", "merge-base", locked, head],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if ancestor.returncode != 0 or ancestor.stdout.strip() != locked:
+        raise ExportError(
+            "qa-corpus evidence overlay does not descend from the attested revision"
+        )
+    commits = subprocess.run(
+        ["git", "rev-list", "--parents", f"{locked}..{head}"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if commits.returncode != 0 or any(
+        len(line.split()) != 2 for line in commits.stdout.splitlines() if line.strip()
+    ):
+        raise ExportError(
+            "qa-corpus evidence overlay is not a linear, merge-free chain"
+        )
+    changed = subprocess.run(
+        ["git", "diff", "--name-only", locked, head],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if changed.returncode != 0:
+        raise ExportError("qa-corpus evidence overlay diff is unavailable")
+    allowed = "spec/evidence/measurements"
+    unexpected = [
+        path
+        for path in changed.stdout.splitlines()
+        if path and path != allowed and not path.startswith(f"{allowed}/")
+    ]
+    if unexpected:
+        raise ExportError(
+            "qa-corpus evidence overlay changes non-evidence paths: "
+            + ", ".join(unexpected)
+        )
+    return locked
 
 
 def validate_python_toolchain(verification_stack: dict[str, Any]) -> None:
@@ -368,12 +423,11 @@ def main() -> int:
     )
     args = parser.parse_args()
     try:
-        source_revision = git_revision(ROOT)
         verification_stack = load_verification_stack(
             args.verification_stack,
-            source_revision=source_revision,
             source_remote=git_remote(ROOT),
         )
+        source_revision = validate_source_against_stack(ROOT, verification_stack)
         validate_python_toolchain(verification_stack)
         collection = build_collection(
             ROOT,

@@ -4,11 +4,17 @@
 from __future__ import annotations
 
 import pathlib
+import subprocess
 import sys
 import json
 import tempfile
 
-from export_measurements import ExportError, build_collection, load_verification_stack
+from export_measurements import (
+    ExportError,
+    build_collection,
+    load_verification_stack,
+    validate_source_against_stack,
+)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -30,6 +36,12 @@ def attestation(revision: str) -> dict:
         "artifacts": {"fixture": "sha256:" + "3" * 64},
         "toolchains": {"node": "22.15.0", "rust": "1.94.1", "python": "3.10.12"},
     }
+
+
+def git(root: pathlib.Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", *args], cwd=root, check=True, capture_output=True, text=True
+    ).stdout.strip()
 
 
 def main() -> int:
@@ -154,6 +166,39 @@ def main() -> int:
             pass
         else:
             problems.append("the source remote mutation did not fail closed")
+    with tempfile.TemporaryDirectory(prefix="qa-evidence-overlay-selftest-") as temp:
+        root = pathlib.Path(temp)
+        git(root, "init")
+        git(root, "config", "user.email", "test@example.invalid")
+        git(root, "config", "user.name", "Test")
+        (root / "source.py").write_text("locked\n")
+        git(root, "add", "source.py")
+        git(root, "commit", "-m", "locked source")
+        locked = git(root, "rev-parse", "HEAD")
+        overlay_stack = attestation(locked)
+        evidence = root / "spec" / "evidence" / "measurements" / "run.json"
+        evidence.parent.mkdir(parents=True)
+        evidence.write_text("{}\n")
+        git(root, "add", "spec/evidence/measurements/run.json")
+        git(root, "commit", "-m", "record evidence")
+        if validate_source_against_stack(root, overlay_stack) != locked:
+            problems.append("the evidence overlay changed the producer source revision")
+        (root / "source.py").write_text("drifted\n")
+        git(root, "add", "source.py")
+        git(root, "commit", "-m", "code drift")
+        try:
+            validate_source_against_stack(root, overlay_stack)
+        except ExportError:
+            pass
+        else:
+            problems.append("the code-path overlay did not fail closed")
+        (root / "dirty.txt").write_text("uncommitted\n")
+        try:
+            validate_source_against_stack(root, overlay_stack)
+        except ExportError:
+            pass
+        else:
+            problems.append("the dirty overlay did not fail closed")
     if problems:
         print("measurement self-test: FAIL", file=sys.stderr)
         for problem in problems:
