@@ -18,6 +18,7 @@ def attestation(revision: str) -> dict:
         "schemaVersion": "verification-stack-attestation-v1",
         "lockDigest": "sha256:" + "1" * 64,
         "executableDigest": "sha256:" + "2" * 64,
+        "buildProfile": "release",
         "sources": {
             "qa-corpus": {
                 "revision": revision,
@@ -109,6 +110,7 @@ def main() -> int:
                 "executable digest",
                 {**stack, "executableDigest": "sha256:short"},
             ),
+            ("build profile", {**stack, "buildProfile": "debug"}),
             ("revision", attestation("b" * 40)),
             (
                 "source state",
