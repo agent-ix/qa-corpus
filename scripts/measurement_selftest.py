@@ -58,6 +58,22 @@ def main() -> int:
         problems.append("no runner recall observations were exported")
     if {row["dimensions"]["runner"] for row in recall} != {"quire-rs", "quoin"}:
         problems.append("the collection does not retain both runner boundaries")
+    observation_keys = [
+        (row["metric"], json.dumps(row.get("dimensions", {}), sort_keys=True))
+        for row in observations
+    ]
+    if len(observation_keys) != len(set(observation_keys)):
+        problems.append("the collection contains duplicate metric dimensions")
+    quoin_recall = [
+        row for row in recall if row["dimensions"]["runner"] == "quoin"
+    ]
+    if not quoin_recall or any(not row["dimensions"].get("family") for row in quoin_recall):
+        problems.append("Quoin recall observations lost their family partition")
+    quire_recall = [
+        row for row in recall if row["dimensions"]["runner"] == "quire-rs"
+    ]
+    if any("family" in row["dimensions"] for row in quire_recall):
+        problems.append("Quire recall observations invented a family partition")
     for row in recall:
         population = row["population"]
         if population["examined"] == 0:

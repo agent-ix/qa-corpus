@@ -190,6 +190,7 @@ def baselines(root: pathlib.Path) -> dict[str, dict[str, Any]]:
 
 def detection_observations(values: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
     observations: list[dict[str, Any]] = []
+    seen: set[tuple[str, tuple[tuple[str, str], ...]]] = set()
     for runner in RUNNERS:
         for row in values[runner]["rows"]:
             reached = row.get("reached")
@@ -201,10 +202,24 @@ def detection_observations(values: dict[str, dict[str, Any]]) -> list[dict[str, 
                     f"{runner}: invalid recall population {reached}/{population}"
                 )
             dimensions = {
-                key: str(row.get(key, ""))
-                for key in ("runner", "mode", "language", "level")
+                "runner": runner,
+                "mode": str(row.get("mode", "")),
+                "language": str(row.get("language", "")),
+                "level": str(row.get("level", "")),
             }
-            dimensions["runner"] = runner
+            if "family" in row:
+                dimensions["family"] = str(row["family"])
+            if any(not value for value in dimensions.values()):
+                raise ExportError(f"{runner}: recall row has an empty dimension")
+            observation_key = (
+                "detection.recall",
+                tuple(sorted(dimensions.items())),
+            )
+            if observation_key in seen:
+                raise ExportError(
+                    f"{runner}: duplicate detection.recall dimensions {dimensions}"
+                )
+            seen.add(observation_key)
             exclusions = row.get("exclusions", [])
             if not isinstance(exclusions, list):
                 raise ExportError(f"{runner}: recall exclusions are not a list")
