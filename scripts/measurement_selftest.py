@@ -27,6 +27,7 @@ def attestation(revision: str) -> dict:
         },
         "capabilities": ["fixture.capability"],
         "artifacts": {"fixture": "sha256:" + "3" * 64},
+        "toolchains": {"node": "22.15.0", "rust": "1.94.1", "python": "3.10.12"},
     }
 
 
@@ -64,14 +65,12 @@ def main() -> int:
     ]
     if len(observation_keys) != len(set(observation_keys)):
         problems.append("the collection contains duplicate metric dimensions")
-    quoin_recall = [
-        row for row in recall if row["dimensions"]["runner"] == "quoin"
-    ]
-    if not quoin_recall or any(not row["dimensions"].get("family") for row in quoin_recall):
+    quoin_recall = [row for row in recall if row["dimensions"]["runner"] == "quoin"]
+    if not quoin_recall or any(
+        not row["dimensions"].get("family") for row in quoin_recall
+    ):
         problems.append("Quoin recall observations lost their family partition")
-    quire_recall = [
-        row for row in recall if row["dimensions"]["runner"] == "quire-rs"
-    ]
+    quire_recall = [row for row in recall if row["dimensions"]["runner"] == "quire-rs"]
     if any("family" in row["dimensions"] for row in quire_recall):
         problems.append("Quire recall observations invented a family partition")
     for row in recall:
@@ -129,6 +128,7 @@ def main() -> int:
                 {**stack, "capabilities": ["fixture", "fixture"]},
             ),
             ("artifact", {**stack, "artifacts": {"fixture": "moving"}}),
+            ("toolchains", {**stack, "toolchains": {}}),
         ]
         for name, mutation in mutations:
             path.write_text(json.dumps(mutation))

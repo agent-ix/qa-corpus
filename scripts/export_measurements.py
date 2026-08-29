@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import platform
 import re
 import subprocess
 import sys
@@ -148,7 +149,22 @@ def load_verification_stack(
             raise ExportError(
                 f"verification-stack artifact {name} is not a full sha256 digest"
             )
+    toolchains = value.get("toolchains")
+    if not isinstance(toolchains, dict) or any(
+        not isinstance(toolchains.get(name), str) or not toolchains[name]
+        for name in ("node", "rust", "python")
+    ):
+        raise ExportError(
+            "verification-stack toolchains must pin node, rust, and python"
+        )
     return value
+
+
+def validate_python_toolchain(verification_stack: dict[str, Any]) -> None:
+    expected = verification_stack["toolchains"]["python"]
+    observed = platform.python_version()
+    if observed != expected:
+        raise ExportError(f"Python drift: expected {expected}, observed {observed}")
 
 
 def bounds_report(root: pathlib.Path) -> dict[str, Any]:
@@ -356,6 +372,7 @@ def main() -> int:
             source_revision=source_revision,
             source_remote=git_remote(ROOT),
         )
+        validate_python_toolchain(verification_stack)
         collection = build_collection(
             ROOT,
             source_revision=source_revision,

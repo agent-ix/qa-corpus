@@ -34,6 +34,12 @@ make duplicate-census           # reject unexplained copied-fixture divergence/g
 make external-channel           # validate exact non-Quire producer/invocations
 ```
 
+The governed exporter fails closed unless its source tree and origin equal the
+QA source in the supplied attestation and its Python runtime equals the
+attested toolchain version. The collection retains the complete attestation;
+an exporter run under an equal-looking but different interpreter is not
+recordable evidence.
+
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
 ```bash
