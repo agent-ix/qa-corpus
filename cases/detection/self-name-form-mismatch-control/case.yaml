@@ -1,0 +1,15 @@
+mode: detection
+language: rust
+module: ecosystem
+id: self-name-form-mismatch-control
+issue_ref: agent-ix/quire-rs#367
+kind: control
+control_for:
+- self-name-form-mismatch
+findable: false
+tags:
+- TC-1083
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/self-name-form-mismatch-control/input --json
+comment: The identical comment and test body use the ecosystem's declared `tc_001` function-name form, proving the subpopulation check stays silent on the repaired declaration.

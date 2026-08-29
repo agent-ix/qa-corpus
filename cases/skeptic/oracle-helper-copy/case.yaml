@@ -1,0 +1,18 @@
+id: oracle-helper-copy
+case: oracle-helper-copy
+issue_ref: agent-ix/quire-rs#236
+mode: skeptic
+module: ecosystem
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+findable: true
+tags: [TC-1080, skeptic, finding-quality, wild-regression]
+comment: >-
+  The controlled form of filament-ide-rs@59a180a7 TC-1598: an equality
+  assertion calls a same-file oracle helper whose decision predicate copies a
+  private production function in another file. There is no `expected` binding.

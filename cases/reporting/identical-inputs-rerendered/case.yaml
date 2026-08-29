@@ -1,0 +1,11 @@
+id: identical-inputs-rerendered
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: regression
+findable: false
+tags:
+- TC-1109
+reproduce: quoin report --repo cases/reporting/identical-inputs-rerendered/input --since before --format json
+

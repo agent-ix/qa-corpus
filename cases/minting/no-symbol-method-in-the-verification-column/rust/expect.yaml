@@ -1,0 +1,12 @@
+# RE-MEASURED against the vendored ecosystem declaration (engine bcda5ed,
+# `quire` 0.30.2). The list GREW by one and the growth is the migration's
+# doing, not a defect: `bench-no-symbol-vocab` declared only the `verification`
+# reference on the FR, so the matrix was never read; the ecosystem also
+# declares `traces-to` on the matrix, whose `TC-002` row is typed `Inspection`.
+#
+# `FR-001-AC-2` is the entry this case is named for. Its exemption comes from
+# the FR's Verification cell (`Inspection (TC-002)`), which is the column
+# CR-041 read past, and it is the one entry the control does not have.
+no_symbol_rows:
+  - FR-001-AC-2
+  - TC-002

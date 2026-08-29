@@ -1,0 +1,17 @@
+total: 2
+backed: 1
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 1
+  self_named: 1
+  self_named_bound: 1
+absent_diagnostic_reasons:
+- marker-form-mismatch
+- hollow-denominator
+metrics:
+- name: coverage.self_named_binding.rust
+  state: measured
+  examined: 1
+  matched: 1
+  hollow: false

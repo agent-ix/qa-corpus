@@ -1,0 +1,7 @@
+absent_diagnostic_reasons:
+  - catch-all-universal
+metrics:
+  -
+    name: coverage.specific_shaped
+    state: measured
+    value: 1

@@ -4,6 +4,12 @@ id: no-testmatrix-document
 case: no-testmatrix-document
 issue_ref: agent-ix/quire-rs#304
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 tags:
 - TC-1014

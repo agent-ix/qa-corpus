@@ -1,0 +1,13 @@
+id: config-digest-changed-control
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: control
+control_for:
+- config-digest-changed
+findable: false
+tags:
+- TC-1103
+reproduce: quoin report --repo cases/reporting/config-digest-changed-control/input --since before --format json
+

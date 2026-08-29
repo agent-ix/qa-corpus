@@ -1,0 +1,30 @@
+total: 4
+backed: 1
+groups:
+- document: spec/FR-001.md
+  target: acceptance-criterion
+  backed: 0
+  total: 2
+- document: spec/tests.md
+  target: test-case
+  backed: 1
+  total: 2
+unbacked_rows:
+- document: spec/tests.md
+  row_id: TC-001
+  target_ids: [FR-001-AC-1, TC-001]
+- document: spec/FR-001.md
+  row_id: FR-001-AC-1
+  target_ids: [FR-001-AC-1, TC-001]
+untracked_symbols:
+- symbol: defaults every finding to warning
+  trace_id: TC-999
+  path: src/coverage.test.ts
+binding_census:
+- language: typescript
+  candidates: 2
+  bound: 2
+absent_diagnostic_reasons:
+- no-symbol-bound
+- low-symbol-binding
+- hollow-denominator

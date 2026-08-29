@@ -1,16 +1,23 @@
 id: gate-that-gates-nothing
 case: gate-that-gates-nothing
-issue_ref: agent-ix/quoin#227
+issue_ref: agent-ix/quoin#224
 mode: skeptic
-language: rust
 module: ecosystem
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/skeptic/gate-that-gates-nothing/input
-  --json
 tags:
 - TC-1014
+- TC-1067
+- TC-1071
 - skeptic
 - finding-quality
-comment: A gate that is wired, green, and asserts no condition that could fail. Observed across filament-ide-rs's
-  own CI during pass 2, found by a human, and detected by nothing anywhere in the ecosystem.
+comment: >-
+  A declared and wired gate counts the forbidden condition but never asserts the count, so it
+  succeeds when the defect is present. The validator must name the script and line in every
+  supported project language.

@@ -4,6 +4,12 @@ issue_ref: agent-ix/quire-rs#323
 mode: attachment
 module: ecosystem
 kind: failure
+grading_contract:
+  channel: behavior
+  levels:
+    L1: {state: not_applicable, reason: "graded by proving tag-like string data is ignored; a finding would be a false positive"}
+    L2: {state: not_applicable, reason: "ignored string data intentionally produces no finding locus"}
+    L3: {state: not_applicable, reason: "ignored string data intentionally produces no finding guidance"}
 findable: true
 tags:
 - TC-1014

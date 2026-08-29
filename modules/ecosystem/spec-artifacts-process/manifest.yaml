@@ -664,39 +664,11 @@ traceability:
   # Nine declarations collapse to three. `spec/matrix.md` and `spec/evals.md`
   # need no entry of their own: a matrix is reached by what it *is*, not by what
   # it is called.
-  # ── One heading name reached one heading (quire-rs CR-118, #272) ──
   #
-  # `section:` took one name exactly, and a matrix that groups its rows under
-  # several headings minted only the group that happened to sit under that one.
-  # The denominator silently became "the rows under one heading" rather than
-  # "the rows this document declares", and a repository in that state reports
-  # PERFECT minting health on the fraction it can see.
-  #
-  # **[RAN]** over the 393 `type: TestMatrix` documents in ~/dev: 434 test-case
-  # ids sit in a `Test ID` table this target cannot reach. **306 of them — 70%
-  # — are under a heading that CONTAINS `Test Case Summary`** and qualifies it
-  # locally: `Test Case Summary (plugin scope)`, `Test Case Summary (discovery
-  # scope)`, `Phase 4 Test Case Summary`, `Modular Core Test Case Summary`,
-  # `Test Case Summary — packages/elements`. They are the same table, sharded
-  # by scope or by phase.
-  #
-  # So the widening is a **pattern, not a list of names**. A literal list would
-  # have to enumerate one repository's phase numbers and package paths, and
-  # would go stale the day somebody wrote `Phase 5`. The `#272` sketch proposed
-  # `["Test Case Summary", "Test Cases", "Integration Test Matrix", …]`;
-  # measured, that list reaches 14 of the 434 and misses all 306.
-  #
-  # `Integration Test Matrix` is declared as a NAME because it is a different
-  # claim — a differently-named table of test cases, with the declared `Test ID`
-  # column, in a repository that keeps its cross-process tests apart
-  # (`filament-editor`, 7 ids). A name reads better than a pattern for that.
-  #
-  # **`Test Cases` is deliberately NOT declared**, although it carries ids in
-  # three repositories. It is the canonical *wrong* heading — `spec-matrix`
-  # emits `Test Case Summary`, and `cases/minting/section-name-mismatch`
-  # asserts that a matrix saying `Test Cases` is reported rather than read.
-  # Declaring it would retire that finding by fiat instead of fixing the three
-  # documents, which is the "unify on one form and flag the rest" rule.
+  # A test matrix may qualify its canonical heading by scope or phase. Match
+  # that heading family plus the separately-defined integration matrix, but do
+  # not admit the noncanonical `Test Cases` heading. The target and its
+  # `traces-to` reference must remain identical so every minted row is read.
   trace_targets:
   - name: test-case
     archetype: TestMatrix
@@ -729,6 +701,7 @@ traceability:
     - fixtures/**
     section: Suites
     id_column: ID
+    evidence: reference-only
   # CR-037 (#63): StR validation criteria are a **minted id class** — a tag
   # naming `StR-004-VC-1` reconciled against nothing and landed in
   # `untracked_symbols` permanently, with no authoring-side fix available.
@@ -755,6 +728,21 @@ traceability:
     - fixtures/**
     section: Validation Criteria
     id_column: ID
+  # CR-043 (#69): mint ids only from sections declared by the archetype's shape
+  # contract. FR Constraints therefore mints; undeclared FR Invariants and NFR
+  # Constraints do not. IT success criteria remain an engine limitation owned
+  # by `agent-ix/quire-rs#244`, while StR validation criteria mint above.
+  #
+  # Evidence binds at criterion granularity, so bare FR ids deliberately do not
+  # back every child. `agent-ix/quire-rs#328` reports the exact minted children
+  # authors can use. `agent-ix/quire-rs#327` makes this optional FR section
+  # honest: absence is healthy, while a present table still mints normally.
+  - name: constraint
+    archetype: FR
+    exclude: [tests/**, tests_integration/**, fixtures/**]
+    section: Constraints
+    id_column: ID
+    required: false
   - name: inspection
     archetype: Inspections
     exclude:
@@ -763,6 +751,7 @@ traceability:
     - fixtures/**
     section: Inspections
     id_column: ID
+    evidence: reference-only
   # Requirement documents stay archetype-bound — but archetype binding requires
   # scope exclusion, because fixtures are legitimately typed. A test fixture
   # that exercises the `FR` contract *is* `type: FR`; that is what makes it a
@@ -830,6 +819,16 @@ traceability:
     targets: [test-case]
     expand_ranges: true
     strip_annotations: false
+  - name: constraint-validation
+    archetype: FR
+    exclude: [tests/**, tests_integration/**, fixtures/**]
+    section: Constraints
+    column: Validation
+    row_id_column: ID
+    pattern: '\b((?:TC|IT)(?:-[A-Za-z0-9]+)*-\d+[A-Za-z0-9]*)\b'
+    targets: [test-case]
+    expand_ranges: true
+    strip_annotations: false
   - name: nfr-verification
     archetype: NFR
     exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
@@ -840,11 +839,6 @@ traceability:
     targets: [test-case]
     expand_ranges: true
     strip_annotations: false
-  # Widened WITH the `test-case` target above, never after it (CR-118). This
-  # declaration reads `Traces To` off the same rows that target mints from, so
-  # a section the target reaches and this one does not is a row whose id exists
-  # and whose stated coverage nothing reads — the criteria it answers for would
-  # report unreferenced while the matrix looked healthy.
   - name: traces-to
     archetype: TestMatrix
     exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']

@@ -1,0 +1,14 @@
+backed: 1
+total: 3
+binding_census:
+- language: python
+  candidates: 1
+  bound: 1
+suspicions:
+- kind: oracle-resembles-implementation
+  path: src/test_containment.py
+  symbol: test_covers
+  line: 8
+  message_contains:
+  - "similarity 1.00"
+  - "src/test_containment.py::is_contained"

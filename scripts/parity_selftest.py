@@ -43,7 +43,7 @@ TWO OF THE CASES MUST STAY GREEN, and they are not padding.
   pair is graded, and the reach is 1 pair — not 0 of 35, and not over 35 pairs.
   The prediction came true and the sentence describing the world before it kept
   being published, which is the same defect as the fixture counts one file over
-  (<derived:fixtures=87> today).
+  (<derived:fixtures=175> today).
 
   The case below still MANUFACTURES a `validate_absent` on
   `real-tests-zero-tags`, and still should: one pair is not a demonstration that
@@ -67,7 +67,7 @@ import sys
 import tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-COPY_ITEMS = ("bounds.py", "verify.py", "corpus.yaml", "cases", "modules")
+COPY_ITEMS = ("bounds.py", "verify.py", "corpus.yaml", "cases", "modules", "config")
 
 FAILURE = "cases/disposition/real-tests-zero-tags/rust/expect.yaml"
 CONTROL_INPUT = "real-tests-zero-tags-control/rust/input"

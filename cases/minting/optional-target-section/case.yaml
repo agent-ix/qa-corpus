@@ -1,0 +1,13 @@
+id: optional-target-section
+issue_ref: agent-ix/quire-rs#327
+mode: minting
+language: n/a
+module: variants/optional-target-section
+declaration_under_test: optional minting sections
+kind: regression
+findable: false
+reproduce: quire coverage --scope cases/minting/optional-target-section/input --module modules/variants/optional-target-section --json
+tags: [TC-1076, minting, optional-section]
+comment: >-
+  A landed regression pin: an archetype-matching document may omit an explicitly
+  optional minting section without a false finding.

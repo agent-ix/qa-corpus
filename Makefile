@@ -9,28 +9,39 @@
 # quire-cli#68's provenance guard refusing a binary that cannot name its engine,
 # which is the case for refusing rather than warning. Same defect and same fix
 # as `agent-ix/quoin`'s `bench-tier1` default.
-QUIRE ?= $(if $(CARGO_TARGET_DIR),$(CARGO_TARGET_DIR),../quire-cli/target)/debug/quire
+CORPUS_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+QUIRE ?= $(shell command -v quire 2>/dev/null)
+QUOIN ?= $(shell command -v quoin 2>/dev/null)
 CASES := $(shell find cases -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort)
 
 .PHONY: help
 help:
 	@echo "make verify              run every case by its own recorded invocation"
-	@echo "make bounds              the derived matrix, gap_count, and pending list"
+	@echo "make verify-reporting    run the reporter cases over static records"
+	@echo "make bounds              derive the matrix and reject every applicable GAP"
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
+	@echo "make measurement-selftest prove both active plans have derived output"
+	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
+	@echo "make duplicate-census    reject unexplained fixture-copy drift"
+	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
 
 # Every case, by the exact string in its own case.yaml. A documented command
 # that does not work fails the corpus rather than misleading a reader.
 .PHONY: verify
 verify:
-	@QUIRE="$(QUIRE)" python3 verify.py
+	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 verify.py
+
+.PHONY: verify-reporting
+verify-reporting:
+	@QUOIN="$(QUOIN)" python3 scripts/verify_reporting.py
 
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
 bounds:
-	@python3 bounds.py
+	@python3 bounds.py --require-complete
 
 # A gate never observed to reject anything is indistinguishable from one that
 # cannot. Six mutations, each requiring `bounds.py` to fail NAMING the defect,
@@ -46,10 +57,27 @@ schema-selftest:
 # each, and a plain `verify` failure should be read before this one.
 .PHONY: parity-selftest
 parity-selftest:
-	@QUIRE="$(QUIRE)" python3 scripts/parity_selftest.py
+	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 scripts/parity_selftest.py
+
+.PHONY: measurement-selftest
+measurement-selftest:
+	@python3 scripts/measurement_selftest.py
+
+.PHONY: measurement-collection
+measurement-collection:
+	@test -n "$(VERIFICATION_STACK)" || { echo "VERIFICATION_STACK= is required"; exit 1; }
+	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
+
+.PHONY: duplicate-census
+duplicate-census:
+	@python3 scripts/duplicate_census.py
+
+.PHONY: external-channel
+external-channel:
+	@python3 scripts/external_channel_selftest.py
 
 .PHONY: ci
-ci: schema-selftest bounds verify parity-selftest
+ci: schema-selftest duplicate-census external-channel bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

@@ -1,20 +1,14 @@
 id: catch-all-headline-control
 issue_ref: agent-ix/quire-rs#261
 mode: detection
-language: rust
 module: ecosystem
 findable: false
 kind: control
 control_for:
 - catch-all-headline
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/catch-all-headline-control/input
-  --json
 tags:
 - TC-1009
 - properties
 - metric
-comment: 'The control: the same document with ONE specifically-shaped criterion (`idempotence`). The diagnostic
-  must go silent — a document with a specific shape is not what this finding is about. Without this the
-  assertion above is satisfied by a check that fires on every corpus, which is the constant CR-094 deleted
-  two checks for being. MIGRATED onto the real declaration with its partner (#285); `coverage.specific_shaped`
-  still measures 1 and the diagnostic still stays silent.'
+comment: >-
+  The same document with one specifically shaped criterion. The catch-all diagnostic must stay silent.

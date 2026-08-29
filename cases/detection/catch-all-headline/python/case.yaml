@@ -1,0 +1,1 @@
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/catch-all-headline/python/input --json

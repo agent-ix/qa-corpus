@@ -1,0 +1,1 @@
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tag-inside-string-literal/rust/input --json

@@ -24,6 +24,7 @@ from bounds import (KNOWN_EXPECT_KEYS, CorpusError, controls_by_case, discover,
                     load_declaration)
 
 ROOT = pathlib.Path(__file__).resolve().parent
+EXTERNAL_CHANNEL = json.loads((ROOT / "config/external-channel.json").read_text())
 
 # NOT a PATH lookup. `quire` on PATH is whatever somebody installed — measured
 # at 0.29.0 on this machine, which pins engine v0.42.0 and predates
@@ -33,6 +34,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 #
 # Pass an explicit binary: `QUIRE=/path/to/quire make verify`.
 QUIRE = os.environ.get("QUIRE", "")
+QUOIN = os.environ.get("QUOIN", "")
 
 # What a run of this corpus rests on. A binary lacking one of these cannot
 # produce the payload the fixtures assert, so the run ABORTS naming the token
@@ -43,7 +45,15 @@ QUIRE = os.environ.get("QUIRE", "")
 # parse error with a confident, wrong diagnosis.
 ENV_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
-REQUIRED_CAPABILITIES = ("binding_census", "metrics_envelope")
+REQUIRED_CAPABILITIES = (
+    "action_guidance.structured",
+    "binding_census",
+    "binding_census.self_named",
+    "binding_census.tagged",
+    "declaration_origins",
+    "metrics_envelope",
+    "property_spans.safe_refusal",
+)
 
 
 def check_engine() -> str:
@@ -56,6 +66,38 @@ def check_engine() -> str:
             "somebody put there, and grading a corpus with an unidentified "
             "binary is the defect this corpus exists to catch."
         )
+    provenance = subprocess.run(
+        [QUIRE, "provenance", "--json"], cwd=ROOT, capture_output=True, text=True)
+    try:
+        tool = json.loads(provenance.stdout)
+    except json.JSONDecodeError as error:
+        raise SystemExit(
+            f"verify: {QUIRE} emitted invalid machine provenance: {error}") from error
+    if provenance.returncode != 0 or tool.get("schemaVersion") != "quire-tool-provenance-v1":
+        raise SystemExit(
+            f"verify: {QUIRE} does not implement quire-tool-provenance-v1; refusing to run cases")
+    for component in ("cli", "engine"):
+        identity = tool.get(component) or {}
+        revision = identity.get("sourceRevision")
+        if identity.get("sourceState") != "clean":
+            raise SystemExit(
+                f"verify: {component} source state is {identity.get('sourceState')!r}, not clean")
+        if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+            raise SystemExit(f"verify: {component} source revision is not a full SHA: {revision!r}")
+    expected = {
+        "cli": os.environ.get("EXPECTED_QUIRE_CLI_REVISION"),
+        "engine": os.environ.get("EXPECTED_QUIRE_ENGINE_REVISION"),
+    }
+    for component, revision in expected.items():
+        if revision and tool[component]["sourceRevision"] != revision:
+            raise SystemExit(
+                f"verify: {component} revision drift: expected {revision}, "
+                f"got {tool[component]['sourceRevision']}")
+    missing = [t for t in REQUIRED_CAPABILITIES if t not in tool.get("capabilities", [])]
+    if missing:
+        raise SystemExit(
+            f"verify: {QUIRE} lacks required provenance capability token(s): {', '.join(missing)}")
+
     # Probed over a REAL case, with its module. A scope carrying no
     # traceability model errors and emits no payload, which the first version
     # then read as "no provenance block" — accusing a perfectly good binary of
@@ -64,7 +106,9 @@ def check_engine() -> str:
     # `case.yaml` and read `reproduce` off it — a language SET's shared
     # declaration has none, so the first set sorting before a single-language
     # case would have killed this with a bare `KeyError` before a case ran.
-    sample = next(iter(discover()), None)
+    sample = next(
+        (case for case in discover() if case.get("mode") != "reporting"), None
+    )
     if sample is None:
         raise SystemExit("verify: the corpus has no cases to probe with")
     meta = sample
@@ -92,7 +136,10 @@ def check_engine() -> str:
             f"{', '.join(missing)}. It reports {engine.get('capabilities')}. "
             f"Aborting rather than grading against a payload with holes in it."
         )
-    return f"{engine.get('cli')} (engine {engine.get('engine')})"
+    return (
+        f"{tool['cli']['version']}@{tool['cli']['sourceRevision'][:8]} "
+        f"(engine {tool['engine']['version']}@{tool['engine']['sourceRevision'][:8]})"
+    )
 
 # Every key `expect.yaml` may carry, READ FROM THE LOADER rather than restated.
 #
@@ -102,6 +149,76 @@ def check_engine() -> str:
 # can disagree with itself, which is the defect agent-ix/quire-rs#349 records
 # one list over.
 KNOWN = KNOWN_EXPECT_KEYS
+
+
+def inspect_external(meta: dict, expected: list[dict], name: str,
+                     failures: list[str]) -> list[dict]:
+    """Run the Quoin producer(s) named by an external witness block."""
+    if not QUOIN:
+        failures.append(
+            f"{name}: declares external_observations but QUOIN is unset; "
+            "refusing to grade an external finding as absent")
+        return []
+    producer = EXTERNAL_CHANNEL.get("producer") or {}
+    version = subprocess.run(
+        [QUOIN, "--version"], cwd=ROOT, capture_output=True, text=True, check=False)
+    actual_version = version.stdout.strip()
+    if version.returncode != 0 or actual_version != producer.get("versionOutput"):
+        failures.append(
+            f"{name}: external producer drift: expected {producer.get('versionOutput')!r} "
+            f"from {producer.get('sourceRevision')}, got {actual_version!r}")
+        return []
+    repo = str(ROOT / meta["dir"] / "input")
+    kinds = {item.get("kind") for item in expected}
+    observations = []
+
+    def produce(args: list[str], producer: str) -> dict:
+        done = subprocess.run(
+            [QUOIN, *args], cwd=ROOT, capture_output=True, text=True,
+            env={**os.environ, "CI": "1"})
+        if done.returncode != 0:
+            failures.append(
+                f"{name}: {producer} failed: {done.stderr.strip()[:300]}")
+            return {}
+        try:
+            return json.loads(done.stdout)
+        except json.JSONDecodeError:
+            failures.append(
+                f"{name}: {producer} emitted no JSON: {done.stdout[:200]!r}")
+            return {}
+
+    # Run every registered producer, including for an expected empty list. An
+    # empty expectation means "looked and found none", not "selected no tool".
+    channels = EXTERNAL_CHANNEL.get("channels") or {}
+
+    def command(kind: str) -> list[str]:
+        declared = (channels.get(kind) or {}).get("command") or []
+        return [str(token).replace("{repo}", repo) for token in declared]
+
+    payload = produce(command("mock-injection-observed"), "mock inspection")
+    observations.extend({
+        "kind": "mock-injection-observed",
+        "path": item.get("path"),
+        "line": item.get("line"),
+        "symbol": item.get("symbol"),
+        "injects": item.get("injects") or [],
+    } for item in payload.get("injections", []))
+
+    payload = produce(command("gate-that-gates-nothing"), "gate validation")
+    observations.extend({
+        "kind": item.get("kind"),
+        "obligation": item.get("obligation"),
+        "path": item.get("path"),
+        "line": item.get("line"),
+    } for item in payload.get("findings", [])
+      if item.get("kind") == "gate-that-gates-nothing")
+
+    known = set(channels)
+    unknown = sorted(str(kind) for kind in kinds - known)
+    if unknown:
+        failures.append(f"{name}: no external producer owns {unknown}")
+    return sorted(observations, key=lambda item: (
+        item.get("kind") or "", item.get("path") or "", item.get("line") or 0))
 
 
 def is_hollow(metric: dict) -> bool:
@@ -196,6 +313,25 @@ def find_diagnostic(diagnostics: list, key: str):
     return None
 
 
+def finding_text(finding: dict) -> str:
+    """All producer-owned text a reader sees for L3 guidance.
+
+    Human messages remain part of the contract, but action guidance now has
+    typed fields so consumers need not parse prose. Old payloads still grade
+    on `message`; current payloads may satisfy a controlled fragment through
+    their subject, change target, remedy, or safe diagnostic step.
+    """
+    fields = (
+        "message", "evidence", "subject", "change_target", "changeTarget",
+        "remedy", "next_diagnostic_step", "nextDiagnosticStep",
+    )
+    return " ".join(
+        value.strip()
+        for field in fields
+        if isinstance((value := finding.get(field)), str) and value.strip()
+    )
+
+
 def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | None = None) -> bool:
     """Run one DISCOVERED case and grade BOTH its contracts.
 
@@ -231,14 +367,18 @@ def check(meta: dict, failures: list[str], ahead: list[str], payloads: dict | No
         failures.append(f"{name}: invocation failed: {done.stderr.strip()[:200]}")
         return False
     got = json.loads(done.stdout)
+    live_path = pathlib.Path(meta["expect"])
+    live = yaml.safe_load(live_path.read_text()) or {}
+    if "external_observations" in live:
+        got["external_observations"] = inspect_external(
+            meta, live.get("external_observations") or [], name, failures)
     # Kept for the differential, which needs each CONTROL's payload and must not
     # re-run 34 of them to get it. One run per case, exactly as before.
     if payloads is not None:
         payloads[(meta["id"], meta.get("language"))] = got
 
-    live_path = pathlib.Path(meta["expect"])
     forward_path = case / "expect-pending.yaml"
-    grade(yaml.safe_load(live_path.read_text()) or {}, got, meta, name, failures)
+    grade(live, got, meta, name, failures)
 
     # The pairing itself is the LOADER's check (`bounds.check_expectations`,
     # FR-065-AC-26) and reaching here means it held. Asserted, not assumed: an
@@ -327,14 +467,10 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
                     f"{want[field]!r}, got {found.get(field)!r}"
                 )
         for fragment in want.get("message_contains") or []:
-            # The evidence counts as message here: `Suspicion` splits the prose
-            # from the numbers behind it, and both are rendered to the reader.
-            if fragment not in (found.get("message") or "") and fragment not in (
-                found.get("evidence") or ""
-            ):
+            if fragment not in finding_text(found):
                 failures.append(
-                    f"{name}: suspicion `{want['kind']}` names neither "
-                    f"{fragment!r} in its message nor its evidence"
+                    f"{name}: suspicion `{want['kind']}` finding text lacks "
+                    f"{fragment!r}"
                 )
     for kind in expect.get("absent_suspicions") or []:
         if kind in kinds:
@@ -342,12 +478,38 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
                 f"{name}: suspicion `{kind}` fired on input that must stay silent"
             )
 
-    # L2: the finding names the right place.
+    if "external_observations" in expect:
+        wanted = expect.get("external_observations") or []
+        actual = got.get("external_observations") or []
+        if actual != wanted:
+            failures.append(
+                f"{name}: external_observations expected {wanted}, got {actual}")
+
+    # L2: the finding names the right place. Declaration diagnostics carry an
+    # absolute manifest path because their source may live outside the input
+    # tree; corpus expectations stay relocatable by naming its repository-
+    # relative suffix.
     for reason, want in (expect.get("diagnostic_paths") or {}).items():
         found = find_diagnostic(diagnostics, reason)
         actual = found.get("path") if found else None
-        if actual != want:
+        matches = actual == want or (
+            isinstance(actual, str)
+            and isinstance(want, str)
+            and not pathlib.PurePath(want).is_absolute()
+            and pathlib.PurePath(actual).parts[-len(pathlib.PurePath(want).parts):]
+                == pathlib.PurePath(want).parts
+        )
+        if not matches:
             failures.append(f"{name}: {reason} path expected {want!r}, got {actual!r}")
+
+    # A path without its authored line is not exact locality. Keep line as a
+    # typed integer rather than smuggling it into the path string, matching the
+    # diagnostic payload contract.
+    for reason, want in (expect.get("diagnostic_lines") or {}).items():
+        found = find_diagnostic(diagnostics, reason)
+        actual = found.get("line") if found else None
+        if actual != want:
+            failures.append(f"{name}: {reason} line expected {want!r}, got {actual!r}")
 
     # L3: the message names the things to change. A LIST, because L3 for a
     # mismatch is two facts — found and declared — and one substring is
@@ -364,10 +526,11 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
                 f"takes a LIST of substrings (FR-065-AC-29)")
             continue
         found = find_diagnostic(diagnostics, reason)
-        message = found["message"] if found else None
+        text = finding_text(found) if found else None
         for fragment in fragments:
-            if message is None or fragment not in message:
-                failures.append(f"{name}: {reason} message lacks {fragment!r}; got {message!r}")
+            if text is None or fragment not in text:
+                failures.append(
+                    f"{name}: {reason} finding text lacks {fragment!r}; got {text!r}")
 
     # L2. EXACT, both directions, and the field that tells two minting defects
     # apart. A wrong section name strands the whole table — nothing mints, so
@@ -421,7 +584,10 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             failures.append(
                 f"{name}: no `{want['language']}` census in {got.get('binding_census')}")
             continue
-        for key in ("language", "candidates", "bound"):
+        for key in (
+            "language", "candidates", "tagged", "bound", "self_named",
+            "self_named_bound",
+        ):
             if key in want and want[key] != census.get(key):
                 failures.append(
                     f"{name}: binding_census.{key} expected {want[key]}, got {census.get(key)}")
@@ -431,6 +597,19 @@ def grade(expect: dict, got: dict, meta: dict, name: str, failures: list[str],
             if want["unbound_example"] != actual:
                 failures.append(
                     f"{name}: unbound_example expected {want['unbound_example']}, got {actual}")
+        if "unmatched_example" in want:
+            example = census.get("unmatched_example")
+            actual = f"{example['path']}:{example['line']}" if example else None
+            if want["unmatched_example"] != actual:
+                failures.append(
+                    f"{name}: unmatched_example expected {want['unmatched_example']}, got {actual}")
+        if "self_named_unbound_example" in want:
+            example = census.get("self_named_unbound_example")
+            actual = f"{example['path']}:{example['line']}" if example else None
+            if want["self_named_unbound_example"] != actual:
+                failures.append(
+                    f"{name}: self_named_unbound_example expected "
+                    f"{want['self_named_unbound_example']}, got {actual}")
 
     for want in expect.get("metrics") or []:
         metric = next((m for m in got.get("metrics", []) if m["name"] == want["name"]), None)
@@ -722,7 +901,7 @@ def main() -> int:
     # and so could not see a language SET — it found the case-level `case.yaml`,
     # looked for an `expect.yaml` beside it, and died. Two readers of one corpus
     # disagreeing about what a case IS is the drift FR-065 exists to prevent.
-    cases = discover()
+    cases = [case for case in discover() if case.get("mode") != "reporting"]
     ran = 0
     pending, now_passing = [], []
     payloads: dict = {}

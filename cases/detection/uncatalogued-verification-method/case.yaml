@@ -1,0 +1,16 @@
+id: uncatalogued-verification-method
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: ecosystem
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/uncatalogued-verification-method/input --json
+tags: [TC-1060, coverage, verification]
+comment: A real obligation declares Telepathy, which is absent from the ecosystem verification catalog.

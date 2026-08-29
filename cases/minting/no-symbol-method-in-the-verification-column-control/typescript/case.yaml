@@ -1,0 +1,1 @@
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/no-symbol-method-in-the-verification-column-control/typescript/input --json

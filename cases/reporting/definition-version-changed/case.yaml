@@ -1,0 +1,11 @@
+id: definition-version-changed
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1100
+reproduce: quoin report --repo cases/reporting/definition-version-changed/input --since before --format json
+

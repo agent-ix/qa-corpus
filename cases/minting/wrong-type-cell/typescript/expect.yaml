@@ -1,0 +1,14 @@
+# The coverage payload of this case is BYTE-IDENTICAL to the healthy control's:
+# an undeclared `Type` cell is a STRUCTURAL defect, so the family is visible only
+# to `quire validate`. Asserting coverage alone said nothing about the thing this
+# fixture is named for — `findable: true` with no reachable finding is a
+# permanent scored miss no engine fix could ever close.
+backed: 1
+total: 3
+binding_census:
+  - language: typescript
+    candidates: 1
+    bound: 1
+validate_contains:
+  - "cell 'Telepathy' is not one of"
+  - "TC-001"

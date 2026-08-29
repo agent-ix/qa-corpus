@@ -33,6 +33,28 @@ mode_families:
 - disposition
 - provenance
 - skeptic
+# A separate population, graded by Quoin rather than by the Quire coverage
+# harness. It shares this inventory and GAP ratchet without becoming a false
+# member of detection recall.
+reporting_modes:
+- reporting
+# The reporting runner reads this list. Required cases and refusal controls are
+# declarations here, not literals hidden in a script, so adding or removing a
+# contract row changes the gate in the same review.
+reporting_contract:
+  required_cases:
+  - definition-version-changed
+  - config-digest-changed
+  - population-changed
+  - metric-stopped-being-computed
+  - tool-version-differs
+  - incomplete-population
+  - identical-inputs-rerendered
+  - no-prior-record
+  refusal_cases:
+  - definition-version-changed
+  - config-digest-changed
+  - incomplete-population
 bounds_states:
 - covered
 - out-of-scope
@@ -64,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=87> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=175> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -114,6 +136,8 @@ case_schema:
   - pending
   - pending_reason
   - relaxation_ticket
+  - declaration_under_test
+  - grading_contract
   # The type of every declared field. `str`, `bool`, or `[str]` for a list.
   #
   # Presence was not enough, and a mutation proved it rather than an argument:
@@ -138,6 +162,8 @@ case_schema:
     pending: str
     pending_reason: str
     relaxation_ticket: str
+    declaration_under_test: str
+    grading_contract: grading_contract
   by_kind:
     failure:
       # The only kind that may claim a defect is detectable, so the only kind
@@ -161,9 +187,6 @@ case_schema:
   - if_present: pending
     then_required: [pending_reason]
     why: a marker with no reason is one nobody can decide whether to remove
-  - if_field_is_not: {module: ecosystem}
-    then_required: [relaxation_ticket]
-    why: FR-065-CON-3 — a variant binding must name the ticket it is sizing
   # A variant declares only what VARIES. These say WHICH case this is, and the
   # shared file is where that claim lives (FR-065-AC-22). PRESENCE is the test,
   # not disagreement: an injected `pending:` on one control variant converted a
@@ -224,6 +247,10 @@ diagnostic_reasons:
   # row whose `row_id` is null — and agree in every field a reader looks at.
   - id-column-matches-nothing
   - low-symbol-binding
+  # agent-ix/quire-rs#367: mixed binding channels can keep the aggregate
+  # census healthy while a repository's self-named test convention binds
+  # nothing. This token is specific to that retained subpopulation.
+  - marker-form-mismatch
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
@@ -234,6 +261,10 @@ diagnostic_reasons:
   # and LOSE their section-matches-nothing while still minting zero.
   - section-holds-no-table
   - section-matches-nothing
+  # agent-ix/quire-rs#341: a reference table exposes a status-shaped header,
+  # but not the model-wide configured status column. The rows are still read;
+  # only status classification was silently skipped, hiding status lies.
+  - status-column-matches-nothing
   # agent-ix/quire-rs#312, landed: a trace tag written on a symbol whose kind
   # cannot bind it. `trace::bind` takes the `carries_implements()` branch and
   # the tag reaches NO channel — `verifies` refuses it by kind, `implements`
@@ -263,6 +294,10 @@ diagnostic_reasons:
   # worked — it bound to the wrong id — so the repository reports a healthy
   # census beside a zero backing ratio with nothing explaining the gap.
   - untracked-id-near-miss
+  # agent-ix/quire-rs#328: a bound id is not itself minted, but the active
+  # model mints exact descendants of it. The finding names those real targets
+  # rather than silently grouping the tag with an unrelated typo.
+  - untracked-id-has-minted-children
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
   # Tokens no engine emits YET, each naming the ticket that will add it. A
@@ -335,8 +370,7 @@ diagnostic_reasons:
 # ecosystem had declined, and `tag-on-describe-header` is a live case asserting
 # `tag-on-non-binding-symbol` now.
 #
-# The next fixture pending on a ticket that changes what MINTS rather than
-# adding a diagnostic is declared here.
+# No fixture currently predicts a ticket that changes what mints.
 behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
@@ -370,7 +404,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `e5a6ccc`: **13 of <derived:pairs=42>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=79>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -388,16 +422,10 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=44> `kind: failure`
-# fixtures, of which <derived:controlled_failures=41> are controlled. **37 of
-# the 41 already named at least one witness key for their mode** when this was
-# written, so the rule changed no fixture. The three that still name none —
-# `oracle-copy`, `mocked-confirmation`, `gate-that-gates-nothing`, which assert
-# only `backed`/`total`/`binding_census`
-# — are all `skeptic`, all UNCONTROLLED, and all already declared under
-# `known_gaps.uncontrolled_failure_cases`. AC-42 cannot reach them at all, which
-# is what that declaration means. `#286` giving them controls is also what will
-# first put this rule under load.
+# controlled ones. Population: <derived:failure_fixtures=78> `kind: failure`
+# fixtures, all <derived:controlled_failures=78> controlled. The last three
+# uncontrolled skeptic cells gained language-matched controls when #224 added
+# the claim+wiring+capability validator.
 #
 # THIS SENTENCE READ "All 37 controlled failure blocks" UNTIL CR-132, which is
 # a population error: 37 is out of 41 failure blocks, not out of the 34
@@ -423,7 +451,7 @@ witness_channels:
   # Did the declaration reach the rows it names, and did the engine say so?
   minting: [total, groups, unbacked_rows, no_symbol_rows, validate_contains,
             validate_absent, diagnostic_reasons, diagnostic_paths,
-            diagnostic_message_contains, absent_diagnostic_reasons]
+            diagnostic_lines, diagnostic_message_contains, absent_diagnostic_reasons]
   # Did the tag reach the symbol, and WHICH channel received it?
   #
   # `metrics` is in this set because `coverage.implements` is literally "did
@@ -437,15 +465,15 @@ witness_channels:
   # one" — which is why this is a correction to the rule and not a widening to
   # accommodate a case.
   attachment: [binding_census, backed, untracked_symbols, unbacked_rows, metrics,
-               diagnostic_reasons, diagnostic_paths, diagnostic_message_contains,
+               diagnostic_reasons, diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
                absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the scanner extract the symbol at all?
   parser: [binding_census, backed, untracked_symbols, diagnostic_reasons,
-           diagnostic_paths, diagnostic_message_contains,
+           diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
            absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the tag and the minted id meet?
   join: [backed, unbacked_rows, untracked_symbols, groups, diagnostic_reasons,
-         diagnostic_paths, diagnostic_message_contains,
+         diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
          absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the toolchain SURFACE the discrepancy — as a finding, or as a symbol
   # with no home, or as a row with no evidence?
@@ -462,16 +490,16 @@ witness_channels:
   # population that happens to differ is the incidental scalar this rule exists
   # to disqualify.
   detection: [metrics, untracked_symbols, unbacked_rows, diagnostic_reasons,
-              diagnostic_paths, diagnostic_message_contains,
+              diagnostic_paths, diagnostic_lines, diagnostic_message_contains,
               absent_diagnostic_reasons, validate_contains, validate_absent,
               suspicions, absent_suspicions]
   # Was every authored row put in exactly one bucket?
   disposition: [metrics, groups, unbacked_rows, untracked_symbols,
-                diagnostic_reasons, diagnostic_paths,
+                diagnostic_reasons, diagnostic_paths, diagnostic_lines,
                 diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
   # Does the payload say what produced it?
   provenance: [metrics, binding_census, diagnostic_reasons, diagnostic_paths,
-               diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
+               diagnostic_lines, diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
   # Did the skeptic layer flag the suite that proves nothing?
   #
   # `suspicions` and `absent_suspicions` were MISSING here, and that is the
@@ -482,7 +510,7 @@ witness_channels:
   # time, asserting `backed`/`total`/`binding_census` — true of any healthy
   # three-row tree — which is why it was byte-identical to two other fixtures
   # and why swapping their input trees left `make ci` green.
-  skeptic: [suspicions, absent_suspicions, metrics, diagnostic_reasons, diagnostic_paths,
+  skeptic: [suspicions, absent_suspicions, external_observations, metrics, diagnostic_reasons, diagnostic_paths, diagnostic_lines,
             diagnostic_message_contains, absent_diagnostic_reasons, validate_contains, validate_absent]
 
 
@@ -526,6 +554,18 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
+- mode: minting
+  case: status-column-mismatch
+  source: agent-ix/quire-rs#341 — Coverage Status silently bypassed configured Status classification
+  languages: [n/a]
+- mode: minting
+  case: optional-target-section
+  source: agent-ix/quire-rs#327 — optional minting sections produced 1,160 false section findings
+  languages: [n/a]
+- mode: minting
+  case: reference-only-target
+  source: agent-ix/quire-rs#363 — SUITE rows were reference registries misreported as repository authoring backlog
+  languages: [n/a]
 - mode: minting
   case: section-name-mismatch
   # A CANDIDATE CENSUS, not the causal size of this defect. 3,514 TC ids across
@@ -619,6 +659,10 @@ inventory:
     typescript: >-
       `typescript-test-name-id` reads the CALL TITLE, not a function name, which is the
       sibling row `detection/test-name-id-in-call-title`.
+- mode: detection
+  case: self-name-form-mismatch
+  source: agent-ix/filament-ide-rs@fc5d644b — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
+  languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
   # ENTIRELY on headers. The fixture models the MIXED case instead — one
@@ -646,6 +690,11 @@ inventory:
   - rust
   - typescript
   out_of_scope:
+    python: >-
+      `symbols/python.rs` emits declarations, not JavaScript-style registration
+      calls, so it has no `describe()` header symbol for this defect. A tag
+      above a top-level call attaches to the file container and is covered by
+      `attachment/tag-at-module-scope` instead.
     rust: >-
       `symbols/rust.rs` mints a `Container` for `mod`, `struct`, `enum` and `trait` and has
       no registration-call form at all — there is no `describe()` for a tag to sit above.
@@ -659,9 +708,8 @@ inventory:
   # carried as DATA bound. Measured on this fixture pre-fix: `backed 2/3` with
   # nothing unbacked — coverage nobody authored.
   #
-  # Rust is not scoped out: it HAS the mask, so a Rust fixture would pin
-  # behaviour rather than a defect. It belongs here the day somebody writes the
-  # regression pin, and until then it is a real GAP.
+  # Rust already had the mask; its fixture is the regression pin proving the
+  # same defective input remains unbound in every supported language.
   source: agent-ix/quire-rs#323 — Rust masked, Python and TypeScript did not
   languages:
   - python
@@ -827,10 +875,8 @@ inventory:
   # produce the untracked entry this row is about. 714 occurrences across 50
   # repos: python 504/38, rust 179/3, typescript 31/10.
   #
-  # The engine DETECTS this one, at L2: the id lands in `untracked_symbols` with
-  # the symbol and the path, and the rows it fails to answer sit in
-  # `unbacked_rows`. No diagnostic reason fires, and none should — the census is
-  # an honest 100%, because the tag really did bind.
+  # The engine detects this at L3: the exact untracked locus is retained and
+  # model-grounded children are named without automatically backing them.
   case: tag-names-bare-fr
   source: 714 occurrences / 50 repos in test files — python 504/38, rust 179/3, typescript 31/10
   languages:
@@ -867,6 +913,26 @@ inventory:
   - python
   - rust
   - typescript
+- mode: detection
+  case: low-symbol-binding
+  source: agent-ix/quire-rs#359 — one of 21 candidates binds, below the declared 5% observation floor
+  languages: [rust]
+- mode: detection
+  case: obligation-row-states-nothing
+  source: agent-ix/quire-rs#359 — the ecosystem obligation declaration reads an empty Criteria cell
+  languages: [n/a]
+- mode: detection
+  case: uncatalogued-verification-method
+  source: agent-ix/quire-rs#359 — a real obligation names a method absent from the ecosystem catalog
+  languages: [n/a]
+- mode: detection
+  case: model-mints-nothing
+  source: agent-ix/quire-rs#359 — a declared traceability model has no trace targets
+  languages: [n/a]
+- mode: detection
+  case: undeclared-coverage-vocabulary
+  source: agent-ix/quire-rs#359 — a vocabulary declaration names no schema field
+  languages: [n/a]
 - mode: provenance
   case: engine-lacks-capability
   source: the 0.29.0 failure — census must abort
@@ -895,6 +961,10 @@ inventory:
   - python
   - rust
   - typescript
+  out_of_scope:
+    python: >-
+      The ecosystem declares test-name id forms for Rust function names and TypeScript registration
+      titles, but no Python function-name form. A Python name cannot produce the stale-name condition.
 - mode: disposition
   case: greenfield-no-symbols
   source: agent-ix/quire-rs#229
@@ -956,6 +1026,22 @@ inventory:
   - rust
   - typescript
 - mode: skeptic
+  case: oracle-helper-copy
+  source: agent-ix/filament-ide-rs@59a180a7 TC-1598 — a copied helper oracle with no expected binding
+  languages:
+  - python
+  - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      This regression is the Rust `prop_assert_eq!` helper-oracle path retained
+      from TC-1598. Python has no invocation of that macro, and the existing
+      language-neutral expected-binding family remains covered separately.
+    typescript: >-
+      This regression is the Rust `prop_assert_eq!` helper-oracle path retained
+      from TC-1598. TypeScript has no invocation of that macro, and the existing
+      language-neutral expected-binding family remains covered separately.
+- mode: skeptic
   case: mocked-confirmation
   source: agent-ix/quoin#227 — the test confirms its own mock
   languages:
@@ -964,7 +1050,7 @@ inventory:
   - typescript
 - mode: skeptic
   case: gate-that-gates-nothing
-  source: agent-ix/quoin#227 — a gate that cannot fail
+  source: agent-ix/quoin#224 — a declared, wired gate that never asserts its count
   languages:
   - python
   - rust
@@ -976,6 +1062,38 @@ inventory:
   - python
   - rust
   - typescript
+- mode: reporting
+  case: definition-version-changed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: config-digest-changed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: population-changed
+  source: agent-ix/quire-rs#276 / agent-ix/quire-rs#272
+  languages: [data]
+- mode: reporting
+  case: metric-stopped-being-computed
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: tool-version-differs
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: incomplete-population
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: identical-inputs-rerendered
+  source: agent-ix/quire-rs#276
+  languages: [data]
+- mode: reporting
+  case: no-prior-record
+  source: agent-ix/quire-rs#276
+  languages: [data]
 # DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
 #
 # This block was read by NO CODE. It listed three uncontrolled failure cases
@@ -1021,72 +1139,24 @@ standing_adjudications:
   - suite
   - nfr-acceptance-criterion
   - stakeholder-validation-criterion
+  - source-id
   reason_why: >-
     The corpus binds the real ecosystem declaration, which declares targets for
     Inspections, SuiteRegistry, NFR and StR. A minimal fixture carries none of
     those documents, so these four match nothing on nearly every case — a fact
     about fixture size, not a detection event. `test-case` is excluded on
     purpose: it is the declaration agent-ix/quire-rs#304 is about, and a firing
-    there is a fact about the fixture's own subject.
+    there is a fact about the fixture's own subject. `source-id` is the same
+    fixture-topology class in the reference-postures variant: its reference-only
+    failure input intentionally carries ReferenceFR and no SourceFR, while the
+    paired control carries SourceFR. The ruling is restricted to those five
+    declarations; it is not a reason-wide wildcard.
 
 known_gaps:
-  findable_but_undetected:
+  control_binds_another_module:
     reason: >-
-      A `findable` case tells a recall-scoring consumer to expect a finding on that
-      input. These THREE require none, in either block, so their cells read `covered` for a mode
-      nothing measures — two of them (`mocked-confirmation`, `oracle-copy`) still ship
-      byte-identical live blocks true of any healthy three-row corpus, and swapping one's whole
-      `input/` tree for another's leaves every gate green.
-      Deciding each — write the assertion, or stop calling it findable — is agent-ix/quire-rs#301.
-      DOWN FROM FOUR, and the fourth is the one worth reading. `vacuous-property-suite` was never
-      undetected: the engine has raised `vacuous-under-guard` on it, at `src/lib.rs:7` with a
-      symbol and an evidence string, the whole time. The CORPUS had no key to say so — `coverage`
-      emits on `diagnostics[]` and on `suspicions[]`, and both readers could assert only the
-      first, so the `skeptic` mode family could not name its own subject (agent-ix/quire-rs#358).
-      It now asserts the suspicion at L1/L2/L3 and has a control that differs by one construct.
-      Three of the four reasons a fixture could sit on this list were real engine gaps; the
-      fourth was the corpus not being able to write the sentence.
-      All four are ALSO uncontrolled, and that is the sharper fact: with no control there is
-      nothing to discriminate against, so FR-065-AC-42 cannot reach them either. Writing the
-      missing controls (agent-ix/quire-rs#286) dissolves both lists at once —
-      `no-symbol-method-in-the-verification-column` HAS a control, discriminates against it, and
-      needed no exemption once AC-42 existed.
-      DOWN FROM EIGHT, by agent-ix/quire-rs#285. `greenfield-no-symbols` and
-      `stale-name-correct-trace` gained the controls #286 asked for — AC-42 is strictly stronger
-      than "names a diagnostic", so a controlled case needs no exemption here — and
-      `implements-never-asked` and `tests-directory-topology` are `regression` pins now, which are
-      never `findable`. Two of the four were only reachable BECAUSE of the migration: on
-      `bench-legacy` the stale-name pair produced identical payloads and had nothing to separate.
+      #359 tests declaration-level diagnostics. Their healthy controls must vary the
+      declaration itself; an input-only repair cannot remove a module defect.
     cases:
-    - gate-that-gates-nothing
-    - mocked-confirmation
-    - oracle-copy
-  uncontrolled_failure_cases:
-    reason: >-
-      FR-065-AC-13 requires every failure case to name a control. These arrived from the pre-port
-      fixtures without one; authoring the missing controls is agent-ix/quire-rs#286.
-      DOWN FROM ELEVEN by agent-ix/quire-rs#285, and from SEVEN by agent-ix/quire-rs#286: `wrong-type-cell`,
-      `marker-mismatch` and `hollow-metric` have controls now, each the identical tree with one
-      token repaired, each mutation-verified by reintroducing the defect and watching the control
-      go red.
-      THE THREE THAT REMAIN ARE BLOCKED ON A DETECTOR, NOT ON AUTHORING EFFORT, and it is the same
-      three that `findable_but_undetected` lists. Each asserts NO diagnostic and no validate finding,
-      because nothing in the ecosystem detects it — `gate-that-gates-nothing` has `source: none` in
-      quoin's family table, and the other two ship live blocks true of any healthy three-row
-      corpus. So a control for one of them would produce a payload IDENTICAL to its partner's, and
-      FR-065-AC-42 would reject the pair, correctly: there is nothing for the two trees to separate
-      on. Writing them is downstream of agent-ix/quire-rs#301, which decides for each whether to
-      build the detector or stop calling it findable. The three reasons are DIFFERENT and worth
-      keeping apart: `oracle-copy`'s detector ships and has no production caller
-      (agent-ix/quire-rs#236), `mocked-confirmation`'s has no producer (agent-ix/quoin#204), and
-      `gate-that-gates-nothing`'s does not exist (agent-ix/quoin#224).
-      DOWN FROM FOUR by agent-ix/quire-rs#358, which removed the fourth reason from that list —
-      *the corpus had no way to say it*. `vacuous-property-suite` asserted nothing because
-      `suspicions` was a channel neither reader could name, not because nothing detected it.
-      `implements-never-asked` and `tests-directory-topology` left this list by another route: they
-      are `regression` pins, which AC-43 exempts because a regression case IS the healthy
-      counterpart and there is no defect for a control to be the healthy version OF.
-    cases:
-    - gate-that-gates-nothing
-    - mocked-confirmation
-    - oracle-copy
+    - model-mints-nothing-control
+    - undeclared-coverage-vocabulary-control

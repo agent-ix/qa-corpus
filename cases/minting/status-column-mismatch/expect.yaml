@@ -1,0 +1,15 @@
+diagnostic_reasons:
+- status-column-matches-nothing
+diagnostic_paths:
+  status-column-matches-nothing: spec/tests.md
+diagnostic_message_contains:
+  status-column-matches-nothing:
+  - Status
+  - Coverage Status
+  - Test Case Summary
+  - traceability.status.column
+  - rename the document column
+  - will not guess
+absent_diagnostic_reasons:
+- section-matches-nothing
+- id-column-matches-nothing

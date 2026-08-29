@@ -1,0 +1,18 @@
+name: live-coverage-vocabulary
+version: 0.1.0
+description: Healthy counterpart to dead-coverage-vocabulary
+archetypes:
+- kind: NFR
+  name: NFR
+  frontmatter_schema_ref: schemas/nfr.schema.json
+traceability:
+  trace_targets:
+  - name: nfr
+    archetype: NFR
+    section: Quality Coverage
+    id_column: ID
+  vocabulary_coverage:
+  - name: quality-characteristics
+    from: NFR
+    field: quality_attribute
+    check: unowned-quality-characteristic

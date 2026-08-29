@@ -1,0 +1,839 @@
+{
+  "groups": [
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/join/tag-names-undeclared-section/python/input/spec/FR-001.md",
+        "cases/join/tag-names-undeclared-section/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-undeclared-section/typescript/input/spec/FR-001.md",
+        "cases/join/tag-names-undeclared-section-control/python/input/spec/FR-001.md",
+        "cases/join/tag-names-undeclared-section-control/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-undeclared-section-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "0015ed252e9f0a94441806dd44ff758f46606896db743e71c0a79e4863c902e3"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/rows-across-many-headings/python/input/spec/tests.md",
+        "cases/minting/rows-across-many-headings/rust/input/spec/tests.md",
+        "cases/minting/rows-across-many-headings/typescript/input/spec/tests.md"
+      ],
+      "sha256": "014b2be10a9aed7522105b9b04fbf829c83bfdf81013c82b021267b81720976e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/tag-inside-string-literal/python/input/spec/tests.md",
+        "cases/attachment/tag-inside-string-literal/rust/input/spec/tests.md",
+        "cases/attachment/tag-inside-string-literal/typescript/input/spec/tests.md",
+        "cases/attachment/tag-inside-string-literal-control/python/input/spec/tests.md",
+        "cases/attachment/tag-inside-string-literal-control/rust/input/spec/tests.md",
+        "cases/attachment/tag-inside-string-literal-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "02836140f204d60f6eb20c6fdc0389d46cd6fb95a78cfd42cc557d0e739d8756"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/wrong-type-cell/python/input/spec/tests.md",
+        "cases/minting/wrong-type-cell/rust/input/spec/tests.md",
+        "cases/minting/wrong-type-cell/typescript/input/spec/tests.md"
+      ],
+      "sha256": "0667b198775c4398e3331e8cf3ec5d31ce0f266a1d4fdad64695bc57869a4140"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/status-column-control/input/spec/FR-001.md",
+        "cases/minting/status-column-mismatch/input/spec/FR-001.md"
+      ],
+      "sha256": "069f7d5e18f31fabaff17b435eb8ff5fab7201a0601d664298f88416759e5c4d"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/typescript/input/spec/FR-001.md",
+        "cases/skeptic/gate-that-gates-nothing-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "08867d7a340c62eb62be5ca1f722f2a270cede1be46df56b9979402280548ad8"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/wrong-type-cell/python/input/src/test_coverage.py",
+        "cases/minting/wrong-type-cell-control/python/input/src/test_coverage.py"
+      ],
+      "sha256": "1496d6198aa859ab232d1cee7f816c039d4c9135ca27fe73a7028e1ff13a72e1"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/rows-across-many-headings-control/python/input/spec/tests.md",
+        "cases/minting/rows-across-many-headings-control/rust/input/spec/tests.md",
+        "cases/minting/rows-across-many-headings-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "1a023e772214a4e5f7d4a4baea930091343bbcd19819112fb505d17c3eef077e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/typescript/input/src/lib.ts",
+        "cases/skeptic/gate-that-gates-nothing-control/typescript/input/src/lib.ts"
+      ],
+      "sha256": "1fe0817f030ebf7471d63e50089c4646e1d9b66ab68b0ebf3551d2196b2a4351"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/section-and-id-column/python/input/spec/tests.md",
+        "cases/minting/section-and-id-column/rust/input/spec/tests.md",
+        "cases/minting/section-and-id-column/typescript/input/spec/tests.md"
+      ],
+      "sha256": "2551b38377fc005cddf050ff4bf489f710185fcc7b934045e310781dc52a1615"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/tag-at-module-scope/python/input/spec/FR-001.md",
+        "cases/attachment/tag-at-module-scope/typescript/input/spec/FR-001.md",
+        "cases/attachment/tag-at-module-scope-control/python/input/spec/FR-001.md",
+        "cases/attachment/tag-at-module-scope-control/typescript/input/spec/FR-001.md",
+        "cases/attachment/tag-on-describe-header/input/spec/FR-001.md",
+        "cases/attachment/tag-on-describe-header-control/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function/python/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function/rust/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function/typescript/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function-control/python/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function-control/rust/input/spec/FR-001.md",
+        "cases/attachment/tag-on-non-test-function-control/typescript/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags/python/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags/rust/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags/typescript/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags-control/python/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags-control/rust/input/spec/FR-001.md",
+        "cases/disposition/real-tests-zero-tags-control/typescript/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr/python/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr/typescript/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr-control/python/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr-control/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-bare-fr-control/typescript/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc/python/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc/typescript/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc-control/python/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc-control/rust/input/spec/FR-001.md",
+        "cases/join/tag-names-unminted-tc-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "2870d332234c6af90dba560a8281875f58b6d11a36f35b99e874b2a7dd5e1795"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/oracle-helper-copy/rust/input/src/open.rs",
+        "cases/skeptic/oracle-helper-copy-control/rust/input/src/open.rs"
+      ],
+      "sha256": "2c3c9faf2be62894e9c09864a608272302494577d3d296f6d55edeef15144ae4"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/undeclared-coverage-vocabulary/input/spec/NFR-001.md",
+        "cases/detection/undeclared-coverage-vocabulary-control/input/spec/NFR-001.md"
+      ],
+      "sha256": "2c4ae53259b9c24e0c28f65711eb4db130b0f96f085b0b9be5c4aa28b7876911"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/catch-all-headline/typescript/input/src/coverage.test.ts",
+        "cases/detection/catch-all-headline-control/typescript/input/src/coverage.test.ts",
+        "cases/minting/no-symbol-method-in-the-verification-column/typescript/input/src/coverage.test.ts",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/typescript/input/src/coverage.test.ts"
+      ],
+      "sha256": "3029ae5ea24496786ddb3b3ae52bebb97ed969105f6f4c9636801e04a9020f9e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/section-holds-no-table/typescript/input/src/coverage.test.ts",
+        "cases/minting/section-holds-no-table-control/typescript/input/src/coverage.test.ts",
+        "cases/minting/wrong-type-cell/typescript/input/src/coverage.test.ts",
+        "cases/minting/wrong-type-cell-control/typescript/input/src/coverage.test.ts"
+      ],
+      "sha256": "3195ad74d9e5865e9ea337e30512d4d3064fa60d88f8dba6a68b6bd882321040"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/python/input/spec/tests.md",
+        "cases/skeptic/gate-that-gates-nothing/rust/input/spec/tests.md",
+        "cases/skeptic/gate-that-gates-nothing/typescript/input/spec/tests.md",
+        "cases/skeptic/gate-that-gates-nothing-control/python/input/spec/tests.md",
+        "cases/skeptic/gate-that-gates-nothing-control/rust/input/spec/tests.md",
+        "cases/skeptic/gate-that-gates-nothing-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "3213e9d6d35137cef3febf17554e3553dff59b0cbdb60c8883daeacca659a059"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/provenance/implements-never-asked/python/expect.yaml",
+        "cases/provenance/implements-never-asked/rust/expect.yaml",
+        "cases/provenance/implements-never-asked/typescript/expect.yaml"
+      ],
+      "sha256": "3288628fcea5655a549e782f9298959805b5795de20fe926bc3392d6bef89c1d"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-testmatrix-document/rust/input/src/lib.rs",
+        "cases/minting/rows-across-many-headings/rust/input/src/lib.rs",
+        "cases/minting/rows-across-many-headings-control/rust/input/src/lib.rs"
+      ],
+      "sha256": "382ad2267115c5c65176759296eb4f9d725dda46f315b9cb7dd63865ee3937f3"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/marker-form-declared/python/input/spec/tests.md",
+        "cases/attachment/marker-form-declared/rust/input/spec/tests.md",
+        "cases/attachment/marker-form-declared/typescript/input/spec/tests.md",
+        "cases/attachment/marker-form-mismatch/python/input/spec/tests.md",
+        "cases/attachment/marker-form-mismatch/rust/input/spec/tests.md",
+        "cases/attachment/marker-form-mismatch/typescript/input/spec/tests.md",
+        "cases/attachment/marker-form-mismatch-control/input/spec/tests.md",
+        "cases/attachment/marker-mismatch/input/spec/tests.md",
+        "cases/attachment/marker-mismatch-control/input/spec/tests.md",
+        "cases/attachment/tests-directory-topology/python/input/spec/tests.md",
+        "cases/attachment/tests-directory-topology/rust/input/spec/tests.md",
+        "cases/attachment/tests-directory-topology/typescript/input/spec/tests.md",
+        "cases/detection/catch-all-headline/python/input/spec/tests.md",
+        "cases/detection/catch-all-headline/rust/input/spec/tests.md",
+        "cases/detection/catch-all-headline/typescript/input/spec/tests.md",
+        "cases/detection/catch-all-headline-control/python/input/spec/tests.md",
+        "cases/detection/catch-all-headline-control/rust/input/spec/tests.md",
+        "cases/detection/catch-all-headline-control/typescript/input/spec/tests.md",
+        "cases/detection/stale-name-correct-trace/rust/input/spec/tests.md",
+        "cases/detection/stale-name-correct-trace/typescript/input/spec/tests.md",
+        "cases/detection/stale-name-correct-trace-control/rust/input/spec/tests.md",
+        "cases/detection/stale-name-correct-trace-control/typescript/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols/python/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols/rust/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols/typescript/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols-control/python/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols-control/rust/input/spec/tests.md",
+        "cases/disposition/greenfield-no-symbols-control/typescript/input/spec/tests.md",
+        "cases/provenance/hollow-metric/python/input/spec/tests.md",
+        "cases/provenance/hollow-metric/rust/input/spec/tests.md",
+        "cases/provenance/hollow-metric/typescript/input/spec/tests.md",
+        "cases/provenance/hollow-metric-control/python/input/spec/tests.md",
+        "cases/provenance/hollow-metric-control/rust/input/spec/tests.md",
+        "cases/provenance/hollow-metric-control/typescript/input/spec/tests.md",
+        "cases/provenance/implements-never-asked/python/input/spec/tests.md",
+        "cases/provenance/implements-never-asked/rust/input/spec/tests.md",
+        "cases/provenance/implements-never-asked/typescript/input/spec/tests.md"
+      ],
+      "sha256": "3f5d7751510378d69492607f1e754a69027fe82da1bc6b0d8f78678ba6ada3a9"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/python/input/spec/FR-001.md",
+        "cases/skeptic/gate-that-gates-nothing-control/python/input/spec/FR-001.md"
+      ],
+      "sha256": "427e760cdcae6293574352dd285bc9d72d61ad894ee7a3854cf3b1fa2aaf8968"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-symbol-method-in-the-verification-column/python/input/spec/tests.md",
+        "cases/minting/no-symbol-method-in-the-verification-column/rust/input/spec/tests.md",
+        "cases/minting/no-symbol-method-in-the-verification-column/typescript/input/spec/tests.md",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/python/input/spec/tests.md",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/rust/input/spec/tests.md",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "45aea24e23979a830c94fb98c16faf1e210e0c8d9aef4baef4a2233d4c5af90a"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-testmatrix-document/python/input/src/test_coverage.py",
+        "cases/minting/rows-across-many-headings/python/input/src/test_coverage.py",
+        "cases/minting/rows-across-many-headings-control/python/input/src/test_coverage.py"
+      ],
+      "sha256": "4cdbb7d8923281544f0215740767b0a89c01e51e145ca95c5c1a330af190bdb6"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/marker-form-declared/rust/input/src/lib.rs",
+        "cases/attachment/marker-form-mismatch-control/input/src/lib.rs",
+        "cases/detection/catch-all-headline/rust/input/src/lib.rs",
+        "cases/detection/catch-all-headline-control/rust/input/src/lib.rs",
+        "cases/minting/no-symbol-method-in-the-verification-column/rust/input/src/lib.rs",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/rust/input/src/lib.rs"
+      ],
+      "sha256": "502aac9b5a026466f70d6c36239c4c4b1f0bc5907a15bb69e633922cd90f7166"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/declared-heading-and-column-control/typescript/input/src/coverage.test.ts",
+        "cases/minting/id-column-mismatch/typescript/input/src/coverage.test.ts",
+        "cases/minting/section-and-id-column/typescript/input/src/coverage.test.ts",
+        "cases/minting/section-name-mismatch/typescript/input/src/coverage.test.ts"
+      ],
+      "sha256": "51d356cbc03f32afedbc59fd1f3af275701d63742a91100d74033dd40f5c3574"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/oracle-copy/python/input/spec/FR-001.md",
+        "cases/skeptic/oracle-copy/rust/input/spec/FR-001.md",
+        "cases/skeptic/oracle-copy/typescript/input/spec/FR-001.md",
+        "cases/skeptic/oracle-copy-control/python/input/spec/FR-001.md",
+        "cases/skeptic/oracle-copy-control/rust/input/spec/FR-001.md",
+        "cases/skeptic/oracle-copy-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "56696b19b57834d64d44ca1a25070cf5155f5ab83275bf3b7fa7b9af3947dda8"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/marker-mismatch-control/input/src/lib.rs",
+        "cases/minting/wrong-type-cell/rust/input/src/lib.rs",
+        "cases/minting/wrong-type-cell-control/rust/input/src/lib.rs"
+      ],
+      "sha256": "5816354fa0daedd30b6cfb22210e391fd691b17fcc4db509bf1c34342729cdd7"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/marker-form-declared/python/input/spec/FR-001.md",
+        "cases/attachment/marker-form-declared/rust/input/spec/FR-001.md",
+        "cases/attachment/marker-form-declared/typescript/input/spec/FR-001.md",
+        "cases/attachment/marker-form-mismatch/python/input/spec/FR-001.md",
+        "cases/attachment/marker-form-mismatch/rust/input/spec/FR-001.md",
+        "cases/attachment/marker-form-mismatch/typescript/input/spec/FR-001.md",
+        "cases/attachment/marker-form-mismatch-control/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal/python/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal/rust/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal/typescript/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal-control/python/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal-control/rust/input/spec/FR-001.md",
+        "cases/attachment/tag-inside-string-literal-control/typescript/input/spec/FR-001.md",
+        "cases/attachment/tests-directory-topology/python/input/spec/FR-001.md",
+        "cases/attachment/tests-directory-topology/rust/input/spec/FR-001.md",
+        "cases/attachment/tests-directory-topology/typescript/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline/python/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline/rust/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline/typescript/input/spec/FR-001.md",
+        "cases/detection/self-name-form-mismatch/input/spec/FR-001.md",
+        "cases/detection/self-name-form-mismatch-control/input/spec/FR-001.md",
+        "cases/detection/stale-name-correct-trace/rust/input/spec/FR-001.md",
+        "cases/detection/stale-name-correct-trace/typescript/input/spec/FR-001.md",
+        "cases/detection/stale-name-correct-trace-control/rust/input/spec/FR-001.md",
+        "cases/detection/stale-name-correct-trace-control/typescript/input/spec/FR-001.md",
+        "cases/detection/test-name-id-in-call-title/input/spec/FR-001.md",
+        "cases/detection/test-name-id-in-fn-name/input/spec/FR-001.md",
+        "cases/detection/test-name-id-in-fn-name-control/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols/python/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols/rust/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols/typescript/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols-control/python/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols-control/rust/input/spec/FR-001.md",
+        "cases/disposition/greenfield-no-symbols-control/typescript/input/spec/FR-001.md",
+        "cases/minting/declared-heading-and-column-control/python/input/spec/FR-001.md",
+        "cases/minting/declared-heading-and-column-control/rust/input/spec/FR-001.md",
+        "cases/minting/declared-heading-and-column-control/typescript/input/spec/FR-001.md",
+        "cases/minting/id-column-mismatch/python/input/spec/FR-001.md",
+        "cases/minting/id-column-mismatch/rust/input/spec/FR-001.md",
+        "cases/minting/id-column-mismatch/typescript/input/spec/FR-001.md",
+        "cases/minting/no-testmatrix-document/python/input/spec/FR-001.md",
+        "cases/minting/no-testmatrix-document/rust/input/spec/FR-001.md",
+        "cases/minting/no-testmatrix-document/typescript/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings/python/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings/rust/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings/typescript/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings-control/python/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings-control/rust/input/spec/FR-001.md",
+        "cases/minting/rows-across-many-headings-control/typescript/input/spec/FR-001.md",
+        "cases/minting/section-and-id-column/python/input/spec/FR-001.md",
+        "cases/minting/section-and-id-column/rust/input/spec/FR-001.md",
+        "cases/minting/section-and-id-column/typescript/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table/python/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table/rust/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table/typescript/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table-control/python/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table-control/rust/input/spec/FR-001.md",
+        "cases/minting/section-holds-no-table-control/typescript/input/spec/FR-001.md",
+        "cases/minting/section-name-mismatch/python/input/spec/FR-001.md",
+        "cases/minting/section-name-mismatch/rust/input/spec/FR-001.md",
+        "cases/minting/section-name-mismatch/typescript/input/spec/FR-001.md",
+        "cases/parser/triple-quote-scope-desync/input/spec/FR-001.md",
+        "cases/provenance/implements-never-asked/python/input/spec/FR-001.md",
+        "cases/provenance/implements-never-asked/rust/input/spec/FR-001.md",
+        "cases/provenance/implements-never-asked/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "5cbe9cf11e08ed7576f169bd43a906734e89d1faa5ff9f2a145c3a137716045f"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/oracle-helper-copy/rust/input/spec/tests.md",
+        "cases/skeptic/oracle-helper-copy-control/rust/input/spec/tests.md"
+      ],
+      "sha256": "61803962afdb1e93d3f9ffc9228f6b35a8cac78bf850a63a57b54f8bd6722967"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/python/input/src/lib.py",
+        "cases/skeptic/gate-that-gates-nothing-control/python/input/src/lib.py"
+      ],
+      "sha256": "62ccfffd705f8f3b06a0500c43b38649246ff33f97f664f320ba1e5d905a6efd"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/python/expect.yaml",
+        "cases/skeptic/gate-that-gates-nothing/typescript/expect.yaml"
+      ],
+      "sha256": "635a51bf77da88614c3eabbdd9db9271c8f49dc9a3efe7e96a0bb50efbbdd44a"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-symbol-method-in-the-verification-column/python/input/spec/FR-001.md",
+        "cases/minting/no-symbol-method-in-the-verification-column/rust/input/spec/FR-001.md",
+        "cases/minting/no-symbol-method-in-the-verification-column/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "696d378f9369da331d95e0518de5186ded4c3e055af903718e6cf11da6ed54ac"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-symbol-method-in-the-verification-column-control/python/input/spec/FR-001.md",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/rust/input/spec/FR-001.md",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "6b1b622fc58a1f4a9c2817477e6ab19606022907579bdbb3ed268c5154372820"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/clean-control/input/spec/tests.md",
+        "cases/minting/wrong-type-cell-control/python/input/spec/tests.md",
+        "cases/minting/wrong-type-cell-control/rust/input/spec/tests.md",
+        "cases/minting/wrong-type-cell-control/typescript/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation/python/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation/rust/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation/typescript/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation-control/python/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation-control/rust/input/spec/tests.md",
+        "cases/skeptic/mocked-confirmation-control/typescript/input/spec/tests.md",
+        "cases/skeptic/oracle-copy/python/input/spec/tests.md",
+        "cases/skeptic/oracle-copy/rust/input/spec/tests.md",
+        "cases/skeptic/oracle-copy/typescript/input/spec/tests.md",
+        "cases/skeptic/oracle-copy-control/python/input/spec/tests.md",
+        "cases/skeptic/oracle-copy-control/rust/input/spec/tests.md",
+        "cases/skeptic/oracle-copy-control/typescript/input/spec/tests.md",
+        "cases/skeptic/vacuous-property-suite/input/spec/tests.md",
+        "cases/skeptic/vacuous-property-suite-control/input/spec/tests.md"
+      ],
+      "sha256": "70e494a9fa660005d8032a5002303e2b0da59c355a33eb0be7d4c961643ee4fb"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/model-mints-nothing/input/spec/FR-001.md",
+        "cases/detection/model-mints-nothing-control/input/spec/FR-001.md"
+      ],
+      "sha256": "7149b6a3189c9de514095d0cbab44251fa62e92dc0f1849b66253076cbf0ee6f"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/low-symbol-binding/input/spec/FR-001.md",
+        "cases/detection/low-symbol-binding-control/input/spec/FR-001.md"
+      ],
+      "sha256": "77513332767bb398e9289ba6278de538f5e89974b323f6d66aba7ad1ef54a001"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/marker-mismatch/input/spec/FR-001.md",
+        "cases/attachment/marker-mismatch-control/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline-control/python/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline-control/rust/input/spec/FR-001.md",
+        "cases/detection/catch-all-headline-control/typescript/input/spec/FR-001.md",
+        "cases/detection/clean-control/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell/python/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell/rust/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell/typescript/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell-control/python/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell-control/rust/input/spec/FR-001.md",
+        "cases/minting/wrong-type-cell-control/typescript/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric/python/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric/rust/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric/typescript/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric-control/python/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric-control/rust/input/spec/FR-001.md",
+        "cases/provenance/hollow-metric-control/typescript/input/spec/FR-001.md",
+        "cases/skeptic/vacuous-property-suite/input/spec/FR-001.md",
+        "cases/skeptic/vacuous-property-suite-control/input/spec/FR-001.md"
+      ],
+      "sha256": "7a9a410de70f637d799992121bd903037deeea4f54849ca8ec71bc637ec6021b"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-symbol-method-in-the-verification-column/python/expect.yaml",
+        "cases/minting/no-symbol-method-in-the-verification-column/rust/expect.yaml",
+        "cases/minting/no-symbol-method-in-the-verification-column/typescript/expect.yaml"
+      ],
+      "sha256": "828a0cf35b9af89fa25d6b5d950f4b8ed3dded25a2d16e98fec05f2d635de4c4"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/rust/input/src/lib.rs",
+        "cases/skeptic/gate-that-gates-nothing-control/rust/input/src/lib.rs"
+      ],
+      "sha256": "85983f882e242cb77230c1e31c5428e9a98ac8c543c6a7b9b2551b181913ab74"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/catch-all-headline/python/expect.yaml",
+        "cases/detection/catch-all-headline/rust/expect.yaml",
+        "cases/detection/catch-all-headline/typescript/expect.yaml"
+      ],
+      "sha256": "95c39ad3e7f356beed38d8271ba7c57fa2f51d24128f054f0b92735012d8fbc1"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/tag-on-non-test-function/typescript/input/src/coverage.test.ts",
+        "cases/attachment/tag-on-non-test-function-control/typescript/input/src/coverage.test.ts"
+      ],
+      "sha256": "98cf6da284cae7ff6c2f2e53f8f3a3767219fc0fd02c9caba53cbd929cb8f239"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/declared-heading-and-column-control/python/input/spec/tests.md",
+        "cases/minting/declared-heading-and-column-control/rust/input/spec/tests.md",
+        "cases/minting/declared-heading-and-column-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "9a05eba06cfe86bbfbf83ba375602cbc40ecd4bd9680301b46ef944c9b0e929f"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/rust/input/Makefile",
+        "cases/skeptic/gate-that-gates-nothing-control/rust/input/Makefile"
+      ],
+      "sha256": "a2d92521781fb9abc5df346682a40ea257cd4dfbd1820873e6e4ff02e4127b6e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/rust/input/spec/FR-001.md",
+        "cases/skeptic/gate-that-gates-nothing-control/rust/input/spec/FR-001.md"
+      ],
+      "sha256": "b5e72de1f45405714de3024e66452d88cbddc53e1848be2c3c2ef5a7c6ac6335"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/catch-all-headline/python/input/src/test_coverage.py",
+        "cases/detection/catch-all-headline-control/python/input/src/test_coverage.py",
+        "cases/minting/no-symbol-method-in-the-verification-column/python/input/src/test_coverage.py",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/python/input/src/test_coverage.py"
+      ],
+      "sha256": "b96c21d3865d4689cd9743bfd8796d9a0c3ab395deb913e1d149de7302d5d747"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/tag-at-module-scope/python/input/spec/tests.md",
+        "cases/attachment/tag-at-module-scope/typescript/input/spec/tests.md",
+        "cases/attachment/tag-at-module-scope-control/python/input/spec/tests.md",
+        "cases/attachment/tag-at-module-scope-control/typescript/input/spec/tests.md",
+        "cases/attachment/tag-on-describe-header/input/spec/tests.md",
+        "cases/attachment/tag-on-describe-header-control/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function/python/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function/rust/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function/typescript/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function-control/python/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function-control/rust/input/spec/tests.md",
+        "cases/attachment/tag-on-non-test-function-control/typescript/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags/python/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags/rust/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags/typescript/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags-control/python/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags-control/rust/input/spec/tests.md",
+        "cases/disposition/real-tests-zero-tags-control/typescript/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr/python/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr/rust/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr/typescript/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr-control/python/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr-control/rust/input/spec/tests.md",
+        "cases/join/tag-names-bare-fr-control/typescript/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section/python/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section/rust/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section/typescript/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section-control/python/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section-control/rust/input/spec/tests.md",
+        "cases/join/tag-names-undeclared-section-control/typescript/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc/python/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc/rust/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc/typescript/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc-control/python/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc-control/rust/input/spec/tests.md",
+        "cases/join/tag-names-unminted-tc-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "b981aed5c8ba0937587a6a6ad14617c4e8b9da4ab592896fad30874018c18ed2"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/section-name-mismatch/python/input/spec/tests.md",
+        "cases/minting/section-name-mismatch/rust/input/spec/tests.md",
+        "cases/minting/section-name-mismatch/typescript/input/spec/tests.md"
+      ],
+      "sha256": "bd9901b78da9a724d250af5c187646002a9b92508db14939479fdf372c257ffd"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/mocked-confirmation/python/input/spec/FR-001.md",
+        "cases/skeptic/mocked-confirmation/rust/input/spec/FR-001.md",
+        "cases/skeptic/mocked-confirmation/typescript/input/spec/FR-001.md",
+        "cases/skeptic/mocked-confirmation-control/python/input/spec/FR-001.md",
+        "cases/skeptic/mocked-confirmation-control/rust/input/spec/FR-001.md",
+        "cases/skeptic/mocked-confirmation-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "c2300d2dc31f4acc47ec07d4e6b1a1bc92c9f754045c5a17cd11a0e2765ba9dc"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/section-holds-no-table-control/python/input/spec/tests.md",
+        "cases/minting/section-holds-no-table-control/rust/input/spec/tests.md",
+        "cases/minting/section-holds-no-table-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "c306d38db048a95cc70335e52db35ed9f8b6230b6905462cc0d1093a29cfd66d"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/clean-control/input/src/lib.rs",
+        "cases/provenance/hollow-metric-control/rust/input/src/lib.rs"
+      ],
+      "sha256": "c550420f927e291c71eaec4de2ac20d6c4c4ad2bdc6cb473a452f233b00c0ad5"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/low-symbol-binding/input/spec/tests.md",
+        "cases/detection/low-symbol-binding-control/input/spec/tests.md",
+        "cases/detection/self-name-form-mismatch/input/spec/tests.md",
+        "cases/detection/self-name-form-mismatch-control/input/spec/tests.md",
+        "cases/detection/test-name-id-in-call-title/input/spec/tests.md",
+        "cases/detection/test-name-id-in-fn-name/input/spec/tests.md",
+        "cases/detection/test-name-id-in-fn-name-control/input/spec/tests.md",
+        "cases/parser/triple-quote-scope-desync/input/spec/tests.md"
+      ],
+      "sha256": "d2607b76f1c91b816a3330e3fdd4ebb683fe6ad02159d25cb2c41bafe6d3cf23"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-symbol-method-in-the-verification-column-control/python/expect.yaml",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/rust/expect.yaml",
+        "cases/minting/no-symbol-method-in-the-verification-column-control/typescript/expect.yaml"
+      ],
+      "sha256": "dadf7c30b290231990017eb98153f6600e016bf7c6f02bc5b5e9fa21f2fdc68c"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/catch-all-headline-control/python/expect.yaml",
+        "cases/detection/catch-all-headline-control/rust/expect.yaml",
+        "cases/detection/catch-all-headline-control/typescript/expect.yaml"
+      ],
+      "sha256": "de1ac90d46d75ad3f7dccda2d729525b5c5bae6c75f1cc83493ab76a162cfa96"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/oracle-helper-copy/rust/input/spec/FR-001.md",
+        "cases/skeptic/oracle-helper-copy-control/rust/input/spec/FR-001.md"
+      ],
+      "sha256": "df8347db2846dc4f6b7f701914d040f1c60f921df9d58dcb4b31c4327e6e8c86"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing/python/input/Makefile",
+        "cases/skeptic/gate-that-gates-nothing/typescript/input/Makefile",
+        "cases/skeptic/gate-that-gates-nothing-control/python/input/Makefile",
+        "cases/skeptic/gate-that-gates-nothing-control/typescript/input/Makefile"
+      ],
+      "sha256": "e1c324b0b602411d0a4467e0f30a671d55e8fad88e740dc21055bdcc9cb86fd5"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/section-holds-no-table/python/input/spec/tests.md",
+        "cases/minting/section-holds-no-table/rust/input/spec/tests.md",
+        "cases/minting/section-holds-no-table/typescript/input/spec/tests.md"
+      ],
+      "sha256": "e6a63056aee06822a3c085156be5b94a689d7d11d49cb7c8e09ce47067da8108"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/skeptic/gate-that-gates-nothing-control/python/expect.yaml",
+        "cases/skeptic/gate-that-gates-nothing-control/rust/expect.yaml",
+        "cases/skeptic/gate-that-gates-nothing-control/typescript/expect.yaml"
+      ],
+      "sha256": "ec523a9d3bbf70cfb9d5c34d85ae63ed8d557318fe54c8a9f2d80bdee64852ea"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/disposition/greenfield-no-symbols/python/expect.yaml",
+        "cases/disposition/greenfield-no-symbols/rust/expect.yaml",
+        "cases/disposition/greenfield-no-symbols/typescript/expect.yaml"
+      ],
+      "sha256": "ecbce3e9046a21efe8c9629ca426ebca6492c83a92851be7957c2d6895d8f9e2"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/detection/obligation-row-states-nothing-control/input/spec/FR-001.md",
+        "cases/detection/uncatalogued-verification-method-control/input/spec/FR-001.md"
+      ],
+      "sha256": "ed63dda7fa8c5a939d59e86a627fcb82f712a6b0e681f803ae0bc10446a4b0d3"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/tag-on-non-test-function/python/input/src/test_coverage.py",
+        "cases/attachment/tag-on-non-test-function-control/python/input/src/test_coverage.py"
+      ],
+      "sha256": "eec480ab35d4e4eee5aab536da57b961ad065bdf9711f598778f981b325712fb"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/declared-heading-and-column-control/rust/input/src/lib.rs",
+        "cases/minting/id-column-mismatch/rust/input/src/lib.rs",
+        "cases/minting/section-and-id-column/rust/input/src/lib.rs",
+        "cases/minting/section-holds-no-table/rust/input/src/lib.rs",
+        "cases/minting/section-holds-no-table-control/rust/input/src/lib.rs",
+        "cases/minting/section-name-mismatch/rust/input/src/lib.rs"
+      ],
+      "sha256": "efc79211987ff839bba6f263dd039eeeafa1102e4efcb940ab92a353297973b6"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/id-column-mismatch/python/input/spec/tests.md",
+        "cases/minting/id-column-mismatch/rust/input/spec/tests.md",
+        "cases/minting/id-column-mismatch/typescript/input/spec/tests.md"
+      ],
+      "sha256": "f6e2a803d8633a46666217b8ee592f88a643d8bd84d7c988f9a67a8a9519ba38"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/declared-heading-and-column-control/python/input/src/test_coverage.py",
+        "cases/minting/id-column-mismatch/python/input/src/test_coverage.py",
+        "cases/minting/section-and-id-column/python/input/src/test_coverage.py",
+        "cases/minting/section-name-mismatch/python/input/src/test_coverage.py"
+      ],
+      "sha256": "fab5fb9b7a4fb30ff1b8c7fd03c5d17c4a996f8df6eb7929d1b0a9dcc378da14"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/no-testmatrix-document/typescript/input/src/coverage.test.ts",
+        "cases/minting/rows-across-many-headings/typescript/input/src/coverage.test.ts",
+        "cases/minting/rows-across-many-headings-control/typescript/input/src/coverage.test.ts"
+      ],
+      "sha256": "fe883b7f1a561b9cba01d9d4d965ef59dc3b86d680126a643c1d1a974b04b41d"
+    }
+  ],
+  "schemaVersion": "qa-duplicate-census-v1",
+  "scope": "cases/** regular files"
+}

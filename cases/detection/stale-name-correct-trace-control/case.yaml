@@ -1,22 +1,15 @@
 id: stale-name-correct-trace-control
 issue_ref: agent-ix/quire-rs#286
 mode: detection
-language: rust
 module: ecosystem
 findable: false
 kind: control
 control_for:
 - stale-name-correct-trace
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/stale-name-correct-trace-control/input
-  --json
 tags:
 - TC-993
 - coverage
 - binding
-comment: 'The control: the identical tree with the stale id taken out of the function NAME. The marker
-  is unchanged, so the row is backed either way — and `untracked_symbols` is EMPTY here against one entry
-  in the partner. That is the whole difference between the two trees, which is what makes the partner''s
-  assertion a measurement of the stale name rather than of a healthy corpus. This control was
-  unwritable before #285: on `bench-legacy`, which declares no name-shaped rust form, both trees produce
-  the identical payload and the pair would have had nothing to separate. Writing it retires
-  `stale-name-correct-trace` from `known_gaps.uncontrolled_failure_cases` (agent-ix/quire-rs#286).'
+comment: >-
+  The same tree with the stale id removed from the test name. The explicit marker still backs the row,
+  while untracked_symbols must be empty.

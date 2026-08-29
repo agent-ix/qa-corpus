@@ -1,0 +1,17 @@
+# Derived from a real run against the COMPLETE ecosystem declaration —
+# spec-artifacts-process AND spec-artifacts-iso, whole module directories
+# including their schemas (agent-ix/quire-rs#292).
+backed: 1
+total: 3
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 1
+suspicions:
+- kind: oracle-resembles-implementation
+  path: src/lib.rs
+  symbol: tests::covers
+  line: 15
+  message_contains:
+  - "similarity 1.00"
+  - "src/lib.rs::is_contained"

@@ -1,0 +1,11 @@
+name: one-trace-target
+version: 0.1.0
+description: Healthy counterpart to no-trace-targets
+artifact_types:
+- name: FR
+traceability:
+  trace_targets:
+  - name: acceptance-criterion
+    archetype: FR
+    section: Acceptance Criteria
+    id_column: ID

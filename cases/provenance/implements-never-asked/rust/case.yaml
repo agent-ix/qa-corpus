@@ -1,0 +1,1 @@
+reproduce: quire coverage --scope cases/provenance/implements-never-asked/rust/input --module modules/variants/no-implements-declaration --json

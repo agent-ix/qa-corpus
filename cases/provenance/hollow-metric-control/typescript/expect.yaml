@@ -1,0 +1,15 @@
+# HEALTHY INPUT: the denominator is real, so the ratio is about something.
+#
+# `hollow-denominator` exists to say "this percentage was computed over input
+# nothing could read". On this tree the binder read the input, so it must stay
+# silent — and a detector that fires here would make its partner's assertion
+# satisfiable by a constant.
+backed: 1
+total: 3
+binding_census:
+  - language: typescript
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - hollow-denominator
+  - no-symbol-bound

@@ -1,0 +1,17 @@
+name: reference-postures
+version: 0.1.0
+description: Reference-only and default source-evidence targets in one module
+artifact_types:
+- name: ReferenceFR
+- name: SourceFR
+traceability:
+  trace_targets:
+  - name: reference-id
+    archetype: ReferenceFR
+    section: Acceptance Criteria
+    id_column: ID
+    evidence: reference-only
+  - name: source-id
+    archetype: SourceFR
+    section: Acceptance Criteria
+    id_column: ID

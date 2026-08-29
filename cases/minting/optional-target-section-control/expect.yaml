@@ -1,0 +1,10 @@
+total: 1
+backed: 0
+groups:
+- document: spec/FR-001.md
+  target: constraint
+  backed: 0
+  total: 1
+absent_diagnostic_reasons:
+- section-matches-nothing
+- section-holds-no-table

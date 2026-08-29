@@ -1,9 +1,0 @@
-# Derived from a real run against the COMPLETE ecosystem declaration —
-# spec-artifacts-process AND spec-artifacts-iso, whole module directories
-# including their schemas (agent-ix/quire-rs#292).
-backed: 1
-total: 3
-binding_census:
-- language: rust
-  candidates: 1
-  bound: 1

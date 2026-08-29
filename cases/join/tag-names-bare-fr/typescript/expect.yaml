@@ -12,12 +12,9 @@
 # the bare document id `FR-001` is none of those — not minted, not referenced by
 # any table cell, not any row's own id (`coverage.rs:1198`).
 #
-# DETECTION REACHES L2, NOT L1. No diagnostic reason fires — `no-symbol-bound`
-# needs `bound == 0`, `low-symbol-binding` needs under 5%, and both are correct
-# to stand down. What the engine publishes instead is the LOCUS, and it is
-# exact: `untracked_symbols` names the symbol, the id it bound, and the file.
-# Read beside `unbacked_rows`, the two lists are the whole diagnosis — the test
-# that answers TC-001 is right there, holding a different string.
+# DETECTION REACHES L3. `untracked_symbols` preserves the exact authored locus,
+# and `untracked-id-has-minted-children` names the real criterion id the author
+# can use without pretending the coarse tag backs every child.
 #
 # This fixture therefore asserts the DETECTION rather than its absence. Its job
 # is to stop that pair regressing, and `untracked_symbols` is the field the
@@ -65,6 +62,12 @@ binding_census:
   - language: typescript
     candidates: 2
     bound: 2
+diagnostic_reasons:
+  - untracked-id-has-minted-children
+diagnostic_paths:
+  untracked-id-has-minted-children: src/coverage.test.ts
+diagnostic_message_contains:
+  untracked-id-has-minted-children: [FR-001-AC-1]
 # None of these may fire: the binder read this tree correctly and said so.
 # Crediting a binding diagnostic here would be crediting it for noise.
 absent_diagnostic_reasons:

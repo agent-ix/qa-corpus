@@ -1,0 +1,51 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "status": "compared",
+    "reason": null,
+    "before": {
+      "collectionId": "before",
+      "timestamp": "2026-08-25T03:29:21.000Z",
+      "toolIdentity": "quire coverage ecosystem sweep",
+      "toolVersion": "quire 0.30.2 (engine 816e187)",
+      "configDigest": "agent-ix/quire-rs#351-controlled-section-sweep",
+      "sourceRevision": "816e187+sap-fa56ced",
+      "corpusRevision": "quire-rs/scripts/corpus.py@816e187:241-repositories",
+      "corpusGaps": 0,
+      "path": "cases/reporting/population-changed/input/spec/evidence/measurements/before.json"
+    },
+    "after": {
+      "collectionId": "after",
+      "timestamp": "2026-08-25T03:29:22.000Z",
+      "toolIdentity": "quire coverage ecosystem sweep",
+      "toolVersion": "quire 0.30.2 (engine 816e187)",
+      "configDigest": "agent-ix/quire-rs#351-controlled-section-sweep",
+      "sourceRevision": "816e187+section-widened",
+      "corpusRevision": "quire-rs/scripts/corpus.py@816e187:241-repositories",
+      "corpusGaps": 0,
+      "path": "cases/reporting/population-changed/input/spec/evidence/measurements/after.json"
+    },
+    "comparisons": [
+      {
+        "metric": "coverage.backed_pct",
+        "dimensions": {},
+        "before": 25.32,
+        "after": 25.22,
+        "delta": -0.10000000000000142,
+        "status": "comparable",
+        "reasons": [
+          {
+            "code": "population_changed",
+            "message": "coverage.backed_pct: population changed; delta is shown with this warning",
+            "blocking": false
+          }
+        ]
+      }
+    ]
+  },
+  "stderr_contains": [],
+  "byte_identical": true,
+  "ratio_consistent": {
+    "decimals": 2
+  }
+}

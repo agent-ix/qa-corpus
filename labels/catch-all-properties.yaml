@@ -10,5 +10,7 @@ defects:
   findable: true
   expect_metric: coverage.specific_shaped
   expect_value: 0
+  actionable_fragments:
+  - review whether the criterion is intentionally universal
   note: specific_shaped must be 0 while property_shaped is not
   confirmed_at: quire-rs v0.43.0

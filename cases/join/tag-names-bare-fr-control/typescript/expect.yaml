@@ -34,6 +34,7 @@ binding_census:
     candidates: 2
     bound: 2
 absent_diagnostic_reasons:
+  - untracked-id-has-minted-children
   - no-symbol-bound
   - low-symbol-binding
   - hollow-denominator

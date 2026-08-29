@@ -1,0 +1,11 @@
+name: no-trace-targets
+version: 0.1.0
+description: Declaration-under-test fixture for a model with no minting target
+artifact_types:
+- name: FR
+traceability:
+  status:
+    column: Status
+    complete: ["✅"]
+    pending: ["🚧"]
+    failed: ["❌"]

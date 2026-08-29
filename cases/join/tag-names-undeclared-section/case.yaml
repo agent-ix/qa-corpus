@@ -4,13 +4,19 @@ id: tag-names-undeclared-section
 case: tag-names-undeclared-section
 issue_ref: agent-ix/spec-artifacts-process#69
 kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
 findable: true
 tags:
 - TC-1014
 - join
 - binding
 comment: >-
-  NOT PENDING. The engine already does its job here, at L2, and this case is the surviving half
+  NOT PENDING. The engine does its job here at L3, and this case is the surviving half
   of the inventory row that used to read `tag-names-con-inv-sc-vc`. That row bundled four
   prefixes behind one number — "328 tags" — and MEASURED WITH THE ENGINE over the 241
   repositories `quire-rs/scripts/corpus.py` enumerates, the four behave completely differently:

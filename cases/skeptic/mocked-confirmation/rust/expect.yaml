@@ -1,0 +1,16 @@
+# Derived from a real run against the COMPLETE ecosystem declaration —
+# spec-artifacts-process AND spec-artifacts-iso, whole module directories
+# including their schemas (agent-ix/quire-rs#292).
+backed: 1
+total: 3
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 1
+external_observations:
+- kind: mock-injection-observed
+  path: src/lib.rs
+  line: 22
+  symbol: covers
+  injects:
+  - Confirmation::allow

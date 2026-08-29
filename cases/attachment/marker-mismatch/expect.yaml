@@ -6,6 +6,9 @@ total: 3
 diagnostic_reasons:
 - hollow-denominator
 - no-symbol-bound
+diagnostic_message_contains:
+  no-symbol-bound:
+  - compare the example annotation with the declared trace-tag forms
 binding_census:
 - language: rust
   candidates: 1

@@ -3,6 +3,9 @@
 The controlled corpus for the `quire` / `quoin` toolchain. **Static files, read in
 place, language-neutral.** Contract: [`agent-ix/quire-rs` FR-065](https://github.com/agent-ix/quire-rs/blob/main/spec/functional/FR-065-controlled-corpus-contract.md).
 
+Case-before-fix, language, control, and Tier-2 pin policy lives in
+[`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Why this repository exists
 
 Both previous corpora were embedded in code and neither could be read without
@@ -22,8 +25,20 @@ runs:
 
 ```bash
 make verify                     # every case, by its own recorded invocation
-make bounds                     # the derived matrix and gap_count
+make verify-reporting           # Quoin report over static record pairs
+make bounds                     # derive the matrix; reject every applicable GAP
+make measurement-collection OUTPUT=/tmp/qa-corpus.json \
+  VERIFICATION_STACK=/path/to/attestation.json
+                                # derive the two plan-owned collection families
+make duplicate-census           # reject unexplained copied-fixture divergence/groups
+make external-channel           # validate exact non-Quire producer/invocations
 ```
+
+The governed exporter fails closed unless its source tree and origin equal the
+QA source in the supplied attestation and its Python runtime equals the
+attested toolchain version. The collection retains the complete attestation;
+an exporter run under an equal-looking but different interpreter is not
+recordable evidence.
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
@@ -46,6 +61,19 @@ Each case's own invocation is recorded in its `case.yaml` under `reproduce`, and
 `make verify` runs exactly that string — so a documented command that does not work
 fails the corpus rather than misleading a reader.
 
+Reporting cases are equally direct. For example:
+
+```bash
+quoin report \
+  --repo cases/reporting/definition-version-changed/input \
+  --since before --format json
+```
+
+They are a separate measured population: Quoin compares two checked-in
+MeasurementCollections and `verify-reporting` grades the exact JSON twice. The
+second render must be byte-identical. They share the inventory and GAP ratchet,
+but never enter Quire detection recall or Quoin Tier-1 finding scores.
+
 ## Layout
 
 ```
@@ -55,6 +83,7 @@ bounds.py            derives the matrix and gap_count from the filesystem
 verify.py            runs every case by its own `reproduce`, diffs expect.yaml, and
                      grades each failure case against its CONTROL's payload (AC-42)
 scripts/
+  verify_reporting.py grades reporter output over static MeasurementCollections
   schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
   parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
 modules/
@@ -73,6 +102,11 @@ cases/<mode>/<case>/                       a LANGUAGE SET
     case.yaml        only what VARIES: reproduce, per-language overrides
     input/ expect.yaml
 
+cases/reporting/<case>/                    a REPORTING case (`language: data`)
+  case.yaml          a hand-runnable `quoin report` invocation
+  input/spec/evidence/measurements/*.json  two static collections (one for no-prior)
+  expect.yaml        exact machine report and byte-identity requirement
+
 `language` comes from the DIRECTORY NAME, never a declared field. A variant's id
 is `<shared id>-<language>` in every reader, and a variant may not override
 `case`, `mode`, `module`, `kind` or `pending` — those declare WHICH case it is,
@@ -83,6 +117,14 @@ labels/              hand-labelled ground truth for finding-quality scoring
 config/              the metric dictionary
 baselines/           per-runner baselines, versioned with the corpus
 ```
+
+`config/duplicate-census.json` classifies every byte-identical fixture group.
+Cases stay self-contained, so intentional support files are copied rather than
+symlinked; their invariant is that copies move together unless the seeded defect
+requires divergence. When a reviewed fixture change intentionally alters group
+membership, run `python3 scripts/duplicate_census.py --update`, inspect the exact
+paths/digests, and commit the fixture and census in one change. A new group, a
+disappeared group, or unexplained membership change fails CI.
 
 ## The bounds matrix is the point
 
@@ -98,19 +140,31 @@ added, so a corpus could improve its number while the hard missing case stayed
 missing. Converting a `GAP` to `out-of-scope` moves the count — declaring something
 out of scope is a visible act.
 
+The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
+definitions and stores their collections here. `scripts/export_measurements.py`
+accepts no values: it derives bounds from the filesystem and recall from the
+Quire and Quoin runner-produced baselines, retaining the runner boundary in
+every observation. Quire and Quoin own their engine- and finding-quality plans;
+engineering-assurance and spec-artifacts-process intentionally own no producer
+or measurement store in this QA program.
+
+New collections are schema v2 and fail closed unless the caller supplies a
+`verification-stack-attestation-v1` whose clean `qa-corpus` source matches this
+checkout exactly. The exporter records that full source SHA as `toolVersion`,
+so scorer movement cannot hide behind a constant label. Retained schema-v1
+collections are historical evidence and are never regenerated.
+
 ### Today: run `make bounds`
 
 Run `make bounds` — these numbers are **derived, never stored**, so they cannot go
 stale. Adding a fixture flips its own cell and moves the count with no edit to any
 central file.
 
-`agent-ix/quire-rs#285` migrated the last of the ported `quire-rs` cases off
-`bench-legacy` — the synthetic manifest whose heading always matches — and deleted
-it. Every fixture binds the vendored ecosystem declaration now, with one exception
-that the matrix still reports as a `GAP`: `provenance/implements-never-asked`
-asserts a metric state (`coverage.implements: not_computed`) that only a module
-declaring no `implements` forms can produce, so it binds a variant relaxing that one
-axis (`agent-ix/quire-rs#330`).
+`agent-ix/quire-rs#285` migrated the ported detection cases off `bench-legacy` —
+the synthetic manifest whose heading always matches — and deleted it. Detection
+fixtures bind either the vendored ecosystem declaration or an explicitly attributed
+declaration-under-test variant; reporting fixtures exercise Quoin and do not load a
+traceability module despite retaining the common metadata field.
 
 A cell covered by a **pending** fixture is reported separately: a case exists and
 the engine fails it, and `covered` read as `working` is the conflation this
@@ -184,9 +238,9 @@ and the restriction must still mismatch. So "assert the field that separates the
 is not the whole rule: the field also has to be one your mode declares. `total` is a
 witness for `minting` and for **nothing else** — a minted-row count *is* the minting
 channel, and everywhere else it is an incidental global scalar. Measured over the whole
-controlled population, 13 of the <derived:pairs=42> (case, control) pairs differ in `total`
+controlled population, 15 of the <derived:pairs=79> (case, control) pairs differ in `total`
 while being about something else entirely, which is what this closes. The pair count is
-gated against the tree; the 13 is a measurement at engine `e5a6ccc` and is not.
+gated against the tree; the 15 is a measurement at engine `5a68ceb` and is not.
 
 Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
 A block that names none of them is rejected by name; so is one that separates the pair
@@ -198,7 +252,7 @@ Three more consequences worth knowing before you write a fixture:
 * `validate_*` keys are re-run over the **control's** tree in that grading, because
   `quire validate` reads a spec tree and cannot be recomputed from a payload. They are
   a witness in **every** mode: `quire validate` is a second oracle, not a coverage
-  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=42>: it read
+  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=79>: it read
   "0 of 35" until `wrong-type-cell` gained a control, and nothing was holding that
   sentence to the tree.
 * If your case is `pending:` on a **behaviour-change** ticket — one that adds no

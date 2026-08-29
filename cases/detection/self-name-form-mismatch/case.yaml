@@ -1,0 +1,19 @@
+mode: detection
+language: rust
+module: ecosystem
+id: self-name-form-mismatch
+issue_ref: agent-ix/quire-rs#367
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+findable: true
+tags:
+- TC-1083
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/self-name-form-mismatch/input --json
+comment: A comment binds TC-001, so aggregate Rust binding is healthy, while the self-named `test_tc_001` convention is outside the declared `fn tc_` form. The pair changes only the function-name prefix.

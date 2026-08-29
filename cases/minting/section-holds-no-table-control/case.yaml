@@ -1,22 +1,15 @@
 mode: minting
 module: ecosystem
 id: section-holds-no-table-control
-language: rust
 issue_ref: agent-ix/quire-rs#320
 kind: control
 control_for:
 - section-holds-no-table
 findable: false
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/section-holds-no-table-control/input
-  --json
 tags:
 - TC-1014
 - minting
 - coverage
 comment: >-
-  THE PROSE IS A TABLE, AND NOTHING ELSE MOVED. Same heading, same archetype, same section,
-  same source, same tag — so every condition that made the partner's silences legitimate
-  still holds, and the single difference is that this section has rows under it. The row
-  mints, the tag backs it, and the diagnostic goes quiet. It is the harder control for the
-  right reason: a detector written as "a TestMatrix whose declared section was found" fires
-  on this too and is wrong.
+  The same declared section contains a conforming table. Its row mints, its
+  test binds, and all three minting diagnostics remain silent.

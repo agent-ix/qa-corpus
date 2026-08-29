@@ -1,0 +1,11 @@
+id: uncatalogued-verification-method-control
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: ecosystem
+kind: control
+control_for: [uncatalogued-verification-method]
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/uncatalogued-verification-method-control/input --json
+tags: [TC-1060, coverage, verification]
+comment: The same obligation names the declared Test class.

@@ -1,0 +1,11 @@
+suspicions:
+- kind: oracle-resembles-implementation
+  path: tests/property_suite.rs
+  symbol: tc1598_artifact_acceptance_matches_the_containment_rule
+  line: 16
+  message_contains:
+  - escapes_the_root
+  - validate_artifact_path
+  - src/open.rs
+  - independent expectation
+  - similarity 1.00

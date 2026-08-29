@@ -1,0 +1,14 @@
+backed: 1
+total: 3
+binding_census:
+- language: typescript
+  candidates: 1
+  bound: 1
+suspicions:
+- kind: oracle-resembles-implementation
+  path: src/containment.test.ts
+  symbol: covers
+  line: 8
+  message_contains:
+  - "similarity 1.00"
+  - "src/containment.test.ts::isContained"

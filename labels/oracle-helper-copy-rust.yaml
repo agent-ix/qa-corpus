@@ -1,0 +1,16 @@
+case: oracle-helper-copy-rust
+family: oracle-is-code-copy
+summary: >-
+  The retained TC-1598 shape calls a same-file helper whose decision copies a
+  private Rust production predicate instead of judging it independently.
+defects:
+- id: OH-RS
+  family: oracle-is-code-copy
+  location: tests/property_suite.rs:16
+  row_id: TC-001
+  findable: true
+  expect_suspicion: oracle-resembles-implementation
+  note: >-
+    The helper and production predicate are uniquely resolved across files;
+    independent, unused, and ambiguous controls remain quiet.
+  confirmed_at: detected through quire coverage after agent-ix/quire-rs#236

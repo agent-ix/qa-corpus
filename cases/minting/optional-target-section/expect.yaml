@@ -1,0 +1,6 @@
+total: 0
+backed: 0
+groups: []
+absent_diagnostic_reasons:
+- section-matches-nothing
+- section-holds-no-table

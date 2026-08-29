@@ -1,0 +1,13 @@
+id: definition-version-changed-control
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: control
+control_for:
+- definition-version-changed
+findable: false
+tags:
+- TC-1101
+reproduce: quoin report --repo cases/reporting/definition-version-changed-control/input --since before --format json
+

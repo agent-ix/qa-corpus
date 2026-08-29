@@ -1,0 +1,15 @@
+mode: join
+module: ecosystem
+id: tag-names-unminted-tc-control
+issue_ref: agent-ix/quire-rs#268
+kind: control
+control_for:
+- tag-names-unminted-tc
+findable: false
+tags:
+- TC-1014
+- join
+- binding
+comment: >-
+  The authored TC tag names the matrix row. All other source and declaration
+  content is identical to the failure case.

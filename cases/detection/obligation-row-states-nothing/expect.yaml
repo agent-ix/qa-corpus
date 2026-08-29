@@ -1,0 +1,5 @@
+diagnostic_reasons: [obligation-row-states-nothing]
+diagnostic_paths:
+  obligation-row-states-nothing: spec/FR-001.md
+diagnostic_message_contains:
+  obligation-row-states-nothing: ["states no obligation", "statement column is empty"]

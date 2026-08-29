@@ -1,0 +1,12 @@
+id: undeclared-coverage-vocabulary-control
+issue_ref: agent-ix/quire-rs#359
+mode: detection
+language: n/a
+module: variants/live-coverage-vocabulary
+declaration_under_test: The live field declaration is the healthy counterpart used to control the missing-field variant.
+kind: control
+control_for: [undeclared-coverage-vocabulary]
+findable: false
+reproduce: quire coverage --scope cases/detection/undeclared-coverage-vocabulary-control/input --module modules/variants/live-coverage-vocabulary --json
+tags: [TC-1062, coverage, vocabulary]
+comment: The same schema and document with the coverage declaration pointing at quality_attribute.

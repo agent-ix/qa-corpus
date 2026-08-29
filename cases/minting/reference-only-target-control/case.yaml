@@ -1,0 +1,12 @@
+id: reference-only-target-control
+issue_ref: agent-ix/quire-rs#363
+mode: minting
+language: n/a
+module: variants/reference-postures
+declaration_under_test: The omitted evidence posture retains source-denominator behavior.
+kind: control
+control_for: [reference-only-target]
+findable: false
+reproduce: quire coverage --scope cases/minting/reference-only-target-control/input --module modules/variants/reference-postures --json
+tags: [TC-1075, coverage, reference-integrity]
+comment: The identical row under the default source posture must still enter coverage.

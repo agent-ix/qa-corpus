@@ -1,0 +1,14 @@
+id: optional-target-section-control
+case: optional-target-section
+issue_ref: agent-ix/quire-rs#327
+mode: minting
+language: n/a
+module: variants/optional-target-section
+declaration_under_test: optional minting sections
+kind: regression
+findable: false
+reproduce: quire coverage --scope cases/minting/optional-target-section-control/input --module modules/variants/optional-target-section --json
+tags: [TC-1076, minting, optional-section]
+comment: >-
+  A landed regression pin: the optional posture suppresses only absence; it does
+  not disable minting.

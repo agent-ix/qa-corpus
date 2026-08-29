@@ -1,0 +1,12 @@
+case: oracle-copy-rust
+family: oracle-is-code-copy
+summary: A copied Rust oracle recomputes the production expression instead of judging it.
+defects:
+- id: OC-RS
+  family: oracle-is-code-copy
+  location: src/lib.rs:15
+  row_id: TC-001
+  findable: true
+  expect_suspicion: oracle-resembles-implementation
+  note: The production oracle-similarity path names the copied expression at its exact test locus.
+  confirmed_at: detected through quire coverage after quire-rs#236

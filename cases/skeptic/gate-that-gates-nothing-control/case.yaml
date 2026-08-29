@@ -1,0 +1,15 @@
+id: gate-that-gates-nothing-control
+issue_ref: agent-ix/quoin#224
+mode: skeptic
+module: ecosystem
+kind: control
+findable: false
+control_for:
+- gate-that-gates-nothing
+tags:
+- TC-1069
+- skeptic
+- finding-quality
+comment: >-
+  The same declared and wired gates exit non-zero when the forbidden pattern is present. The
+  validator must keep all three language-matched controls silent.

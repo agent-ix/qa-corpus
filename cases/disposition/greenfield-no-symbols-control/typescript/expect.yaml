@@ -1,0 +1,25 @@
+# Re-derived from a real run against the vendored ecosystem declaration
+# (engine bcda5ed, `quire` 0.30.2).
+#
+# The healthy half: the same two rows, with one symbol that binds. Its
+# `coverage.backed` envelope reads examined 1 / matched 1, against the
+# partner's examined 0 / matched 0 — the field that tells "0% because nothing
+# was read" from "0% because nothing bound", and the field neither
+# `absent_diagnostic_reasons` nor `backed` can carry on its own.
+backed: 1
+total: 2
+metrics:
+  -
+    name: coverage.backed
+    state: measured
+    examined: 1
+    matched: 1
+    hollow: false
+binding_census:
+  -
+    language: typescript
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - hollow-denominator
+  - no-symbol-bound

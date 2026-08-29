@@ -108,6 +108,9 @@ def validate_case(declared: dict, kind: str, where: str, schema: dict) -> list[s
         elif spec == ["str"]:
             ok = isinstance(value, list) and all(isinstance(v, str) for v in value)
             want = "a list of strings"
+        elif spec == "grading_contract":
+            ok = isinstance(value, dict)
+            want = "a grading contract mapping"
         else:
             problems.append(
                 f"{where}: `case_schema.types` declares `{field}: {spec!r}`, "
@@ -127,12 +130,23 @@ def validate_case(declared: dict, kind: str, where: str, schema: dict) -> list[s
             f"{where}: `{field}` is in neither `required` nor `optional` — an "
             f"unmodelled field is a field nothing checks")
 
-    for rule in schema.get("conditional") or []:
+    for index, rule in enumerate(schema.get("conditional") or []):
+        if not isinstance(rule, dict):
+            problems.append(
+                f"corpus.yaml: case_schema.conditional[{index}] must be a mapping, "
+                f"got {type(rule).__name__} {rule!r}")
+            continue
         trigger = rule.get("if_present")
         if trigger is not None:
             fires = trigger in declared
         else:
-            (field, value), = (rule.get("if_field_is_not") or {}).items()
+            condition = rule.get("if_field_is_not")
+            if not isinstance(condition, dict) or len(condition) != 1:
+                problems.append(
+                    f"corpus.yaml: case_schema.conditional[{index}].if_field_is_not "
+                    f"must be a one-entry mapping, got {condition!r}; while validating {where}")
+                continue
+            (field, value), = condition.items()
             fires = declared.get(field) != value
         if not fires:
             continue
@@ -252,11 +266,117 @@ def discover() -> list[dict]:
                 "_where": f"{rel}/{language}",
             })
     declaration = load_declaration()
+    check_grading_contracts(declaration, cases)
     check_case_schema(declaration, cases)
     check_known_gaps(declaration)
-    check_controls(cases)
-    check_expectations(cases)
+    detection = [case for case in cases if case.get("mode") != "reporting"]
+    check_controls(detection)
+    check_expectations(detection)
     return cases
+
+
+def check_grading_contracts(declaration: dict, cases: list[dict]) -> None:
+    """Require explicit finding-recall applicability on every scored failure.
+
+    A behavior fixture and a finding fixture are both intentionally
+    `findable`: one is found through a directly graded payload and the other
+    through a producer finding. Treating the shared boolean as a promise that
+    all three finding levels apply manufactured locality misses. The contract
+    below makes that distinction authored data and refuses silent exclusions.
+    """
+    channels = {"finding", "direct-observation", "behavior"}
+    levels = tuple(declaration.get("grading_levels") or [])
+    states = {"required", "not_applicable"}
+    problems: list[str] = []
+
+    for case in cases:
+        if (
+            case.get("kind") != "failure"
+            or not case.get("findable")
+            or case.get("mode") == "reporting"
+        ):
+            continue
+        contract = case.get("grading_contract")
+        if not isinstance(contract, dict):
+            problems.append(
+                f"{case['id']}: a findable failure must declare "
+                "`grading_contract` rather than inheriting finding levels "
+                "from its fixture shape")
+            continue
+        unknown = set(contract) - {"channel", "levels"}
+        if unknown:
+            problems.append(
+                f"{case['id']}: grading_contract has unknown keys "
+                f"{sorted(unknown)}")
+        channel = contract.get("channel")
+        if channel not in channels:
+            problems.append(
+                f"{case['id']}: grading_contract.channel {channel!r} is not "
+                f"one of {sorted(channels)}")
+        declared_levels = contract.get("levels")
+        if not isinstance(declared_levels, dict):
+            problems.append(
+                f"{case['id']}: grading_contract.levels must be a mapping")
+            continue
+        missing = set(levels) - set(declared_levels)
+        extra = set(declared_levels) - set(levels)
+        if missing or extra:
+            problems.append(
+                f"{case['id']}: grading_contract.levels missing "
+                f"{sorted(missing)} and adds {sorted(extra)}")
+        for level in levels:
+            entry = declared_levels.get(level)
+            if not isinstance(entry, dict):
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} must be "
+                    "a mapping")
+                continue
+            unknown_entry = set(entry) - {"state", "reason"}
+            if unknown_entry:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} has "
+                    f"unknown keys {sorted(unknown_entry)}")
+            state = entry.get("state")
+            if state not in states:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level}.state "
+                    f"{state!r} is not one of {sorted(states)}")
+            reason = entry.get("reason")
+            if state == "not_applicable" and not (
+                isinstance(reason, str) and reason.strip()
+            ):
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} excludes "
+                    "the case without a non-empty reason")
+            if state == "required" and "reason" in entry:
+                problems.append(
+                    f"{case['id']}: grading_contract.levels.{level} is "
+                    "required and therefore may not carry an exclusion reason")
+
+        states_by_level = {
+            level: (declared_levels.get(level) or {}).get("state")
+            for level in levels
+        }
+        if channel == "behavior" and any(
+            state != "not_applicable" for state in states_by_level.values()
+        ):
+            problems.append(
+                f"{case['id']}: a behavior case must exclude all finding "
+                "levels; its payload expectations remain the oracle")
+        if channel == "direct-observation" and states_by_level != {
+            "L1": "required", "L2": "required", "L3": "not_applicable"
+        }:
+            problems.append(
+                f"{case['id']}: a direct observation requires L1/L2 and "
+                "excludes finding-level L3")
+        if channel == "finding" and states_by_level.get("L1") != "required":
+            problems.append(
+                f"{case['id']}: a finding channel must require L1")
+
+    if problems:
+        raise CorpusError(
+            f"{len(problems)} grading-contract problem(s):\n  "
+            + "\n  ".join(problems))
 
 
 def check_case_schema(declaration: dict, cases: list[dict]) -> None:
@@ -555,6 +675,8 @@ def check_expectations(cases: list[dict]) -> None:
     undetected = set((gaps.get("findable_but_undetected") or {}).get("cases") or [])
     controlled = controlled_cases(cases)
     behaviour_change = set(declaration.get("behaviour_change_tickets") or [])
+    asserted_present: set[str] = set()
+    asserted_absent: set[str] = set()
 
     for case in cases:
         directory = ROOT / case["dir"]
@@ -608,6 +730,14 @@ def check_expectations(cases: list[dict]) -> None:
             raise CorpusError(
                 f"{name}: expect.yaml declares unhandled key(s) {sorted(unknown)}.")
         check_reasons(name, live, "expect.yaml", case, emitted, forward)
+        positive = set(live.get("diagnostic_reasons") or [])
+        positive.update(live.get("diagnostic_paths") or {})
+        positive.update(live.get("diagnostic_lines") or {})
+        positive.update(live.get("diagnostic_message_contains") or {})
+        asserted_present.update(reason.rsplit("/", 1)[-1] for reason in positive)
+        asserted_absent.update(
+            reason.rsplit("/", 1)[-1]
+            for reason in (live.get("absent_diagnostic_reasons") or []))
 
         if not forward_path.is_file():
             check_findable(name, case, live, {}, undetected, controlled)
@@ -687,6 +817,7 @@ def check_expectations(cases: list[dict]) -> None:
 
         claimed = set(ahead.get("diagnostic_reasons") or [])
         claimed |= set(ahead.get("diagnostic_paths") or {})
+        claimed |= set(ahead.get("diagnostic_lines") or {})
         claimed |= set(ahead.get("diagnostic_message_contains") or {})
         # A claim may be spelled `reason` or `declaration/reason`; both graders
         # accept the scoped form and resolve it the same way, so the registry
@@ -702,6 +833,14 @@ def check_expectations(cases: list[dict]) -> None:
                 f"nothing ever tells you the fixture went stale.")
 
         check_findable(name, case, live, ahead, undetected, controlled)
+
+    missing_positive = sorted(emitted - asserted_present)
+    missing_negative = sorted(emitted - asserted_absent)
+    if missing_positive or missing_negative:
+        raise CorpusError(
+            "diagnostic reason coverage is incomplete: "
+            f"asserted present missing {missing_positive}; "
+            f"asserted absent missing {missing_negative}")
 
 
 def check_regression(name: str, case: dict, forward_path) -> None:
@@ -761,7 +900,10 @@ def check_findable(
     claims = any(
         block.get(key)
         for block in (live, ahead)
-        for key in ("diagnostic_reasons", "validate_contains", "suspicions")
+        for key in (
+            "diagnostic_reasons", "validate_contains", "suspicions",
+            "external_observations",
+        )
     )
     if claims or (case.get("case") or case["id"]) in undetected:
         return
@@ -834,11 +976,11 @@ def asserts_something(block: dict) -> bool:
 # The keys graded EXACTLY — presence is an assertion and an empty list is a
 # claim, so these are what a behaviour-change forward block must re-state.
 EXACTLY_GRADED = ("backed", "total", "unbacked_rows", "groups", "no_symbol_rows",
-                  "untracked_symbols")
+                  "untracked_symbols", "external_observations")
 
 KNOWN_EXPECT_KEYS = {
     "backed", "total", "diagnostic_reasons", "absent_diagnostic_reasons",
-    "diagnostic_paths", "diagnostic_message_contains", "binding_census",
+    "diagnostic_paths", "diagnostic_lines", "diagnostic_message_contains", "binding_census",
     "metrics", "no_symbol_rows", "unbacked_rows", "groups",
     "untracked_symbols",
     "validate_contains", "validate_absent",
@@ -849,6 +991,11 @@ KNOWN_EXPECT_KEYS = {
     # `src/lib.rs:7` while asserting `backed`/`total`/`binding_census`, true of
     # any healthy three-row tree and byte-identical to two other fixtures.
     "suspicions", "absent_suspicions",
+    # Findings/observations produced by a validator other than Quire. The
+    # Python verifier executes the named producer; the Quire-only Rust reader
+    # parses and explicitly delegates this channel rather than pretending the
+    # observation came from `coverage`.
+    "external_observations",
 }
 
 
@@ -867,6 +1014,7 @@ def check_reasons(
 
     present = [token(k) for k in (block.get("diagnostic_reasons") or [])]
     present += [token(k) for k in (block.get("diagnostic_paths") or {})]
+    present += [token(k) for k in (block.get("diagnostic_lines") or {})]
     present += [token(k) for k in (block.get("diagnostic_message_contains") or {})]
     absent = [token(k) for k in (block.get("absent_diagnostic_reasons") or [])]
 
@@ -923,6 +1071,23 @@ def check_reasons(
 
 def build(declaration: dict, cases: list[dict]) -> dict:
     """The matrix, computed. `covered` iff a fixture exists for the cell."""
+    declared_modes = set(declaration.get("mode_families") or []) | set(
+        declaration.get("reporting_modes") or []
+    )
+    if not declared_modes:
+        raise CorpusError("corpus.yaml declares no detection or reporting modes")
+    unknown_case_modes = sorted(
+        {str(case.get("mode")) for case in cases} - declared_modes
+    )
+    unknown_inventory_modes = sorted(
+        {str(row.get("mode")) for row in declaration.get("inventory") or []}
+        - declared_modes
+    )
+    if unknown_case_modes or unknown_inventory_modes:
+        raise CorpusError(
+            f"undeclared modes: cases {unknown_case_modes}; inventory "
+            f"{unknown_inventory_modes}"
+        )
     # A fixture covers a cell only when it binds the ECOSYSTEM declaration.
     # One binding a relaxation variant exercises no ecosystem mode — a corpus
     # whose manifest heading always matches cannot exhibit the section defect
@@ -950,7 +1115,10 @@ def build(declaration: dict, cases: list[dict]) -> dict:
         if c.get("module") == "ecosystem":
             covered_by.add(key)
         else:
-            on_variant[key] = (c.get("id"), c.get("module"), c.get("relaxation_ticket"))
+            on_variant[key] = (
+                c.get("id"), c.get("module"), c.get("relaxation_ticket"),
+                c.get("declaration_under_test"),
+            )
     have = covered_by
 
     # #289 acceptance: a case naming a module with no manifest is REJECTED.
@@ -974,13 +1142,15 @@ def build(declaration: dict, cases: list[dict]) -> dict:
                 f"{c.get('id')}: module `{c.get('module')}` has no manifest under "
                 f"modules/{module}/")
         c["module"] = module
-        # FR-065-CON-3 / AC-15: a variant binding names its relaxation ticket.
-        if module != "ecosystem" and not c.get("relaxation_ticket"):
+        relaxation = c.get("relaxation_ticket")
+        subject = c.get("declaration_under_test")
+        if module != "ecosystem" and bool(relaxation) == bool(subject):
             raise CorpusError(
-                f"{c.get('id')}: binds variant `{module}` and names no "
-                f"`relaxation_ticket`. A corpus whose manifest always matches "
-                f"cannot exhibit a declaration defect, so an unticketed "
-                f"relaxation is the state CON-3 forbids.")
+                f"{c.get('id')}: binds variant `{module}` and must declare exactly one "
+                f"of `relaxation_ticket` or `declaration_under_test`.")
+        if module == "ecosystem" and (relaxation or subject):
+            raise CorpusError(
+                f"{c.get('id')}: binds the ecosystem module but declares variant metadata.")
 
     # A cell covered by a PENDING fixture is covered — a case exists and
     # exercises the mode — but the engine demonstrably fails it. Reported
@@ -1025,13 +1195,20 @@ def build(declaration: dict, cases: list[dict]) -> dict:
             elif (row["mode"], row["case"], language) in have:
                 cells[language] = {"state": "covered"}
             elif (row["mode"], row["case"], language) in on_variant:
-                fixture, module, ticket = on_variant[(row["mode"], row["case"], language)]
-                cells[language] = {
-                    "state": "GAP",
-                    "reason": f"`{fixture}` ships but binds `{module}` rather than the "
-                              f"ecosystem declaration, so it exercises no ecosystem "
-                              f"mode ({ticket or 'no relaxation ticket named'})",
-                }
+                fixture, module, ticket, subject = on_variant[(
+                    row["mode"], row["case"], language)]
+                if subject:
+                    cells[language] = {
+                        "state": "out-of-scope",
+                        "reason": f"`{fixture}` tests variant declaration `{module}`: {subject}",
+                    }
+                else:
+                    cells[language] = {
+                        "state": "GAP",
+                        "reason": f"`{fixture}` ships but binds `{module}` rather than the "
+                                  f"ecosystem declaration, so it exercises no ecosystem "
+                                  f"mode ({ticket})",
+                    }
             else:
                 cells[language] = {"state": "GAP"}
             state = cells[language]["state"]
@@ -1083,6 +1260,29 @@ def build(declaration: dict, cases: list[dict]) -> dict:
     }
 
 
+def require_complete(bounds: dict) -> None:
+    """Reject every applicable inventory cell that has no corpus case.
+
+    The ordinary report keeps GAP as a useful authoring state. CI uses this
+    stricter policy: a declared applicable language is either covered by a
+    case or explicitly out of scope with a reason. Otherwise a newly added row
+    can make the matrix honestly say GAP while the gate still passes.
+    """
+    gaps = [
+        f"{row['mode']}/{row['case']}/{language}"
+        for row in bounds["matrix"]
+        for language, cell in row["cells"].items()
+        if cell["state"] == "GAP"
+    ]
+    if gaps:
+        raise CorpusError(
+            f"{len(gaps)} applicable mode-language cell(s) have no case: "
+            + ", ".join(gaps)
+            + ". Add the case, or mark the cell out-of-scope with a non-empty "
+              "reason when the mode genuinely cannot occur in that language."
+        )
+
+
 # A count published in prose, tagged so it can be checked against the tree.
 #
 # WHY THIS EXISTS. Six figures in `corpus.yaml`, `README.md` and a self-test
@@ -1116,8 +1316,9 @@ def derived_counts(cases: list[dict]) -> dict[str, int]:
     needs a payload from every control, which means running the engine, which
     this loader deliberately does not do. That figure stays prose and says so.
     """
-    failures = [c for c in cases if c.get("kind") == "failure"]
-    controlled = controls_by_case(cases)
+    detection = [c for c in cases if c.get("mode") != "reporting"]
+    failures = [c for c in detection if c.get("kind") == "failure"]
+    controlled = controls_by_case(detection)
     return {
         "fixtures": len(cases),
         "failure_fixtures": len(failures),
@@ -1157,6 +1358,8 @@ def main() -> int:
         cases = discover()
         bounds = build(declaration, cases)
         check_published_counts(cases)
+        if "--require-complete" in sys.argv:
+            require_complete(bounds)
     except CorpusError as error:
         print(f"corpus: {error}", file=sys.stderr)
         return 1

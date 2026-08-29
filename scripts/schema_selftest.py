@@ -33,6 +33,8 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
+from bounds import validate_case
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COPY_ITEMS = ("bounds.py", "corpus.yaml", "cases", "modules")
 
@@ -50,6 +52,14 @@ def mutate_yaml(tree: pathlib.Path, rel: str, old: str, new: str) -> None:
     path.write_text(text.replace(old, new, 1))
 
 
+def remove_path(tree: pathlib.Path, rel: str) -> None:
+    """Remove one fixture from a disposable corpus copy."""
+    path = tree / rel
+    if not path.exists():
+        raise AssertionError(f"{rel}: removal target not found")
+    shutil.rmtree(path) if path.is_dir() else path.unlink()
+
+
 # (name, mutation or None for the control, substring the failure must name)
 CASES = [
     (
@@ -63,6 +73,43 @@ CASES = [
             t, "cases/attachment/tests-directory-topology/case.yaml",
             "issue_ref:", "not_issue_ref:"),
         "required field `issue_ref` is missing",
+    ),
+    (
+        "a malformed if_field_is_not rule is a stable schema diagnostic",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml", "  conditional:\n",
+            "  conditional:\n  - if_field_is_not: [kind, control]\n    then_required: [control_for]\n"),
+        "case_schema.conditional[0].if_field_is_not must be a one-entry mapping",
+    ),
+    (
+        "an applicable language with no case is rejected by the CI policy",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "# DEPARTURES FROM THE CONTRACT, declared and ENFORCED.",
+            "- mode: detection\n"
+            "  case: policy-selftest-missing\n"
+            "  source: agent-ix/quire-rs#278\n"
+            "  languages: [rust]\n"
+            "# DEPARTURES FROM THE CONTRACT, declared and ENFORCED."),
+        "detection/policy-selftest-missing/rust",
+    ),
+    (
+        "an out-of-scope language needs a written reason",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "    python: >-\n"
+            "      the declaration declares NO python test-name-id form. `manifest.yaml` carries\n"
+            "      `rust-test-name-id` and `typescript-test-name-id` and no python sibling, so there is\n"
+            "      no form for a python fixture to write the defect in.\n"
+            "    rust: >-",
+            "    python: \"\"\n"
+            "    rust: >-"),
+        "test-name-id-in-call-title/python: out-of-scope with no reason",
+    ),
+    (
+        "every failure case needs a language-matched control",
+        lambda t: remove_path(t, "cases/detection/low-symbol-binding-control"),
+        "low-symbol-binding: no control names it",
     ),
     (
         "a duplicate derived id is rejected (the review's mutation 2)",
@@ -93,6 +140,36 @@ CASES = [
             "control_for:\n- tag-at-module-scope",
             "control_for: tag-at-module-scope"),
         "`control_for` must be a list of strings",
+    ),
+    (
+        "a findable failure cannot omit its grading contract",
+        lambda t: mutate_yaml(
+            t, "cases/detection/low-symbol-binding/case.yaml",
+            "grading_contract:", "not_grading_contract:"),
+        "must declare `grading_contract`",
+    ),
+    (
+        "a grading level cannot use an unknown applicability state",
+        lambda t: mutate_yaml(
+            t, "cases/detection/low-symbol-binding/case.yaml",
+            "L2: {state: required}", "L2: {state: maybe}"),
+        "grading_contract.levels.L2.state 'maybe' is not one of",
+    ),
+    (
+        "a locality exclusion must carry a non-empty reason",
+        lambda t: mutate_yaml(
+            t, "cases/provenance/hollow-metric/case.yaml",
+            "L2: {state: not_applicable, reason: \"the finding concerns an aggregate metric and has no unique source line\"}",
+            "L2: {state: not_applicable}"),
+        "excludes the case without a non-empty reason",
+    ),
+    (
+        "a behavior channel cannot require a finding level",
+        lambda t: mutate_yaml(
+            t, "cases/disposition/greenfield-no-symbols/case.yaml",
+            "L1: {state: not_applicable, reason: \"graded through the honest zero-population metric payload; no finding is expected\"}",
+            "L1: {state: required}"),
+        "a behavior case must exclude all finding levels",
     ),
     (
         "a `by_kind` FORBIDDEN field is rejected",
@@ -165,12 +242,46 @@ CASES = [
             "kind: failure", "kind: failure\npending: agent-ix/quire-rs#999999"),
         "`pending_reason` is required here",
     ),
+    (
+        "a variant cannot be both temporary and the declaration under test",
+        lambda t: mutate_yaml(
+            t, "cases/provenance/implements-never-asked/case.yaml",
+            "declaration_under_test:",
+            "relaxation_ticket: agent-ix/quire-rs#330\ndeclaration_under_test:"),
+        "must declare exactly one of `relaxation_ticket` or `declaration_under_test`",
+    ),
+    (
+        "every emitted diagnostic reason needs positive and negative coverage",
+        lambda t: mutate_yaml(
+            t, "corpus.yaml",
+            "  - undeclared-coverage-vocabulary\n  # Tokens no engine emits YET",
+            "  - undeclared-coverage-vocabulary\n  - zzz-unasserted\n  # Tokens no engine emits YET"),
+        "asserted present missing ['zzz-unasserted']",
+    ),
 ]
+
+
+def check_conditional_library_surface() -> None:
+    schema = {
+        "required": ["kind"],
+        "optional": ["ticket"],
+        "by_kind": {"failure": {}, "control": {}},
+        "conditional": [
+            {"if_field_is_not": {"kind": "control"}, "then_required": ["ticket"]}
+        ],
+    }
+    assert validate_case({"kind": "control"}, "control", "control-case", schema) == []
+    problems = validate_case({"kind": "failure"}, "failure", "failure-case", schema)
+    assert any("`ticket` is required" in problem for problem in problems), problems
+
+    schema["conditional"][0]["if_field_is_not"] = ["kind", "control"]
+    problems = validate_case({"kind": "failure"}, "failure", "failure-case", schema)
+    assert any("one-entry mapping" in problem and "failure-case" in problem for problem in problems)
 
 
 def run_bounds(tree: pathlib.Path) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "bounds.py"], cwd=tree,
+        [sys.executable, "bounds.py", "--require-complete"], cwd=tree,
         capture_output=True, text=True)
 
 
@@ -209,8 +320,25 @@ def check_scaffolder() -> list[str]:
             shutil.copytree(src, dst) if src.is_dir() else shutil.copy2(src, dst)
         problems += _scaffold(tree)
         for path in sorted(tree.glob("cases/*/selftest-*/case.yaml")):
-            declared = yaml.safe_load(path.read_text()) or {}
-            problems += validate_scaffolded(declared, path, tree, schema)
+            shared = yaml.safe_load(path.read_text()) or {}
+            case_dir = path.parent
+            variants = sorted(
+                directory
+                for directory in case_dir.iterdir()
+                if (directory / "input").is_dir()
+            )
+            if (case_dir / "input").is_dir():
+                problems += validate_scaffolded(shared, path, tree, schema)
+            else:
+                for variant in variants:
+                    per_case_path = variant / "case.yaml"
+                    per_case = (
+                        yaml.safe_load(per_case_path.read_text()) or {}
+                        if per_case_path.is_file()
+                        else {}
+                    )
+                    effective = {**shared, **per_case, "language": variant.name}
+                    problems += validate_scaffolded(effective, per_case_path, tree, schema)
         if not list(tree.glob("cases/*/selftest-*/case.yaml")):
             problems.append(
                 "the scaffolder wrote no case.yaml, so nothing below was checked")
@@ -257,11 +385,63 @@ def _scaffold(tree: pathlib.Path) -> list[str]:
             problems.append(
                 f"`new_case.py --kind {kind}` exited {done.returncode}: "
                 f"{(done.stdout + done.stderr).strip()[:300]}")
+
+    # The EPIC grows one inventory row across languages. The on-ramp used to
+    # reject this exact second call as "already exists" and always wrote Rust
+    # source even when --language said Python (agent-ix/quoin#241).
+    done = subprocess.run(
+        [
+            sys.executable,
+            "scripts/new_case.py",
+            "--mode",
+            "minting",
+            "--case",
+            "selftest-pair",
+            "--language",
+            "python",
+            "--kind",
+            "failure",
+            "--module",
+            "ecosystem",
+            "--issue",
+            "agent-ix/quoin#241",
+        ],
+        cwd=tree,
+        capture_output=True,
+        text=True,
+    )
+    if done.returncode != 0:
+        problems.append(
+            "`new_case.py` could not add Python to an existing case: "
+            f"{(done.stdout + done.stderr).strip()[:300]}")
+    else:
+        pair = tree / "cases" / "minting" / "selftest-pair"
+        shared = yaml.safe_load((pair / "case.yaml").read_text())
+        if "language" in shared or "reproduce" in shared:
+            problems.append("language-specific fields remained in the shared case metadata")
+        if not (pair / "rust" / "input" / "src" / "lib.rs").is_file():
+            problems.append("adding Python did not preserve the original Rust tree")
+        if not (pair / "python" / "input" / "src" / "test_example.py").is_file():
+            problems.append("--language python did not scaffold Python evidence")
+        if (pair / "python" / "input" / "src" / "lib.rs").exists():
+            problems.append("--language python still scaffolded Rust evidence")
+        variant = yaml.safe_load((pair / "python" / "case.yaml").read_text())
+        reproduce = str((variant or {}).get("reproduce", ""))
+        if not reproduce.startswith("IX_FILAMENT_MODULES_PATH=modules/ecosystem "):
+            problems.append("the second-language reproduce line does not load the module path")
+        if "selftest-pair/python/input" not in reproduce:
+            problems.append("the second-language reproduce line names the wrong input tree")
     return problems
 
 
 def main() -> int:
     failures: list[str] = []
+
+    try:
+        check_conditional_library_surface()
+        print("  ok   conditional rule library surface accepts valid and diagnoses malformed shapes")
+    except AssertionError as error:
+        failures.append(f"conditional rule library surface: {error}")
 
     scaffolder = check_scaffolder()
     if scaffolder:

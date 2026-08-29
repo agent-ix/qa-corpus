@@ -1,0 +1,13 @@
+id: status-column-control
+issue_ref: agent-ix/quire-rs#341
+mode: minting
+language: n/a
+module: ecosystem
+kind: control
+control_for: [status-column-mismatch]
+findable: false
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/minting/status-column-control/input --json
+tags: [TC-1079, minting, coverage, status]
+comment: >-
+  The same reference table uses the configured `Status` header. Status
+  classification proceeds and the mismatch diagnostic remains silent.

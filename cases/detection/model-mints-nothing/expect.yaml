@@ -1,0 +1,7 @@
+diagnostic_reasons: [model-mints-nothing]
+diagnostic_paths:
+  model-mints-nothing: no-trace-targets/manifest.yaml
+diagnostic_lines:
+  model-mints-nothing: 6
+diagnostic_message_contains:
+  model-mints-nothing: ["has no trace_targets", "mints no ids"]

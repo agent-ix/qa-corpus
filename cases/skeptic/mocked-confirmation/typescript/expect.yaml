@@ -1,0 +1,13 @@
+backed: 1
+total: 3
+binding_census:
+- language: typescript
+  candidates: 1
+  bound: 1
+external_observations:
+- kind: mock-injection-observed
+  path: src/shell.test.ts
+  line: 13
+  symbol: covers
+  injects:
+  - Confirmation.allow

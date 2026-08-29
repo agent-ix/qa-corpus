@@ -1,0 +1,15 @@
+id: mocked-confirmation-control
+issue_ref: agent-ix/quoin#204
+mode: skeptic
+module: ecosystem
+kind: control
+findable: false
+control_for:
+- mocked-confirmation
+tags:
+- TC-1063
+- skeptic
+- finding-quality
+comment: >-
+  The same bound confirmation test requests a real confirmation instead of constructing an explicit
+  permissive stand-in. The producer and auditor must keep every supported language silent.

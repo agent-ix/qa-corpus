@@ -5,3 +5,6 @@ backed: 0
 total: 4
 diagnostic_reasons:
 - catch-all-universal
+diagnostic_message_contains:
+  catch-all-universal:
+  - review whether the criterion is intentionally universal

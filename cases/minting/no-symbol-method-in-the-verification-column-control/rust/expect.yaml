@@ -1,0 +1,9 @@
+# RE-MEASURED against the vendored ecosystem declaration (engine bcda5ed,
+# `quire` 0.30.2). This was `[]` on `bench-no-symbol-vocab`, which declared no
+# `traces-to` reference and so never read the matrix at all.
+#
+# `TC-002` is exempt here and in the partner — the matrix types it `Inspection`
+# in both trees. The pair therefore differs by exactly one entry, and that
+# entry is the FR row whose Verification cell the partner changes.
+no_symbol_rows:
+  - TC-002

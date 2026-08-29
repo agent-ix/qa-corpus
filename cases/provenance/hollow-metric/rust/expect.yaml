@@ -1,0 +1,15 @@
+# Derived from a real run against the COMPLETE ecosystem declaration —
+# spec-artifacts-process AND spec-artifacts-iso, whole module directories
+# including their schemas (agent-ix/quire-rs#292).
+backed: 0
+total: 3
+diagnostic_reasons:
+- hollow-denominator
+- no-symbol-bound
+diagnostic_message_contains:
+  hollow-denominator:
+  - inspect the binding census
+binding_census:
+- language: rust
+  candidates: 1
+  bound: 0

@@ -1,0 +1,11 @@
+id: incomplete-population
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1107
+reproduce: quoin report --repo cases/reporting/incomplete-population/input --since before --format json
+

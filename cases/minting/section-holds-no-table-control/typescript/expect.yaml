@@ -1,0 +1,27 @@
+# THE ROW MINTS AND THE DIAGNOSTIC IS SILENT. `groups` carries the `test-case`
+# target present and backed, which is the control's real job: `total` alone
+# cannot say the row minted — it is satisfied by any two ids from anywhere.
+total: 2
+backed: 1
+groups:
+- document: spec/FR-001.md
+  target: acceptance-criterion
+  backed: 0
+  total: 1
+- document: spec/tests.md
+  target: test-case
+  backed: 1
+  total: 1
+
+# All three minting diagnostics silent. The partner asserts the first PRESENT
+# and the other two ABSENT; this asserts all three absent, so the pair separates
+# on the one token and not on the two silences they share.
+absent_diagnostic_reasons:
+- test-case/section-holds-no-table
+- test-case/section-matches-nothing
+- test-case/id-column-matches-nothing
+untracked_symbols: []
+binding_census:
+- language: typescript
+  candidates: 1
+  bound: 1

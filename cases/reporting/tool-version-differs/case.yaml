@@ -1,0 +1,11 @@
+id: tool-version-differs
+issue_ref: agent-ix/quire-rs#276
+mode: reporting
+language: data
+module: ecosystem
+kind: failure
+findable: true
+tags:
+- TC-1106
+reproduce: quoin report --repo cases/reporting/tool-version-differs/input --since before --format json
+
