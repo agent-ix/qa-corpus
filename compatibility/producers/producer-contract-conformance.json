@@ -1,0 +1,1279 @@
+{
+  "corpus_id": "contract-v0.1",
+  "package_schema": {
+    "path": "schemas/contract-package-reference-v1.schema.json",
+    "sha256": "748d98def7c0a67e3e12f882cd9ef7d0948c8eacbff1e5f6135faa7fd29d642d"
+  },
+  "conformance_schema": {
+    "path": "schemas/contract-conformance-manifest-v1.schema.json",
+    "sha256": "63fe642ebe7e7f49acf59094a8edaa488b96b13806886f0af2779629900bdb75"
+  },
+  "inventory": {
+    "path": "inventory.json",
+    "sha256": "c53027eaa8eb7104aa4baa2a94faf35783cc99d214504faff79d9010879a6e17"
+  },
+  "canonical_profile": "quire.contract.canonical-json/v1",
+  "protocol": "quire.contract.conformance-jsonl/v1",
+  "fixtures": [
+    {
+      "id": "package-constructs",
+      "operation": "package",
+      "input": "inputs/package-constructs.json",
+      "input_sha256": "72d11176c6593bd8ec3571284280c5112db294441b0dbb771be392aa16d5c1f6",
+      "expectation": "expectations/package-constructs.json",
+      "expectation_sha256": "05f8cceaf1dfd0fd4956aeff76f308f673beaf0c4e896c1db327698850a4f13b",
+      "covers": [
+        "boundary:canonical.semantic_set_order",
+        "boundary:canonical.sequence_order",
+        "boundary:revision.current",
+        "boundary:schema.1_1",
+        "boundary:source_span.minimum",
+        "construct:clause_kind.assertion",
+        "construct:clause_kind.case",
+        "construct:clause_kind.information",
+        "construct:clause_kind.invariant",
+        "construct:clause_kind.postcondition",
+        "construct:clause_kind.precondition",
+        "construct:reference_body.composite",
+        "construct:reference_body.literal",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-reference",
+      "operation": "package",
+      "input": "inputs/package-reference.json",
+      "input_sha256": "91c3594fa7b542d385cf7c5763a5fe7bcccca1414405ce9bc50570793bd9a301",
+      "expectation": "expectations/package-reference.json",
+      "expectation_sha256": "8c0baf19fae04e8fac140ed28f3790ee36f14591be06084cec32825f0269fd90",
+      "covers": [
+        "construct:dependency.kind.input",
+        "construct:reference_body.reference",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-namespace",
+      "operation": "package",
+      "input": "inputs/package-invalid-namespace.json",
+      "input_sha256": "b4a439d118fc9f69d5eab8608262a51886caad24538ade2780539d9b8e53bbf8",
+      "expectation": "expectations/package-invalid-namespace.json",
+      "expectation_sha256": "6a38eb39952f5648df1d40979b1bc91e065d1d27a8a39ea61e1ef3ec5db19b50",
+      "covers": [
+        "diagnostic:invalid_package_namespace",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-schema",
+      "operation": "package",
+      "input": "inputs/package-invalid-schema.json",
+      "input_sha256": "f7a9c9c50d3ab59e6be094bbc220fcb7c0f14f90dc06408ae3520585da0a629d",
+      "expectation": "expectations/package-invalid-schema.json",
+      "expectation_sha256": "e2321d4bc841d29c2cb8f19f35ee3ef6b15edc215e96e552dbcdf21aaeb119e5",
+      "covers": [
+        "boundary:schema.zero_major",
+        "diagnostic:invalid_schema_version",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-identifier",
+      "operation": "package",
+      "input": "inputs/package-invalid-identifier.json",
+      "input_sha256": "bb5e051da1e75f9eaea95f699a420b5b1ff0af04028872d87f622281b4820d84",
+      "expectation": "expectations/package-invalid-identifier.json",
+      "expectation_sha256": "668d629e2ab09b55b4c697f6ddbfcea76a18ecb416bcc0226a12ba824ffb487a",
+      "covers": [
+        "diagnostic:invalid_identifier",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-requirement-revision",
+      "operation": "package",
+      "input": "inputs/package-invalid-requirement-revision.json",
+      "input_sha256": "45224e5f9f0644abee8dd9ab9e2b59f995a1ece41d1c586a495284c5e5ad85fd",
+      "expectation": "expectations/package-invalid-requirement-revision.json",
+      "expectation_sha256": "f3724f0de143026b20b0270bcfd4d623c348e3f3d500b8b2e71a995d8bfe2de7",
+      "covers": [
+        "diagnostic:invalid_requirement_revision",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-source-revision",
+      "operation": "package",
+      "input": "inputs/package-invalid-source-revision.json",
+      "input_sha256": "d8b7c6e37057a3ae25050432ed78d10de133f16c57dce582d74dc80ca8ad0173",
+      "expectation": "expectations/package-invalid-source-revision.json",
+      "expectation_sha256": "31e9ba953b3d32a871e65b349a6ac8fb98a3547d7666b20bb5906a37fb2fef04",
+      "covers": [
+        "diagnostic:invalid_source_revision",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-invalid-span",
+      "operation": "package",
+      "input": "inputs/package-invalid-span.json",
+      "input_sha256": "e23255521bf2647e71dd22f4e08b869abe5f1493726fbbdeb19cdbf3ffea15e7",
+      "expectation": "expectations/package-invalid-span.json",
+      "expectation_sha256": "a530cfe424c55ce55059ffba3bddc50d0827155ddf8585f6462f44573ba3d214",
+      "covers": [
+        "boundary:source_span.reversed",
+        "diagnostic:invalid_source_span",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-duplicate-requirement",
+      "operation": "package",
+      "input": "inputs/package-duplicate-requirement.json",
+      "input_sha256": "8988f3245531f6cc8411796a26724e301665a90625f5de120d3d3352decb64e1",
+      "expectation": "expectations/package-duplicate-requirement.json",
+      "expectation_sha256": "4b885f08c7dccee3fdbc20928c7f67a25730579352b74248530f4df887d3654d",
+      "covers": [
+        "diagnostic:duplicate_requirement",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-duplicate-clause",
+      "operation": "package",
+      "input": "inputs/package-duplicate-clause.json",
+      "input_sha256": "e48f2ac8ee8004cf522bacd6dd2f5a2196918509f98284fd43920eb37c40eb3d",
+      "expectation": "expectations/package-duplicate-clause.json",
+      "expectation_sha256": "12b83820fb108e1433f3b0ab6b2427ce2f0467641dce95bf35c08db983024dbc",
+      "covers": [
+        "diagnostic:duplicate_clause",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-floating",
+      "operation": "package",
+      "input": "inputs/package-floating.json",
+      "input_sha256": "ac878006af4515563433ff1a930c6840b1123a91ae3e3598c3156093536d094b",
+      "expectation": "expectations/package-floating.json",
+      "expectation_sha256": "76493db3e072c5ff30bd614c713dcd6be682fc605dd662f7e2ae2065e23b47c8",
+      "covers": [
+        "diagnostic:floating_executable_clause",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-information-anchored",
+      "operation": "package",
+      "input": "inputs/package-information-anchored.json",
+      "input_sha256": "24ce77ab95bc95d18fe4abc5b1db33a96e7ef26bae247dd75ad08fd83b708659",
+      "expectation": "expectations/package-information-anchored.json",
+      "expectation_sha256": "e614db60485bac71d1a3a4d1ae96d2a83f62a19e497c07a7d0dda8de1aa48202",
+      "covers": [
+        "diagnostic:informational_clause_anchored",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-incompatible-anchor",
+      "operation": "package",
+      "input": "inputs/package-incompatible-anchor.json",
+      "input_sha256": "93aac684c0efe2f82e7e0f080e4e42d8835e04409f11a6e58ac3c581cfa6daf3",
+      "expectation": "expectations/package-incompatible-anchor.json",
+      "expectation_sha256": "06da628dc6ba0a4ee9c2f398cc7b5e793f9de423d460af2434a31859ff4eff19",
+      "covers": [
+        "diagnostic:incompatible_clause_anchor",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-cross-reference",
+      "operation": "package",
+      "input": "inputs/package-cross-reference.json",
+      "input_sha256": "9af4af2bffdd043f28b89266330300f1072f760e0df18d2341241531c472f4d8",
+      "expectation": "expectations/package-cross-reference.json",
+      "expectation_sha256": "5313cb1bbe92c422e74854d601176b94ed04cf9b5fa55c12d8cbf1518b0d55f7",
+      "covers": [
+        "diagnostic:cross_package_reference",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-malformed-reference",
+      "operation": "package",
+      "input": "inputs/package-malformed-reference.json",
+      "input_sha256": "997babf5decf6dbda09537c942b13c71e594500852162b3fb0a4d0646dca9dbd",
+      "expectation": "expectations/package-malformed-reference.json",
+      "expectation_sha256": "3bf262fa2324c739d3c75cc8ea2bf14629564cb2bd3091acdd51e9ad33c561ae",
+      "covers": [
+        "diagnostic:malformed_reference",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-stale-reference",
+      "operation": "package",
+      "input": "inputs/package-stale-reference.json",
+      "input_sha256": "5af33507932d8565155275400f53a4e8f7bc4d6b1a5ebcd69ecfb234579f9ee4",
+      "expectation": "expectations/package-stale-reference.json",
+      "expectation_sha256": "f954f29e37343cf888c564a877f8b9b777f90603ebf2c16ce12b15cbad6abc25",
+      "covers": [
+        "boundary:revision.stale",
+        "diagnostic:stale_requirement_revision",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-orphan-reference",
+      "operation": "package",
+      "input": "inputs/package-orphan-reference.json",
+      "input_sha256": "38e9dd2c0a1709d9a3f9d26cd314d4a188c51344cdabbddf4a91804c6e4d45ac",
+      "expectation": "expectations/package-orphan-reference.json",
+      "expectation_sha256": "a07691eac3acf736fd91dbf9badb7c5003e31e67b57539b9fa90dcb369e10c27",
+      "covers": [
+        "diagnostic:orphaned_requirement_reference",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-orphan-clause",
+      "operation": "package",
+      "input": "inputs/package-orphan-clause.json",
+      "input_sha256": "e1a92f446b5ffd0553b56bd25095e54e935a44dde358860e0d786ec7640b0e88",
+      "expectation": "expectations/package-orphan-clause.json",
+      "expectation_sha256": "86f34dedf755de98210ea37b73112fc21a821ebe06921db329dfa5623e5c2952",
+      "covers": [
+        "diagnostic:orphaned_clause_reference",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-canonical-limit",
+      "operation": "package",
+      "input": "inputs/package-canonical-limit.json",
+      "input_sha256": "81e84df0d9148a20b5494f254bc5375f77d3de95c6d84aafc2a819c8c535be31",
+      "expectation": "expectations/package-canonical-limit.json",
+      "expectation_sha256": "8760101e6634e59e15b99e16c2cdd6fb52c1d92522e4b202053a90d980d77fce",
+      "covers": [
+        "boundary:canonical.resource_failure",
+        "diagnostic:canonicalization_resource_exhausted",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-unknown-field",
+      "operation": "package",
+      "input": "inputs/package-unknown-field.json",
+      "input_sha256": "0385d033c26ff680516cae77b6bec0a930186c52dbd5ec953a6b8199310ccbfe",
+      "expectation": "expectations/package-unknown-field.json",
+      "expectation_sha256": "955a3676d127e08cb908506e942f76a56bc5d734d2b01f84a239cd2ef96e48a0",
+      "covers": [
+        "diagnostic:invalid_wire_format",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-wire-depth-maximum",
+      "operation": "package",
+      "input": "inputs/package-wire-depth-maximum.json",
+      "input_sha256": "373fbcad8f02d8aff31f30518a1716bffbc114387bc44c66b3762c1afc1be489",
+      "expectation": "expectations/package-wire-depth-maximum.json",
+      "expectation_sha256": "955a3676d127e08cb908506e942f76a56bc5d734d2b01f84a239cd2ef96e48a0",
+      "covers": [
+        "boundary:wire.depth.maximum",
+        "diagnostic:invalid_wire_format",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "package-wire-depth-over",
+      "operation": "package",
+      "input": "inputs/package-wire-depth-over.json",
+      "input_sha256": "5d752edac0835f8030891df9ac498084f97ef077e22842d47715d53ab3297cf5",
+      "expectation": "expectations/package-wire-depth-over.json",
+      "expectation_sha256": "955a3676d127e08cb908506e942f76a56bc5d734d2b01f84a239cd2ef96e48a0",
+      "covers": [
+        "boundary:wire.depth.over_maximum",
+        "diagnostic:invalid_wire_format",
+        "operation:package"
+      ]
+    },
+    {
+      "id": "expression-boolean-literal",
+      "operation": "expression",
+      "input": "inputs/expression-boolean-literal.json",
+      "input_sha256": "05c575f8f77b5c89df0145fc7288e4ceb3981e130e554c12b0f41f8cf6821aa7",
+      "expectation": "expectations/expression-boolean-literal.json",
+      "expectation_sha256": "874ae7a97955714e8ab5ac65364ea595d8aab4ce70c498ec2d851623441c2bd0",
+      "covers": [
+        "construct:declaration.enum",
+        "construct:declaration.function",
+        "construct:declaration.input",
+        "construct:declaration.record",
+        "construct:declaration.state",
+        "construct:execution.pre",
+        "construct:expression.boolean_literal",
+        "construct:type.boolean",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-integer-literal",
+      "operation": "expression",
+      "input": "inputs/expression-integer-literal.json",
+      "input_sha256": "38a56d20b3b4f0d1808d2d68cae8d4331dae4230184ee0dffdd54b6bdd527fad",
+      "expectation": "expectations/expression-integer-literal.json",
+      "expectation_sha256": "2b71e70f4752edb2ee0cbc376fe69902095b7236a624736a9976168488502756",
+      "covers": [
+        "construct:expression.integer_literal",
+        "construct:type.integer",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-rational-literal",
+      "operation": "expression",
+      "input": "inputs/expression-rational-literal.json",
+      "input_sha256": "2b21026bbf0bfa7b20c16f9e934be33de6976e4588c2ca88b8b8063ae9a4894c",
+      "expectation": "expectations/expression-rational-literal.json",
+      "expectation_sha256": "dc6ed3cad514a2b699ea6b96a08cfbd70169c566940b999ff2ca3df069dc36ae",
+      "covers": [
+        "boundary:rational.normalized",
+        "construct:expression.rational_literal",
+        "construct:type.rational",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-text-literal",
+      "operation": "expression",
+      "input": "inputs/expression-text-literal.json",
+      "input_sha256": "3adf2e5ffa60b8e90f2e4103ca16e37087208ac2e63668fdad2a2cf16307725e",
+      "expectation": "expectations/expression-text-literal.json",
+      "expectation_sha256": "e987e133002f21d86972af0db5b74c119ba64c9d327c6d6d06d2c4f3ec086fb9",
+      "covers": [
+        "boundary:canonical.escape_controls",
+        "construct:expression.text_literal",
+        "construct:type.text",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-enum-literal",
+      "operation": "expression",
+      "input": "inputs/expression-enum-literal.json",
+      "input_sha256": "333e33d69af0a5993a4565da05b732f4788bd8a65db655fb3da31c6c9f2036a0",
+      "expectation": "expectations/expression-enum-literal.json",
+      "expectation_sha256": "ae062cdd22efd6f7e968df1a2878828fbc856026642ebae2d28d5cd9a81c74e2",
+      "covers": [
+        "construct:dependency.kind.enum_variant",
+        "construct:expression.enum_literal",
+        "construct:type.enum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-option-none",
+      "operation": "expression",
+      "input": "inputs/expression-option-none.json",
+      "input_sha256": "82c3faa7e05fd4d80a739b55686ce0e2ecd1012d357d4c589ea4f278f2e71ffb",
+      "expectation": "expectations/expression-option-none.json",
+      "expectation_sha256": "42a8713c4beea19aa955cfce8a6175acd31594518c2222d341c0820e040a0bec",
+      "covers": [
+        "construct:expression.option_none",
+        "construct:type.option",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-option-some",
+      "operation": "expression",
+      "input": "inputs/expression-option-some.json",
+      "input_sha256": "73b7ac2ce0be94dbd9f8344d9e0f76e311758f48f9325c10a1de036f93ec2583",
+      "expectation": "expectations/expression-option-some.json",
+      "expectation_sha256": "ecec13482450fe8f47611989045e2e22e4aad14463410ea514290d14815dd190",
+      "covers": [
+        "construct:expression.option_some",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-record-literal",
+      "operation": "expression",
+      "input": "inputs/expression-record-literal.json",
+      "input_sha256": "71a3c8a425ccf53885840716d03e662ace06642c36b1e2e07fdfadffba92eb1d",
+      "expectation": "expectations/expression-record-literal.json",
+      "expectation_sha256": "beb554e02efb2e553009802e45f6a394d7655c32eb999b7557b53d03dffa643b",
+      "covers": [
+        "construct:dependency.kind.field",
+        "construct:expression.record_literal",
+        "construct:type.record",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-collection-literal",
+      "operation": "expression",
+      "input": "inputs/expression-collection-literal.json",
+      "input_sha256": "e88acd00fb7911fb7dfb7dd433ebcc12fb72e16e5b293fdb5d0b0cbe18f00e50",
+      "expectation": "expectations/expression-collection-literal.json",
+      "expectation_sha256": "d16a5500a773e19ea989c8682744ecafce05c62133e45ffd0b553cdb4c904a2e",
+      "covers": [
+        "construct:expression.collection_literal",
+        "construct:type.collection",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-value-input",
+      "operation": "expression",
+      "input": "inputs/expression-value-input.json",
+      "input_sha256": "37891a13b0bb192eb23b23af1b7e72aa67a887bcf50469333e3a69a0d0b6c745",
+      "expectation": "expectations/expression-value-input.json",
+      "expectation_sha256": "22bee048d9ef6469a9ddb2774fc7c5cb0bc7bf9c7054f287d03e136a41173842",
+      "covers": [
+        "construct:dependency.kind.input",
+        "construct:expression.value_reference",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-value-state",
+      "operation": "expression",
+      "input": "inputs/expression-value-state.json",
+      "input_sha256": "5ea078bfc0ff7c0473c7a3f630b8ad8b38f9eed670cd152feef97a783b01809e",
+      "expectation": "expectations/expression-value-state.json",
+      "expectation_sha256": "32e6f01f51d61d6b411449ce253299a0e635d41b3de88d76a257dbf2d6b89a7b",
+      "covers": [
+        "construct:dependency.kind.state",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-field-access",
+      "operation": "expression",
+      "input": "inputs/expression-field-access.json",
+      "input_sha256": "a77af7e022e68590a4f85a9ddf99fe618c7fbbad981201c6c2a9925960548b7a",
+      "expectation": "expectations/expression-field-access.json",
+      "expectation_sha256": "0ea3ab29ba65a168bf084dc31b5a40e5a9b6cfb22c6367a34a38b7bec9ed4d75",
+      "covers": [
+        "construct:expression.field_access",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-is-present",
+      "operation": "expression",
+      "input": "inputs/expression-is-present.json",
+      "input_sha256": "396e4a924a1098a519d53845071d278d73820820627615b744c4818509625544",
+      "expectation": "expectations/expression-is-present.json",
+      "expectation_sha256": "b7099d0585121119b171db11341a57af527f2c34985eae8088ff982bd88f9861",
+      "covers": [
+        "construct:expression.is_present",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-unwrap",
+      "operation": "expression",
+      "input": "inputs/expression-unwrap.json",
+      "input_sha256": "a2b3b80d8266897b36419a847ff7e8d04c7e3fb9dd4e52e202002c02a9159a30",
+      "expectation": "expectations/expression-unwrap.json",
+      "expectation_sha256": "f141b49927ef58ee7d7d89c375974f84d90330d79ff2a5b7edd4c7f7868cc94e",
+      "covers": [
+        "construct:expression.unwrap",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-length",
+      "operation": "expression",
+      "input": "inputs/expression-length.json",
+      "input_sha256": "2bdb071854259f506c9473d08a5e7658b1a4b42e541f10066da28d189e57b719",
+      "expectation": "expectations/expression-length.json",
+      "expectation_sha256": "16852625f2ff415f861ec6b5aa2fd26ea63ed7fce9e86f53047b16bffaf03ec2",
+      "covers": [
+        "construct:expression.length",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-index",
+      "operation": "expression",
+      "input": "inputs/expression-index.json",
+      "input_sha256": "1e379b5cd19bbf4a25810e485f5dcd52724533f7fea4a4a0fe892f7bee24371e",
+      "expectation": "expectations/expression-index.json",
+      "expectation_sha256": "fed2fbcac701cd9ff39034aff6108fc307f14f8c2150398668083818bcad0bd5",
+      "covers": [
+        "construct:expression.index",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-call",
+      "operation": "expression",
+      "input": "inputs/expression-call.json",
+      "input_sha256": "22ebe63a1c2080a43e7e1361d21483cfaca4feafd8b44c9424f3f245076fad60",
+      "expectation": "expectations/expression-call.json",
+      "expectation_sha256": "42d54fe7a4c4229bc23c600c6320bc0701abc14fc0459e832112f846c4e3f109",
+      "covers": [
+        "construct:dependency.kind.pure_function",
+        "construct:expression.call",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-numeric",
+      "operation": "expression",
+      "input": "inputs/expression-numeric.json",
+      "input_sha256": "9e5a2f02b5eed81d9034a51d05d001efecc1cf2cae438f2cf081493fbda54b90",
+      "expectation": "expectations/expression-numeric.json",
+      "expectation_sha256": "872bc27218728cc252fb97e52d2421d39a3bacbb45ae8448d40864e694bf96e1",
+      "covers": [
+        "construct:expression.numeric",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-numeric-negate",
+      "operation": "expression",
+      "input": "inputs/expression-numeric-negate.json",
+      "input_sha256": "9d7e1a148761cb7643d38ebfed11a173818bd5f0d00687f7aa574d3dee353223",
+      "expectation": "expectations/expression-numeric-negate.json",
+      "expectation_sha256": "d74fef36b603942f95cbded5e8e89ffd534eae18f223fe53836de564215b5a99",
+      "covers": [
+        "construct:expression.numeric_negate",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-compare",
+      "operation": "expression",
+      "input": "inputs/expression-compare.json",
+      "input_sha256": "c7f62dc950d35f4364a245f1b06bbc9ef1b945704b1197ce1cba0db407ef1f6e",
+      "expectation": "expectations/expression-compare.json",
+      "expectation_sha256": "29d8fd98ed1da6d4326f159fdb3dc644a67ab375b2f234bb715f77436fb8d462",
+      "covers": [
+        "construct:expression.compare",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-boolean-not",
+      "operation": "expression",
+      "input": "inputs/expression-boolean-not.json",
+      "input_sha256": "2d5cc71af679f09728ec44e3a762dfa14f13e991d587bc5432bfbbec7a13b6d1",
+      "expectation": "expectations/expression-boolean-not.json",
+      "expectation_sha256": "c68ad7176af51eb325818371f61080e83e6322e8b2670ce8265a2e711a18a6fd",
+      "covers": [
+        "construct:expression.boolean_not",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-boolean",
+      "operation": "expression",
+      "input": "inputs/expression-boolean.json",
+      "input_sha256": "59dc5a142e60b1ce13833f4e48e5abf5819e7cd6e18298756beea052df31dc7c",
+      "expectation": "expectations/expression-boolean.json",
+      "expectation_sha256": "076488e08b71f7efbfebda5306552a596649bf8b6d2d11d2649e0b27a0750910",
+      "covers": [
+        "construct:expression.boolean",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-quantifier",
+      "operation": "expression",
+      "input": "inputs/expression-quantifier.json",
+      "input_sha256": "88c25116fdcb74bf12b73e8315fa4b3d3195ec889b82c4f61d6774be190dc680",
+      "expectation": "expectations/expression-quantifier.json",
+      "expectation_sha256": "579bc26221b72ea751797d7b3f906f0d480cca25c03181996c37e9ab55ce7b4b",
+      "covers": [
+        "construct:expression.local_reference",
+        "construct:expression.quantifier",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-execution-post",
+      "operation": "expression",
+      "input": "inputs/expression-execution-post.json",
+      "input_sha256": "0538f3dcac84555b584e8081916619fb207f01f427ce6e500740d54c2c1e0857",
+      "expectation": "expectations/expression-execution-post.json",
+      "expectation_sha256": "4d5c82cb0a96ff8234edf6f3ee4256e2ce759fffb47d3ae19e917ecb5a117ad9",
+      "covers": [
+        "construct:execution.post",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-execution-initialization",
+      "operation": "expression",
+      "input": "inputs/expression-execution-initialization.json",
+      "input_sha256": "f922007c8c0062634f9ececa040fbd83b6d0d140ac0f5c686ffa57d7d2902728",
+      "expectation": "expectations/expression-execution-initialization.json",
+      "expectation_sha256": "c61b3c3a6f0f3acbb6e2466f8a12fd331e3b6dc2e0867e4ad0f1c4e893187892",
+      "covers": [
+        "construct:execution.initialization",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-execution-handler",
+      "operation": "expression",
+      "input": "inputs/expression-execution-handler.json",
+      "input_sha256": "e3b4d490dfaf57ad003b7bc9bbdbc6d7d3f0210aaebd5eb3d8293ce81762fdde",
+      "expectation": "expectations/expression-execution-handler.json",
+      "expectation_sha256": "c7cc059fc573164a18363b7619eb5bcc3a7313b962d491c8314ca354c5c87443",
+      "covers": [
+        "construct:execution.handler",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-invalid-wire",
+      "operation": "expression",
+      "input": "inputs/expression-invalid-wire.json",
+      "input_sha256": "bc6b4bd8c90764bce6703266b1fb72bb9498da3a45d9c8eef4abbc79723c93c9",
+      "expectation": "expectations/expression-invalid-wire.json",
+      "expectation_sha256": "df1090a6bcda1a330fc8a3c0d6e7f3e744605fd2ca725b3cedf1882bf226b557",
+      "covers": [
+        "diagnostic:invalid_wire_format",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-orphan-value",
+      "operation": "expression",
+      "input": "inputs/expression-orphan-value.json",
+      "input_sha256": "ccea88f1d17658aea19ed749ca319373b803c0ca34936f59bafcb3321795bbcc",
+      "expectation": "expectations/expression-orphan-value.json",
+      "expectation_sha256": "9b7ac4a8319e0cbb8f7daca6b50274f178b5087afc778b5ec85fd1c07c636e19",
+      "covers": [
+        "diagnostic:orphaned_value_reference",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-orphan-function",
+      "operation": "expression",
+      "input": "inputs/expression-orphan-function.json",
+      "input_sha256": "038001cbacdf5ed97cc864a188fd168a4f49ff6233d9ef7eb591c91908c8bc01",
+      "expectation": "expectations/expression-orphan-function.json",
+      "expectation_sha256": "fa324a70ee56a45bceabcf0f182045cc0a09d42c5883c64872afb8329b2619ed",
+      "covers": [
+        "diagnostic:orphaned_function_reference",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-invalid-state",
+      "operation": "expression",
+      "input": "inputs/expression-invalid-state.json",
+      "input_sha256": "ead2b7f9306e9a05cc0fee3a48d2c8cb16488dcda2a31e91926ac2b56a1fcf8c",
+      "expectation": "expectations/expression-invalid-state.json",
+      "expectation_sha256": "a95add332bd830cdc0ccde5a6fb4921fef13aeb20a5fa9ba0e734dfe3db07eaa",
+      "covers": [
+        "diagnostic:invalid_state_observation",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-invalid-scope",
+      "operation": "expression",
+      "input": "inputs/expression-invalid-scope.json",
+      "input_sha256": "5d59d22167adac30bf3ff1c2484e19d51c2c79f77b7c4b4ecef49fff4bd455aa",
+      "expectation": "expectations/expression-invalid-scope.json",
+      "expectation_sha256": "9eb09eacf99e22e7bc6400368bbf40dfe891e56105a8329c85c2f11297c7cb12",
+      "covers": [
+        "diagnostic:invalid_scope",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-arity",
+      "operation": "expression",
+      "input": "inputs/expression-arity.json",
+      "input_sha256": "5a8fce7bac5f52ead358e4346cc658eb84021889d24aa72a53b2706214d7f7d1",
+      "expectation": "expectations/expression-arity.json",
+      "expectation_sha256": "116dde1416f72efb73b8f72e520dc64e2971fd8861297637e6676eaf9e9c025f",
+      "covers": [
+        "diagnostic:arity_mismatch",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-ill-typed",
+      "operation": "expression",
+      "input": "inputs/expression-ill-typed.json",
+      "input_sha256": "1fed92c03966373d2bdc517310850368d895938679111385441ae3fdb381e8d1",
+      "expectation": "expectations/expression-ill-typed.json",
+      "expectation_sha256": "ad3171ea5ec22030ff18c974e19856fcf8552bdb71d2f01ccfe5ee1cb862948d",
+      "covers": [
+        "diagnostic:ill_typed_expression",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-result-type",
+      "operation": "expression",
+      "input": "inputs/expression-result-type.json",
+      "input_sha256": "227fb2c18284aea82da117887ae2250f9fe43c2732b2cb9ca084ab3c00a23620",
+      "expectation": "expectations/expression-result-type.json",
+      "expectation_sha256": "4a0e5860552c3994c3cff437d77a84af2e8145a10282ced5498d2962963d5ccb",
+      "covers": [
+        "diagnostic:result_type_mismatch",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-non-boolean-root",
+      "operation": "expression",
+      "input": "inputs/expression-non-boolean-root.json",
+      "input_sha256": "d55f4fcfc21d776f1a0ab07e5d7cfee25a5535d18d01f1aab5ef8e7f45a61ddc",
+      "expectation": "expectations/expression-non-boolean-root.json",
+      "expectation_sha256": "669ff62f3c8602864b07bf56cec5e1b2f12bc5724651f8169a8ae1d81b9507e5",
+      "covers": [
+        "diagnostic:non_boolean_clause_root",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-collection-bound",
+      "operation": "expression",
+      "input": "inputs/expression-collection-bound.json",
+      "input_sha256": "3de816b5dfd4bc45c9e1f660dc5b26b1c296a8f436c21a83cb871039dd9030ec",
+      "expectation": "expectations/expression-collection-bound.json",
+      "expectation_sha256": "f9e86b51ea2053402863aff7349b2bf0d402550421345f83f69a2c51d015db9e",
+      "covers": [
+        "diagnostic:collection_bound_exceeded",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-orphan-type",
+      "operation": "expression",
+      "input": "inputs/expression-orphan-type.json",
+      "input_sha256": "f9afd05baaf6c7686eccb93c19ce2e2a619302874c24e27def815689b402c398",
+      "expectation": "expectations/expression-orphan-type.json",
+      "expectation_sha256": "7e5e193f9b96a2016c798c51bca28195fa5df498586387a8635ac87348aab815",
+      "covers": [
+        "diagnostic:orphaned_type_reference",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-type",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-type.json",
+      "input_sha256": "ffee4b4d1ba8754effb07ad0ddc6989c0fd22114ba97c497400c19029ae009b4",
+      "expectation": "expectations/expression-duplicate-type.json",
+      "expectation_sha256": "ce845fb127b581efe7b762264e2f036a39ca87ba5a0cb3e37a55f631ca2f8702",
+      "covers": [
+        "diagnostic:duplicate_type_declaration",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-value",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-value.json",
+      "input_sha256": "95fd96ec2705d5dee5d552a475281eb55e53d24e4bd5f2461f7dff430bab6bdf",
+      "expectation": "expectations/expression-duplicate-value.json",
+      "expectation_sha256": "b2d553fd321b787525a71a807ee83860e7d21561610348e79479f6b686649580",
+      "covers": [
+        "diagnostic:duplicate_value_declaration",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-function",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-function.json",
+      "input_sha256": "85965ae3a71f1bb0debe5e95a906a410f35db2be709a0cc30dac5ed7454efb4d",
+      "expectation": "expectations/expression-duplicate-function.json",
+      "expectation_sha256": "aebf30e50232f8875bbc447aeea81cea4e7b5ed04e0b8787716b5b5604dc9b78",
+      "covers": [
+        "diagnostic:duplicate_function_declaration",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-field",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-field.json",
+      "input_sha256": "f850bd0d8f94c45910db0976663c3a28f41f51d6b8e2f0a362d640502f7431e3",
+      "expectation": "expectations/expression-duplicate-field.json",
+      "expectation_sha256": "d4b03284ff6be09a9c246f2dd5546e6544ee20319da34ee46cfd158bf473d7d4",
+      "covers": [
+        "diagnostic:duplicate_field",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-variant",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-variant.json",
+      "input_sha256": "2ad00ea969998e11237f61e1137372aee885de607878fedeb884492ee9fc6622",
+      "expectation": "expectations/expression-duplicate-variant.json",
+      "expectation_sha256": "490f46398de3ded7bc8a6785b70e625979a77997044815623a8e96ca9d44d83c",
+      "covers": [
+        "diagnostic:duplicate_variant",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-duplicate-parameter",
+      "operation": "expression",
+      "input": "inputs/expression-duplicate-parameter.json",
+      "input_sha256": "c6ffdbb55250f44840ef7f8e52d6498a2495e26aae414840d129d5a0f7f031ed",
+      "expectation": "expectations/expression-duplicate-parameter.json",
+      "expectation_sha256": "76a250094f786e5150803176370ca1ce70ec122d1956cc386a1e7c60c694c24f",
+      "covers": [
+        "diagnostic:duplicate_parameter",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-empty-enum",
+      "operation": "expression",
+      "input": "inputs/expression-empty-enum.json",
+      "input_sha256": "7614d400dca3de46d54bdd7cf5ab981158b175dc0b7d73364fc7f4389e49ff7a",
+      "expectation": "expectations/expression-empty-enum.json",
+      "expectation_sha256": "0665ce9e0345e0842051beb2c9cb965f8e52a01c6e0a4e37dfc3a5070be6f154",
+      "covers": [
+        "diagnostic:empty_enum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-invalid-numeric",
+      "operation": "expression",
+      "input": "inputs/expression-invalid-numeric.json",
+      "input_sha256": "87640e13cb1410f1d26160a90ead84f7e601cb6d4ea7067355509a7d8764c484",
+      "expectation": "expectations/expression-invalid-numeric.json",
+      "expectation_sha256": "1528e3320b8c3f94852d6519c44314dfe8766f497deeae085d39fe3f23e01369",
+      "covers": [
+        "boundary:integer.out_of_range",
+        "diagnostic:invalid_numeric_bounds",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-unbounded-collection",
+      "operation": "expression",
+      "input": "inputs/expression-unbounded-collection.json",
+      "input_sha256": "ccb6f53b7a9e69cfd77bbaef311dec268095f31fb2555f8d7c9fb47d79e7b3c3",
+      "expectation": "expectations/expression-unbounded-collection.json",
+      "expectation_sha256": "8104e0068882d0ade74369f562d38b976f056d48845260fe9c3da1a6f4256084",
+      "covers": [
+        "boundary:collection.minimum",
+        "diagnostic:unbounded_collection",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-recursive-type",
+      "operation": "expression",
+      "input": "inputs/expression-recursive-type.json",
+      "input_sha256": "a923a512eaf5ec14824b9824e7aaa54d8dcfe163d844ae68dd26c70831b6d772",
+      "expectation": "expectations/expression-recursive-type.json",
+      "expectation_sha256": "5e2303fb885876675e3ecfc484aed10365b192868e088c4e2147a1fcc33a9ced",
+      "covers": [
+        "diagnostic:recursive_type",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-obligation-non-zero-divisor",
+      "operation": "expression",
+      "input": "inputs/expression-obligation-non-zero-divisor.json",
+      "input_sha256": "53640256c16614bacd7874548496b022f5b6bd5265b2a1343cd26fe3eed68722",
+      "expectation": "expectations/expression-obligation-non-zero-divisor.json",
+      "expectation_sha256": "ca7ac67acb69ea0dd6534c6626bce32065e745cf630b8be23a6472faf6eaaea6",
+      "covers": [
+        "diagnostic:potentially_undefined",
+        "obligation:non_zero_divisor",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-obligation-option-presence",
+      "operation": "expression",
+      "input": "inputs/expression-obligation-option-presence.json",
+      "input_sha256": "81a6bbd41c26b19ac77b5ee0755d023f2736673a7b701b66b8c6549d4a586555",
+      "expectation": "expectations/expression-obligation-option-presence.json",
+      "expectation_sha256": "cfd622a9038cf38667e96082f6878d00d1a13ad7899bea279c4c57658141c6f2",
+      "covers": [
+        "diagnostic:potentially_undefined",
+        "obligation:option_presence",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-obligation-index-in-bounds",
+      "operation": "expression",
+      "input": "inputs/expression-obligation-index-in-bounds.json",
+      "input_sha256": "ec740292418739612b5fbedf969bb0aeffbd3cbab3dee33d7a0430fbfcf57076",
+      "expectation": "expectations/expression-obligation-index-in-bounds.json",
+      "expectation_sha256": "c92ad410df46a948fc5a25a95bc5787a1c7418091acb3c3dd31e25a8c576aa68",
+      "covers": [
+        "diagnostic:potentially_undefined",
+        "obligation:index_in_bounds",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-obligation-checked-range",
+      "operation": "expression",
+      "input": "inputs/expression-obligation-checked-range.json",
+      "input_sha256": "fff32561911ec2290664eda37ac4023bfd7444028ce418826d6c50c700a0025b",
+      "expectation": "expectations/expression-obligation-checked-range.json",
+      "expectation_sha256": "901fbcd81732b82fbdff14ba84f1b3ca48054bd0403987a1a2cc302c03c23afb",
+      "covers": [
+        "diagnostic:potentially_undefined",
+        "obligation:checked_range",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-numeric-edges",
+      "operation": "expression",
+      "input": "inputs/expression-numeric-edges.json",
+      "input_sha256": "d57a76a08426aca2a83cec5862f8251d3960fe0323d1dca4723c6a95b5277b9a",
+      "expectation": "expectations/expression-numeric-edges.json",
+      "expectation_sha256": "e50c9b40ef96059da868e843db467bfcc9450449fc215bbcb442e95b5ca897fc",
+      "covers": [
+        "boundary:collection.declared_maximum",
+        "boundary:integer.maximum",
+        "boundary:integer.minimum",
+        "boundary:rational.maximum_denominator",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-rational-zero-denominator",
+      "operation": "expression",
+      "input": "inputs/expression-rational-zero-denominator.json",
+      "input_sha256": "5c32db3358e6f15136790a963ec41a04848c9a33eb6640f7aa595e1035abb048",
+      "expectation": "expectations/expression-rational-zero-denominator.json",
+      "expectation_sha256": "0bbad7e6bb576d99a1f5bf3e629755ece9e6f9b4a0a6aa96e925b3f61dc45a91",
+      "covers": [
+        "boundary:rational.zero_denominator",
+        "diagnostic:invalid_numeric_bounds",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-declared-collection-over",
+      "operation": "expression",
+      "input": "inputs/expression-declared-collection-over.json",
+      "input_sha256": "a18df7aed91a2f227b64a4e9f809d55a3827e7d8154fb04ec1d9d3fc969666b1",
+      "expectation": "expectations/expression-declared-collection-over.json",
+      "expectation_sha256": "ea3519aee5a2309e38f6008734f2378db643291b79aba42a2e2bafd16a9ef680",
+      "covers": [
+        "boundary:collection.declared_out_of_range",
+        "diagnostic:invalid_numeric_bounds",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-text-maximum",
+      "operation": "expression",
+      "input": "inputs/expression-text-maximum.json",
+      "input_sha256": "93056783c64d846351f00e6d4a506d08232468ce340c629b4bb2126cd738b0f4",
+      "expectation": "expectations/expression-text-maximum.json",
+      "expectation_sha256": "ecfd4a00291668e164746e5e504b4c41268b71ce5eee91b45483f5af03f3fcec",
+      "covers": [
+        "boundary:text.maximum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-text-over",
+      "operation": "expression",
+      "input": "inputs/expression-text-over.json",
+      "input_sha256": "670376c6a9b4b14fe28f7628f2242d8cbd13a8822af81aa5e5be802419bd3ac1",
+      "expectation": "expectations/expression-text-over.json",
+      "expectation_sha256": "6017a74b6e2495829455cfc4823a078070935c7ffcbe348c845cc914f7cf585a",
+      "covers": [
+        "boundary:text.over_maximum",
+        "diagnostic:text_bound_exceeded",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-nodes-maximum",
+      "operation": "expression",
+      "input": "inputs/expression-nodes-maximum.json",
+      "input_sha256": "87666712ddb2cb8c273f0795dee4664c22ab40b7f3d3dc1d0ebc3158ce9f229f",
+      "expectation": "expectations/expression-nodes-maximum.json",
+      "expectation_sha256": "5edac115ac1df5df7b6a1f431067c3b0b8af91c40b06b1878b6a4d9d4ca08e24",
+      "covers": [
+        "boundary:expression.nodes.maximum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-nodes-over",
+      "operation": "expression",
+      "input": "inputs/expression-nodes-over.json",
+      "input_sha256": "1d3129068a3bfb82c9a9e7e8a1bc68067c2a16b34c50889a493cab11f82cb70f",
+      "expectation": "expectations/expression-nodes-over.json",
+      "expectation_sha256": "5b2d231e88f0e032ad473daaf6cb9356139116e21f52358c8e867b904cd3b8a3",
+      "covers": [
+        "boundary:expression.nodes.over_maximum",
+        "diagnostic:expression_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-type-depth-maximum",
+      "operation": "expression",
+      "input": "inputs/expression-type-depth-maximum.json",
+      "input_sha256": "52fed97a9e3204fce6ae7b4c1aa94294a293ff0a6de997296a9fd1d9c7189cd9",
+      "expectation": "expectations/expression-type-depth-maximum.json",
+      "expectation_sha256": "f583c91c82475252d6b5a799c59732eacbf8020bede527cb979de502f04a6d1a",
+      "covers": [
+        "boundary:type.depth.maximum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-type-depth-over",
+      "operation": "expression",
+      "input": "inputs/expression-type-depth-over.json",
+      "input_sha256": "2ac5112c95aa296da5012a1f834e13d7f58e64ffa52c98e371878b1ee619f29e",
+      "expectation": "expectations/expression-type-depth-over.json",
+      "expectation_sha256": "c22edcf5e02b9c1fd4e730e70d44b9c2658b1da90cc3128726dfab9f908592eb",
+      "covers": [
+        "boundary:type.depth.over_maximum",
+        "diagnostic:semantic_input_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-embedded-type-depth-over",
+      "operation": "expression",
+      "input": "inputs/expression-embedded-type-depth-over.json",
+      "input_sha256": "3f540b0549a5c8df5f72395fa6ee95b19dcac1dc5e60d1e42c4518ceb2fc7892",
+      "expectation": "expectations/expression-embedded-type-depth-over.json",
+      "expectation_sha256": "c22edcf5e02b9c1fd4e730e70d44b9c2658b1da90cc3128726dfab9f908592eb",
+      "covers": [
+        "boundary:type.depth.over_maximum",
+        "diagnostic:semantic_input_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-depth-maximum",
+      "operation": "expression",
+      "input": "inputs/expression-depth-maximum.json",
+      "input_sha256": "291e403d92e805b9dd053875a267ca9b9153b2f5df05893e624bba82429f7ef7",
+      "expectation": "expectations/expression-depth-maximum.json",
+      "expectation_sha256": "b6378af8778a66a05b2c60f3068fe7b07b6810ffaae187eddb960b397494fc4a",
+      "covers": [
+        "boundary:expression.depth.maximum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-depth-over",
+      "operation": "expression",
+      "input": "inputs/expression-depth-over.json",
+      "input_sha256": "1b986d4c5db6cd689ef7537a085e48663e2df02456bb2cf3a8342906a8310cde",
+      "expectation": "expectations/expression-depth-over.json",
+      "expectation_sha256": "7c896086f5d1ad9aa0e7a1a4375d0eda200716e9f7f88ccc2dbf4ece8eb3285d",
+      "covers": [
+        "boundary:expression.depth.over_maximum",
+        "diagnostic:semantic_input_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-semantic-nodes-maximum",
+      "operation": "expression",
+      "input": "inputs/expression-semantic-nodes-maximum.json",
+      "input_sha256": "0597f9dd33fdc2fbeadcd129053043bedff955f2b990e4572512d762e1d79af7",
+      "expectation": "expectations/expression-semantic-nodes-maximum.json",
+      "expectation_sha256": "b868827f3c1716f4a6a67b18e8fc335a81798259f292c1043fbfc03a6607ab66",
+      "covers": [
+        "boundary:collection.maximum",
+        "boundary:semantic.nodes.maximum",
+        "boundary:semantic_collection.maximum",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-semantic-nodes-over",
+      "operation": "expression",
+      "input": "inputs/expression-semantic-nodes-over.json",
+      "input_sha256": "7e2e7d6902b017ab203f16b2dc9e7a6c61c247805d3aeda8ecf02ef394aa49b7",
+      "expectation": "expectations/expression-semantic-nodes-over.json",
+      "expectation_sha256": "26ca27292f4d9e6369e8dd31a164b1042badab06e25b77b41bbe2cdebc9ea699",
+      "covers": [
+        "boundary:semantic.nodes.over_maximum",
+        "diagnostic:semantic_input_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "expression-semantic-collection-over",
+      "operation": "expression",
+      "input": "inputs/expression-semantic-collection-over.json",
+      "input_sha256": "750df2dc40b0da4dd447288f34ad8b7967c8be3824cb5848b644d855663cc1b8",
+      "expectation": "expectations/expression-semantic-collection-over.json",
+      "expectation_sha256": "97563ef82f675fe0249f5b5dcd5621f081c7a0e3ef0d11e619f57d932f8659fa",
+      "covers": [
+        "boundary:collection.over_maximum",
+        "boundary:semantic_collection.over_maximum",
+        "diagnostic:semantic_input_too_large",
+        "operation:expression"
+      ]
+    },
+    {
+      "id": "migration-valid",
+      "operation": "migration",
+      "input": "inputs/migration-valid.json",
+      "input_sha256": "adb3ebbaf7e7c36d5c70ba11e5119ff949d319167b31d6749477fb20ee3f1b31",
+      "expectation": "expectations/migration-valid.json",
+      "expectation_sha256": "59a1aa32a42cc6e00a32395abb5495785cbcdd8638d45afccca5c48311d3cf62",
+      "covers": [
+        "boundary:schema.1_0",
+        "construct:migration.reference_body_1_0_to_1_1",
+        "operation:migration"
+      ]
+    },
+    {
+      "id": "migration-unregistered",
+      "operation": "migration",
+      "input": "inputs/migration-unregistered.json",
+      "input_sha256": "64eda4bdcedd0373d07905e099ff8816230046e29e09429fdd153f768e70bb3a",
+      "expectation": "expectations/migration-unregistered.json",
+      "expectation_sha256": "79944fcdcd7e99ef8be52099f756808f9a46b1c740a93a447a42e2e744b262ef",
+      "covers": [
+        "boundary:schema.unregistered_minor",
+        "diagnostic:unregistered_migration",
+        "operation:migration"
+      ]
+    },
+    {
+      "id": "migration-unsupported",
+      "operation": "migration",
+      "input": "inputs/migration-unsupported.json",
+      "input_sha256": "fd93911c7d7ccc78746107bdec56039effdb569eb0b2abced99a0989cca2167d",
+      "expectation": "expectations/migration-unsupported.json",
+      "expectation_sha256": "920ed998a6e49c1bb4e5bce6a4a8b793077c0e1de14988e8ec8da3f2c94a7c7e",
+      "covers": [
+        "boundary:schema.unknown_major",
+        "diagnostic:unsupported_schema_version",
+        "operation:migration"
+      ]
+    },
+    {
+      "id": "coverage-shallow",
+      "operation": "coverage",
+      "input": "inputs/coverage-shallow.json",
+      "input_sha256": "d35e7ff339d8f10b3285c2277b78a5c96d8a30856e5e2b259b0896ca51485b95",
+      "expectation": "expectations/coverage-shallow.json",
+      "expectation_sha256": "518320cf64da097abc8b3072372de6c5d1703b551753eedde45abe35e032236f",
+      "covers": [
+        "construct:artifact.depth.shallow",
+        "construct:coverage.class.shallow",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-deep",
+      "operation": "coverage",
+      "input": "inputs/coverage-deep.json",
+      "input_sha256": "40a0c0ba03affba62b4797d528fd773bd75c2e623fe1be3106db13ec84dff410",
+      "expectation": "expectations/coverage-deep.json",
+      "expectation_sha256": "aa738ee92d08b96e0f41e02f0275fe1e2af42af57eae94aa050add04711dabcc",
+      "covers": [
+        "construct:artifact.depth.deep",
+        "construct:coverage.class.deep",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-uncovered",
+      "operation": "coverage",
+      "input": "inputs/coverage-uncovered.json",
+      "input_sha256": "051b4b9163655585a457f96b5a8a861b6c9a33ab755d766b3e8649344bfa0cdd",
+      "expectation": "expectations/coverage-uncovered.json",
+      "expectation_sha256": "d2bd73e89cb5db223a04557dab93429e1cb9fd45634b8c6ddab3d0e0e05bad72",
+      "covers": [
+        "construct:coverage.class.uncovered",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-cross-package",
+      "operation": "coverage",
+      "input": "inputs/coverage-cross-package.json",
+      "input_sha256": "9b9ba375c90bcb293ea1638a34c60741007eb175ca4589aa8c7a23c7bb64dbd4",
+      "expectation": "expectations/coverage-cross-package.json",
+      "expectation_sha256": "2bdc6af66f370043c7ce745dae6d64a342ac43eaeee3d893466f5c7b4063289e",
+      "covers": [
+        "boundary:artifact.cross_package",
+        "construct:coverage.class.orphaned",
+        "diagnostic:cross_package_reference",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-missing",
+      "operation": "coverage",
+      "input": "inputs/coverage-missing.json",
+      "input_sha256": "31ca0a2b5abc99e19536aa4d685b9bae88940f712ba9596752857fdf9d9d24ae",
+      "expectation": "expectations/coverage-missing.json",
+      "expectation_sha256": "b91f0dc916b4e989c79a1263dc2cb0354c3b23d2a25915b25515575164369a4d",
+      "covers": [
+        "boundary:artifact.missing",
+        "diagnostic:orphaned_requirement_reference",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-stale",
+      "operation": "coverage",
+      "input": "inputs/coverage-stale.json",
+      "input_sha256": "d9e835ee9bab918712682f9189abdd2a6e0e70fda9b8aa8c1c0bb06530e5c12a",
+      "expectation": "expectations/coverage-stale.json",
+      "expectation_sha256": "9b14817bba7e2e15ab26bd8330e8a7c823ad8bd7b301fd935df84f1b48136973",
+      "covers": [
+        "boundary:artifact.stale",
+        "diagnostic:stale_requirement_revision",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-digest",
+      "operation": "coverage",
+      "input": "inputs/coverage-digest.json",
+      "input_sha256": "df8b701cd0a369072bcf28480eca15545022b15c49378ee7418e7e46e7fe05be",
+      "expectation": "expectations/coverage-digest.json",
+      "expectation_sha256": "c1b5a81e6dfa1daaf43ed44149e8ca0d127fd510c8d3cc21ca2443fae926a85f",
+      "covers": [
+        "boundary:artifact.digest_mismatch",
+        "diagnostic:stale_trace_digest",
+        "operation:coverage"
+      ]
+    },
+    {
+      "id": "coverage-duplicate",
+      "operation": "coverage",
+      "input": "inputs/coverage-duplicate.json",
+      "input_sha256": "5afb7a34e72072d5282d7c73a548504c426942d10b2d9cdc64f277bc10e023a4",
+      "expectation": "expectations/coverage-duplicate.json",
+      "expectation_sha256": "cfeab725c66d69d1b1b676dc7814d578184c09d1f5779b7f03ee579284f0d711",
+      "covers": [
+        "boundary:artifact.duplicate",
+        "diagnostic:duplicate_artifact_trace",
+        "operation:coverage"
+      ]
+    }
+  ]
+}
