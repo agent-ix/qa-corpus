@@ -263,7 +263,7 @@
       "retained_sha256": "79b99a1240d4312e2499073857937e6822db7c8c3e19889dce4cba90acfc2f56",
       "origin": {
         "repository": "agent-ix/quoin",
-        "revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
+        "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
         "path": "produced by quoin change-assurance receipt",
         "recorded_sha256": null
       },
@@ -305,7 +305,7 @@
     {
       "language": "typescript",
       "producer": "agent-ix/quoin tier-1 measurement",
-      "revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
+      "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
       "path": "spec/evidence/measurements/tier1-20260826153027044-9fc213e27a72.json",
       "feeds": "measurement",
       "retention": "retained",
@@ -318,7 +318,7 @@
     {
       "language": "text",
       "producer": "agent-ix/quoin audit-static",
-      "revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
+      "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
       "path": "tests/fixtures/evidence/audit-static-real.txt",
       "feeds": "diagnostic",
       "retention": "retained",
@@ -331,7 +331,7 @@
     {
       "language": "rust",
       "producer": "cargo-audit",
-      "revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
+      "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
       "path": "tests/fixtures/evidence/cargo-audit-real.json",
       "feeds": "check_result",
       "retention": "referenced",
@@ -342,7 +342,7 @@
     {
       "language": "typescript",
       "producer": "agent-ix/quoin agent-eval",
-      "revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
+      "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
       "path": "tests/fixtures/evidence/agent-eval-real.json",
       "feeds": "measurement",
       "retention": "referenced",
@@ -365,9 +365,10 @@
         "engine_source_revision": "ca7362d4dacecb96f01d74d1d971327118c25917"
       },
       "quoin": {
-        "version": "0.22.5-110-g90a23b7",
-        "source_revision": "90a23b737ce238666ca4378e99e6978bfa0e72e0",
-        "note": "Built from source at that revision. It is NOT a released artifact \u2014 Engineering Assurance #8 is where these become released versions and exact pins."
+        "version": "0.23.1",
+        "release": "npm @agent-ix/quoin@0.23.1",
+        "source_revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
+        "note": "The released artifact, installed from the registry and run as `quoin`. The chain reproduced byte-identically from the source build that preceded it \u2014 same record, attestation, export, and receipt digests \u2014 so the release changed the provenance of this evidence and not the evidence."
       }
     },
     "artifacts": [
