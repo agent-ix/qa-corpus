@@ -1,0 +1,13 @@
+[
+ {
+  "proof_id": "quire-static-export",
+  "report_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "report": {
+   "findings": [],
+   "healthy": [
+    "FR-011-AC-5"
+   ],
+   "unevaluated": []
+  }
+ }
+]
