@@ -513,11 +513,14 @@ def build() -> dict[str, Any]:
                 "engine_source_revision": "ca7362d4dacecb96f01d74d1d971327118c25917",
             },
             "quoin": {
-                "version": "0.22.5-110-g90a23b7",
-                "source_revision": quoin_revision,
-                "note": "Built from source at that revision. It is NOT a "
-                "released artifact — Engineering Assurance #8 is where these "
-                "become released versions and exact pins.",
+                "version": "0.23.1",
+                "release": "npm @agent-ix/quoin@0.23.1",
+                "source_revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
+                "note": "The released artifact, installed from the registry and "
+                "run as `quoin`. The chain reproduced byte-identically from the "
+                "source build that preceded it — same record, attestation, "
+                "export, and receipt digests — so the release changed the "
+                "provenance of this evidence and not the evidence.",
             },
         },
         "artifacts": [],
