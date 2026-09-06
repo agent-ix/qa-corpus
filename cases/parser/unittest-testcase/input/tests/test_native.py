@@ -61,3 +61,7 @@ from types import SimpleNamespace as BaseCase
 class ReimportedBase(BaseCase):
     def test_helper(self):
         return False
+
+class CommentImpostor:  # (unittest.TestCase)
+    def test_not_native(self):
+        return False
