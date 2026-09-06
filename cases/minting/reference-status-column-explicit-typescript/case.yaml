@@ -1,0 +1,18 @@
+id: reference-status-column-explicit-typescript
+case: reference-status-column-explicit
+issue_ref: agent-ix/quire-rs#409
+mode: minting
+language: typescript
+module: variants/reference-status-column-explicit
+declaration_under_test: Explicit reference selector must not fall back to the global status header.
+kind: failure
+findable: true
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags: [TC-1805, coverage, status]
+reproduce: quire coverage --module modules/variants/reference-status-column-explicit --scope cases/minting/reference-status-column-explicit-typescript/input --json
+comment: Synthetic declaration control; only the alternate header differs across the matched pair.

@@ -1,0 +1,13 @@
+total: 2
+backed: 2
+diagnostic_reasons:
+- status-column-matches-nothing
+diagnostic_paths:
+  status-column-matches-nothing: spec/tests.md
+diagnostic_lines:
+  status-column-matches-nothing: 14
+diagnostic_message_contains:
+  status-column-matches-nothing: [Coverage Status, Status, Alternate, 'traceability.document_references[].status_column', will not guess]
+absent_diagnostic_reasons:
+- section-matches-nothing
+- id-column-matches-nothing

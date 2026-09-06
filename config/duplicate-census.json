@@ -161,6 +161,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-explicit-python/expect.yaml",
+        "cases/minting/reference-status-column-explicit-rust/expect.yaml",
+        "cases/minting/reference-status-column-explicit-typescript/expect.yaml"
+      ],
+      "sha256": "28a701ca104e1c9b5bcbe5053bfbdb3ef3a490fe5d9e46611ff8060a621c15f0"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/skeptic/oracle-helper-copy/rust/input/src/open.rs",
         "cases/skeptic/oracle-helper-copy-control/rust/input/src/open.rs"
       ],
@@ -532,6 +542,8 @@
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
         "cases/minting/reference-status-column-control-rust/input/tests/selector.rs",
+        "cases/minting/reference-status-column-explicit-control-rust/input/tests/selector.rs",
+        "cases/minting/reference-status-column-explicit-rust/input/tests/selector.rs",
         "cases/minting/reference-status-column-rust/input/tests/selector.rs"
       ],
       "sha256": "71d8cf25854e2f4adb93a50f9a6c2bcb191cb6103766f31681a35c66d4c28e05"
@@ -544,6 +556,15 @@
         "cases/detection/low-symbol-binding-control/input/spec/FR-001.md"
       ],
       "sha256": "77513332767bb398e9289ba6278de538f5e89974b323f6d66aba7ad1ef54a001"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/reference-status-column-explicit-control-typescript/input/tests/selector.test.ts",
+        "cases/minting/reference-status-column-explicit-typescript/input/tests/selector.test.ts"
+      ],
+      "sha256": "77992ffeb7f570776d499248ed98761eb5d0f11f226dd08feafb5a95fc712de8"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -614,6 +635,9 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-explicit-control-python/input/spec/tests.md",
+        "cases/minting/reference-status-column-explicit-control-rust/input/spec/tests.md",
+        "cases/minting/reference-status-column-explicit-control-typescript/input/spec/tests.md",
         "cases/minting/reference-status-column-python/input/spec/tests.md",
         "cases/minting/reference-status-column-rust/input/spec/tests.md",
         "cases/minting/reference-status-column-typescript/input/spec/tests.md"
@@ -654,7 +678,10 @@
       "paths": [
         "cases/minting/reference-status-column-control-python/expect.yaml",
         "cases/minting/reference-status-column-control-rust/expect.yaml",
-        "cases/minting/reference-status-column-control-typescript/expect.yaml"
+        "cases/minting/reference-status-column-control-typescript/expect.yaml",
+        "cases/minting/reference-status-column-explicit-control-python/expect.yaml",
+        "cases/minting/reference-status-column-explicit-control-rust/expect.yaml",
+        "cases/minting/reference-status-column-explicit-control-typescript/expect.yaml"
       ],
       "sha256": "b068e627c8ce4b996353bd8982f97f9c9f0c887d013266de79a2adbf4311c52a"
     },
@@ -750,7 +777,10 @@
       "paths": [
         "cases/minting/reference-status-column-control-python/input/spec/tests.md",
         "cases/minting/reference-status-column-control-rust/input/spec/tests.md",
-        "cases/minting/reference-status-column-control-typescript/input/spec/tests.md"
+        "cases/minting/reference-status-column-control-typescript/input/spec/tests.md",
+        "cases/minting/reference-status-column-explicit-python/input/spec/tests.md",
+        "cases/minting/reference-status-column-explicit-rust/input/spec/tests.md",
+        "cases/minting/reference-status-column-explicit-typescript/input/spec/tests.md"
       ],
       "sha256": "c25cf69bebb73e79e2b1dc9429b982d159556d8e9d5dc9c3620146ac61b81f62"
     },
@@ -842,6 +872,8 @@
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
         "cases/minting/reference-status-column-control-python/input/tests/test_selector.py",
+        "cases/minting/reference-status-column-explicit-control-python/input/tests/test_selector.py",
+        "cases/minting/reference-status-column-explicit-python/input/tests/test_selector.py",
         "cases/minting/reference-status-column-python/input/tests/test_selector.py"
       ],
       "sha256": "e3339690f6981ded6d3bfa3c1bc3f64a01548f37d005b456945780dbdc54cab7"
