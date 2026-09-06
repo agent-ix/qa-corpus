@@ -8,6 +8,9 @@ class NativeChecks(unittest.TestCase):
         """TC-001. Native assertion."""
         self.assertEqual(2 + 2, 4)
 
+        def test_nested_helper():
+            return False
+
     def helper(self):
         return 4
 
