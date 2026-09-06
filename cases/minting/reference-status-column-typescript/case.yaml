@@ -1,0 +1,18 @@
+id: reference-status-column-typescript
+case: reference-status-column
+issue_ref: agent-ix/quire-rs#409
+mode: minting
+language: typescript
+module: variants/reference-status-column
+declaration_under_test: One explicit global status selector cannot describe two authored headers; missing selection must remain a diagnostic.
+kind: failure
+findable: true
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags: [TC-1804, coverage, status]
+reproduce: quire coverage --module modules/variants/reference-status-column --scope cases/minting/reference-status-column-typescript/input --json
+comment: Synthetic minimal reproduction of the process schema/global-selector contradiction; identical source declarations in the language-matched control.

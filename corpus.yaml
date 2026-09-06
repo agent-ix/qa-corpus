@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=177> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=189> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -404,7 +404,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=79>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=85>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -422,8 +422,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=78> `kind: failure`
-# fixtures, all <derived:controlled_failures=78> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=84> `kind: failure`
+# fixtures, all <derived:controlled_failures=84> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -554,6 +554,14 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
+- mode: minting
+  case: reference-status-column-explicit
+  source: agent-ix/quire-rs#409 — explicit selectors never fall back to the model default
+  languages: [rust, python, typescript]
+- mode: minting
+  case: reference-status-column
+  source: agent-ix/quire-rs#409 — mixed authored status columns require an explicit per-reference selector
+  languages: [rust, python, typescript]
 - mode: parser
   case: unittest-testcase
   source: agent-ix/quire-rs#407 — native unittest.TestCase methods lost on non-Test-prefixed classes

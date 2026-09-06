@@ -1,0 +1,12 @@
+id: reference-status-column-explicit-control-rust
+issue_ref: agent-ix/quire-rs#409
+mode: minting
+language: rust
+module: variants/reference-status-column-explicit
+declaration_under_test: Explicit reference selector must not fall back to the global status header.
+kind: control
+control_for: [reference-status-column-explicit-rust]
+findable: false
+tags: [TC-1805, coverage, status]
+reproduce: quire coverage --module modules/variants/reference-status-column-explicit --scope cases/minting/reference-status-column-explicit-control-rust/input --json
+comment: Synthetic declaration control; only the alternate header differs across the matched pair.
