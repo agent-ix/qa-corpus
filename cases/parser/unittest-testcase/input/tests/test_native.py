@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import os, unittest as ut
 from unittest import TestCase
 from unittest import TestCase as BaseCase
@@ -63,5 +64,19 @@ class ReimportedBase(BaseCase):
         return False
 
 class CommentImpostor:  # (unittest.TestCase)
+    def test_not_native(self):
+        return False
+
+import unittest as helpers
+import helpers.sub
+
+class DottedImportShadow(helpers.TestCase):
+    def test_not_native(self):
+        return False
+
+unittest.mock.TestCase = object
+import unittest.mock as MockAlias
+
+class AliasedSubmoduleImpostor(MockAlias.TestCase):
     def test_not_native(self):
         return False
