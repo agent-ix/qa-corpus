@@ -1,0 +1,10 @@
+id: unittest-testcase
+issue_ref: agent-ix/quire-rs#407
+mode: parser
+language: python
+module: ecosystem
+kind: regression
+findable: false
+tags: [TC-1803, parser, binding]
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/unittest-testcase/input --json
+comment: Banked pending before #407; promoted after the classifier restored four native unittest methods. The matched control differs only in Test-prefixed class names and now pins the same healthy behavior; neither is a remaining detectable defect.

@@ -1,0 +1,7 @@
+total: 2
+backed: 1
+binding_census:
+- language: python
+  candidates: 4
+  bound: 4
+absent_diagnostic_reasons: [no-symbol-bound, hollow-denominator, low-symbol-binding, tag-on-non-binding-symbol]

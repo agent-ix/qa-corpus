@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=175> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=177> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -554,6 +554,13 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
+- mode: parser
+  case: unittest-testcase
+  source: agent-ix/quire-rs#407 — native unittest.TestCase methods lost on non-Test-prefixed classes
+  languages: [python, rust, typescript]
+  out_of_scope:
+    rust: Python unittest inheritance and import aliases do not exist in Rust's attribute-based test model.
+    typescript: Python unittest inheritance and import aliases do not exist in TypeScript's registration-based test model.
 - mode: minting
   case: status-column-mismatch
   source: agent-ix/quire-rs#341 — Coverage Status silently bypassed configured Status classification
