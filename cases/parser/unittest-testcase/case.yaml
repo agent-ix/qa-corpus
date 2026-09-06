@@ -1,0 +1,12 @@
+id: unittest-testcase
+issue_ref: agent-ix/quire-rs#407
+mode: parser
+language: python
+module: ecosystem
+kind: failure
+findable: false
+tags: [TC-1803, parser, binding]
+pending: agent-ix/quire-rs#407
+pending_reason: Direct unittest.TestCase methods are executable evidence regardless of class name.
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/unittest-testcase/input --json
+comment: Real IR unittest classes are not Test-prefixed; direct imported TestCase bases and their aliases remain native unittest cases.

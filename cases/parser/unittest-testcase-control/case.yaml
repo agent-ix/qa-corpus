@@ -1,0 +1,11 @@
+id: unittest-testcase-control
+issue_ref: agent-ix/quire-rs#407
+mode: parser
+language: python
+module: ecosystem
+kind: control
+findable: false
+tags: [TC-1803, parser, binding]
+control_for: [unittest-testcase]
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/unittest-testcase-control/input --json
+comment: Language-matched control changes only the classes to pytest-compatible Test-prefixed names.
