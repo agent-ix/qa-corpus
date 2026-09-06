@@ -1,0 +1,12 @@
+id: reference-status-column-control-rust
+issue_ref: agent-ix/quire-rs#409
+mode: minting
+language: rust
+module: variants/reference-status-column
+declaration_under_test: One explicit global status selector cannot describe two authored headers; missing selection must remain a diagnostic.
+kind: control
+control_for: [reference-status-column-rust]
+findable: false
+tags: [TC-1804, coverage, status]
+reproduce: quire coverage --module modules/variants/reference-status-column --scope cases/minting/reference-status-column-control-rust/input --json
+comment: Synthetic minimal reproduction of the process schema/global-selector contradiction; identical source declarations in the language-matched control.
