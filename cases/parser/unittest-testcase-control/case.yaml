@@ -1,11 +1,11 @@
 id: unittest-testcase-control
+case: unittest-testcase
 issue_ref: agent-ix/quire-rs#407
 mode: parser
 language: python
 module: ecosystem
-kind: control
+kind: regression
 findable: false
 tags: [TC-1803, parser, binding]
-control_for: [unittest-testcase]
 reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/unittest-testcase-control/input --json
-comment: Language-matched control changes only the classes to pytest-compatible Test-prefixed names.
+comment: The language-matched healthy control for unittest-testcase changes only the classes to Test-prefixed names. Both spellings now classify identically; retained as a regression control rather than claiming a remaining failure/control differential.

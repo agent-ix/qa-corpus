@@ -371,7 +371,7 @@ diagnostic_reasons:
 # `tag-on-non-binding-symbol` now.
 #
 # No fixture currently predicts a ticket that changes what mints.
-behaviour_change_tickets: [agent-ix/quire-rs#407]
+behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
 # It declared a per-case output envelope — case/mode/language/kind/outcome/
@@ -404,7 +404,7 @@ behaviour_change_tickets: [agent-ix/quire-rs#407]
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=80>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=79>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -422,8 +422,8 @@ behaviour_change_tickets: [agent-ix/quire-rs#407]
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=79> `kind: failure`
-# fixtures, all <derived:controlled_failures=79> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=78> `kind: failure`
+# fixtures, all <derived:controlled_failures=78> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #

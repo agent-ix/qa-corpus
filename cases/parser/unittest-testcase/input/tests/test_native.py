@@ -52,3 +52,9 @@ shadow = Lookalike
 class ShadowedModuleBase(shadow.TestCase):
     def test_helper(self):
         return False
+
+from types import SimpleNamespace as BaseCase
+
+class ReimportedBase(BaseCase):
+    def test_helper(self):
+        return False

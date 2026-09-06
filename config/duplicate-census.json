@@ -40,6 +40,15 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/parser/unittest-testcase/expect.yaml",
+        "cases/parser/unittest-testcase-control/expect.yaml"
+      ],
+      "sha256": "04248d3a451eee284afbdb7c74731332a5b2f6287d2a0cd094f7eff554fcccdf"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/minting/wrong-type-cell/python/input/spec/tests.md",
         "cases/minting/wrong-type-cell/rust/input/spec/tests.md",
         "cases/minting/wrong-type-cell/typescript/input/spec/tests.md"
@@ -464,15 +473,6 @@
         "cases/minting/no-symbol-method-in-the-verification-column-control/typescript/input/spec/FR-001.md"
       ],
       "sha256": "6b1b622fc58a1f4a9c2817477e6ab19606022907579bdbb3ed268c5154372820"
-    },
-    {
-      "classification": "intentional-self-contained-fixture",
-      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
-      "paths": [
-        "cases/parser/unittest-testcase/expect-pending.yaml",
-        "cases/parser/unittest-testcase-control/expect.yaml"
-      ],
-      "sha256": "6e81ceedbcb03ec55f7bc79c0c1f0387b5d70f343977e7a78be98788f4001837"
     },
     {
       "classification": "intentional-self-contained-fixture",
