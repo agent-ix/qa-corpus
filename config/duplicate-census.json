@@ -201,6 +201,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-python/expect.yaml",
+        "cases/minting/reference-status-column-rust/expect.yaml",
+        "cases/minting/reference-status-column-typescript/expect.yaml"
+      ],
+      "sha256": "31fa47e54ea0d34b01a3d622858bd086962d509d0b58cc66821d824848b8e821"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/skeptic/gate-that-gates-nothing/python/input/spec/tests.md",
         "cases/skeptic/gate-that-gates-nothing/rust/input/spec/tests.md",
         "cases/skeptic/gate-that-gates-nothing/typescript/input/spec/tests.md",
@@ -521,6 +531,15 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-control-rust/input/tests/selector.rs",
+        "cases/minting/reference-status-column-rust/input/tests/selector.rs"
+      ],
+      "sha256": "71d8cf25854e2f4adb93a50f9a6c2bcb191cb6103766f31681a35c66d4c28e05"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/detection/low-symbol-binding/input/spec/FR-001.md",
         "cases/detection/low-symbol-binding-control/input/spec/FR-001.md"
       ],
@@ -595,6 +614,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-python/input/spec/tests.md",
+        "cases/minting/reference-status-column-rust/input/spec/tests.md",
+        "cases/minting/reference-status-column-typescript/input/spec/tests.md"
+      ],
+      "sha256": "986797acce5e4ea83d204b3e6ee00196e3056ebc4a2bf123050fe1f44d403ac4"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/attachment/tag-on-non-test-function/typescript/input/src/coverage.test.ts",
         "cases/attachment/tag-on-non-test-function-control/typescript/input/src/coverage.test.ts"
       ],
@@ -618,6 +647,16 @@
         "cases/skeptic/gate-that-gates-nothing-control/rust/input/Makefile"
       ],
       "sha256": "a2d92521781fb9abc5df346682a40ea257cd4dfbd1820873e6e4ff02e4127b6e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/reference-status-column-control-python/expect.yaml",
+        "cases/minting/reference-status-column-control-rust/expect.yaml",
+        "cases/minting/reference-status-column-control-typescript/expect.yaml"
+      ],
+      "sha256": "b068e627c8ce4b996353bd8982f97f9c9f0c887d013266de79a2adbf4311c52a"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -709,6 +748,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/minting/reference-status-column-control-python/input/spec/tests.md",
+        "cases/minting/reference-status-column-control-rust/input/spec/tests.md",
+        "cases/minting/reference-status-column-control-typescript/input/spec/tests.md"
+      ],
+      "sha256": "c25cf69bebb73e79e2b1dc9429b982d159556d8e9d5dc9c3620146ac61b81f62"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/minting/section-holds-no-table-control/python/input/spec/tests.md",
         "cases/minting/section-holds-no-table-control/rust/input/spec/tests.md",
         "cases/minting/section-holds-no-table-control/typescript/input/spec/tests.md"
@@ -723,6 +772,15 @@
         "cases/provenance/hollow-metric-control/rust/input/src/lib.rs"
       ],
       "sha256": "c550420f927e291c71eaec4de2ac20d6c4c4ad2bdc6cb473a452f233b00c0ad5"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/reference-status-column-control-typescript/input/tests/selector.test.ts",
+        "cases/minting/reference-status-column-typescript/input/tests/selector.test.ts"
+      ],
+      "sha256": "cca1c10cf921c7797dffec879ef180f9a4030a042d1bcd2b17be03b7c41a6bda"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -778,6 +836,15 @@
         "cases/skeptic/gate-that-gates-nothing-control/typescript/input/Makefile"
       ],
       "sha256": "e1c324b0b602411d0a4467e0f30a671d55e8fad88e740dc21055bdcc9cb86fd5"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/minting/reference-status-column-control-python/input/tests/test_selector.py",
+        "cases/minting/reference-status-column-python/input/tests/test_selector.py"
+      ],
+      "sha256": "e3339690f6981ded6d3bfa3c1bc3f64a01548f37d005b456945780dbdc54cab7"
     },
     {
       "classification": "intentional-self-contained-fixture",
