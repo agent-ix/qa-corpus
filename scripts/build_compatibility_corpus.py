@@ -142,6 +142,42 @@ def recorded_source_refs(committed: dict[str, Any]) -> dict[Path, str]:
     return selected
 
 
+def require_published_source_refs(source_refs: dict[Path, str]) -> None:
+    """Reject recorded revisions not reachable from each published main ref.
+
+    Object availability is insufficient: a local checkout can retain an
+    orphaned or synthetic commit that a clean verifier cannot fetch. The
+    remote-tracking ref is deliberately checked without fetching so corpus
+    verification remains an offline, non-mutating operation.
+    """
+    for repository, source_revision in source_refs.items():
+        result = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(repository),
+                "merge-base",
+                "--is-ancestor",
+                source_revision,
+                "origin/main",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 1:
+            raise ValueError(
+                "recorded source revision is not reachable from origin/main: "
+                f"{repository} at {source_revision}"
+            )
+        if result.returncode != 0:
+            diagnostic = result.stderr.strip() or "Git could not resolve the revision"
+            raise ValueError(
+                "cannot verify recorded source revision against origin/main: "
+                f"{repository} at {source_revision}: {diagnostic}"
+            )
+
+
 def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
     source_refs = source_refs or {}
     contract_ir_ref = source_refs.get(CONTRACT_IR, "origin/main")
@@ -675,7 +711,9 @@ def main() -> int:
     committed = None
     if args.check:
         committed = json.loads((CORPUS_ROOT / "corpus.json").read_text("utf-8"))
-        corpus, payloads = build(recorded_source_refs(committed))
+        source_refs = recorded_source_refs(committed)
+        require_published_source_refs(source_refs)
+        corpus, payloads = build(source_refs)
     else:
         corpus, payloads = build()
         write(corpus, payloads)
