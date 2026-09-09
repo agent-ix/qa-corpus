@@ -244,6 +244,8 @@
         "cases/disposition/greenfield-no-symbols-control/python/input/spec/tests.md",
         "cases/disposition/greenfield-no-symbols-control/rust/input/spec/tests.md",
         "cases/disposition/greenfield-no-symbols-control/typescript/input/spec/tests.md",
+        "cases/parser/typescript-regex-brace/input/spec/tests.md",
+        "cases/parser/typescript-regex-brace-control/input/spec/tests.md",
         "cases/provenance/hollow-metric/python/input/spec/tests.md",
         "cases/provenance/hollow-metric/rust/input/spec/tests.md",
         "cases/provenance/hollow-metric/typescript/input/spec/tests.md",
@@ -401,6 +403,8 @@
         "cases/minting/section-name-mismatch/rust/input/spec/FR-001.md",
         "cases/minting/section-name-mismatch/typescript/input/spec/FR-001.md",
         "cases/parser/triple-quote-scope-desync/input/spec/FR-001.md",
+        "cases/parser/typescript-regex-brace/input/spec/FR-001.md",
+        "cases/parser/typescript-regex-brace-control/input/spec/FR-001.md",
         "cases/provenance/implements-never-asked/python/input/spec/FR-001.md",
         "cases/provenance/implements-never-asked/rust/input/spec/FR-001.md",
         "cases/provenance/implements-never-asked/typescript/input/spec/FR-001.md"
@@ -542,6 +546,15 @@
         "cases/skeptic/gate-that-gates-nothing-control/rust/input/src/lib.rs"
       ],
       "sha256": "85983f882e242cb77230c1e31c5428e9a98ac8c543c6a7b9b2551b181913ab74"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/parser/typescript-regex-brace/expect-pending.yaml",
+        "cases/parser/typescript-regex-brace-control/expect.yaml"
+      ],
+      "sha256": "92bf194f4c8c0b3528ddd1ea7ca545e06124cb24acb4d08bec983353d83234ee"
     },
     {
       "classification": "intentional-self-contained-fixture",

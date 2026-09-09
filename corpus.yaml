@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=175> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=177> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -371,7 +371,8 @@ diagnostic_reasons:
 # `tag-on-non-binding-symbol` now.
 #
 # No fixture currently predicts a ticket that changes what mints.
-behaviour_change_tickets: []
+behaviour_change_tickets:
+- agent-ix/quire-rs#403
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
 # It declared a per-case output envelope — case/mode/language/kind/outcome/
@@ -404,7 +405,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=79>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=80>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -422,8 +423,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=78> `kind: failure`
-# fixtures, all <derived:controlled_failures=78> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=79> `kind: failure`
+# fixtures, all <derived:controlled_failures=79> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -800,6 +801,32 @@ inventory:
       neither language has a triple-quoted string literal. A TypeScript template literal is
       a different construct and, if it desynchronises the scanner, is its own case with its
       own measurement.
+- mode: parser
+  # One escaped opening brace in a TypeScript regex literal makes the current
+  # line lexer count a block that the program never opened. The whole file is
+  # then rejected as unbalanced and every otherwise valid test symbol in it is
+  # lost. The paired control changes only that regex atom to an ordinary
+  # character, keeping the function's real braces and trace placement fixed.
+  case: typescript-regex-brace
+  source: >-
+    agent-ix/quire-rs#403; live locus
+    agent-ix/filament-core-data@3b75e01c652ba00bb07c352ff5467419401e792b
+    test/compiler.test.ts:1291 (blob SHA-256
+    54c96129e59dab60b37f8ee3107ecd703aa8cf0f864279ff8f49b5be6402074a).
+    The issue also records the independent [^}] trigger from quire-rs#404.
+  languages:
+  - python
+  - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      Python regular expressions are strings passed to an API; it has no
+      JavaScript-style regex literal token for the source lexer to confuse
+      with division or comments.
+    rust: >-
+      Rust regular expressions are strings passed to an API; its raw and
+      ordinary string forms are already the separate FR-051-AC-15 lexer
+      surface, not a slash-delimited regex literal.
 - mode: join
   # RE-SCOPED, and `tag-names-con-inv-sc-vc` is gone. That row bundled four
   # prefixes on the strength of one number — "123 tags" — and MEASURED WITH THE

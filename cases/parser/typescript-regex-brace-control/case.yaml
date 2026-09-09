@@ -1,0 +1,18 @@
+id: typescript-regex-brace-control
+issue_ref: agent-ix/quire-rs#403
+mode: parser
+language: typescript
+module: ecosystem
+kind: control
+control_for:
+- typescript-regex-brace
+findable: false
+tags:
+- TC-1836
+- parser
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/typescript-regex-brace-control/input --json
+comment: >-
+  The same balanced TypeScript file with the escaped opening brace inside the
+  regex replaced by one ordinary character. Source topology, trace placement,
+  declaration, and real code braces are otherwise identical.

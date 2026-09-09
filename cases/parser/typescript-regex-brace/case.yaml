@@ -1,0 +1,22 @@
+id: typescript-regex-brace
+issue_ref: agent-ix/quire-rs#403
+mode: parser
+language: typescript
+module: ecosystem
+kind: failure
+findable: false
+pending: agent-ix/quire-rs#403
+pending_reason: >-
+  The current TypeScript lexer counts an escaped opening brace inside a regex
+  literal as code, rejects the whole otherwise balanced file, and loses its
+  only test symbol and trace binding.
+tags:
+- TC-1836
+- parser
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/typescript-regex-brace/input --json
+comment: >-
+  Minimal Tier-1 preservation of the real compiler.test.ts failure mechanism:
+  a slash-delimited regex carries an unmatched escaped opening brace inside a
+  balanced test function. The forward contract is one recovered TypeScript
+  test and binding; the live contract records the pre-fix zero-symbol state.
