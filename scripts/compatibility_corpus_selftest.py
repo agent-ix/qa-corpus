@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Prove corpus verification selects recorded revisions, not a moving branch.
+"""Prove corpus verification selects published recorded revisions.
 
-Regression for agent-ix/qa-corpus#15.
+Regressions for agent-ix/qa-corpus#15 and agent-ix/qa-corpus#17.
 """
 
 from __future__ import annotations
@@ -79,6 +79,31 @@ def main() -> int:
         }
         refs = BUILDER.recorded_source_refs(committed)
         assert BUILDER.read_at(contract_ir, "payload.txt", refs[contract_ir]) == b"recorded\n"
+        BUILDER.require_published_source_refs({contract_ir: recorded})
+
+        recorded_tree = git(contract_ir, "rev-parse", f"{recorded}^{{tree}}")
+        unpublished = git(
+            contract_ir,
+            "commit-tree",
+            recorded_tree,
+            "-m",
+            "locally present but unpublished source",
+        )
+        for unacceptable, expected_diagnostic in (
+            (unpublished, "not reachable from origin/main"),
+            ("f" * 40, "cannot verify recorded source revision"),
+        ):
+            try:
+                BUILDER.require_published_source_refs({contract_ir: unacceptable})
+            except ValueError as error:
+                message = str(error)
+                assert str(contract_ir) in message
+                assert unacceptable in message
+                assert expected_diagnostic in message
+            else:
+                raise AssertionError(
+                    f"unpublished source revision was accepted: {unacceptable}"
+                )
 
         try:
             BUILDER.read_at(contract_ir, "payload.txt")
