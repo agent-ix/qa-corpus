@@ -23,6 +23,7 @@ help:
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make measurement-selftest prove both active plans have derived output"
+	@echo "make compatibility-corpus-selftest prove checks use recorded source revisions"
 	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
 	@echo "make duplicate-census    reject unexplained fixture-copy drift"
 	@echo "make external-channel    validate exact non-Quire witness contract"
@@ -76,8 +77,12 @@ duplicate-census:
 external-channel:
 	@python3 scripts/external_channel_selftest.py
 
+.PHONY: compatibility-corpus-selftest
+compatibility-corpus-selftest:
+	@python3 scripts/compatibility_corpus_selftest.py
+
 .PHONY: ci
-ci: schema-selftest duplicate-census external-channel bounds verify verify-reporting measurement-selftest parity-selftest
+ci: schema-selftest duplicate-census external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one
