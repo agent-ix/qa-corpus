@@ -50,24 +50,26 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def revision(repo: Path) -> str:
-    """The published `origin/main` commit, not whatever is checked out.
+def revision(repo: Path, ref: str = "origin/main") -> str:
+    """Resolve the selected source ref, not whatever is checked out.
 
-    A working tree can sit on a branch, mid-review, or dirty. Recording that
-    as provenance would name a revision no reviewer can fetch.
+    Refresh mode selects the published ``origin/main`` commit. Check mode
+    supplies the immutable revision already recorded by the committed corpus.
+    A working tree can sit on a branch, mid-review, or dirty, so neither mode
+    reads ``HEAD`` implicitly.
     """
     return subprocess.run(
-        ["git", "-C", str(repo), "rev-parse", "origin/main"],
+        ["git", "-C", str(repo), "rev-parse", ref],
         check=True,
         capture_output=True,
         text=True,
     ).stdout.strip()
 
 
-def read_at(repo: Path, path: str) -> bytes:
-    """Read one path as published on `origin/main`, not from the working tree."""
+def read_at(repo: Path, path: str, ref: str = "origin/main") -> bytes:
+    """Read one path from the selected immutable source revision."""
     return subprocess.run(
-        ["git", "-C", str(repo), "show", f"origin/main:{path}"],
+        ["git", "-C", str(repo), "show", f"{ref}:{path}"],
         check=True,
         capture_output=True,
     ).stdout
@@ -82,29 +84,78 @@ def compact(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
-def legacy_source(record_id: str) -> bytes:
-    return read_at(CONTRACT_IR, f"evidence/{record_id}/manifest.json")
+def legacy_source(record_id: str, source_ref: str) -> bytes:
+    return read_at(
+        CONTRACT_IR, f"evidence/{record_id}/manifest.json", source_ref
+    )
 
 
-def recorded_digest(record_id: str) -> str:
+def recorded_digest(record_id: str, source_ref: str) -> str:
     """The digest the source repository itself recorded for the manifest."""
-    checksums = read_at(CONTRACT_IR, f"evidence/{record_id}.sha256").decode("utf-8")
+    checksums = read_at(
+        CONTRACT_IR, f"evidence/{record_id}.sha256", source_ref
+    ).decode("utf-8")
     for line in checksums.splitlines():
         if line.endswith(f"evidence/{record_id}/manifest.json"):
             return line.split()[0]
     raise SystemExit(f"{record_id} records no manifest digest")
 
 
-def build() -> dict[str, Any]:
-    contract_ir_revision = revision(CONTRACT_IR)
-    code_rs_revision = revision(CODE_RS)
-    quoin_revision = revision(QUOIN)
+def recorded_source_refs(committed: dict[str, Any]) -> dict[Path, str]:
+    """Return the one recorded revision for every external source repository.
+
+    A committed corpus that attributes one repository to multiple revisions is
+    internally ambiguous and cannot select an immutable verification source.
+    """
+    repositories = {
+        "agent-ix/quire-contract-ir": CONTRACT_IR,
+        "agent-ix/quire-code-rs": CODE_RS,
+        "agent-ix/quoin": QUOIN,
+    }
+    revisions: dict[str, set[str]] = {name: set() for name in repositories}
+    for case in committed.get("cases", []):
+        origin = case.get("origin")
+        if not isinstance(origin, dict):
+            continue
+        repository = origin.get("repository")
+        source_revision = origin.get("revision")
+        if repository in revisions and isinstance(source_revision, str):
+            revisions[repository].add(source_revision)
+    for case in committed.get("producer_cases", []):
+        producer = case.get("producer")
+        source_revision = case.get("revision")
+        if not isinstance(producer, str) or not isinstance(source_revision, str):
+            continue
+        repository = producer.split(" ", 1)[0]
+        if repository in revisions:
+            revisions[repository].add(source_revision)
+
+    selected: dict[Path, str] = {}
+    for repository, path in repositories.items():
+        candidates = revisions[repository]
+        if len(candidates) != 1:
+            raise ValueError(
+                f"committed corpus records {len(candidates)} revisions for "
+                f"{repository}: {sorted(candidates)}"
+            )
+        selected[path] = next(iter(candidates))
+    return selected
+
+
+def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
+    source_refs = source_refs or {}
+    contract_ir_ref = source_refs.get(CONTRACT_IR, "origin/main")
+    code_rs_ref = source_refs.get(CODE_RS, "origin/main")
+    quoin_ref = source_refs.get(QUOIN, "origin/main")
+    contract_ir_revision = revision(CONTRACT_IR, contract_ir_ref)
+    code_rs_revision = revision(CODE_RS, code_rs_ref)
+    quoin_revision = revision(QUOIN, quoin_ref)
 
     cases: list[dict[str, Any]] = []
     payloads: dict[str, bytes] = {}
 
     def legacy_case(case_id: str, record_id: str, note: str) -> bytes:
-        raw = legacy_source(record_id)
+        raw = legacy_source(record_id, contract_ir_ref)
         payloads[case_id] = raw
         cases.append(
             {
@@ -117,7 +168,7 @@ def build() -> dict[str, Any]:
                     "repository": "agent-ix/quire-contract-ir",
                     "revision": contract_ir_revision,
                     "path": f"evidence/{record_id}/manifest.json",
-                    "recorded_sha256": recorded_digest(record_id),
+                    "recorded_sha256": recorded_digest(record_id, contract_ir_ref),
                 },
                 "derivation": None,
                 "expected": {"outcome": "lossy", "note": note},
@@ -163,7 +214,9 @@ def build() -> dict[str, Any]:
                     "repository": "agent-ix/quire-contract-ir",
                     "revision": contract_ir_revision,
                     "path": "evidence/pgm-01-02568b1/manifest.json",
-                    "recorded_sha256": recorded_digest("pgm-01-02568b1"),
+                    "recorded_sha256": recorded_digest(
+                        "pgm-01-02568b1", contract_ir_ref
+                    ),
                 },
                 "derivation": {"from": "legacy-v1-passing", "operation": operation,
                                "reason": reason},
@@ -261,7 +314,9 @@ def build() -> dict[str, Any]:
                 "repository": "agent-ix/quire-contract-ir",
                 "revision": contract_ir_revision,
                 "path": "evidence/pgm-01-02568b1/manifest.json",
-                "recorded_sha256": recorded_digest("pgm-01-02568b1"),
+                "recorded_sha256": recorded_digest(
+                    "pgm-01-02568b1", contract_ir_ref
+                ),
             },
             "derivation": {
                 "from": "legacy-v1-passing",
@@ -466,7 +521,7 @@ def build() -> dict[str, Any]:
     producer_cases = []
     for entry in producers:
         repo, relative = entry.pop("source")
-        raw = read_at(repo, relative)
+        raw = read_at(repo, relative, source_refs.get(repo, "origin/main"))
         record = {
             **{k: v for k, v in entry.items() if k != "id"},
             "id": entry["id"],
@@ -617,14 +672,18 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    corpus, payloads = build()
-    if not args.check:
+    committed = None
+    if args.check:
+        committed = json.loads((CORPUS_ROOT / "corpus.json").read_text("utf-8"))
+        corpus, payloads = build(recorded_source_refs(committed))
+    else:
+        corpus, payloads = build()
         write(corpus, payloads)
         print(f"wrote {len(corpus['cases'])} legacy and "
               f"{len(corpus['producer_cases'])} producer cases")
         return 0
 
-    committed = json.loads((CORPUS_ROOT / "corpus.json").read_text("utf-8"))
+    assert committed is not None
     differences = []
     if committed.get("cases") != corpus["cases"]:
         differences.append("cases")
