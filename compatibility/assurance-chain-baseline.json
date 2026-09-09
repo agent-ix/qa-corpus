@@ -1,0 +1,181 @@
+{
+  "schema_version": "qa-corpus.assurance-chain-baseline/v1",
+  "issue_ref": "agent-ix/qa-corpus#20",
+  "governing_requirement": "agent-ix/engineering-assurance#FR-019-AC-4",
+  "driver_path": "scripts/assurance_chain.py",
+  "required_consumers": [
+    "agent-ix/quire-analyze",
+    "agent-ix/quire-contract-codegen",
+    "agent-ix/quire-contract-ir",
+    "agent-ix/quire-contract-runtime",
+    "agent-ix/tl-mltl",
+    "agent-ix/tl-parse",
+    "agent-ix/tl-rewrite",
+    "agent-ix/tl-syntax"
+  ],
+  "required_comparison_states": [
+    "pass",
+    "fail",
+    "unavailable",
+    "not-computed",
+    "malformed",
+    "stale",
+    "tampered",
+    "incomplete"
+  ],
+  "semantic_gap": "The legacy reports demonstrate partial and, in some receipts, the Quoin-owned outcome incomplete. The Rust differential must preserve those exact source tokens and prove the FR-019 incomplete comparison explicitly; this baseline does not equate or rename them.",
+  "consumers": [
+    {
+      "repository": "agent-ix/quire-contract-ir",
+      "revision": "69cf238439f78d46bbdaf75d834ad4e4ccce5c0e",
+      "driver_sha256": "3d7b19f293f83d24d2d9cb04567e3b5fb7debd3cf9cbf7970d64947f52bb993f",
+      "observation_source": "reviews/SR-030-shared-assurance-migration-closing-code-review.md",
+      "observation_source_sha256": "95e7e94af628346b367921bed49b71baf04e4d421decd322f7a48647bc1c9a51",
+      "observation": {
+        "scenarios": {"matched": 10, "total": 10},
+        "controls": {"matched": 4, "total": 4},
+        "adapter_probes": {"matched": 3, "total": 3},
+        "states_reported_count": null,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review records the three case populations but does not enumerate the state set."],
+        "witnesses": [
+          "| change-assurance chain | 10/10 scenarios |",
+          "| `contract-conformance` adapter probes | 3/3 |",
+          "| controls | 4/4 |"
+        ]
+      }
+    },
+    {
+      "repository": "agent-ix/quire-contract-runtime",
+      "revision": "60749bcaa9725c33362de399e4430ca105b4a50b",
+      "driver_sha256": "a44a2a871623d80fa4e2d4b49505734deb431928cd3494270270230d51d874df",
+      "observation_source": "reviews/SR-007-drop-legacy-evidence-gap-analysis.md",
+      "observation_source_sha256": "7f39896e159e5cafa37acd94bccf567be4e6f5326c4e8c5eb8458b69f12e69e4",
+      "observation": {
+        "scenarios": {"matched": 14, "total": 14},
+        "controls": {"matched": 6, "total": 6},
+        "adapter_probes": {"matched": 9, "total": 9},
+        "states_reported_count": 12,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review records twelve states but does not enumerate their spellings."],
+        "witnesses": ["14 scenarios, 6 controls, 9 probes, all matched; 12/12 states demonstrated"]
+      }
+    },
+    {
+      "repository": "agent-ix/quire-contract-codegen",
+      "revision": "bbd5e67b50bb95d4a8ebde17e608eef66dff5403",
+      "driver_sha256": "24261cfb0be6764f64ed8947fe3e192a9337ada2204c16a09cfe166141182a37",
+      "observation_source": "reviews/SR-003-shared-assurance-closing-code-review.md",
+      "observation_source_sha256": "04fa642fbb5ae7e620a3a8c523c5049ee96f0bdf1322df82b87b2f58250617d9",
+      "observation": {
+        "scenarios": {"matched": 14, "total": 14},
+        "controls": {"matched": 6, "total": 6},
+        "adapter_probes": {"matched": 7, "total": 7},
+        "states_reported_count": null,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review records the three case populations but not the state count."],
+        "witnesses": ["14 scenarios, 6 controls, 7 adapter probes, all matched"]
+      }
+    },
+    {
+      "repository": "agent-ix/quire-analyze",
+      "revision": "5f37678928aea451447d1ee6d42deefb95cb2f5a",
+      "driver_sha256": "f3e1dd7f4ea698262daf40d12a61b65fa1186203d87797a5be3951eda91f6a4a",
+      "observation_source": "reviews/SR-004-legacy-evidence-deletion-gap-analysis.md",
+      "observation_source_sha256": "5e5dc015f1e3ca892e35ffefafe4f356964e6e18db43ad86714b2095d5d3a2b1",
+      "observation": {
+        "scenarios": {"matched": 12, "total": 12},
+        "controls": null,
+        "adapter_probes": null,
+        "states_reported_count": 7,
+        "states_reported": ["inconclusive", "malformed", "partial", "passed", "tampered", "unavailable", "unsupported"],
+        "all_matched": true,
+        "limitations": ["The source reports combined cases rather than separate scenario, control, and adapter populations."],
+        "witnesses": [
+          "chain **12/12 cases matched**, 7 states demonstrated",
+          "`malformed`, `partial`, `passed`, `tampered`, `unavailable`, `unsupported`)"
+        ]
+      }
+    },
+    {
+      "repository": "agent-ix/tl-syntax",
+      "revision": "4cb578748c9f7f3353e4f32c8897aa10fd61b8b0",
+      "driver_sha256": "c3ec9bfcff5e7e79d5416e0ff1a62b5b9efb19adb526c7c5d57d5b931d51cbb8",
+      "observation_source": "spec/reviews/SR-011-drop-legacy-evidence-code-review.md",
+      "observation_source_sha256": "388522ca35fdc8105db58048b2bdb9e9b892b197839f5f455a50d47857ca3a72",
+      "observation": {
+        "scenarios": {"matched": 14, "total": 14},
+        "controls": {"matched": 6, "total": 6},
+        "adapter_probes": {"matched": 8, "total": 8},
+        "states_reported_count": 12,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review records twelve states but does not enumerate their spellings."],
+        "witnesses": ["all twelve demonstrated by the chain alone; 14 scenarios, 6 controls, 8 adapter probes, all matched"]
+      }
+    },
+    {
+      "repository": "agent-ix/tl-parse",
+      "revision": "0ebf05fb082be591df273000049456c1d1e0f112",
+      "driver_sha256": "b8571e3d4a299ce6a45617e881fcec98dac0eb9a5e2ffe1607aa8617602f9915",
+      "observation_source": "spec/reviews/SR-010-drop-legacy-evidence-code-review.md",
+      "observation_source_sha256": "d8f1681e28ce5a9fa4143729bd8e907cd6020cf4f2fd2bfa2970c598e28ae5e2",
+      "observation": {
+        "scenarios": {"matched": 17, "total": 17},
+        "controls": {"matched": 7, "total": 7},
+        "adapter_probes": {"matched": 7, "total": 7},
+        "states_reported_count": 12,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review states the twelve-state requirement and the matched populations but does not enumerate the state spellings."],
+        "witnesses": [
+          "`TC-026` requires all twelve states to be demonstrated by cases that ran and",
+          "| `scripts/assurance_chain.py` | 17 scenarios, 7 controls, 7 probes, all matched |"
+        ]
+      }
+    },
+    {
+      "repository": "agent-ix/tl-mltl",
+      "revision": "58f858e39b1ddbb2b3d4c5e4cfec61cc0fc04ff9",
+      "driver_sha256": "25d08149bad5cc3facab61dd18af8fb987cd1ff2ed0e7c58f1d962c613e52461",
+      "observation_source": "spec/reviews/SR-010-drop-legacy-evidence-gap-analysis.md",
+      "observation_source_sha256": "582f50715bbb9b8038f0d3e3c827ad1bde4668c78465294d95a1b90815f29e65",
+      "observation": {
+        "scenarios": {"matched": 21, "total": 21},
+        "controls": {"matched": 10, "total": 10},
+        "adapter_probes": {"matched": 8, "total": 8},
+        "states_reported_count": 12,
+        "states_reported": [],
+        "all_matched": true,
+        "limitations": ["The selected review records twelve states but does not enumerate their spellings."],
+        "witnesses": [
+          "| Chain cases | 21 scenarios, 10 controls, 8 adapter probes | all matched, unchanged by this deletion |",
+          "| Verification outcomes demonstrated | 12 / 12 |"
+        ]
+      }
+    },
+    {
+      "repository": "agent-ix/tl-rewrite",
+      "revision": "d4670c25f3300a4859688e0af94f4fd995ba65af",
+      "driver_sha256": "2e4f74460ce13f201e664635637ec841d05fe7eb328fe81528abf0405a295612",
+      "observation_source": "spec/reviews/SR-010-drop-legacy-evidence-gap-analysis.md",
+      "observation_source_sha256": "3f26316d34f1c2d1b6a2c9428099b324e667a8f583629471837c948e7b724512",
+      "observation": {
+        "scenarios": null,
+        "controls": null,
+        "adapter_probes": null,
+        "states_reported_count": 12,
+        "states_reported": ["pass", "fail", "unavailable", "unsupported", "inconclusive", "not-computed", "malformed", "partial", "stale", "suspect", "vacuous", "tampered"],
+        "all_matched": true,
+        "limitations": ["The selected review enumerates every state and reports matched true but does not retain the three case-population counts."],
+        "witnesses": [
+          "chain reports **12** states demonstrated,",
+          "`matched: true`, and `TC-027` passes"
+        ]
+      }
+    }
+  ]
+}
