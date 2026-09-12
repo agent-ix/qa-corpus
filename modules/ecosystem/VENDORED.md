@@ -13,10 +13,11 @@ fixture. The totals were identical either way, which is why it went unnoticed.
 
 | Module | Source path | Pinned SHA |
 |---|---|---|
-| `spec-artifacts-process` | `spec_artifacts_process/` | `995288d609a47ab5a25f300ac0fa600d390b348c` |
+| `spec-artifacts-process` | `spec_artifacts_process/` | `375fc2a9c49c37cce0f43384878b8ede16b162a3` |
 | `spec-artifacts-iso` | `spec_artifacts_iso/` | `a6b1c70be8c22e9f7cb432e4410b7a3a280d0217` |
 
-Vendored 2026-08-26 from the Project 18 tracking branches.
+Vendored 2026-08-26 from the Project 18 tracking branches; the process
+SHA refreshed 2026-09-12 for the single-`Status`-column collapse.
 
 ## Tracking status
 
@@ -24,6 +25,14 @@ These SHAs are tracking-branch commits, not `main` releases. The process source
 now owns both `typescript-test-name-id` and the CR-118 section family; the ISO
 source owns the matching `SectionNames` schema. There are no corpus-only
 declaration deltas.
+
+The process SHA moved to `375fc2a` (agent-ix/spec-artifacts-process#87), which
+collapses `Coverage Status` and `Status` into one `Status` column. The two names
+carried byte-identical vocabularies and were applied inconsistently across
+sibling coverage tables, so the single global `traceability.status.column`
+selector matched only some of them and status classification was silently
+skipped on the rest. Note this commit is on the `epic/264-assurance-integration`
+cohort; the process `main` does not yet carry the collapse.
 
 ## Why a copy and not a submodule
 
