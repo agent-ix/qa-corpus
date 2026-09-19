@@ -77,12 +77,22 @@ duplicate-census:
 external-channel:
 	@python3 scripts/external_channel_selftest.py
 
-.PHONY: compatibility-corpus-selftest
+.PHONY: compatibility-corpus-selftest assurance-chain-baseline assurance-chain-baseline-selftest assurance-chain-baseline-sources
 compatibility-corpus-selftest:
 	@python3 scripts/compatibility_corpus_selftest.py
 
+assurance-chain-baseline:
+	@python3 scripts/verify_assurance_chain_baseline.py
+
+assurance-chain-baseline-selftest:
+	@python3 scripts/verify_assurance_chain_baseline.py --self-test
+
+assurance-chain-baseline-sources:
+	@test -n "$(ASSURANCE_SOURCE_ROOT)" || { echo "ASSURANCE_SOURCE_ROOT= is required"; exit 1; }
+	@python3 scripts/verify_assurance_chain_baseline.py --source-root "$(ASSURANCE_SOURCE_ROOT)"
+
 .PHONY: ci
-ci: schema-selftest duplicate-census external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest
+ci: schema-selftest duplicate-census external-channel compatibility-corpus-selftest assurance-chain-baseline-selftest bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one
