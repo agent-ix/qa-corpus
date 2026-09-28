@@ -1,5 +1,5 @@
 backed: 0
-total: 2
+total: 4
 diagnostic_reasons:
 - range-in-trace-tag
 diagnostic_paths:
