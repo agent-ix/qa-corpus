@@ -152,6 +152,15 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/typescript/expect.yaml",
+        "cases/attachment/range-in-trace-tag/typescript/expect.yaml"
+      ],
+      "sha256": "2758a4ae73e5355bf50169212559e3415afda9bf9ee6135083b6af2d445c5871"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/attachment/tag-at-module-scope/python/input/spec/FR-001.md",
         "cases/attachment/tag-at-module-scope/typescript/input/spec/FR-001.md",
         "cases/attachment/tag-at-module-scope-control/python/input/spec/FR-001.md",
@@ -212,15 +221,6 @@
         "cases/detection/undeclared-coverage-vocabulary-control/input/spec/NFR-001.md"
       ],
       "sha256": "2c4ae53259b9c24e0c28f65711eb4db130b0f96f085b0b9be5c4aa28b7876911"
-    },
-    {
-      "classification": "intentional-self-contained-fixture",
-      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
-      "paths": [
-        "cases/attachment/range-in-legacy-trace-tag/rust/expect.yaml",
-        "cases/attachment/range-in-trace-tag/rust/expect.yaml"
-      ],
-      "sha256": "2f3e0f69233c22056cd006bce685a5eb3ce00b7b769cd9a7292c5593528257bd"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -435,15 +435,6 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
-        "cases/attachment/range-in-legacy-trace-tag/python/expect.yaml",
-        "cases/attachment/range-in-trace-tag/python/expect.yaml"
-      ],
-      "sha256": "59b393136fa1539f322c91d5ba534c099e79e137cfdc004e4d7c7881745f1de0"
-    },
-    {
-      "classification": "intentional-self-contained-fixture",
-      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
-      "paths": [
         "cases/attachment/marker-form-declared/python/input/spec/FR-001.md",
         "cases/attachment/marker-form-declared/rust/input/spec/FR-001.md",
         "cases/attachment/marker-form-declared/typescript/input/spec/FR-001.md",
@@ -520,6 +511,15 @@
         "cases/skeptic/oracle-helper-copy-control/rust/input/spec/tests.md"
       ],
       "sha256": "61803962afdb1e93d3f9ffc9228f6b35a8cac78bf850a63a57b54f8bd6722967"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/rust/expect.yaml",
+        "cases/attachment/range-in-trace-tag/rust/expect.yaml"
+      ],
+      "sha256": "61951e6bb94832a5df4b525c9f465fd11cc61c606b2af8fb481b3be5f4d6fa62"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -699,6 +699,15 @@
         "cases/detection/catch-all-headline/typescript/expect.yaml"
       ],
       "sha256": "95c39ad3e7f356beed38d8271ba7c57fa2f51d24128f054f0b92735012d8fbc1"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/python/expect.yaml",
+        "cases/attachment/range-in-trace-tag/python/expect.yaml"
+      ],
+      "sha256": "97eb6ab2047d3bf0e38d541b955b366b387b6ed5659be9304f12225e84da0a13"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -1005,15 +1014,6 @@
         "cases/attachment/range-in-trace-tag-control/typescript/expect.yaml"
       ],
       "sha256": "eb87626adbcb262b6c7e47a0f0c46cf3a74cc43d0164dcf14d0cac0805f627bd"
-    },
-    {
-      "classification": "intentional-self-contained-fixture",
-      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
-      "paths": [
-        "cases/attachment/range-in-legacy-trace-tag/typescript/expect.yaml",
-        "cases/attachment/range-in-trace-tag/typescript/expect.yaml"
-      ],
-      "sha256": "ec15d59cb5ec43ebe2c9a01f755e4022206675b232e9c383fe2079a3cd46621b"
     },
     {
       "classification": "intentional-self-contained-fixture",

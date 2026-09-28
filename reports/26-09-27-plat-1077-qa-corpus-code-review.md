@@ -59,3 +59,15 @@ Reviewed at `agent-ix/qa-corpus@cbe1c5a579fadee8ac6b1a1599b2933b7b23fab8`.
 | FND-002 | fixed 46379f3 | Banks `range-in-legacy-trace-tag` (whose control, a legacy list, has `backed: 2`; the failure case has `backed: 0`, where the old engine gave 1), plus `range-differing-prefix-in-trace-tag` and `range-short-suffix-in-trace-tag`, in all three languages. |
 
 `make verify` and `parity-selftest` need a quire CLI that contains this engine change (PLAT-1078), so they were not run. The new cases are instead exercised against this branch's engine through quire-rs at 1249085 (corpus pinned to cbe1c5a): `corpus_cases` passed 19/19, including `corpus_cases_hold` over every case and `tc1028_a_failure_case_discriminates_from_its_control`, and `corpus_recall` passed 2/2.
+
+## New findings (disposition pass 2)
+
+Reviewed at `agent-ix/qa-corpus@cf10e6bb84bef072069dd3428b36dbf245f7c86c`. The only change since cbe1c5a is `reports/26-09-27-plat-1077-qa-corpus-code-review.md` (+11 lines).
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-003 | low | `range-in-legacy-trace-tag/*/expect.yaml` lists only `untracked-id-near-miss` under `absent_diagnostic_reasons`. Against the engine at quire-rs 74460ae, the case also emits a false `tag-on-non-binding-symbol` (quire-rs SR-120 FND-018), and the corpus stays green. Add `tag-on-non-binding-symbol` to `absent_diagnostic_reasons` in all three languages, and do the same for the marker range cases, so a second engine is held to it too. | cases/attachment/range-in-legacy-trace-tag/rust/expect.yaml:10 |
+
+### Round 2 dispositions
+
+No finding was open going into this round (FND-001 and FND-002 were fixed in round 1), so there are no disposition rows. `corpus_cases` passes 19/19 and `corpus_recall` passes 2/2 against quire-rs 74460ae with the corpus pinned at cf10e6b.

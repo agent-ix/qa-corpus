@@ -9,3 +9,4 @@ diagnostic_message_contains:
   - "FR-001-AC-2..FR-002-AC-1"
 absent_diagnostic_reasons:
 - untracked-id-near-miss
+- tag-on-non-binding-symbol
