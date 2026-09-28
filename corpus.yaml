@@ -300,6 +300,12 @@ diagnostic_reasons:
   - untracked-id-has-minted-children
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
+  # agent-ix/quire-rs PLAT-1077 (CR-187), landed: a range — two id-shaped
+  # tokens joined by a bare `..` — written inside any source trace tag,
+  # marker or legacy alike, binds no id at all, including its own endpoints.
+  # Reported once per occurrence rather than silently dropped or (the prior
+  # behavior) partially bound.
+  - range-in-trace-tag
   # Tokens no engine emits YET, each naming the ticket that will add it. A
   # forward `expect-pending.yaml` may name only these, and only when the case's
   # own `pending:` is the SAME ticket — so a fixture cannot sit pending on one
