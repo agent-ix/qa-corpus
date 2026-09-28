@@ -1,0 +1,15 @@
+id: range-differing-prefix-in-trace-tag-control
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: false
+kind: control
+tags:
+- TC-1936
+- TC-1937
+- coverage
+- binding
+comment: The same tree with each id tagged separately instead of joined by `..`.
+  Both bind, so there is no range to report.
+control_for:
+- range-differing-prefix-in-trace-tag

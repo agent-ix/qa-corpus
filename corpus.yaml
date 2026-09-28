@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=195> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=210> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -410,7 +410,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=88>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=97>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -428,8 +428,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=87> `kind: failure`
-# fixtures, all <derived:controlled_failures=87> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=96> `kind: failure`
+# fixtures, all <derived:controlled_failures=96> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -971,6 +971,27 @@ inventory:
 - mode: attachment
   case: range-in-trace-tag
   source: agent-ix/quire-rs#494 (CR-187, PLAT-1077) — a range binds no id at all, including its own endpoints
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: attachment
+  case: range-short-suffix-in-trace-tag
+  source: agent-ix/quire-rs#494 (CR-187) — a short-suffix range (`A..2`) binds no id at all
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: attachment
+  case: range-differing-prefix-in-trace-tag
+  source: agent-ix/quire-rs#494 (CR-187) — a range across two requirements' ids binds no id at all
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: attachment
+  case: range-in-legacy-trace-tag
+  source: agent-ix/quire-rs#494 (CR-187) — a legacy `Trace:` range no longer binds its left endpoint
   languages:
   - python
   - rust

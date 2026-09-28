@@ -1,0 +1,21 @@
+id: range-differing-prefix-in-trace-tag
+case: range-differing-prefix-in-trace-tag
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: true
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags:
+- TC-1936
+- TC-1937
+- coverage
+- binding
+comment: A real test carries a range whose endpoints name two different requirements
+  (`FR-001-AC-2..FR-002-AC-1`). It binds no id at all, including either endpoint (CR-187), and is
+  reported once in every supported language; its paired control tags each id separately instead.

@@ -40,6 +40,34 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/attachment/range-differing-prefix-in-trace-tag/python/input/spec/FR-001.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/rust/input/spec/FR-001.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/python/input/spec/FR-001.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/rust/input/spec/FR-001.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag/python/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag/rust/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/python/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/rust/input/spec/FR-001.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag/python/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag/rust/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag-control/python/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag-control/rust/input/spec/FR-001.md",
+        "cases/attachment/range-in-trace-tag-control/typescript/input/spec/FR-001.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/python/input/spec/FR-001.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/rust/input/spec/FR-001.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "03095c6c7e1515a5917a8a250c1b6474036801438e6f1f5cda760d8937f78834"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/parser/unittest-testcase/expect.yaml",
         "cases/parser/unittest-testcase-control/expect.yaml"
       ],
@@ -184,6 +212,15 @@
         "cases/detection/undeclared-coverage-vocabulary-control/input/spec/NFR-001.md"
       ],
       "sha256": "2c4ae53259b9c24e0c28f65711eb4db130b0f96f085b0b9be5c4aa28b7876911"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/rust/expect.yaml",
+        "cases/attachment/range-in-trace-tag/rust/expect.yaml"
+      ],
+      "sha256": "2f3e0f69233c22056cd006bce685a5eb3ce00b7b769cd9a7292c5593528257bd"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -341,6 +378,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/python/expect.yaml",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/rust/expect.yaml",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/typescript/expect.yaml"
+      ],
+      "sha256": "4e2ed9346ab228b5ba96fea51fa35160e9af710fcbf595e181c51508bc0683f7"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/attachment/marker-form-declared/rust/input/src/lib.rs",
         "cases/attachment/marker-form-mismatch-control/input/src/lib.rs",
         "cases/detection/catch-all-headline/rust/input/src/lib.rs",
@@ -383,6 +430,15 @@
         "cases/minting/wrong-type-cell-control/rust/input/src/lib.rs"
       ],
       "sha256": "5816354fa0daedd30b6cfb22210e391fd691b17fcc4db509bf1c34342729cdd7"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/python/expect.yaml",
+        "cases/attachment/range-in-trace-tag/python/expect.yaml"
+      ],
+      "sha256": "59b393136fa1539f322c91d5ba534c099e79e137cfdc004e4d7c7881745f1de0"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -482,6 +538,19 @@
         "cases/skeptic/gate-that-gates-nothing/typescript/expect.yaml"
       ],
       "sha256": "635a51bf77da88614c3eabbdd9db9271c8f49dc9a3efe7e96a0bb50efbbdd44a"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-differing-prefix-in-trace-tag/python/input/spec/FR-002.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/rust/input/spec/FR-002.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/typescript/input/spec/FR-002.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/python/input/spec/FR-002.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/rust/input/spec/FR-002.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/typescript/input/spec/FR-002.md"
+      ],
+      "sha256": "651647590e26dc733477d0d8b220d757006ff7deb467b48a0ca9b3f22e07217e"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -657,6 +726,19 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/attachment/range-differing-prefix-in-trace-tag/python/input/spec/tests.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/rust/input/spec/tests.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag/typescript/input/spec/tests.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/python/input/spec/tests.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/rust/input/spec/tests.md",
+        "cases/attachment/range-differing-prefix-in-trace-tag-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "99400cd44e59e802a3d1583b77561555c76015d7cfcb1122b27d6d2e94022038"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/minting/declared-heading-and-column-control/python/input/spec/tests.md",
         "cases/minting/declared-heading-and-column-control/rust/input/spec/tests.md",
         "cases/minting/declared-heading-and-column-control/typescript/input/spec/tests.md"
@@ -671,6 +753,29 @@
         "cases/skeptic/gate-that-gates-nothing-control/rust/input/Makefile"
       ],
       "sha256": "a2d92521781fb9abc5df346682a40ea257cd4dfbd1820873e6e4ff02e4127b6e"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/python/input/spec/tests.md",
+        "cases/attachment/range-in-legacy-trace-tag/rust/input/spec/tests.md",
+        "cases/attachment/range-in-legacy-trace-tag/typescript/input/spec/tests.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/python/input/spec/tests.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/rust/input/spec/tests.md",
+        "cases/attachment/range-in-legacy-trace-tag-control/typescript/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag/python/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag/rust/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag/typescript/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag-control/python/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag-control/rust/input/spec/tests.md",
+        "cases/attachment/range-in-trace-tag-control/typescript/input/spec/tests.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/python/input/spec/tests.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/rust/input/spec/tests.md",
+        "cases/attachment/range-short-suffix-in-trace-tag/typescript/input/spec/tests.md",
+        "cases/detection/catch-all-properties/input/spec/tests.md"
+      ],
+      "sha256": "a450f877ae4c4a3cede67021e5d50cbe98c2d4c44ac4e6765acd1d73b6a53231"
     },
     {
       "classification": "intentional-self-contained-fixture",
@@ -887,6 +992,28 @@
         "cases/minting/section-holds-no-table/typescript/input/spec/tests.md"
       ],
       "sha256": "e6a63056aee06822a3c085156be5b94a689d7d11d49cb7c8e09ce47067da8108"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag-control/python/expect.yaml",
+        "cases/attachment/range-in-legacy-trace-tag-control/rust/expect.yaml",
+        "cases/attachment/range-in-legacy-trace-tag-control/typescript/expect.yaml",
+        "cases/attachment/range-in-trace-tag-control/python/expect.yaml",
+        "cases/attachment/range-in-trace-tag-control/rust/expect.yaml",
+        "cases/attachment/range-in-trace-tag-control/typescript/expect.yaml"
+      ],
+      "sha256": "eb87626adbcb262b6c7e47a0f0c46cf3a74cc43d0164dcf14d0cac0805f627bd"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/attachment/range-in-legacy-trace-tag/typescript/expect.yaml",
+        "cases/attachment/range-in-trace-tag/typescript/expect.yaml"
+      ],
+      "sha256": "ec15d59cb5ec43ebe2c9a01f755e4022206675b232e9c383fe2079a3cd46621b"
     },
     {
       "classification": "intentional-self-contained-fixture",

@@ -14,3 +14,4 @@ comment: The same tree with each id tagged separately instead of joined by `..`.
   trace tag — a check that cannot stay silent on healthy input is not a check, it is a constant.
 control_for:
 - range-in-trace-tag
+- range-short-suffix-in-trace-tag

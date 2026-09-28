@@ -1,0 +1,11 @@
+backed: 0
+total: 6
+diagnostic_reasons:
+- range-in-trace-tag
+diagnostic_paths:
+  range-in-trace-tag: src/lib.py
+diagnostic_message_contains:
+  range-in-trace-tag:
+  - "FR-001-AC-2..FR-002-AC-1"
+absent_diagnostic_reasons:
+- untracked-id-near-miss

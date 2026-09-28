@@ -1,0 +1,14 @@
+id: range-in-legacy-trace-tag-control
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: false
+kind: control
+tags:
+- TC-1937
+- coverage
+- binding
+comment: The same legacy `Trace:` line naming both ids as a comma list. Both bind,
+  so there is no range to report.
+control_for:
+- range-in-legacy-trace-tag
