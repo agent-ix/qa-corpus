@@ -86,7 +86,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=189> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=195> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -254,6 +254,12 @@ diagnostic_reasons:
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
+  # agent-ix/quire-rs PLAT-1077 (CR-187), landed: a range — two id-shaped
+  # tokens joined by a bare `..` — written inside any source trace tag,
+  # marker or legacy alike, binds no id at all, including its own endpoints.
+  # Reported once per occurrence rather than silently dropped or (the prior
+  # behavior) partially bound.
+  - range-in-trace-tag
   # agent-ix/quire-rs#320: every declared section the document HAS holds no
   # table, so it mints nothing and neither sibling diagnostic can fire — the
   # section WAS found, and there is no table to read an id column from. Landed
@@ -300,12 +306,6 @@ diagnostic_reasons:
   - untracked-id-has-minted-children
   - uncatalogued-verification-method
   - undeclared-coverage-vocabulary
-  # agent-ix/quire-rs PLAT-1077 (CR-187), landed: a range — two id-shaped
-  # tokens joined by a bare `..` — written inside any source trace tag,
-  # marker or legacy alike, binds no id at all, including its own endpoints.
-  # Reported once per occurrence rather than silently dropped or (the prior
-  # behavior) partially bound.
-  - range-in-trace-tag
   # Tokens no engine emits YET, each naming the ticket that will add it. A
   # forward `expect-pending.yaml` may name only these, and only when the case's
   # own `pending:` is the SAME ticket — so a fixture cannot sit pending on one
@@ -410,7 +410,7 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=85>**. The pair count
+# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=88>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -428,8 +428,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=84> `kind: failure`
-# fixtures, all <derived:controlled_failures=84> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=87> `kind: failure`
+# fixtures, all <derived:controlled_failures=87> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -964,6 +964,13 @@ inventory:
 - mode: attachment
   case: marker-form-mismatch
   source: agent-ix/spec-artifacts-process#59
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: attachment
+  case: range-in-trace-tag
+  source: agent-ix/quire-rs#494 (CR-187, PLAT-1077) — a range binds no id at all, including its own endpoints
   languages:
   - python
   - rust

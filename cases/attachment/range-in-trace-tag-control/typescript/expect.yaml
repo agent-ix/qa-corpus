@@ -1,0 +1,4 @@
+backed: 2
+total: 2
+absent_diagnostic_reasons:
+- range-in-trace-tag
