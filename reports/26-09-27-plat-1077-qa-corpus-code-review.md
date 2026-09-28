@@ -57,6 +57,7 @@ Reviewed at `agent-ix/qa-corpus@cbe1c5a579fadee8ac6b1a1599b2933b7b23fab8`.
 | --- | --- | --- |
 | FND-001 | fixed 46379f3 | `config/duplicate-census.json` records the new copy groups, and `make duplicate-census` now exits 0. Also exit 0 at cbe1c5a: `schema-selftest` (22/22), `external-channel`, `bounds`, `measurement-selftest` and `verify-reporting`. |
 | FND-002 | fixed 46379f3 | Banks `range-in-legacy-trace-tag` (whose control, a legacy list, has `backed: 2`; the failure case has `backed: 0`, where the old engine gave 1), plus `range-differing-prefix-in-trace-tag` and `range-short-suffix-in-trace-tag`, in all three languages. |
+| FND-003 | fixed 876a170 | `tag-on-non-binding-symbol` was added to `absent_diagnostic_reasons` for the legacy, marker, short-suffix and differing-prefix range cases in all 3 languages. Against quire-rs 165a1d3 every case holds (see the SR-120 probe), and removing the engine's R1 filter would now turn the corpus red too. |
 
 `make verify` and `parity-selftest` need a quire CLI that contains this engine change (PLAT-1078), so they were not run. The new cases are instead exercised against this branch's engine through quire-rs at 1249085 (corpus pinned to cbe1c5a): `corpus_cases` passed 19/19, including `corpus_cases_hold` over every case and `tc1028_a_failure_case_discriminates_from_its_control`, and `corpus_recall` passed 2/2.
 
@@ -71,3 +72,5 @@ Reviewed at `agent-ix/qa-corpus@cf10e6bb84bef072069dd3428b36dbf245f7c86c`. The o
 ### Round 2 dispositions
 
 No finding was open going into this round (FND-001 and FND-002 were fixed in round 1), so there are no disposition rows. `corpus_cases` passes 19/19 and `corpus_recall` passes 2/2 against quire-rs 74460ae with the corpus pinned at cf10e6b.
+
+Round 3 at `agent-ix/qa-corpus@876a170a97bf27ce56b50a183c748d23bfb6828a`: the census re-group only re-hashes the same three expect.yaml pairs (rust, python, typescript) after the content change, so no pair was added or dropped. `make` schema-selftest, duplicate-census, external-channel, bounds, measurement-selftest and verify-reporting all exit 0. No open findings.
