@@ -1,0 +1,20 @@
+id: range-in-legacy-trace-tag
+case: range-in-legacy-trace-tag
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: true
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags:
+- TC-1937
+- coverage
+- binding
+comment: A real test carries a range in a legacy `Trace:` comment line. The prior engine
+  bound its left endpoint alone; the range now binds no id at all and is reported once (CR-187), which is
+  the shape whose counts change. Its paired control writes the same ids as a legacy comma list.

@@ -1,0 +1,21 @@
+id: range-in-trace-tag
+case: range-in-trace-tag
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: true
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags:
+- TC-1936
+- TC-1937
+- coverage
+- binding
+comment: A real test carries a range — two id-shaped tokens joined by a bare `..` — inside its trace tag.
+  The range binds no id at all, including its own endpoints (CR-187, PLAT-1077), and is reported once
+  per occurrence in every supported language; its paired control tags each id separately instead.
