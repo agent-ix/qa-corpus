@@ -3,7 +3,7 @@
 The controlled corpus for the `quire` / `quoin` toolchain. **Static files, read in
 place, language-neutral.** Contract: [`agent-ix/quire-rs` FR-065](https://github.com/agent-ix/quire-rs/blob/main/spec/functional/FR-065-controlled-corpus-contract.md).
 
-Case-before-fix, language, control, and Tier-2 pin policy lives in
+Case-before-fix, language, and control policy lives in
 [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Why this repository exists
