@@ -20,7 +20,7 @@ engine computed this and found none* and *the engine never asked*. The engine
 reaches `not_computed` only when the loaded module declares no `implements`
 forms.
 
-**[RAN]** the same input tree twice, engine `bcda5ed` / `quire` 0.30.2:
+**[RAN]** the same input tree twice, at authoring:
 
 | module | `coverage.implements` |
 |---|---|

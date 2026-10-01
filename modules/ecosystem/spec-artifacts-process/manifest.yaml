@@ -370,7 +370,7 @@ artifact_types:
               # trace to — withdrawing it is precisely the act of severing that
               # edge — and the pattern admitted nothing valid to write.
               #
-              # [RAN] `agent-ix/filament-ide-rs` @ fc5d644: 16 rows across 8
+              # [RAN] `agent-ix/filament-ide-rs`: 16 rows across 8
               # module matrices carry `Traces To: -`, and **16 of 16 are
               # retired** (`⛔`). Zero are live rows with a missing trace. The
               # corpus wrote the conventional "not applicable" and the pattern
@@ -1255,7 +1255,7 @@ traceability:
     # 29148-aligned corpus also authors verification by inspection, by analysis
     # and by demonstration, and had no declared value for any of them.
     #
-    # [RAN] `agent-ix/filament-ide-rs` @ fc5d644: of 496 `[assert]` findings,
+    # [RAN] `agent-ix/filament-ide-rs`: of 496 `[assert]` findings,
     # 453 were rejected `Type` cells, and 128 of those were a means the
     # vocabulary had no word for — `Inspection` 112, `Analysis` 11,
     # `Demonstration` 5. Rows read rather than assumed: TC-085 "Inspect Core for

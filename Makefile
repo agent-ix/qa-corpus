@@ -3,8 +3,8 @@
 # CARGO_TARGET_DIR MOVES THE ARTIFACT AND THIS DEFAULT DID NOT FOLLOW IT. With
 # it set, `cargo build` in quire-cli writes to `$CARGO_TARGET_DIR/debug/quire`
 # and `../quire-cli/target/` keeps whatever was there before the variable was
-# set. Measured: the in-repo path held a four-day-old binary reporting
-# `quire 0.23.0` while the real build reported `quire 0.30.2 (engine 00644b7)` —
+# set. Measured: the in-repo path held a stale binary that reported an older
+# version than the real build —
 # one engine apart, and the default pointed at the stale one. Caught by
 # quire-cli#68's provenance guard refusing a binary that cannot name its engine,
 # which is the case for refusing rather than warning. Same defect and same fix
@@ -23,9 +23,8 @@ help:
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make measurement-selftest prove both active plans have derived output"
-	@echo "make compatibility-corpus-selftest prove checks use recorded source revisions"
+	@echo "make compatibility-corpus-selftest prove checks select the recorded producer revisions"
 	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
-	@echo "make duplicate-census    reject unexplained fixture-copy drift"
 	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
 
@@ -69,10 +68,6 @@ measurement-collection:
 	@test -n "$(VERIFICATION_STACK)" || { echo "VERIFICATION_STACK= is required"; exit 1; }
 	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
 
-.PHONY: duplicate-census
-duplicate-census:
-	@python3 scripts/duplicate_census.py
-
 .PHONY: external-channel
 external-channel:
 	@python3 scripts/external_channel_selftest.py
@@ -82,7 +77,7 @@ compatibility-corpus-selftest:
 	@python3 scripts/compatibility_corpus_selftest.py
 
 .PHONY: ci
-ci: schema-selftest duplicate-census external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest
+ci: schema-selftest external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

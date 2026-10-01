@@ -58,15 +58,11 @@ def main() -> int:
         BUILDER.CODE_RS = code_rs
         BUILDER.QUOIN = quoin
         committed = {
-            "cases": [
-                {
-                    "origin": {
-                        "repository": "agent-ix/quire-contract-ir",
-                        "revision": recorded,
-                    }
-                }
-            ],
             "producer_cases": [
+                {
+                    "producer": "agent-ix/quire-contract-ir",
+                    "revision": recorded,
+                },
                 {
                     "producer": "agent-ix/quire-code-rs",
                     "revision": recorded,

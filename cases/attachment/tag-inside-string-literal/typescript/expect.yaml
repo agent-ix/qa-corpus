@@ -2,7 +2,7 @@
 # a test's own span, so it must NOT bind — the test asserts about the text, it
 # does not verify the row.
 #
-# Measured pre-fix at engine `d55c987`: `backed 2/3`, `unbacked_rows: []`. The
+# Measured pre-fix: `backed 2/3`, `unbacked_rows: []`. The
 # id bound from the string and the row read as verified.
 backed: 1
 total: 3

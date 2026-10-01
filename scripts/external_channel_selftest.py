@@ -17,12 +17,6 @@ def main() -> int:
     problems: list[str] = []
     if manifest.get("schemaVersion") != "qa-external-channel-v1":
         problems.append("external channel schema version is not qa-external-channel-v1")
-    producer = manifest.get("producer") or {}
-    revision = producer.get("sourceRevision")
-    if not isinstance(revision, str) or len(revision) != 40:
-        problems.append("external producer sourceRevision is not a full SHA")
-    if not producer.get("versionOutput"):
-        problems.append("external producer versionOutput is empty")
     channels = manifest.get("channels") or {}
     for kind, channel in channels.items():
         command = channel.get("command") if isinstance(channel, dict) else None

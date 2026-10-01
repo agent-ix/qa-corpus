@@ -30,7 +30,6 @@ make bounds                     # derive the matrix; reject every applicable GAP
 make measurement-collection OUTPUT=/tmp/qa-corpus.json \
   VERIFICATION_STACK=/path/to/attestation.json
                                 # derive the two plan-owned collection families
-make duplicate-census           # reject unexplained copied-fixture divergence/groups
 make external-channel           # validate exact non-Quire producer/invocations
 ```
 
@@ -87,7 +86,7 @@ scripts/
   schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
   parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
 modules/
-  ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
+  ecosystem/         THE REAL declaration, vendored
   variants/<id>/     relaxation variants — each names the ticket it sizes
 cases/<mode>/<case>/                       ONE language
   case.yaml          the fields `corpus.yaml`'s `case_schema` declares. Read it
@@ -118,21 +117,13 @@ config/              the metric dictionary
 baselines/           per-runner baselines, versioned with the corpus
 ```
 
-`config/duplicate-census.json` classifies every byte-identical fixture group.
-Cases stay self-contained, so intentional support files are copied rather than
-symlinked; their invariant is that copies move together unless the seeded defect
-requires divergence. When a reviewed fixture change intentionally alters group
-membership, run `python3 scripts/duplicate_census.py --update`, inspect the exact
-paths/digests, and commit the fixture and census in one change. A new group, a
-disappeared group, or unexplained membership change fails CI.
-
 ## The bounds matrix is the point
 
 A case list answers *what did we try*. The matrix answers **what did we never try**,
 and only the second is a statement about the tool. Every declared cell is `covered`,
 `out-of-scope` with a written reason, or `GAP`.
 
-**A scenario with no case is undefined behaviour, not assumed-working.** `v0.44.0`
+**A scenario with no case is undefined behaviour, not assumed-working.** A release
 shipped two `high` defects straight through the empty Python and TypeScript columns.
 
 `bounds.gap_count` is a **count, never a ratio**. A ratio falls as easy cases are
@@ -151,8 +142,7 @@ or measurement store in this QA program.
 New collections are schema v2 and fail closed unless the caller supplies a
 `verification-stack-attestation-v1` whose clean `qa-corpus` source matches this
 checkout exactly. The exporter records that full source SHA as `toolVersion`,
-so scorer movement cannot hide behind a constant label. Retained schema-v1
-collections are historical evidence and are never regenerated.
+so scorer movement cannot hide behind a constant label.
 
 ### Today: run `make bounds`
 
@@ -240,7 +230,7 @@ witness for `minting` and for **nothing else** — a minted-row count *is* the m
 channel, and everywhere else it is an incidental global scalar. Measured over the whole
 controlled population, 15 of the <derived:pairs=80> (case, control) pairs differ in `total`
 while being about something else entirely, which is what this closes. The pair count is
-gated against the tree; the 15 is a measurement at engine `5a68ceb` and is not.
+gated against the tree; the 15 is a measurement and is not.
 
 Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
 A block that names none of them is rejected by name; so is one that separates the pair

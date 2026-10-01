@@ -113,14 +113,6 @@ def recorded_source_refs(committed: dict[str, Any]) -> dict[Path, str]:
         "agent-ix/quoin": QUOIN,
     }
     revisions: dict[str, set[str]] = {name: set() for name in repositories}
-    for case in committed.get("cases", []):
-        origin = case.get("origin")
-        if not isinstance(origin, dict):
-            continue
-        repository = origin.get("repository")
-        source_revision = origin.get("revision")
-        if repository in revisions and isinstance(source_revision, str):
-            revisions[repository].add(source_revision)
     for case in committed.get("producer_cases", []):
         producer = case.get("producer")
         source_revision = case.get("revision")
@@ -201,7 +193,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
                 "retained_path": f"records/{case_id}.json",
                 "origin": {
                     "repository": "agent-ix/quire-contract-ir",
-                    "revision": contract_ir_revision,
                     "path": f"evidence/{record_id}/manifest.json",
                     "recorded_sha256": recorded_digest(record_id, contract_ir_ref),
                 },
@@ -246,7 +237,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
                 "retained_path": f"records/{case_id}.json",
                 "origin": {
                     "repository": "agent-ix/quire-contract-ir",
-                    "revision": contract_ir_revision,
                     "path": "evidence/pgm-01-02568b1/manifest.json",
                     "recorded_sha256": recorded_digest(
                         "pgm-01-02568b1", contract_ir_ref
@@ -345,7 +335,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "retained_path": "records/derived-tampered.json",
             "origin": {
                 "repository": "agent-ix/quire-contract-ir",
-                "revision": contract_ir_revision,
                 "path": "evidence/pgm-01-02568b1/manifest.json",
                 "recorded_sha256": recorded_digest(
                     "pgm-01-02568b1", contract_ir_ref
@@ -417,7 +406,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "retained_path": "records/derived-stale.json",
             "origin": {
                 "repository": "agent-ix/qa-corpus",
-                "revision": None,
                 "path": "compatibility/sources/pgm01-v2.json",
                 "recorded_sha256": digest(read(stale_source)),
             },
@@ -452,7 +440,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "retained_path": "chain/receipt.json",
             "origin": {
                 "repository": "agent-ix/quoin",
-                "revision": quoin_revision,
                 "path": "produced by quoin change-assurance receipt",
                 "recorded_sha256": None,
             },
@@ -531,17 +518,14 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
         producer_cases.append(record)
 
     # The chain artifacts are retained evidence, not something rebuilt on every
-    # check: they were produced once by the exact tools named below, and the
-    # committed bytes are what a reviewer verifies. Re-running the chain here
+    # check: they were produced once, and the committed bytes are what a
+    # reviewer verifies. Re-running the chain here
     # would replace the evidence with a fresh claim about it.
     chain_files = [
-        ("quire-provenance.json", "quire_provenance", "quire provenance"),
         ("record-sealed.json", "change_assurance_record",
          "quoin change-assurance seal-record"),
         ("attestation-sealed.json", "proof_attestation",
          "quoin change-assurance seal-attestation"),
-        ("decisions.json", "human_decision", "retained ix-flow decision history"),
-        ("audits.json", "audit_report", "retained FR-032 audit report"),
         ("receipt.json", "verification_receipt", "quoin change-assurance receipt"),
         ("quoin-verification-receipt-v1.schema.json", "receipt_schema",
          "packaged Quoin schema asset, copied byte-for-byte"),
@@ -556,24 +540,7 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "repository": "agent-ix/quire-contract-ir",
             "revision": contract_ir_revision,
         },
-        "tools": {
-            "quire": {
-                "version": "0.31.0",
-                "cli_source_revision": "4f6ed024cf27298b2dc49c7051941571197fddff",
-                "engine_version": "0.46.0",
-                "engine_source_revision": "ca7362d4dacecb96f01d74d1d971327118c25917",
-            },
-            "quoin": {
-                "version": "0.23.1",
-                "release": "npm @agent-ix/quoin@0.23.1",
-                "source_revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
-                "note": "The released artifact, installed from the registry and "
-                "run as `quoin`. The chain reproduced byte-identically from the "
-                "source build that preceded it — same record, attestation, "
-                "export, and receipt digests — so the release changed the "
-                "provenance of this evidence and not the evidence.",
-            },
-        },
+        "tools": {},
         "artifacts": [],
     }
     for name, role, command in chain_files:

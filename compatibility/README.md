@@ -26,9 +26,8 @@ it from here.
 
 ## What is real and what is not
 
-Three records are real, byte-for-byte, read through `git show origin/main:<path>`
-at a recorded revision and matched against the digests `quire-contract-ir`
-recorded for them.
+Three records are real, byte-for-byte, read from `quire-contract-ir` and matched
+against the digests it recorded for them.
 
 The rest are **derived**, because the history does not contain them. All ten
 retained PGM-01 records in that repository are v1 and carry only `pass`,
@@ -47,8 +46,8 @@ expected outcome.
 ASSURANCE_SOURCE_ROOT=/path/to/checkouts python3 scripts/build_compatibility_corpus.py --check
 ```
 
-`--check` verifies that the committed corpus still reproduces from its recorded
-sources and writes nothing. Without it, the corpus is rewritten — which is how a
+`--check` verifies that the committed corpus still reproduces from its sources
+and writes nothing. Without it, the corpus is rewritten — which is how a
 maintainer refreshes it after a source repository advances.
 
 ## Not a bounds case

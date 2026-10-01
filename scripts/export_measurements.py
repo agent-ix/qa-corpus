@@ -377,9 +377,6 @@ def build_collection(
     config_digest = digest_bytes(
         [(root / relative).read_bytes() for relative in CONFIG_FILES]
     )
-    corpus_revisions = sorted(
-        str(value.get("corpus_revision", "")) for value in values.values()
-    )
     source_revision = source_revision or git_revision(root)
     return {
         "schemaVersion": 2,
@@ -395,9 +392,6 @@ def build_collection(
         "configDigest": config_digest,
         "timestamp": timestamp,
         "sourceRevision": source_revision,
-        "corpusRevision": digest_bytes(
-            [revision.encode("utf-8") for revision in corpus_revisions]
-        )[7:],
         "environment": {
             "boundsProducer": "bounds.py --json --require-complete",
             "recallProducers": ",".join(RUNNERS),

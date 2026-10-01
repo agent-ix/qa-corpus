@@ -54,9 +54,8 @@ new metadata as one canonical inventory contract consumed by both readers.
 
 ## Evidence Expectations
 
-Retain corpus revision, module-source digests, engine identity, complete case
-inventory, derived gap and pending counts, differential failures, label changes,
-and exact mutation/self-test output.
+Retain the complete case inventory, derived gap and pending counts,
+differential failures, label changes, and exact mutation/self-test output.
 
 ## Tool Reliance and Independence
 

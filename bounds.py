@@ -494,7 +494,7 @@ def controls_by_case(cases: list[dict]) -> dict:
     `known_gaps.uncontrolled_failure_cases`, the control belonging to
     `marker-form-mismatch`, so it never reached the declared-gap branch and was
     counted as controlled. That is where FR-065's "35 controlled failure cases
-    at `3ff72c0`" came from; `bounds.py` counted 34 at the same revision.
+    at the time" came from; `bounds.py` counted 34 then.
     """
     partners = failure_partners(cases)
     pairs: dict = {}

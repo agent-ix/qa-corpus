@@ -354,7 +354,7 @@ diagnostic_reasons:
 # what the engine should produce once the ticket lands. That needs an engine,
 # so it lives in the graders rather than here.
 #
-# `agent-ix/quire-rs#272` LANDED (CR-118, engine v0.33.0) and is gone from this
+# `agent-ix/quire-rs#272` LANDED (CR-118) and is gone from this
 # list. Its case, `rows-across-many-headings`, folded its forward block into
 # `expect.yaml` re-measured, and the prediction held exactly: `total` 2 -> 4,
 # `backed` 1 -> 3, `untracked_symbols` emptied.
@@ -401,11 +401,11 @@ behaviour_change_tickets:
 # stops there: it proves an assertion distinguishes THESE TWO PAYLOADS, not that
 # the assertion concerns the SEEDED DEFECT. Measured by running every case and
 # every control and comparing `totals.total`, over the whole controlled
-# population at `801afd5`: **14 of the 35 (case, control) pairs differed in
+# population: **14 of the 35 (case, control) pairs differed in
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=80>**. The pair count
+# RE-MEASURED: **15 of <derived:pairs=80>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `bounds.py` deliberately
 # does not do. `verify.py` is where that number can be re-derived. It is dated
@@ -530,7 +530,7 @@ witness_channels:
 #     declared cells   50 -> 88     covered 46     out-of-scope 1 -> 11     GAP 4 -> 31
 #
 # (88 rather than 85 because `section-holds-no-table` joined the inventory in
-# the same pass — a Wave 3 token, landed in `204dca4`, published, and asserted
+# the same pass — a Wave 3 token, landed, published, and asserted
 # by no fixture in either direction until then.)
 #
 # EVERY EXCLUSION IS GROUNDED IN CODE OR IN THE DECLARATION, not in judgement
@@ -638,7 +638,7 @@ inventory:
 - mode: detection
   # CENSUSED, and the premise this row was filed under is STALE. `rust-test-name-id`
   # binds the underscore spelling today — CR-034 landed as spec-artifacts-process
-  # cf7b4e2 and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
+  # and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
   # sites, 3,952 bind. The 8 misses are 4 names duplicated into a worktree, all the
   # `tc_811b_` "b-variant" shape, all supplementary tests for a criterion whose
   # canonical row is already backed. Zero unbacked ecosystem rows are attributable
@@ -648,7 +648,7 @@ inventory:
   # asserts that the id BINDS, with the pre-CR-034 relaxation variant as the
   # control. A fixture written to the original premise would have landed green.
   case: test-name-id-in-fn-name
-  source: CR-034 (LANDED, cf7b4e2) — regression pin, 3952/3960 sites bind
+  source: CR-034 (LANDED) — regression pin, 3952/3960 sites bind
   languages:
   - python
   - rust
@@ -662,7 +662,7 @@ inventory:
       sibling row `detection/test-name-id-in-call-title`.
 - mode: detection
   case: self-name-form-mismatch
-  source: agent-ix/filament-ide-rs@fc5d644b — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
+  source: agent-ix/filament-ide-rs — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
   languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
@@ -810,9 +810,8 @@ inventory:
   case: typescript-regex-brace
   source: >-
     agent-ix/quire-rs#403; live locus
-    agent-ix/filament-core-data@3b75e01c652ba00bb07c352ff5467419401e792b
-    test/compiler.test.ts:1291 (blob SHA-256
-    54c96129e59dab60b37f8ee3107ecd703aa8cf0f864279ff8f49b5be6402074a).
+    agent-ix/filament-core-data
+    test/compiler.test.ts:1291.
     The issue also records the independent [^}] trigger from quire-rs#404.
   languages:
   - python
@@ -836,7 +835,7 @@ inventory:
   # cell, nor any row's own id (quire-rs `coverage.rs:1247-1254`) — not
   # deduplicated by id. Population: the 241 repositories
   # `quire-rs/scripts/corpus.py` enumerates under ~/dev. Instrument: one `quire`
-  # binary built from `quire-cli` at its pinned rev, engine `e06f121`, release
+  # binary built from `quire-cli`, release
   # profile, `quire coverage --scope <repo> --json` per repository.
   #
   #   CON  155 entries / 28 repos  -> DECIDED to mint, by spec-artifacts-process
@@ -962,7 +961,7 @@ inventory:
   languages: [n/a]
 - mode: provenance
   case: engine-lacks-capability
-  source: the 0.29.0 failure — census must abort
+  source: the stale-engine failure — census must abort
   languages:
   - n/a
   out_of_scope:
@@ -1054,7 +1053,7 @@ inventory:
   - typescript
 - mode: skeptic
   case: oracle-helper-copy
-  source: agent-ix/filament-ide-rs@59a180a7 TC-1598 — a copied helper oracle with no expected binding
+  source: agent-ix/filament-ide-rs TC-1598 — a copied helper oracle with no expected binding
   languages:
   - python
   - rust
