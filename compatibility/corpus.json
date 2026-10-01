@@ -15,7 +15,6 @@
       "retained_path": "records/legacy-v1-passing.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -32,7 +31,6 @@
       "retained_path": "records/legacy-v1-inconclusive.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-e8dc1e9/manifest.json",
         "recorded_sha256": "f1f06936648a3a768ab3f6e214c015717f8e32384ff370aa16d73db043b78727"
       },
@@ -49,7 +47,6 @@
       "retained_path": "records/legacy-v1-skipped.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-097f24a/manifest.json",
         "recorded_sha256": "7d2c057aa39ed76caed96413ef3acb13ad66d16512cfae576d1acc43b5d37c05"
       },
@@ -66,7 +63,6 @@
       "retained_path": "records/derived-failed.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -93,7 +89,6 @@
       "retained_path": "records/derived-unavailable.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -120,7 +115,6 @@
       "retained_path": "records/derived-not-computed.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -142,7 +136,6 @@
       "retained_path": "records/derived-malformed.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -163,7 +156,6 @@
       "retained_path": "records/derived-tampered.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -202,7 +194,6 @@
       "retained_path": "records/derived-incompatible-version.json",
       "origin": {
         "repository": "agent-ix/quire-contract-ir",
-        "revision": "8e0953ecd849c223768fc632972f2c49fa149d54",
         "path": "evidence/pgm-01-02568b1/manifest.json",
         "recorded_sha256": "9d80da2cc897059ccdc64904bcdc7b0683f27ae667e03941800c3587112dc93d"
       },
@@ -223,7 +214,6 @@
       "retained_path": "records/derived-stale.json",
       "origin": {
         "repository": "agent-ix/qa-corpus",
-        "revision": null,
         "path": "compatibility/sources/pgm01-v2.json",
         "recorded_sha256": "947baf2f16a11809ca488935cb8b89fb75015eae2204293eac049b5789bd17bc"
       },
@@ -250,7 +240,6 @@
       "retained_path": "chain/receipt.json",
       "origin": {
         "repository": "agent-ix/quoin",
-        "revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
         "path": "produced by quoin change-assurance receipt",
         "recorded_sha256": null
       },
@@ -314,26 +303,8 @@
       "repository": "agent-ix/quire-contract-ir",
       "revision": "8e0953ecd849c223768fc632972f2c49fa149d54"
     },
-    "tools": {
-      "quire": {
-        "version": "0.31.0",
-        "cli_source_revision": "4f6ed024cf27298b2dc49c7051941571197fddff",
-        "engine_version": "0.46.0",
-        "engine_source_revision": "ca7362d4dacecb96f01d74d1d971327118c25917"
-      },
-      "quoin": {
-        "version": "0.23.1",
-        "release": "npm @agent-ix/quoin@0.23.1",
-        "source_revision": "9fb3aa258575d234274dcc7e639c17d7621e1db0",
-        "note": "The released artifact, installed from the registry and run as `quoin`. The chain reproduced byte-identically from the source build that preceded it \u2014 same record, attestation, export, and receipt digests \u2014 so the release changed the provenance of this evidence and not the evidence."
-      }
-    },
+    "tools": {},
     "artifacts": [
-      {
-        "role": "quire_provenance",
-        "produced_by": "quire provenance",
-        "retained_path": "chain/quire-provenance.json"
-      },
       {
         "role": "change_assurance_record",
         "produced_by": "quoin change-assurance seal-record",
@@ -343,16 +314,6 @@
         "role": "proof_attestation",
         "produced_by": "quoin change-assurance seal-attestation",
         "retained_path": "chain/attestation-sealed.json"
-      },
-      {
-        "role": "human_decision",
-        "produced_by": "retained ix-flow decision history",
-        "retained_path": "chain/decisions.json"
-      },
-      {
-        "role": "audit_report",
-        "produced_by": "retained FR-032 audit report",
-        "retained_path": "chain/audits.json"
       },
       {
         "role": "verification_receipt",

@@ -1,5 +1,5 @@
 # Re-derived from a real run against the vendored ecosystem declaration
-# (engine bcda5ed, `quire` 0.30.2).
+# (engine measured at authoring).
 #
 # The healthy half: the same two rows, with one symbol that binds. Its
 # `coverage.backed` envelope reads examined 1 / matched 1, against the

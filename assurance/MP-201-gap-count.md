@@ -30,8 +30,7 @@ and pending list with the scalar.
 
 ## Collection and Provenance
 
-Derive from the validated filesystem inventory. Record corpus revision,
-inventory digest, reader version, module-source digests, timestamp, and raw
+Derive from the validated filesystem inventory. Record the timestamp and raw
 bounds output.
 
 ## Environment and Sampling

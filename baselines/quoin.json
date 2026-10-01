@@ -1,7 +1,6 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quoin",
-  "corpus_revision": "944aa63f653d7e48b9b16b411745d4a96f9836b1",
   "gap_count": 0,
   "rows": [
     {

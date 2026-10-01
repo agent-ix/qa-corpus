@@ -14,6 +14,4 @@ defects:
     only by the synthetic module''s three-value vocabulary and PRESENT in the real one — so the defect
     did not exist once the corpus stopped declaring a narrower world than reality. The label itself has
     now been wrong twice; verifying it against a real run is what caught it both times.'
-  confirmed_at: quire-cli 0.30.2 (engine 84740d4)
-  needs_engine: '> v0.44.2'
   command: validate

@@ -27,7 +27,7 @@ binding_census:
   - language: rust
     candidates: 1
     bound: 1
-# ── agent-ix/quire-rs#270 LANDED (CR-117, v0.33.0 engine) ──────────────────
+# ── agent-ix/quire-rs#270 LANDED (CR-117) ──────────────────
 #
 # Folded from expect-pending.yaml, RE-MEASURED against the payload.
 #

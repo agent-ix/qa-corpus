@@ -1,5 +1,5 @@
 # Re-derived from a real run against the vendored ecosystem declaration
-# (engine bcda5ed, `quire` 0.30.2). Unchanged from the `bench-legacy` reading:
+# (engine measured at authoring). Unchanged from the `bench-legacy` reading:
 # this case is about a metric envelope, not about a heading, and both rows mint
 # under either declaration once the matrix is written the ecosystem's way.
 backed: 0

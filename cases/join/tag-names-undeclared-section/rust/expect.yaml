@@ -19,7 +19,7 @@
 #
 # MEASURED, with the engine, over the 241 repositories
 # `quire-rs/scripts/corpus.py` enumerates under ~/dev — one `quire` binary built
-# from `quire-cli` at its pinned rev, engine `e06f121`, release profile,
+# from `quire-cli`, release profile,
 # `quire coverage --scope <repo> --json` per repository, `untracked_symbols`
 # read out of the payload. 15 repositories author `## Invariants` (129 rows),
 # its table is literally `| ID | Constraint | Type | Rationale |` — the

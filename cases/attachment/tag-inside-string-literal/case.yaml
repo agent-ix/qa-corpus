@@ -20,7 +20,7 @@ comment: >-
   contents before matching legacy forms since the mask was written — `src/symbols/trace.rs`
   gated it on `SourceLanguage::Rust` and every other language fell through to the raw span.
   So a Python or TypeScript test that carries tag-shaped text as DATA bound it, and the row
-  read as verified by a test that never touches it. Measured on this fixture at engine
-  `d55c987`: `backed 2/3` with nothing unbacked, which is invented coverage nobody authored.
+  read as verified by a test that never touches it. Measured on this fixture at the pre-fix engine:
+  `backed 2/3` with nothing unbacked, which is invented coverage nobody authored.
   The repair is the mask, not the fixture: the text is a legitimate thing for a test to
   assert about.

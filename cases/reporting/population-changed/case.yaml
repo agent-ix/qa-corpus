@@ -7,4 +7,4 @@ kind: failure
 findable: true
 tags:
 - TC-1104
-reproduce: quoin report --repo cases/reporting/population-changed/input --since 816e187+sap-fa56ced --format json
+reproduce: quoin report --repo cases/reporting/population-changed/input --since a1+sap --format json

@@ -35,8 +35,7 @@ perfect score over unrepresented cells is not a complete claim.
 
 ## Collection and Provenance
 
-Record the corpus revision, declaration digest, runner/scorer revision, engine
-identity and raw case-level evidence. The Quire and Quoin runners retain
+Record the raw case-level evidence. The Quire and Quoin runners retain
 separate baselines because they exercise different production surfaces.
 
 ## Environment and Sampling
