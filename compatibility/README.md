@@ -18,7 +18,7 @@ it from here.
 
 | Path | Contents |
 | --- | --- |
-| `corpus.json` | The index: every case, its digest, origin, derivation, and expected outcome |
+| `corpus.json` | The index: every case, its origin, derivation, and expected outcome |
 | `records/` | Retained PGM-01 record bytes, real and derived |
 | `producers/` | Retained real producer output |
 | `chain/` | The Quire-to-Quoin receipt chain, artifact by artifact |
@@ -40,15 +40,6 @@ found record from a constructed one without reading a diff.
 PGM-01 v1 has no `not_computed` status at all. The mapping refuses one rather
 than inventing a translation, and the corpus records that refusal as the
 expected outcome.
-
-## What is referenced rather than retained
-
-Three artifacts are pinned by digest and not copied in, each for a stated
-reason: the external-engine result embeds third-party advisory prose, the
-agent-evaluation result records an absolute transcript path, and the Quire
-export records the absolute module-manifest path of the machine that produced
-it. The retained attestation binds the export's exact bytes, so the chain stays
-verifiable for a holder of them.
 
 ## Rebuilding
 
