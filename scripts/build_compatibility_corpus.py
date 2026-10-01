@@ -199,7 +199,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
                 "kind": "legacy",
                 "family": "pgm01-v1",
                 "retained_path": f"records/{case_id}.json",
-                "retained_sha256": digest(raw),
                 "origin": {
                     "repository": "agent-ix/quire-contract-ir",
                     "revision": contract_ir_revision,
@@ -245,7 +244,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
                 "kind": kind,
                 "family": family,
                 "retained_path": f"records/{case_id}.json",
-                "retained_sha256": digest(raw),
                 "origin": {
                     "repository": "agent-ix/quire-contract-ir",
                     "revision": contract_ir_revision,
@@ -345,7 +343,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "kind": "tampered",
             "family": "pgm01-v1",
             "retained_path": "records/derived-tampered.json",
-            "retained_sha256": digest(tampered),
             "origin": {
                 "repository": "agent-ix/quire-contract-ir",
                 "revision": contract_ir_revision,
@@ -378,7 +375,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "kind": "malformed",
             "family": "pgm01-v1",
             "retained_path": "records/derived-unreadable.json",
-            "retained_sha256": digest(unreadable),
             "origin": None,
             "derivation": {
                 "from": None,
@@ -419,7 +415,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "kind": "stale",
             "family": "pgm01-v2",
             "retained_path": "records/derived-stale.json",
-            "retained_sha256": digest(stale_bytes),
             "origin": {
                 "repository": "agent-ix/qa-corpus",
                 "revision": None,
@@ -455,7 +450,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "kind": "current",
             "family": "quoin-verification-receipt-v1",
             "retained_path": "chain/receipt.json",
-            "retained_sha256": digest(receipt_bytes),
             "origin": {
                 "repository": "agent-ix/quoin",
                 "revision": quoin_revision,
@@ -481,7 +475,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "path": "tests/golden/fixture.json",
             "source": (CODE_RS, "tests/golden/fixture.json"),
             "feeds": "verification_definition",
-            "retention": "retained",
             "note": "A real governed code-graph producer's own golden output.",
         },
         {
@@ -492,7 +485,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "path": "corpus/contract-v0.1/manifest.json",
             "source": (CONTRACT_IR, "corpus/contract-v0.1/manifest.json"),
             "feeds": "verification_definition",
-            "retention": "retained",
             "note": "The contract conformance corpus the runner replays.",
         },
         {
@@ -508,7 +500,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
                 "tier1-20260826153027044-9fc213e27a72.json",
             ),
             "feeds": "measurement",
-            "retention": "retained",
             "note": "A real retained measurement collection with its config, "
             "corpus, and scorer digests.",
         },
@@ -520,37 +511,8 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "path": "tests/fixtures/evidence/audit-static-real.txt",
             "source": (QUOIN, "tests/fixtures/evidence/audit-static-real.txt"),
             "feeds": "diagnostic",
-            "retention": "retained",
             "note": "A console-stream artifact retained because it IS the "
             "material diagnostic, not because stdout is scraped.",
-        },
-        {
-            "id": "producer-external-engine",
-            "language": "rust",
-            "producer": "cargo-audit",
-            "revision": quoin_revision,
-            "path": "tests/fixtures/evidence/cargo-audit-real.json",
-            "source": (QUOIN, "tests/fixtures/evidence/cargo-audit-real.json"),
-            "feeds": "check_result",
-            "retention": "referenced",
-            "note": "Real external-engine output, pinned by digest but NOT "
-            "copied here: it embeds third-party advisory prose and upstream "
-            "issue links, which sit outside this repository's publishable "
-            "content boundary. A holder of the source repository can verify "
-            "the digest; this corpus does not republish the bytes.",
-        },
-        {
-            "id": "producer-agent-eval",
-            "language": "typescript",
-            "producer": "agent-ix/quoin agent-eval",
-            "revision": quoin_revision,
-            "path": "tests/fixtures/evidence/agent-eval-real.json",
-            "source": (QUOIN, "tests/fixtures/evidence/agent-eval-real.json"),
-            "feeds": "measurement",
-            "retention": "referenced",
-            "note": "Real agent-evaluation output, pinned by digest but NOT "
-            "copied here: it records an absolute transcript path from the "
-            "machine that produced it, which this repository does not publish.",
         },
     ]
 
@@ -563,11 +525,9 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "id": entry["id"],
             "source_sha256": digest(raw),
         }
-        if entry["retention"] == "retained":
-            suffix = Path(relative).suffix or ".txt"
-            record["retained_path"] = f"producers/{entry['id']}{suffix}"
-            record["retained_sha256"] = digest(raw)
-            payloads[entry["id"]] = raw
+        suffix = Path(relative).suffix or ".txt"
+        record["retained_path"] = f"producers/{entry['id']}{suffix}"
+        payloads[entry["id"]] = raw
         producer_cases.append(record)
 
     # The chain artifacts are retained evidence, not something rebuilt on every
@@ -622,33 +582,9 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             {
                 "role": role,
                 "produced_by": command,
-                "retention": "retained",
                 "retained_path": f"chain/{name}",
-                "retained_sha256": digest(raw),
             }
         )
-
-    # The Quire export itself is NOT republished: the engine records the
-    # absolute module-manifest path of the machine that produced it, which is a
-    # workstation location this repository does not publish. It needs no
-    # separate digest constant — the retained attestation already binds its
-    # exact bytes, so the reference below is read back from evidence rather
-    # than asserted here.
-    attestation = json.loads(read(CORPUS_ROOT / "chain" / "attestation-sealed.json"))
-    chain["referenced_inputs"] = [
-        {
-            "role": "quire_export",
-            "produced_by": "quire coverage --scope <pinned checkout> --json",
-            "retention": "referenced",
-            "media_type": attestation["retained_output"]["media_type"],
-            "blake3": attestation["retained_output"]["digest"],
-            "size_bytes": attestation["retained_output"]["size_bytes"],
-            "bound_by": "chain/attestation-sealed.json",
-            "reason": "Contains the absolute module-manifest path of the "
-            "machine that produced it. The attestation and the receipt bind "
-            "these exact bytes, so a holder of them verifies the whole chain.",
-        }
-    ]
 
     return {
         "corpus_version": "engineering-assurance.compatibility-corpus/v1",
@@ -670,12 +606,6 @@ def build(source_refs: dict[Path, str] | None = None) -> dict[str, Any]:
             "on the constructed v2 fixture and is labelled as constructed.",
             "Retaining these bytes proves fixture integrity and mapping "
             "behaviour offline. It does not re-observe the source repositories.",
-            "Two producer cases are referenced by digest rather than retained: "
-            "the external-engine result embeds third-party advisory prose, and "
-            "the agent-evaluation result records an absolute path from the "
-            "machine that produced it. Both sit outside this repository's "
-            "publishable content boundary, and a pinned digest is what can "
-            "honestly be published in their place.",
         ],
         "cases": cases,
         "producer_cases": producer_cases,
@@ -692,8 +622,7 @@ def write(corpus: dict[str, Any], payloads: dict[str, bytes]) -> None:
         if case["id"] in payloads:
             (CORPUS_ROOT / case["retained_path"]).write_bytes(payloads[case["id"]])
     for case in corpus["producer_cases"]:
-        if case["retention"] == "retained":
-            (CORPUS_ROOT / case["retained_path"]).write_bytes(payloads[case["id"]])
+        (CORPUS_ROOT / case["retained_path"]).write_bytes(payloads[case["id"]])
     (CORPUS_ROOT / "corpus.json").write_text(
         json.dumps(corpus, indent=2, sort_keys=False) + "\n", encoding="utf-8"
     )
@@ -734,7 +663,7 @@ def main() -> int:
             continue
         path = CORPUS_ROOT / case["retained_path"]
         if case["id"] not in payloads:
-            if not path.exists() or digest(path.read_bytes()) != case["retained_sha256"]:
+            if not path.exists():
                 differences.append(case["retained_path"])
             continue
         if not path.exists() or path.read_bytes() != payloads[case["id"]]:
