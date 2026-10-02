@@ -26,10 +26,9 @@ from bounds import (KNOWN_EXPECT_KEYS, CorpusError, controls_by_case, discover,
 ROOT = pathlib.Path(__file__).resolve().parent
 EXTERNAL_CHANNEL = json.loads((ROOT / "config/external-channel.json").read_text())
 
-# NOT a PATH lookup. `quire` on PATH is whatever somebody installed — measured
-# on this machine, which was an old build and predated
-# `binding_census` entirely, so half these fixtures grade against a payload that
-# cannot carry what they assert. That is agent-ix/quire-rs#265's defect, one
+# NOT a PATH lookup. `quire` on PATH is whatever somebody installed, possibly an
+# old build that predates `binding_census`, so fixtures would grade against a
+# payload that cannot carry what they assert. That is agent-ix/quire-rs#265's defect, one
 # repository over, and this corpus is the thing that is supposed to catch it.
 #
 # Pass an explicit binary: `QUIRE=/path/to/quire make verify`.
