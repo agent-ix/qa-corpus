@@ -3,9 +3,7 @@
 # CARGO_TARGET_DIR MOVES THE ARTIFACT AND THIS DEFAULT DID NOT FOLLOW IT. With
 # it set, `cargo build` in quire-cli writes to `$CARGO_TARGET_DIR/debug/quire`
 # and `../quire-cli/target/` keeps whatever was there before the variable was
-# set. Measured: the in-repo path held a stale binary that reported an older
-# version than the real build —
-# one engine apart, and the default pointed at the stale one. Caught by
+# set, so a default pointing at the in-repo path can name a stale binary. Caught by
 # quire-cli#68's provenance guard refusing a binary that cannot name its engine,
 # which is the case for refusing rather than warning. Same defect and same fix
 # as `agent-ix/quoin`'s `bench-tier1` default.
