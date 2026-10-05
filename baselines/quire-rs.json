@@ -1,7 +1,6 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quire-rs",
-  "corpus_revision": "2ccc2e54fe702dadbe61827d120396c60d365ea9",
   "gap_count": 0,
   "rows": [
     {
@@ -278,8 +277,8 @@
       "mode": "join",
       "language": "python",
       "level": "L1",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },
@@ -287,8 +286,8 @@
       "mode": "join",
       "language": "python",
       "level": "L2",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },
@@ -305,8 +304,8 @@
       "mode": "join",
       "language": "rust",
       "level": "L1",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },
@@ -314,8 +313,8 @@
       "mode": "join",
       "language": "rust",
       "level": "L2",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },
@@ -332,8 +331,8 @@
       "mode": "join",
       "language": "typescript",
       "level": "L1",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },
@@ -341,8 +340,8 @@
       "mode": "join",
       "language": "typescript",
       "level": "L2",
-      "reached": 3,
-      "population": 3,
+      "reached": 4,
+      "population": 4,
       "gap_count": 0,
       "misses": []
     },

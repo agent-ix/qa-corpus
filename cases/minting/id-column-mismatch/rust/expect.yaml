@@ -20,10 +20,15 @@ groups:
     backed: 0
     total: 1
 unbacked_rows:
-  - document: spec/tests.md
-    row_id: null
-    target_ids:
-      - FR-001-AC-1
+- document: spec/tests.md
+  row_id: null
+  target_ids:
+  - FR-001-AC-1
+- document: spec/FR-001.md
+  row_id: FR-001-AC-1
+  target_ids:
+  - FR-001-AC-1
+  - TC-001
 binding_census:
   - language: rust
     candidates: 1

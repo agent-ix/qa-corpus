@@ -1,0 +1,9 @@
+mode: join
+module: ecosystem
+id: shared-tc-obligation-control
+issue_ref: agent-ix/quire-rs#514
+kind: control
+control_for: [shared-tc-obligation]
+findable: false
+tags: [TC-734, coverage, binding, join]
+comment: A shared TC cannot back an obligation with no claim for its own ID.

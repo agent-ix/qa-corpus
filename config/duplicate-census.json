@@ -142,6 +142,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/join/shared-tc-obligation-control/python/expect.yaml",
+        "cases/join/shared-tc-obligation-control/rust/expect.yaml",
+        "cases/join/shared-tc-obligation-control/typescript/expect.yaml"
+      ],
+      "sha256": "216610f235947248523aae4757f4cb977daae25f2049d735f61b2fac6eea8af9"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/minting/section-and-id-column/python/input/spec/tests.md",
         "cases/minting/section-and-id-column/rust/input/spec/tests.md",
         "cases/minting/section-and-id-column/typescript/input/spec/tests.md"
@@ -694,6 +704,19 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/join/shared-tc-obligation/python/input/spec/tests.md",
+        "cases/join/shared-tc-obligation/rust/input/spec/tests.md",
+        "cases/join/shared-tc-obligation/typescript/input/spec/tests.md",
+        "cases/join/shared-tc-obligation-control/python/input/spec/tests.md",
+        "cases/join/shared-tc-obligation-control/rust/input/spec/tests.md",
+        "cases/join/shared-tc-obligation-control/typescript/input/spec/tests.md"
+      ],
+      "sha256": "9359f5894ecf183bb2fade0748e1173a12b2b86dcbdadba43101e37728e455c8"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/detection/catch-all-headline/python/expect.yaml",
         "cases/detection/catch-all-headline/rust/expect.yaml",
         "cases/detection/catch-all-headline/typescript/expect.yaml"
@@ -1070,6 +1093,16 @@
       "classification": "intentional-self-contained-fixture",
       "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
       "paths": [
+        "cases/join/shared-tc-obligation/python/expect.yaml",
+        "cases/join/shared-tc-obligation/rust/expect.yaml",
+        "cases/join/shared-tc-obligation/typescript/expect.yaml"
+      ],
+      "sha256": "efd4ad8bfbc44c84bab711a74fe282816c636ed19c5a39211518f3aaf5acf27c"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
         "cases/minting/id-column-mismatch/python/input/spec/tests.md",
         "cases/minting/id-column-mismatch/rust/input/spec/tests.md",
         "cases/minting/id-column-mismatch/typescript/input/spec/tests.md"
@@ -1086,6 +1119,19 @@
         "cases/minting/section-name-mismatch/python/input/src/test_coverage.py"
       ],
       "sha256": "fab5fb9b7a4fb30ff1b8c7fd03c5d17c4a996f8df6eb7929d1b0a9dcc378da14"
+    },
+    {
+      "classification": "intentional-self-contained-fixture",
+      "invariant": "Each case remains independently runnable; byte-identical support files must change together unless the case's declared defect requires divergence.",
+      "paths": [
+        "cases/join/shared-tc-obligation/python/input/spec/FR-001.md",
+        "cases/join/shared-tc-obligation/rust/input/spec/FR-001.md",
+        "cases/join/shared-tc-obligation/typescript/input/spec/FR-001.md",
+        "cases/join/shared-tc-obligation-control/python/input/spec/FR-001.md",
+        "cases/join/shared-tc-obligation-control/rust/input/spec/FR-001.md",
+        "cases/join/shared-tc-obligation-control/typescript/input/spec/FR-001.md"
+      ],
+      "sha256": "fe65169690d075819a07ff779447be9047ac32566ace1144fdc120feff496936"
     },
     {
       "classification": "intentional-self-contained-fixture",

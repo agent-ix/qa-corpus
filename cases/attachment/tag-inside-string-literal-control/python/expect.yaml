@@ -3,7 +3,13 @@
 # strongest shape a pair can have: one repair, one field.
 backed: 2
 total: 3
-unbacked_rows: []
+unbacked_rows:
+- document: spec/FR-001.md
+  row_id: FR-001-AC-1
+  target_ids:
+  - FR-001-AC-1
+  - TC-001
+
 
 # BOTH candidates bound, against the partner's 2/1. A mask that blanked comment
 # text as well as string contents would leave this at 2/1 and the pair would

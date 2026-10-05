@@ -1,0 +1,1 @@
+reproduce: quire coverage --scope cases/join/shared-tc-obligation/python/input --module modules/ecosystem/spec-artifacts-iso --module modules/ecosystem/spec-artifacts-process --json

@@ -1,0 +1,15 @@
+mode: join
+module: ecosystem
+id: shared-tc-obligation
+issue_ref: agent-ix/quire-rs#514
+kind: failure
+case: shared-tc-obligation
+findable: true
+grading_contract:
+  channel: direct-observation
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: not_applicable, reason: Coverage row identity is the witness; no diagnostic prose is introduced.}
+tags: [TC-734, coverage, binding, join]
+comment: A shared TC cannot back an obligation with no claim for its own ID.
