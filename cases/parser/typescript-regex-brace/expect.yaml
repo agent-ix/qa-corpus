@@ -1,4 +1,12 @@
 total: 2
-backed: 0
+backed: 1
 untracked_symbols: []
-binding_census: []
+unbacked_rows: []
+binding_census:
+- language: typescript
+  candidates: 1
+  bound: 1
+absent_diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+- low-symbol-binding

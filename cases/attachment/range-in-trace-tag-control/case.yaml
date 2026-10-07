@@ -1,0 +1,17 @@
+id: range-in-trace-tag-control
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: false
+kind: control
+tags:
+- TC-1936
+- TC-1937
+- coverage
+- binding
+comment: The same tree with each id tagged separately instead of joined by `..`. Both bind, so there is
+  no range to report. Without this, the assertion above is satisfied by a detector that fires on every
+  trace tag — a check that cannot stay silent on healthy input is not a check, it is a constant.
+control_for:
+- range-in-trace-tag
+- range-short-suffix-in-trace-tag
