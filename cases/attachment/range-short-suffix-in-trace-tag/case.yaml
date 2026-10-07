@@ -1,0 +1,21 @@
+id: range-short-suffix-in-trace-tag
+case: range-short-suffix-in-trace-tag
+issue_ref: agent-ix/quire-rs#494
+mode: attachment
+module: ecosystem
+findable: true
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+tags:
+- TC-1936
+- TC-1937
+- coverage
+- binding
+comment: A real test carries a short-suffix range (`FR-001-AC-1..2`) inside its trace tag.
+  It binds no id at all, including its own left endpoint (CR-187), and is reported once in every
+  supported language. Its control is range-in-trace-tag-control, which tags the same two ids separately.
