@@ -5,5 +5,7 @@
 pub mod bounds;
 pub mod corpus;
 pub mod external;
+pub mod measurements;
+pub mod reporting;
 pub mod scaffold;
 pub mod verify;

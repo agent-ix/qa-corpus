@@ -34,7 +34,7 @@ verify:
 
 .PHONY: verify-reporting
 verify-reporting:
-	@QUOIN="$(QUOIN)" python3 scripts/verify_reporting.py
+	@QUOIN="$(QUOIN)" cargo run --quiet -- verify-reporting
 
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
@@ -55,12 +55,12 @@ parity-selftest:
 
 .PHONY: measurement-selftest
 measurement-selftest:
-	@python3 scripts/measurement_selftest.py
+	@cargo test --quiet --lib measurements::tests
 
 .PHONY: measurement-collection
 measurement-collection:
 	@test -n "$(VERIFICATION_STACK)" || { echo "VERIFICATION_STACK= is required"; exit 1; }
-	@python3 scripts/export_measurements.py $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
+	@cargo run --quiet -- measurement-collection $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
 
 .PHONY: external-channel
 external-channel:
