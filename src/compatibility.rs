@@ -261,11 +261,27 @@ pub fn check(root: &Path, sources: &Path) -> Result<String, CorpusError> {
             legacy.insert(id.to_owned(), original);
         }
     }
+    let required_legacy = [
+        "legacy-v1-passing",
+        "legacy-v1-inconclusive",
+        "legacy-v1-skipped",
+    ];
+    if legacy.keys().map(String::as_str).collect::<BTreeSet<_>>()
+        != required_legacy.into_iter().collect()
+    {
+        return Err(invalid(
+            "compatibility corpus has an incomplete legacy source population",
+        ));
+    }
     verify_derived(root, &index, &legacy)?;
+    let mut producer_ids = BTreeSet::new();
     for producer in index["producer_cases"].as_array().into_iter().flatten() {
         let id = producer["id"]
             .as_str()
             .ok_or_else(|| invalid("producer has no id"))?;
+        if !producer_ids.insert(id) {
+            return Err(invalid(format!("duplicate compatibility producer `{id}`")));
+        }
         let name = producer["producer"]
             .as_str()
             .ok_or_else(|| invalid(format!("{id}: no producer")))?;
@@ -283,6 +299,20 @@ pub fn check(root: &Path, sources: &Path) -> Result<String, CorpusError> {
                 "{id}: retained bytes differ from recorded producer source"
             )));
         }
+    }
+    if producer_ids
+        != [
+            "producer-code-graph",
+            "producer-contract-conformance",
+            "producer-measurement",
+            "producer-static-scan",
+        ]
+        .into_iter()
+        .collect()
+    {
+        return Err(invalid(
+            "compatibility corpus has an incomplete producer population",
+        ));
     }
     for artifact in index["chain"]["artifacts"].as_array().into_iter().flatten() {
         let relative = artifact["retained_path"]
@@ -340,6 +370,7 @@ fn verify_derived(
         .map_err(|error| invalid(format!("{}: {error}", source.display())))?;
     stale["historicalDisposition"] = Value::String("retracted".into());
     expected.insert("derived-stale", compact(&stale)?);
+    let mut seen = BTreeSet::new();
     for case in index["cases"].as_array().into_iter().flatten() {
         let id = case["id"]
             .as_str()
@@ -347,6 +378,9 @@ fn verify_derived(
         let Some(derived) = expected.get(id) else {
             continue;
         };
+        if !seen.insert(id) {
+            return Err(invalid(format!("duplicate compatibility case `{id}`")));
+        }
         let relative = case["retained_path"]
             .as_str()
             .ok_or_else(|| invalid(format!("{id}: no retained_path")))?;
@@ -360,6 +394,11 @@ fn verify_derived(
                 "derived-stale: source digest disagrees with corpus index",
             ));
         }
+    }
+    if seen != expected.keys().copied().collect() {
+        return Err(invalid(
+            "compatibility corpus has an incomplete derived case population",
+        ));
     }
     Ok(())
 }
