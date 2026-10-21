@@ -31,6 +31,67 @@ fn digest_parts(parts: &[Vec<u8>]) -> String {
     format!("sha256:{:x}", digest.finalize())
 }
 
+// Collection IDs hash Python's json.dumps(sort_keys=True) byte format. Preserve
+// that format while the evidence producer moves to Rust, including its default
+// spaces and ensure_ascii string escaping.
+fn python_json(value: &Value, output: &mut String) {
+    match value {
+        Value::Null => output.push_str("null"),
+        Value::Bool(value) => output.push_str(if *value { "true" } else { "false" }),
+        Value::Number(value) => output.push_str(&value.to_string()),
+        Value::String(value) => {
+            output.push('"');
+            for character in value.chars() {
+                match character {
+                    '"' => output.push_str("\\\""),
+                    '\\' => output.push_str("\\\\"),
+                    '\u{0008}' => output.push_str("\\b"),
+                    '\u{000c}' => output.push_str("\\f"),
+                    '\n' => output.push_str("\\n"),
+                    '\r' => output.push_str("\\r"),
+                    '\t' => output.push_str("\\t"),
+                    _ if character < ' ' || !character.is_ascii() => {
+                        let code = character as u32;
+                        if code <= 0xffff {
+                            output.push_str(&format!("\\u{code:04x}"));
+                        } else {
+                            let offset = code - 0x1_0000;
+                            output.push_str(&format!("\\u{:04x}", 0xd800 + (offset >> 10)));
+                            output.push_str(&format!("\\u{:04x}", 0xdc00 + (offset & 0x3ff)));
+                        }
+                    }
+                    _ => output.push(character),
+                }
+            }
+            output.push('"');
+        }
+        Value::Array(values) => {
+            output.push('[');
+            for (index, item) in values.iter().enumerate() {
+                if index > 0 {
+                    output.push_str(", ");
+                }
+                python_json(item, output);
+            }
+            output.push(']');
+        }
+        Value::Object(values) => {
+            output.push('{');
+            let mut entries: Vec<_> = values.iter().collect();
+            entries.sort_by_key(|(key, _)| *key);
+            for (index, (key, item)) in entries.into_iter().enumerate() {
+                if index > 0 {
+                    output.push_str(", ");
+                }
+                python_json(&Value::String(key.clone()), output);
+                output.push_str(": ");
+                python_json(item, output);
+            }
+            output.push('}');
+        }
+    }
+}
+
 fn command(root: &Path, args: &[&str]) -> Result<String, CorpusError> {
     let output = Command::new(args[0])
         .args(&args[1..])
@@ -382,8 +443,9 @@ pub fn build_collection(
         }
     }
     let raw = json!({"bounds":bounds, "runnerBaselines":baselines});
-    let raw_bytes = serde_json::to_vec(&raw).map_err(|error| invalid(error.to_string()))?;
-    let evidence_digest = digest_parts(&[raw_bytes]);
+    let mut raw_bytes = String::new();
+    python_json(&raw, &mut raw_bytes);
+    let evidence_digest = digest_parts(&[raw_bytes.into_bytes()]);
     let mut observations = vec![json!({
         "metric":"bounds.gap_count", "planId":"MP-201", "definitionVersion":"bounds.gap-count-v1",
         "state":"measured", "value":gap_count, "unit":"mode-language cell", "shape":"count",
@@ -431,8 +493,27 @@ mod tests {
 
     use super::{
         build_collection, detection_observations, digest_parts, load_verification_stack,
-        validate_source_against_stack,
+        python_json, validate_source_against_stack,
     };
+
+    /// Trace: MP-201, MP-202. Existing evidence keeps its content-addressed ID.
+    #[test]
+    fn collection_digest_matches_python_json_bytes() {
+        let evidence = json!({
+            "bounds":{"a":"é\n😀", "z":[1, true, null]},
+            "runnerBaselines":{"q":{"gap_count":0}},
+        });
+        let mut encoded = String::new();
+        python_json(&evidence, &mut encoded);
+        assert_eq!(
+            encoded,
+            r#"{"bounds": {"a": "\u00e9\n\ud83d\ude00", "z": [1, true, null]}, "runnerBaselines": {"q": {"gap_count": 0}}}"#
+        );
+        assert_eq!(
+            digest_parts(&[encoded.into_bytes()]),
+            "sha256:975a3b41a3e9bad533099f18bfb72e8d69605d3a6161ae10e916208bec0961c8"
+        );
+    }
 
     fn git(root: &Path, args: &[&str]) -> String {
         let output = Command::new("git")
