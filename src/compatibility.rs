@@ -180,8 +180,24 @@ fn retained(root: &Path, relative: &str) -> Result<Vec<u8>, CorpusError> {
     {
         return Err(invalid(format!("unsafe retained path `{relative}`")));
     }
-    fs::read(root.join("compatibility").join(path))
-        .map_err(|error| invalid(format!("compatibility/{relative}: {error}")))
+    let compatibility = fs::canonicalize(root.join("compatibility"))
+        .map_err(|error| invalid(format!("compatibility root: {error}")))?;
+    let candidate = compatibility.join(path);
+    let metadata = fs::symlink_metadata(&candidate)
+        .map_err(|error| invalid(format!("compatibility/{relative}: {error}")))?;
+    if !metadata.is_file() {
+        return Err(invalid(format!(
+            "compatibility/{relative}: expected a regular file"
+        )));
+    }
+    let resolved = fs::canonicalize(&candidate)
+        .map_err(|error| invalid(format!("compatibility/{relative}: {error}")))?;
+    if !resolved.starts_with(&compatibility) {
+        return Err(invalid(format!(
+            "compatibility/{relative}: resolves outside corpus"
+        )));
+    }
+    fs::read(candidate).map_err(|error| invalid(format!("compatibility/{relative}: {error}")))
 }
 
 fn compact(value: &Value) -> Result<Vec<u8>, CorpusError> {
