@@ -68,7 +68,11 @@ external-channel:
 
 .PHONY: compatibility-corpus-selftest
 compatibility-corpus-selftest:
-	@python3 scripts/compatibility_corpus_selftest.py
+	@cargo test --quiet --lib compatibility::tests
+
+.PHONY: compatibility-check
+compatibility-check:
+	@cargo run --quiet -- compatibility-check
 
 .PHONY: ci
 ci: schema-selftest external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest

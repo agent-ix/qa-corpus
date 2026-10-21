@@ -3,6 +3,7 @@
 #![forbid(unsafe_code)]
 
 pub mod bounds;
+pub mod compatibility;
 pub mod corpus;
 pub mod external;
 pub mod measurements;

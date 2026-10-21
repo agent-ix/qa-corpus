@@ -2,13 +2,15 @@
 
 use std::{env, path::PathBuf, process::ExitCode};
 
-use qa_corpus::{bounds, corpus, external, measurements, reporting, scaffold, verify};
+use qa_corpus::{
+    bounds, compatibility, corpus, external, measurements, reporting, scaffold, verify,
+};
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     let command = args
         .next()
-        .ok_or("usage: qa-corpus <bounds|metadata|verify|verify-reporting|measurement-collection|external-channel|new-case> [options]")?;
+        .ok_or("usage: qa-corpus <bounds|metadata|verify|verify-reporting|measurement-collection|compatibility-check|external-channel|new-case> [options]")?;
     let mut root = PathBuf::from(".");
     let mut json = false;
     let mut complete = false;
@@ -69,6 +71,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         "external-channel" => {
             let cases = corpus::discover(&root)?;
             println!("{}", external::validate(&root, &cases)?);
+        }
+        "compatibility-check" => {
+            let sources = compatibility::source_root(&root)?;
+            println!("{}", compatibility::check(&root, &sources)?);
         }
         "new-case" => {
             let options = scaffold::Options {

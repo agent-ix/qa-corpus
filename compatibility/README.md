@@ -43,16 +43,16 @@ expected outcome.
 ## Rebuilding
 
 ```bash
-ASSURANCE_SOURCE_ROOT=/path/to/checkouts python3 scripts/build_compatibility_corpus.py --check
+ASSURANCE_SOURCE_ROOT=/path/to/checkouts make compatibility-check
 ```
 
-`--check` verifies that the committed corpus still reproduces from its sources
-and writes nothing. Without it, the corpus is rewritten — which is how a
-maintainer refreshes it after a source repository advances.
+The check verifies that the committed corpus still reproduces from immutable
+source revisions and writes nothing. It requires those revisions to remain
+reachable from each source repository's published `origin/main`.
 
 ## Not a bounds case
 
-This directory is outside `cases/`, so `bounds.py` does not govern it. It is not
+This directory is outside `cases/`, so `make bounds` does not govern it. It is not
 a detection or minting case with a language inventory; it is retained evidence
 with an expected mapping outcome per record. Its gate is FR-011's test in
 `engineering-assurance`, not `make bounds`.
