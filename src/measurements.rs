@@ -397,10 +397,7 @@ pub fn build_collection(
         })
         .collect::<Result<Vec<_>, _>>()?;
     let config_digest = digest_parts(&config_parts);
-    let compact_time: String = timestamp
-        .chars()
-        .filter(|ch| ch.is_ascii_alphanumeric())
-        .collect();
+    let compact_time: String = timestamp.chars().filter(char::is_ascii_digit).collect();
     Ok(json!({
         "schemaVersion":2,
         "collectionId":format!("qa-corpus-{compact_time}-{}", &evidence_digest[7..19]),
@@ -582,6 +579,10 @@ mod tests {
             collection["rawEvidence"]["bounds"]["bounds"]["gap_count"],
             0
         );
+        assert!(collection["collectionId"]
+            .as_str()
+            .unwrap()
+            .starts_with("qa-corpus-20260827000000000-"));
     }
 
     /// Trace: MP-202. A zero denominator keeps its exclusion rationale.
