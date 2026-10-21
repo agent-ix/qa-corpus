@@ -22,6 +22,7 @@ help:
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make measurement-selftest prove both active plans have derived output"
 	@echo "make compatibility-corpus-selftest prove checks select the recorded producer revisions"
+	@echo "make compatibility-check verify retained inputs against published source revisions"
 	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
 	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  run the corpus and all verification selftests"
