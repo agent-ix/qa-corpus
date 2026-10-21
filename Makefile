@@ -24,13 +24,13 @@ help:
 	@echo "make compatibility-corpus-selftest prove checks select the recorded producer revisions"
 	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
 	@echo "make external-channel    validate exact non-Quire witness contract"
-	@echo "make ci                  schema-selftest + bounds + verify + parity-selftest"
+	@echo "make ci                  run the corpus and all verification selftests"
 
 # Every case, by the exact string in its own case.yaml. A documented command
 # that does not work fails the corpus rather than misleading a reader.
 .PHONY: verify
 verify:
-	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 verify.py
+	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" cargo run --quiet -- verify
 
 .PHONY: verify-reporting
 verify-reporting:
@@ -39,23 +39,19 @@ verify-reporting:
 # Derived, never stored: a count that cannot disagree with the tree.
 .PHONY: bounds
 bounds:
-	@python3 bounds.py --require-complete
+	@cargo run --quiet -- bounds --require-complete
 
-# A gate never observed to reject anything is indistinguishable from one that
-# cannot. Six mutations, each requiring `bounds.py` to fail NAMING the defect,
-# plus an unmutated control so the suite cannot pass vacuously (#336).
+# Exercise metadata admission, derived bounds, and the case scaffolder.
 .PHONY: schema-selftest
 schema-selftest:
-	@python3 scripts/schema_selftest.py
+	@cargo test --quiet --lib corpus::tests
+	@cargo test --quiet --lib bounds::tests
+	@cargo test --quiet --lib scaffold::tests
 
-# The same argument for the AC-42 differential, which until #337 existed only in
-# the Rust harness: blind a fixture down to one incidental scalar and `verify.py`
-# reported `mismatches: 0`, exit 0, on a corpus `cargo test` rejected. Runs LAST
-# because it copies the corpus four times and runs the whole of `verify.py` over
-# each, and a plain `verify` failure should be read before this one.
+# Exercise differential grading, witness-channel restrictions, and input shapes.
 .PHONY: parity-selftest
 parity-selftest:
-	@QUIRE="$(QUIRE)" QUOIN="$(QUOIN)" python3 scripts/parity_selftest.py
+	@cargo test --quiet --lib verify::tests
 
 .PHONY: measurement-selftest
 measurement-selftest:
@@ -68,7 +64,7 @@ measurement-collection:
 
 .PHONY: external-channel
 external-channel:
-	@python3 scripts/external_channel_selftest.py
+	@cargo run --quiet -- external-channel
 
 .PHONY: compatibility-corpus-selftest
 compatibility-corpus-selftest:
@@ -90,6 +86,6 @@ MODULE ?= ecosystem
 new-case:
 	@test -n "$(MODE)" || { echo "MODE= is required (see mode_families in corpus.yaml)"; exit 1; }
 	@test -n "$(CASE)" || { echo "CASE= is required"; exit 1; }
-	@python3 scripts/new_case.py \
+	@cargo run --quiet -- new-case \
 		--mode "$(MODE)" --case "$(CASE)" --language "$(LANG)" \
 		--kind "$(KIND)" --module "$(MODULE)"
