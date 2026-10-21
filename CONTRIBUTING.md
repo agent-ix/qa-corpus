@@ -24,7 +24,7 @@ expectation hold.
    Do not claim a causal delta from unrelated changes in the same sweep.
 
 `make bounds` is the CI policy check. It rejects a GAP, an unexplained
-exclusion, or a failure without a language-matched control. `python3 bounds.py`
+exclusion, or a failure without a language-matched control. `cargo run -- bounds`
 remains available while authoring to display an incomplete matrix without
 treating it as a passing gate.
 
