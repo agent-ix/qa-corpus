@@ -13,7 +13,7 @@ Compared the new Rust gates and tests with the controlled-corpus assurance plan 
 
 ## Verdict
 
-**CONDITIONAL** — the recorded test gap must be closed before merge; matrix coverage is unavailable for this module.
+**CONDITIONAL** — the recorded test gap is closed on this PR; computed matrix coverage remains unavailable for this module.
 
 ## Findings
 
@@ -26,3 +26,13 @@ Compared the new Rust gates and tests with the controlled-corpus assurance plan 
 `quoin matrix --repo . --json` returned `no coverage_matrix criteria: the module declares no obligations: source`. Trace tags in the new unit tests name FR-065, MP-201, MP-202, and EA FR-011; this is a grep-level index, not computed matrix evidence. The changed source contains no `todo!`, `unimplemented!`, or unsafe block. The full live verdict comparison is pending the shared build lock.
 
 Plan completion: not assessed
+
+## Dispositions
+
+| Finding | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | A focused test mutates the checked-in schema's `id` type and requires the real validator to refuse the checked-in case by name. |
+
+## Re-review
+
+The added test carries `Trace: FR-065-AC-1`, runs in `schema-selftest`, and fails if the declared type refusal is removed. No reverse gap or stub was introduced by the fix diff.

@@ -2,6 +2,7 @@
 
 use std::{collections::BTreeSet, fs, path::Path, process::Command};
 
+use serde::Serialize;
 use serde_json::{json, Map, Value};
 use sha2::{Digest, Sha256};
 use time::OffsetDateTime;
@@ -17,6 +18,42 @@ const CONFIG_FILES: [&str; 3] = [
     "assurance/MP-201-gap-count.md",
     "assurance/MP-202-detection-recall.md",
 ];
+
+/// Stable collection envelope. Raw evidence and observations retain their
+/// source-defined shapes, while the emitted collection's required fields are
+/// checked by Rust at construction.
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Collection {
+    schema_version: u8,
+    collection_id: String,
+    subject: &'static str,
+    scope: Scope,
+    tool_identity: &'static str,
+    tool_version: String,
+    config_digest: String,
+    timestamp: String,
+    source_revision: String,
+    environment: Environment,
+    verification_stack: Value,
+    observations: Vec<Value>,
+    raw_evidence: Value,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Scope {
+    fixtures: usize,
+    declared_cells: Value,
+    runners: [&'static str; 2],
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Environment {
+    bounds_producer: &'static str,
+    recall_producers: String,
+}
 
 fn invalid(message: impl Into<Box<str>>) -> CorpusError {
     CorpusError::new(ErrorCode::Input, message)
@@ -460,21 +497,29 @@ pub fn build_collection(
         .collect::<Result<Vec<_>, _>>()?;
     let config_digest = digest_parts(&config_parts);
     let compact_time: String = timestamp.chars().filter(char::is_ascii_digit).collect();
-    Ok(json!({
-        "schemaVersion":2,
-        "collectionId":format!("qa-corpus-{compact_time}-{}", &evidence_digest[7..19]),
-        "subject":"controlled QA corpus",
-        "scope":{"fixtures":cases.len(), "declaredCells":summary["declared_cells"], "runners":RUNNERS},
-        "toolIdentity":"qa-corpus measurement exporter",
-        "toolVersion":format!("git:{revision}"),
-        "configDigest":config_digest,
-        "timestamp":timestamp,
-        "sourceRevision":revision,
-        "environment":{"boundsProducer":"qa-corpus bounds --json --require-complete", "recallProducers":RUNNERS.join(",")},
-        "verificationStack":stack,
-        "observations":observations,
-        "rawEvidence":raw,
-    }))
+    let collection = Collection {
+        schema_version: 2,
+        collection_id: format!("qa-corpus-{compact_time}-{}", &evidence_digest[7..19]),
+        subject: "controlled QA corpus",
+        scope: Scope {
+            fixtures: cases.len(),
+            declared_cells: summary["declared_cells"].clone(),
+            runners: RUNNERS,
+        },
+        tool_identity: "qa-corpus measurement exporter",
+        tool_version: format!("git:{revision}"),
+        config_digest,
+        timestamp: timestamp.to_owned(),
+        source_revision: revision.to_owned(),
+        environment: Environment {
+            bounds_producer: "qa-corpus bounds --json --require-complete",
+            recall_producers: RUNNERS.join(","),
+        },
+        verification_stack: stack.clone(),
+        observations,
+        raw_evidence: raw,
+    };
+    serde_json::to_value(collection).map_err(|error| invalid(error.to_string()))
 }
 
 /// Export one collection after checking source identity against the attestation.

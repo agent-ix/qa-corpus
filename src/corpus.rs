@@ -1320,6 +1320,20 @@ mod tests {
             .contains("`issue_ref` is present but empty"));
     }
 
+    /// Trace: FR-065-AC-1. A misspelled declared type cannot weaken case admission.
+    #[test]
+    fn unknown_declared_field_type_is_rejected() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+        let declaration = super::load_yaml(&root.join("corpus.yaml")).expect("declaration");
+        let mut schema = declaration["case_schema"].clone();
+        let case = super::load_yaml(&root.join("cases/detection/model-mints-nothing/case.yaml"))
+            .expect("checked-in case");
+        schema["types"]["id"] = json!("unrecognized");
+        let error = validate_case(&case, &schema, "case.yaml")
+            .expect_err("unknown declared type must fail");
+        assert!(error.to_string().contains("declares unknown type for `id`"));
+    }
+
     /// Trace: FR-065-AC-1. Conditional rules follow the declaration and reject malformed rules.
     #[test]
     fn conditional_schema_rule_fires_and_rejects_bad_shape() {

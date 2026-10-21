@@ -13,7 +13,7 @@ Reviewed the Rust replacement of the active corpus readers, runner, reporting an
 
 ## Verdict
 
-**CONDITIONAL** — the findings below need dispositions before the final gate.
+**CONDITIONAL** — both findings are fixed on this PR; live parity and the final gate remain pending.
 
 ## Findings
 
@@ -24,4 +24,15 @@ Reviewed the Rust replacement of the active corpus readers, runner, reporting an
 
 ## Review evidence
 
-The diff changes no CI workflow file. Focused checks on the reviewed head passed: 23 library tests, Clippy with warnings denied, formatting, `make bounds`, and `make external-channel`. The computed matrix reports no criteria because this module declares no obligations source; the separate gap analysis records that limitation. Live Python/Rust verdict parity and the final complete gate are pending the shared build lock.
+The diff changes no CI workflow file. Focused checks before remediation passed: 23 library tests, Clippy with warnings denied, formatting, `make bounds`, and `make external-channel`. The targeted schema mutation test and six measurement tests pass after remediation, as do formatting and Clippy. The computed matrix reports no criteria because this module declares no obligations source; the separate gap analysis records that limitation. Live Python/Rust verdict parity and the final complete gate are pending the shared build lock.
+
+## Dispositions
+
+| Finding | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | `Collection`, `Scope`, and `Environment` now derive `Serialize`; construction names every required envelope field at compile time. Source-defined raw evidence remains dynamic by design. The existing collection ID and observation tests pass. |
+| FND-002 | fixed | `unknown_declared_field_type_is_rejected` mutates the checked-in declaration's `id` type and exercises the real case validator on a checked-in case; `schema-selftest` invokes this test. |
+
+## Re-review
+
+The fix diff contains only the typed collection envelope, its serialization boundary, and the focused schema mutation test. Rust review checked the emitted field names against the previous JSON keys, test isolation, panics, lints, and the `Makefile` target; no new finding.
