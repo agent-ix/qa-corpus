@@ -23,7 +23,7 @@ Compared the new Rust gates and tests with the controlled-corpus assurance plan 
 
 ## Coverage
 
-`quoin matrix --repo . --json` returned `no coverage_matrix criteria: the module declares no obligations: source`. Trace tags in the new unit tests name FR-065, MP-201, MP-202, and EA FR-011; this is a grep-level index, not computed matrix evidence. The changed source contains no `todo!`, `unimplemented!`, or unsafe block. The full live verdict comparison is pending the shared build lock.
+`quoin matrix --repo . --json` returned `no coverage_matrix criteria: the module declares no obligations: source`. Trace tags in the new unit tests name FR-065, MP-201, MP-202, and EA FR-011; this is a grep-level index, not computed matrix evidence. The changed source contains no `todo!`, `unimplemented!`, or unsafe block. Existing compiled Python and Rust runners produced byte-identical live verification logs over 174 detection and 11 reporting cases; the final full gate remains pending.
 
 Plan completion: not assessed
 

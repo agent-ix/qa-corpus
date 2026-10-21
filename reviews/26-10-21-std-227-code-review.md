@@ -24,7 +24,7 @@ Reviewed the Rust replacement of the active corpus readers, runner, reporting an
 
 ## Review evidence
 
-The diff changes no CI workflow file. Focused checks before remediation passed: 23 library tests, Clippy with warnings denied, formatting, `make bounds`, and `make external-channel`. The targeted schema mutation test and six measurement tests pass after remediation, as do formatting and Clippy. The computed matrix reports no criteria because this module declares no obligations source; the separate gap analysis records that limitation. Live Python/Rust verdict parity and the final complete gate are pending the shared build lock.
+The diff changes no CI workflow file. Focused checks before remediation passed: 23 library tests, Clippy with warnings denied, formatting, `make bounds`, and `make external-channel`. The targeted schema mutation test and six measurement tests pass after remediation, as do formatting and Clippy. The computed matrix reports no criteria because this module declares no obligations source; the separate gap analysis records that limitation. On the same checked-in fixtures and installed Quire/Quoin binaries, Python and Rust verifier logs were byte-identical: 174/174 detection cases, 85 graded pairs, zero mismatches, and 11/11 reporting cases with zero mismatches. Both exited zero. The final complete gate is pending the shared build lock.
 
 ## Dispositions
 
