@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   guard:
-    uses: agent-ix/engineering-assurance/.github/workflows/language-boundary-reusable.yml@71dbe634937a528673db1ce6ca5bb2f0d4ff06ce
+    uses: agent-ix/engineering-assurance/.github/workflows/language-boundary-reusable.yml@73a95925dbeb00b64c45e0ce13fe3a7932529834
     with:
       repository: ${{ github.repository }}
       pull_number: ${{ github.event.pull_request.number }}
