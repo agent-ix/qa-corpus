@@ -251,3 +251,5 @@ it, so the rule is a behaviour rather than a claim.
 ## Licence
 
 AGPL-3.0-or-later. Per the agent-ix licensing policy — no carve-outs.
+
+<!-- STD-30 language-boundary canary: inert README change. -->
