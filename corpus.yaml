@@ -6,7 +6,7 @@
 # case, the languages it should exist in, and any cell deliberately scoped out
 # with its reason.
 #
-# What is DERIVED from the filesystem, every time, by `bounds.py`:
+# What is DERIVED from the filesystem, every time, by `qa-corpus bounds`:
 #   covered  — a fixture exists for that case and language
 #   GAP      — declared applicable, no fixture, not scoped out
 #   gap_count and the sum invariant
@@ -90,7 +90,7 @@ case_kinds:
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
-# comparing them. The required set lives HERE, `bounds.py` validates against it
+# comparing them. The required set lives HERE, `qa-corpus bounds` validates against it
 # before deriving anything, and a Rust test asserts `CaseMeta` agrees with it —
 # so the day a field is added to one reader and not the other, a gate says so.
 #
@@ -407,8 +407,8 @@ behaviour_change_tickets: []
 #
 # RE-MEASURED: **15 of <derived:pairs=85>**. The pair count
 # is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
-# every control, which means running the engine, which `bounds.py` deliberately
-# does not do. `verify.py` is where that number can be re-derived. It is dated
+# every control, which means running the engine, which `qa-corpus bounds` deliberately
+# does not do. `qa-corpus verify` is where that number can be re-derived. It is dated
 # rather than gated, and this sentence says which.
 #
 # So AC-42 is graded TWICE: once over the whole block, and once over the block

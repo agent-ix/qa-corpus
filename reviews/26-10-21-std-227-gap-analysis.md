@@ -1,0 +1,40 @@
+---
+id: SR-003
+title: "Gap analysis — STD-227 Rust corpus runner"
+type: SpecReview
+analysis: gap-analysis
+scope: "qa-corpus; assurance/AP-201-controlled-corpus.md, assurance/MP-201-gap-count.md, assurance/MP-202-detection-recall.md, src/*.rs, Makefile"
+review_set: subset
+---
+
+## Summary
+
+Compared the new Rust gates and tests with the controlled-corpus assurance plan and both measurement plans. The repository's active module set declares no obligations source, so the computed matrix cannot establish criterion coverage; direct trace tags and the changed behavior were inspected instead.
+
+## Verdict
+
+**CONDITIONAL** — the recorded test gap is closed on this PR; computed matrix coverage remains unavailable for this module.
+
+## Findings
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-001 | medium | The replacement schema selftest lacks a behavioral check that an unknown declared field type is rejected. A typo in `corpus.yaml` can therefore weaken admission while `make ci` stays green. | Makefile:49; src/corpus.rs:1204 |
+| FND-002 | medium | The cited AC-47 Rust tests do not cover the non-list and missing mode-family witness-channel refusals, so those branches can regress without invalidating the evidence claim. | src/verify.rs:417; src/verify.rs:435 |
+
+## Coverage
+
+`quoin matrix --repo . --json` returned `no coverage_matrix criteria: the module declares no obligations: source`. Trace tags in the new unit tests name FR-065, MP-201, MP-202, and EA FR-011; this is a grep-level index, not computed matrix evidence. The changed source contains no `todo!`, `unimplemented!`, or unsafe block. Existing compiled Python and Rust runners produced byte-identical live verification logs over 174 detection and 11 reporting cases; the final full gate remains pending.
+
+Plan completion: not assessed
+
+## Dispositions
+
+| Finding | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | A focused test mutates the checked-in schema's `id` type and requires the real validator to refuse the checked-in case by name. |
+| FND-002 | fixed | Two focused AC-47 tests now exercise non-list and missing mode-family declarations through the same `witness_channels` function used by the live runner. |
+
+## Re-review
+
+The schema test carries `Trace: FR-065-AC-1`; the new witness tests carry `Trace: FR-065-AC-47`. The witness tests fail if their respective refusal branches are removed, and the `parity-selftest` target runs them. No reverse gap or stub was introduced by the fix diff.

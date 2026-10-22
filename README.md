@@ -36,10 +36,8 @@ make external-channel           # validate exact non-Quire producer/invocations
 ```
 
 The governed exporter fails closed unless its source tree and origin equal the
-QA source in the supplied attestation and its Python runtime equals the
-attested toolchain version. The collection retains the complete attestation;
-an exporter run under an equal-looking but different interpreter is not
-recordable evidence.
+QA source in the supplied attestation. The collection retains the complete
+verification-stack attestation and its source revision.
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
@@ -80,13 +78,8 @@ but never enter Quire detection recall or Quoin Tier-1 finding scores.
 ```
 corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
                      (intent only — the case index and the matrix are DERIVED)
-bounds.py            derives the matrix and gap_count from the filesystem
-verify.py            runs every case by its own `reproduce`, diffs expect.yaml, and
-                     grades each failure case against its CONTROL's payload (AC-42)
-scripts/
-  verify_reporting.py grades reporter output over static MeasurementCollections
-  schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
-  parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
+src/                 Rust metadata, matrix, case runner, reporting, and measurement gates
+Makefile             runs those gates and scaffolds new cases through the Rust CLI
 modules/
   ecosystem/         THE REAL declaration, vendored
   variants/<id>/     relaxation variants — each names the ticket it sizes
@@ -134,7 +127,7 @@ missing. Converting a `GAP` to `out-of-scope` moves the count — declaring some
 out of scope is a visible act.
 
 The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
-definitions and stores their collections here. `scripts/export_measurements.py`
+definitions and stores their collections here. `make measurement-collection`
 accepts no values: it derives bounds from the filesystem and recall from the
 Quire and Quoin runner-produced baselines, retaining the runner boundary in
 every observation. Quire and Quoin own their engine- and finding-quality plans;
