@@ -9,11 +9,11 @@ review_set: subset
 
 ## Summary
 
-Reviewed the Rust replacement of the active corpus readers, runner, reporting and measurement gates, compatibility check, and case scaffolder. The port preserves the authored fixture bytes and keeps the CI target names, but two assurance contracts need tightening before merge.
+Reviewed the Rust replacement of the active corpus readers, runner, reporting and measurement gates, compatibility check, and case scaffolder. The port preserves the authored fixture bytes and keeps the CI target names. Three assurance gaps were found and fixed on this PR.
 
 ## Verdict
 
-**CONDITIONAL** — both findings are fixed on this PR; live parity and the final gate remain pending.
+**CONDITIONAL** — all findings are fixed and live parity passes; the final gate remains pending.
 
 ## Findings
 
@@ -21,6 +21,7 @@ Reviewed the Rust replacement of the active corpus readers, runner, reporting an
 | --- | --- | --- | --- |
 | FND-001 | medium | The measurement collection is assembled as `Value` with ad hoc string keys. A field omitted or misspelled in one branch still compiles, leaving a governed output malformed until a runtime consumer notices; use a typed `Serialize` output shape for the collection. | src/measurements.rs:430 |
 | FND-002 | medium | `schema-selftest` now runs a small set of unit cases in place of the prior CLI mutation gate. For example, a change that silently accepts an unknown `case_schema.types` name can leave the target green because the replacement tests do not exercise that declared-type refusal. Add an end-to-end Rust mutation test for this contract. | Makefile:49; src/corpus.rs:1323 |
+| FND-003 | medium | The AC-47 test covers an unknown witness-channel name but not a non-list channel entry or a missing mode-family entry. Either refusal could regress while the cited Rust test evidence stays green. | src/verify.rs:417; src/verify.rs:435 |
 
 ## Review evidence
 
@@ -32,7 +33,8 @@ The diff changes no CI workflow file. Focused checks before remediation passed: 
 | --- | --- | --- |
 | FND-001 | fixed | `Collection`, `Scope`, and `Environment` now derive `Serialize`; construction names every required envelope field at compile time. Source-defined raw evidence remains dynamic by design. The existing collection ID and observation tests pass. |
 | FND-002 | fixed | `unknown_declared_field_type_is_rejected` mutates the checked-in declaration's `id` type and exercises the real case validator on a checked-in case; `schema-selftest` invokes this test. |
+| FND-003 | fixed | `non_list_witness_channels_are_rejected` and `missing_mode_family_witness_channels_are_rejected` exercise both refusal branches with named diagnostics; all three AC-47 tests pass. |
 
 ## Re-review
 
-The fix diff contains only the typed collection envelope, its serialization boundary, and the focused schema mutation test. Rust review checked the emitted field names against the previous JSON keys, test isolation, panics, lints, and the `Makefile` target; no new finding.
+The remediation diff contains the typed collection envelope, its serialization boundary, and focused schema and AC-47 tests. Rust review checked emitted field names, test isolation, panic surface, trace tags, lints, and the `Makefile` target; no further finding. The three AC-47 tests, formatting check, and library Clippy with warnings denied pass on the updated head.

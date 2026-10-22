@@ -1028,4 +1028,26 @@ mod tests {
         let error = witness_channels(&declaration).expect_err("unknown channel must fail");
         assert!(error.to_string().contains("cannot grade"));
     }
+
+    /// Trace: FR-065-AC-47. A scalar restriction cannot stand in for a channel list.
+    #[test]
+    fn non_list_witness_channels_are_rejected() {
+        let declaration = json!({"mode_families":["disposition"],
+            "witness_channels":{"disposition":"unbacked_rows"}});
+        let error = witness_channels(&declaration).expect_err("non-list channel must fail");
+        assert!(error
+            .to_string()
+            .contains("witness_channels.disposition must be a nonempty list"));
+    }
+
+    /// Trace: FR-065-AC-47. Every declared mode must name its witness channels.
+    #[test]
+    fn missing_mode_family_witness_channels_are_rejected() {
+        let declaration = json!({"mode_families":["disposition", "join"],
+            "witness_channels":{"disposition":["unbacked_rows"]}});
+        let error = witness_channels(&declaration).expect_err("missing mode entry must fail");
+        assert!(error
+            .to_string()
+            .contains("mode_families declares `join` with no witness_channels entry"));
+    }
 }
