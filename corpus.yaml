@@ -41,6 +41,8 @@ reporting_modes:
 # The reporting runner reads this list. Required cases and refusal controls are
 # declarations here, not literals hidden in a script, so adding or removing a
 # contract row changes the gate in the same review.
+# BLOCKED-BY unfiled (owner: planner titan:QSL:plan): Quoin report schema configDigest field
+# (cases/reporting/*/expect.yaml and input/spec/evidence/measurements/*.json carry it; see README "Blocked removals")
 reporting_contract:
   required_cases:
   - definition-version-changed
