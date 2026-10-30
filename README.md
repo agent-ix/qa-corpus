@@ -249,6 +249,12 @@ removed when that dependency is.
   `cases/reporting/*/input/spec/evidence/measurements/{before,after}.json`
   (including the `config-digest-changed` pair), and in `corpus.yaml`
   (`reporting_contract` entries `config-digest-changed`).
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): the sibling
+  revision-labelled fields of the same Quoin measurement-collection schema,
+  `sourceRevision` (e.g. `before-aaaaaaaa`) and `corpusRevision`
+  (e.g. `corpus-276`), in the same `expect.yaml` and
+  `measurements/{before,after}.json` files. They are plain labels, not hashes;
+  `quoin report` and `quoin-measurement` validation read them.
 - BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): `quoin evidence
   inspect-mocks` requires `--commit` (`required(true)` in quoin
   `rust/crates/quoin-cli/src/evidence.rs`). `config/external-channel.json`

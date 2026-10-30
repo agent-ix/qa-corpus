@@ -1,4 +1,4 @@
-//! Derived mode and language cells consumed by CI and measurement evidence.
+//! Derived mode and language cells consumed by CI.
 
 use std::{
     collections::{BTreeMap, BTreeSet},
