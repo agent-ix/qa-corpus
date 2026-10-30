@@ -242,14 +242,14 @@ AGPL-3.0-or-later. Per the agent-ix licensing policy — no carve-outs.
 These stay only as exact technical dependencies on another repository and are
 removed when that dependency is.
 
-- BLOCKED-BY unfiled (owner: planner titan:QSL:plan): Quoin report schema
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema
   `configDigest` field. `quoin report` reads and compares it, so the labels
   (`sha256:config-a`, not real hashes) remain in every
   `cases/reporting/*/expect.yaml` and every
   `cases/reporting/*/input/spec/evidence/measurements/{before,after}.json`
   (including the `config-digest-changed` pair), and in `corpus.yaml`
   (`reporting_contract` entries `config-digest-changed`).
-- BLOCKED-BY unfiled (owner: planner titan:QSL:plan): `quoin evidence
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): `quoin evidence
   inspect-mocks` requires `--commit` (`required(true)` in quoin
   `rust/crates/quoin-cli/src/evidence.rs`). `config/external-channel.json`
   passes an all-zero placeholder for it.
