@@ -33,11 +33,6 @@ Each observation reports `reached`, `population`, the exact missed case ids,
 and `bounds.gap_count`. The gap count is repeated beside every score because a
 perfect score over unrepresented cells is not a complete claim.
 
-## Collection and Provenance
-
-Record the raw case-level evidence. The Quire and Quoin runners retain
-separate baselines because they exercise different production surfaces.
-
 ## Environment and Sampling
 
 Run the complete static corpus through real production commands. Exclude only

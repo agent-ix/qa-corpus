@@ -29,15 +29,8 @@ runs:
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
-make measurement-collection OUTPUT=/tmp/qa-corpus.json \
-  VERIFICATION_STACK=/path/to/attestation.json
-                                # derive the two plan-owned collection families
 make external-channel           # validate exact non-Quire producer/invocations
 ```
-
-The governed exporter fails closed unless its source tree and origin equal the
-QA source in the supplied attestation. The collection retains the complete
-verification-stack attestation and its source revision.
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
@@ -78,7 +71,7 @@ but never enter Quire detection recall or Quoin Tier-1 finding scores.
 ```
 corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
                      (intent only — the case index and the matrix are DERIVED)
-src/                 Rust metadata, matrix, case runner, reporting, and measurement gates
+src/                 Rust metadata, matrix, case runner, and reporting gates
 Makefile             runs those gates and scaffolds new cases through the Rust CLI
 modules/
   ecosystem/         THE REAL declaration, vendored
@@ -127,17 +120,9 @@ missing. Converting a `GAP` to `out-of-scope` moves the count — declaring some
 out of scope is a visible act.
 
 The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
-definitions and stores their collections here. `make measurement-collection`
-accepts no values: it derives bounds from the filesystem and recall from the
-Quire and Quoin runner-produced baselines, retaining the runner boundary in
-every observation. Quire and Quoin own their engine- and finding-quality plans;
+definitions. Quire and Quoin own their engine- and finding-quality plans;
 engineering-assurance and spec-artifacts-process intentionally own no producer
 or measurement store in this QA program.
-
-New collections are schema v2 and fail closed unless the caller supplies a
-`verification-stack-attestation-v1` whose clean `qa-corpus` source matches this
-checkout exactly. The exporter records that full source SHA as `toolVersion`,
-so scorer movement cannot hide behind a constant label.
 
 ### Today: run `make bounds`
 
@@ -251,3 +236,26 @@ it, so the rule is a behaviour rather than a claim.
 ## Licence
 
 AGPL-3.0-or-later. Per the agent-ix licensing policy — no carve-outs.
+
+## Blocked removals
+
+These stay only as exact technical dependencies on another repository and are
+removed when that dependency is.
+
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema
+  `configDigest` field. `quoin report` reads and compares it, so the labels
+  (`sha256:config-a`, not real hashes) remain in every
+  `cases/reporting/*/expect.yaml` and every
+  `cases/reporting/*/input/spec/evidence/measurements/{before,after}.json`
+  (including the `config-digest-changed` pair), and in `corpus.yaml`
+  (`reporting_contract` entries `config-digest-changed`).
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): the sibling
+  revision-labelled fields of the same Quoin measurement-collection schema,
+  `sourceRevision` (e.g. `before-aaaaaaaa`) and `corpusRevision`
+  (e.g. `corpus-276`), in the same `expect.yaml` and
+  `measurements/{before,after}.json` files. They are plain labels, not hashes;
+  `quoin report` and `quoin-measurement` validation read them.
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): `quoin evidence
+  inspect-mocks` requires `--commit` (`required(true)` in quoin
+  `rust/crates/quoin-cli/src/evidence.rs`). `config/external-channel.json`
+  passes an all-zero placeholder for it.

@@ -41,6 +41,8 @@ reporting_modes:
 # The reporting runner reads this list. Required cases and refusal controls are
 # declarations here, not literals hidden in a script, so adding or removing a
 # contract row changes the gate in the same review.
+# BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
+# (cases/reporting/*/expect.yaml and input/spec/evidence/measurements/*.json carry it; see README "Blocked removals")
 reporting_contract:
   required_cases:
   - definition-version-changed
@@ -53,6 +55,7 @@ reporting_contract:
   - no-prior-record
   refusal_cases:
   - definition-version-changed
+  # BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
   - config-digest-changed
   - incomplete-population
 bounds_states:
@@ -1090,6 +1093,7 @@ inventory:
   case: definition-version-changed
   source: agent-ix/quire-rs#276
   languages: [data]
+# BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
 - mode: reporting
   case: config-digest-changed
   source: agent-ix/quire-rs#276
