@@ -2,15 +2,13 @@
 
 use std::{env, path::PathBuf, process::ExitCode};
 
-use qa_corpus::{
-    bounds, compatibility, corpus, external, measurements, reporting, scaffold, verify,
-};
+use qa_corpus::{bounds, corpus, external, reporting, scaffold, verify};
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     let command = args
         .next()
-        .ok_or("usage: qa-corpus <bounds|metadata|verify|verify-reporting|measurement-collection|compatibility-check|external-channel|new-case> [options]")?;
+        .ok_or("usage: qa-corpus <bounds|metadata|verify|verify-reporting|external-channel|new-case> [options]")?;
     let mut root = PathBuf::from(".");
     let mut json = false;
     let mut complete = false;
@@ -20,8 +18,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut kind = String::from("failure");
     let mut module = String::from("ecosystem");
     let mut issue = String::new();
-    let mut output = None;
-    let mut verification_stack = None;
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--json" => json = true,
@@ -33,16 +29,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             "--kind" => kind = args.next().ok_or("--kind requires a value")?,
             "--module" => module = args.next().ok_or("--module requires a value")?,
             "--issue" => issue = args.next().ok_or("--issue requires a value")?,
-            "--output" => {
-                output = Some(PathBuf::from(
-                    args.next().ok_or("--output requires a path")?,
-                ))
-            }
-            "--verification-stack" => {
-                verification_stack = Some(PathBuf::from(
-                    args.next().ok_or("--verification-stack requires a path")?,
-                ))
-            }
             _ => return Err(format!("unknown argument: {arg}").into()),
         }
     }
@@ -71,10 +57,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         "external-channel" => {
             let cases = corpus::discover(&root)?;
             println!("{}", external::validate(&root, &cases)?);
-        }
-        "compatibility-check" => {
-            let sources = compatibility::source_root(&root)?;
-            println!("{}", compatibility::check(&root, &sources)?);
         }
         "new-case" => {
             let options = scaffold::Options {
@@ -137,17 +119,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             println!("reporting mismatches: {}", summary.failures.len());
             if !summary.failures.is_empty() {
                 return Err("reporting verification failed".into());
-            }
-        }
-        "measurement-collection" => {
-            let stack =
-                verification_stack.ok_or("measurement-collection requires --verification-stack")?;
-            let collection = measurements::export(&root, &stack)?;
-            let rendered = format!("{}\n", serde_json::to_string_pretty(&collection)?);
-            if let Some(path) = output {
-                std::fs::write(path, rendered)?;
-            } else {
-                print!("{rendered}");
             }
         }
         _ => return Err(format!("unknown command: {command}").into()),

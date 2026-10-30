@@ -20,10 +20,6 @@ help:
 	@echo "make new-case MODE=.. CASE=.. LANG=..  scaffold a runnable skeleton"
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
-	@echo "make measurement-selftest prove both active plans have derived output"
-	@echo "make compatibility-corpus-selftest prove checks select the recorded producer revisions"
-	@echo "make compatibility-check verify retained inputs against published source revisions"
-	@echo "make measurement-collection OUTPUT=... VERIFICATION_STACK=... export a governed collection"
 	@echo "make external-channel    validate exact non-Quire witness contract"
 	@echo "make ci                  run the corpus and all verification selftests"
 
@@ -54,29 +50,12 @@ schema-selftest:
 parity-selftest:
 	@cargo test --quiet --lib verify::tests
 
-.PHONY: measurement-selftest
-measurement-selftest:
-	@cargo test --quiet --lib measurements::tests
-
-.PHONY: measurement-collection
-measurement-collection:
-	@test -n "$(VERIFICATION_STACK)" || { echo "VERIFICATION_STACK= is required"; exit 1; }
-	@cargo run --quiet -- measurement-collection $(if $(OUTPUT),--output "$(OUTPUT)",) --verification-stack "$(VERIFICATION_STACK)"
-
 .PHONY: external-channel
 external-channel:
 	@cargo run --quiet -- external-channel
 
-.PHONY: compatibility-corpus-selftest
-compatibility-corpus-selftest:
-	@cargo test --quiet --lib compatibility::tests
-
-.PHONY: compatibility-check
-compatibility-check:
-	@cargo run --quiet -- compatibility-check
-
 .PHONY: ci
-ci: schema-selftest external-channel compatibility-corpus-selftest bounds verify verify-reporting measurement-selftest parity-selftest
+ci: schema-selftest external-channel bounds verify verify-reporting parity-selftest
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one

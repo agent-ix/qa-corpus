@@ -29,15 +29,8 @@ runs:
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
-make measurement-collection OUTPUT=/tmp/qa-corpus.json \
-  VERIFICATION_STACK=/path/to/attestation.json
-                                # derive the two plan-owned collection families
 make external-channel           # validate exact non-Quire producer/invocations
 ```
-
-The governed exporter fails closed unless its source tree and origin equal the
-QA source in the supplied attestation. The collection retains the complete
-verification-stack attestation and its source revision.
 
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
@@ -78,7 +71,7 @@ but never enter Quire detection recall or Quoin Tier-1 finding scores.
 ```
 corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
                      (intent only — the case index and the matrix are DERIVED)
-src/                 Rust metadata, matrix, case runner, reporting, and measurement gates
+src/                 Rust metadata, matrix, case runner, and reporting gates
 Makefile             runs those gates and scaffolds new cases through the Rust CLI
 modules/
   ecosystem/         THE REAL declaration, vendored
@@ -127,17 +120,9 @@ missing. Converting a `GAP` to `out-of-scope` moves the count — declaring some
 out of scope is a visible act.
 
 The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
-definitions and stores their collections here. `make measurement-collection`
-accepts no values: it derives bounds from the filesystem and recall from the
-Quire and Quoin runner-produced baselines, retaining the runner boundary in
-every observation. Quire and Quoin own their engine- and finding-quality plans;
+definitions. Quire and Quoin own their engine- and finding-quality plans;
 engineering-assurance and spec-artifacts-process intentionally own no producer
 or measurement store in this QA program.
-
-New collections are schema v2 and fail closed unless the caller supplies a
-`verification-stack-attestation-v1` whose clean `qa-corpus` source matches this
-checkout exactly. The exporter records that full source SHA as `toolVersion`,
-so scorer movement cannot hide behind a constant label.
 
 ### Today: run `make bounds`
 
