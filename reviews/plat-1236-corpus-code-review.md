@@ -35,3 +35,19 @@ Reviewed frozen head aaf371962859d3445fa20cdfe1cbfac89ec33188 against bcb2045. Y
 ## Verdict
 
 CONDITIONAL — fix the recorded finding before merge.
+
+## Dispositions
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | Both fixtures now retain the existing owning pending/live-protocol tracking id alongside the retirement criteria. The unchanged consumer metadata prefix assertion is satisfied. |
+
+## Promotion inspection (disposition round 1)
+
+Inspected head f2b83813e39d03096cd668ba5a7b8d816c735a34. The new failure and control documents are byte-identical after replacing only the failure row's Verification token `Withdrawn` with `Test`; the reason prose, all three IDs and both live siblings remain. The failure expects two live/unbacked rows, and its healthy control expects all three. This is a stronger retained-prose control against hardcoded identity/prose retirement inference. Both fixtures retain `TC-1023`, which truthfully tracks the existing corpus-wide pending/live expectation protocol; the FR-050 criterion tags remain.
+
+Promotion removed both `pending` metadata and its forward file and moved the measured forward expectation into the live block. The earlier parser-only baseline/control remain historical measurements; the updated case comments expressly distinguish them from this final control. The fixed-engine forward receipt `/tmp/plat1236-corpus-forward.log` records its focused assertion pass, but uses the earlier pending-stage control. No execution of the final three-row control or full QA gate was performed by this reviewer. Parent qualification of that final control remains a merge prerequisite. No new finding was identified in the promotion itself.
+
+## Current verdict
+
+All recorded findings are fixed. Final-control execution and final qualifying gates remain required before merge; no such run is claimed by this disposition.
