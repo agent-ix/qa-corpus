@@ -1,0 +1,21 @@
+name: withdrawn-verification
+version: 0.1.0
+description: Explicit verification-cell retirement with live coverage siblings
+artifact_types:
+- name: FR
+traceability:
+  trace_targets:
+  - name: acceptance-criterion
+    archetype: FR
+    section: Acceptance Criteria
+    id_column: ID
+  document_references:
+  - name: verification
+    archetype: FR
+    section: Acceptance Criteria
+    row_id_column: ID
+    column: Verification
+    targets: [acceptance-criterion]
+    pattern: '\b((?:TC|IT)-\d+)\b'
+  vocabularies:
+    retired: [Withdrawn]

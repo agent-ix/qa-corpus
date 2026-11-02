@@ -1,0 +1,17 @@
+id: withdrawn-verification
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1236
+mode: minting
+language: n/a
+module: variants/withdrawn-verification
+declaration_under_test: Explicit Withdrawn verification cells retire only their own rows.
+kind: failure
+pending: https://linear.app/agent-ix/issue/PLAT-1236
+pending_reason: The declaration parses, but reconciliation still counts the withdrawn tombstone as active and unbacked.
+findable: false
+reproduce: quire coverage --scope cases/minting/withdrawn-verification/input --module modules/variants/withdrawn-verification --json
+tags: [FR-050-AC-53, FR-050-AC-54, coverage, minting, retired]
+comment: >-
+  The failure preserves the real IR FR-038-AC-92 tombstone. The control removes
+  only that row and retains both the live and Planned siblings. Baseline engine
+  must include declaration parsing but not retirement reconciliation; this is
+  not a reproduction with an unmodified released engine.
