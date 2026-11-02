@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=185> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=187> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -362,8 +362,12 @@ diagnostic_reasons:
 # list. Its case, `rows-across-many-headings`, folded its forward block into
 # `expect.yaml` re-measured, and the prediction held exactly: `total` 2 -> 4,
 # `backed` 1 -> 3, `untracked_symbols` emptied.
-# EMPTY, and kept for the same reason `forward` and `suppressed` are: the class
-# is real and its one member was resolved.
+# PLAT-1236 also used this class: its declaration-parser-only baseline
+# counted the actual Withdrawn tombstone as active and unbacked. The forward
+# expectation excluded it while preserving both live siblings. After the
+# fixed-engine forward check passed, that expectation became the live block.
+# The final healthy control retains the tombstone ID and prose but changes
+# only Verification to Test, so it remains live and keeps discriminating.
 #
 # It named `agent-ix/quire-rs#273` — "registers `describe()`/`suite()` headers
 # as Containers, so a tag on the header has something to attach to" — and that
@@ -374,7 +378,8 @@ diagnostic_reasons:
 # ecosystem had declined, and `tag-on-describe-header` is a live case asserting
 # `tag-on-non-binding-symbol` now.
 #
-# No fixture currently predicts a ticket that changes what mints.
+# No pending behavior-change fixture remains after PLAT-1236 promotion.
+# The class stays declared for the next transition of this kind.
 behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
@@ -408,8 +413,10 @@ behaviour_change_tickets: []
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED: **15 of <derived:pairs=85>**. The pair count
-# is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
+# PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
+# The current pair count is <derived:pairs=86>; that measurement has not been
+# repeated for the added case. The pair count is tagged and gated; the 15
+# is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
 # does not do. `qa-corpus verify` is where that number can be re-derived. It is dated
 # rather than gated, and this sentence says which.
@@ -426,8 +433,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=84> `kind: failure`
-# fixtures, all <derived:controlled_failures=84> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=85> `kind: failure`
+# fixtures, all <derived:controlled_failures=85> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -558,6 +565,10 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
+- mode: minting
+  case: withdrawn-verification
+  source: https://linear.app/agent-ix/issue/PLAT-1236 — IR-1141 Withdrawn tombstone counted as live unbacked coverage
+  languages: [n/a]
 - mode: minting
   case: status-column-mismatch
   source: agent-ix/quire-rs#341 — Coverage Status silently bypassed configured Status classification
