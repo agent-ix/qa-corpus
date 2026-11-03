@@ -1201,3 +1201,11 @@ known_gaps:
     cases:
     - model-mints-nothing-control
     - undeclared-coverage-vocabulary-control
+
+- mode: attachment
+  case: guarded-implements-partial-match
+  source: https://linear.app/agent-ix/issue/PLAT-1181
+  languages: [rust, python, typescript]
+  out_of_scope:
+    python: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not Python syntax. Existing Python unguarded forms are controlled in the engine TC-1988 regression.
+    typescript: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not TypeScript syntax. Existing TypeScript unguarded forms are controlled in the engine TC-1988 regression.

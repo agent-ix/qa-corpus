@@ -1,0 +1,16 @@
+id: guarded-implements-partial-match
+case: guarded-implements-partial-match
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1181
+mode: attachment
+module: guarded-implements
+language: rust
+kind: failure
+findable: true
+reproduce: IX_FILAMENT_MODULES_PATH=modules/guarded-implements quire coverage --scope cases/attachment/guarded-implements-partial-match/rust/input --json
+tags: [TC-1985, TC-1989, PLAT-1181, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
