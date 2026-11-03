@@ -1,11 +1,1 @@
-id: guarded-implements-partial-match-control
-case: guarded-implements-partial-match
-issue_ref: https://linear.app/agent-ix/issue/PLAT-1181
-mode: attachment
-module: guarded-implements
-language: rust
-kind: control
-findable: false
 reproduce: IX_FILAMENT_MODULES_PATH=modules/guarded-implements quire coverage --scope cases/attachment/guarded-implements-partial-match-control/rust/input --json
-tags: [TC-1985, TC-1989, PLAT-1181, coverage]
-control_for: [guarded-implements-partial-match]
