@@ -1,0 +1,13 @@
+backed: 0
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 2
+  matched: 1
+diagnostic_reasons: [partial-implements-attribute-match]
+diagnostic_paths:
+  partial-implements-attribute-match: src/lib.rs
+diagnostic_lines:
+  partial-implements-attribute-match: 11
+diagnostic_message_contains:
+  partial-implements-attribute-match: [rust-implements, payload, FR-104, doc]

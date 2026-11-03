@@ -1,0 +1,17 @@
+total: 3
+backed: 0
+groups:
+- document: spec/FR-038.md
+  target: acceptance-criterion
+  backed: 0
+  total: 3
+unbacked_rows:
+- document: spec/FR-038.md
+  row_id: FR-038-AC-92
+  target_ids: [FR-038-AC-92]
+- document: spec/FR-038.md
+  row_id: FR-038-AC-93
+  target_ids: [FR-038-AC-93]
+- document: spec/FR-038.md
+  row_id: FR-038-AC-94
+  target_ids: [FR-038-AC-94]

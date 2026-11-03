@@ -34,13 +34,7 @@ groups:
     target: test-case
     backed: 1
     total: 2
-unbacked_rows:
-- document: spec/FR-001.md
-  row_id: FR-001-AC-2
-  target_ids:
-  - FR-001-AC-2
-  - TC-002
-
+unbacked_rows: []
 untracked_symbols: []
 binding_census:
   - language: typescript

@@ -248,12 +248,12 @@ artifact_types:
           required: true
           multiple: true
           assert:
-            columns: [Subsystem, Requirements, Local Matrix, Coverage Status]
+            columns: [Subsystem, Requirements, Local Matrix, Status]
             min_rows: 1
             column_patterns:
               # Same status vocabulary as every other matrix surface, marker
               # first and the note that says why after it (CR-016/CR-031).
-              Coverage Status: '^(✅|❌|🚧|⛔)(\s+.*)?$'
+              Status: '^(✅|❌|🚧|⛔)(\s+.*)?$'
         # Cross-module integration scenarios. Optional: a repository whose
         # subsystems do not integrate has none, and requiring the table would
         # force an empty one.
@@ -301,7 +301,7 @@ artifact_types:
           required: true
           multiple: true
           assert:
-            columns: [Functional Req, Acceptance Criteria, Test Cases, Coverage Status]
+            columns: [Functional Req, Acceptance Criteria, Test Cases, Status]
             min_rows: 1
         test_cases:
           from: table_row
@@ -370,7 +370,7 @@ artifact_types:
               # trace to — withdrawing it is precisely the act of severing that
               # edge — and the pattern admitted nothing valid to write.
               #
-              # [RAN] `agent-ix/filament-ide-rs` @ fc5d644: 16 rows across 8
+              # [RAN] `agent-ix/filament-ide-rs`: 16 rows across 8
               # module matrices carry `Traces To: -`, and **16 of 16 are
               # retired** (`⛔`). Zero are live rows with a missing trace. The
               # corpus wrote the conventional "not applicable" and the pattern
@@ -403,14 +403,14 @@ artifact_types:
           required: false
           multiple: true
           assert:
-            columns: [Stakeholder Req, Trace to US/FR, Test/Validation, Coverage Status]
+            columns: [Stakeholder Req, Trace to US/FR, Test/Validation, Status]
         user_story_coverage:
           from: table_row
           under_section: User Story Coverage
           required: false
           multiple: true
           assert:
-            columns: [User Story, Acceptance Criteria, Test Cases, Coverage Status]
+            columns: [User Story, Acceptance Criteria, Test Cases, Status]
         non_functional_coverage:
           from: table_row
           under_section: Non-Functional Requirement Coverage
@@ -1255,7 +1255,7 @@ traceability:
     # 29148-aligned corpus also authors verification by inspection, by analysis
     # and by demonstration, and had no declared value for any of them.
     #
-    # [RAN] `agent-ix/filament-ide-rs` @ fc5d644: of 496 `[assert]` findings,
+    # [RAN] `agent-ix/filament-ide-rs`: of 496 `[assert]` findings,
     # 453 were rejected `Type` cells, and 128 of those were a means the
     # vocabulary had no word for — `Inspection` 112, `Analysis` 11,
     # `Demonstration` 5. Rows read rather than assumed: TC-085 "Inspect Core for

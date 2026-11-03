@@ -1,5 +1,5 @@
-# RE-MEASURED against the vendored ecosystem declaration (engine bcda5ed,
-# `quire` 0.30.2). The list GREW by one and the growth is the migration's
+# RE-MEASURED against the vendored ecosystem declaration (measured at authoring).
+# The list GREW by one and the growth is the migration's
 # doing, not a defect: `bench-no-symbol-vocab` declared only the `verification`
 # reference on the FR, so the matrix was never read; the ecosystem also
 # declares `traces-to` on the matrix, whose `TC-002` row is typed `Inspection`.

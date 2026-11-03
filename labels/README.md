@@ -13,8 +13,7 @@ guesses. The one exception is re-adjudicated in place and says so:
 module, so the port had to re-seed it and re-confirm the label.
 
 That is the risk this directory carries: **a label is prose about a run, and
-nothing recomputes it.** `confirmed_at` records the engine it was last checked
-against. When it disagrees with a real run, the label is what is wrong — that
+nothing recomputes it.** When it disagrees with a real run, the label is what is wrong — that
 has now happened twice on the same file.
 
 ## What reads them

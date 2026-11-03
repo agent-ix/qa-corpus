@@ -14,7 +14,6 @@ defects:
     The diagnostic itself carries NO path — it names the metric, not a place — so this label pairs on
     family alone and correctly drags `finding_localisation_rate` down: a number that cannot say where
     is exactly the thing being measured.'
-  confirmed_at: quire-rs v0.44.2
   collateral:
   - family: marker-form-mismatch
     reason: no-symbol-bound

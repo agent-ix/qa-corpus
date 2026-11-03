@@ -1,7 +1,6 @@
 {
   "definition_version": "detection-recall-v1",
   "runner": "quoin",
-  "corpus_revision": "afcd9c7fadcf266e86f219807c7de4e0095f3579",
   "gap_count": 0,
   "rows": [
     {
@@ -658,6 +657,42 @@
       "mode": "detection",
       "language": "rust",
       "family": "low-symbol-binding",
+      "level": "L3",
+      "reached": 1,
+      "population": 1,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "detection",
+      "language": "rust",
+      "family": "marker-form-mismatch",
+      "level": "L1",
+      "reached": 1,
+      "population": 1,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "detection",
+      "language": "rust",
+      "family": "marker-form-mismatch",
+      "level": "L2",
+      "reached": 1,
+      "population": 1,
+      "rate": 1,
+      "gap_count": 0,
+      "misses": [],
+      "exclusions": []
+    },
+    {
+      "mode": "detection",
+      "language": "rust",
+      "family": "marker-form-mismatch",
       "level": "L3",
       "reached": 1,
       "population": 1,

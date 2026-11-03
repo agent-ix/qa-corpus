@@ -19,7 +19,7 @@
 #
 # MEASURED, with the engine, over the 241 repositories
 # `quire-rs/scripts/corpus.py` enumerates under ~/dev — one `quire` binary built
-# from `quire-cli` at its pinned rev, engine `e06f121`, release profile,
+# from `quire-cli`, release profile,
 # `quire coverage --scope <repo> --json` per repository, `untracked_symbols`
 # read out of the payload. 15 repositories author `## Invariants` (129 rows),
 # its table is literally `| ID | Constraint | Type | Rationale |` — the
@@ -60,21 +60,14 @@ groups:
     backed: 1
     total: 2
 unbacked_rows:
-- document: spec/tests.md
-  row_id: TC-001
-  target_ids:
-  - FR-001-AC-1
-  - TC-001
-- document: spec/FR-001.md
-  row_id: FR-001-AC-1
-  target_ids:
-  - FR-001-AC-1
-  - TC-001
-- document: spec/FR-001.md
-  row_id: FR-001-AC-2
-  target_ids:
-  - FR-001-AC-2
-  - TC-002
+  - document: spec/tests.md
+    row_id: TC-001
+    target_ids: [FR-001-AC-1, TC-001]
+  - document: spec/FR-001.md
+    row_id: FR-001-AC-1
+    target_ids: [FR-001-AC-1, TC-001]
+# THE DETECTION. Exact, both directions: an extra entry, a missing one, a
+# changed field or a different order all fail (FR-065-AC-28).
 untracked_symbols:
   - symbol: carries the declared severity
     trace_id: FR-001-INV-1

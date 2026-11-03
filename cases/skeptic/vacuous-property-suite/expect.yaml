@@ -5,7 +5,7 @@
 # THIS BLOCK USED TO BE THE THREE LINES BELOW AND NOTHING ELSE — `backed: 1`,
 # `total: 3`, `binding_census: [rust 1/1]` — which is true of any healthy
 # three-row Rust tree with one bound tag. It was byte-identical to
-# `oracle-copy` and `mocked-confirmation` (md5 bcb3ce17d8eae3007297e4a4677034ab)
+# `oracle-copy` and `mocked-confirmation`
 # and swapping their `input/` trees left `make ci` green.
 #
 # The engine was finding the defect the whole time. The corpus had no key to

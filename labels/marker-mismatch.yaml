@@ -10,7 +10,6 @@ defects:
   findable: true
   expect_reason: no-symbol-bound
   note: the module declares `#[trace(...)]`; the source writes `#[tracks(...)]`
-  confirmed_at: quire-rs v0.43.0
   collateral:
   - family: hollow-denominator
     reason: hollow-denominator

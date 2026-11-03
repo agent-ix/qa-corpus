@@ -28,12 +28,6 @@ pending, out of scope with a reason, or GAP.
 `bounds.gap-count-v1`. It is a count, never a ratio; retain the named gap list
 and pending list with the scalar.
 
-## Collection and Provenance
-
-Derive from the validated filesystem inventory. Record corpus revision,
-inventory digest, reader version, module-source digests, timestamp, and raw
-bounds output.
-
 ## Environment and Sampling
 
 Run over the complete corpus tree. A missing or unreadable case is an error,

@@ -1,9 +1,11 @@
 # qa-corpus
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white)](https://discord.gg/k8DVhuYBR2)
+
 The controlled corpus for the `quire` / `quoin` toolchain. **Static files, read in
 place, language-neutral.** Contract: [`agent-ix/quire-rs` FR-065](https://github.com/agent-ix/quire-rs/blob/main/spec/functional/FR-065-controlled-corpus-contract.md).
 
-Case-before-fix, language, control, and Tier-2 pin policy lives in
+Case-before-fix, language, and control policy lives in
 [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Why this repository exists
@@ -27,9 +29,6 @@ runs:
 make verify                     # every case, by its own recorded invocation
 make verify-reporting           # Quoin report over static record pairs
 make bounds                     # derive the matrix; reject every applicable GAP
-make measurement-collection OUTPUT=/tmp/qa-corpus.json
-                                # derive the two plan-owned collection families
-make duplicate-census           # reject unexplained copied-fixture divergence/groups
 make external-channel           # validate exact non-Quire producer/invocations
 ```
 
@@ -72,15 +71,10 @@ but never enter Quire detection recall or Quoin Tier-1 finding scores.
 ```
 corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENTORY
                      (intent only — the case index and the matrix are DERIVED)
-bounds.py            derives the matrix and gap_count from the filesystem
-verify.py            runs every case by its own `reproduce`, diffs expect.yaml, and
-                     grades each failure case against its CONTROL's payload (AC-42)
-scripts/
-  verify_reporting.py grades reporter output over static MeasurementCollections
-  schema_selftest.py mutates a copy of the corpus and requires bounds.py to reject it
-  parity_selftest.py blinds a fixture and requires verify.py's differential to reject it
+src/                 Rust metadata, matrix, case runner, and reporting gates
+Makefile             runs those gates and scaffolds new cases through the Rust CLI
 modules/
-  ecosystem/         THE REAL declaration, vendored with its source SHA (VENDORED.md)
+  ecosystem/         THE REAL declaration, vendored
   variants/<id>/     relaxation variants — each names the ticket it sizes
 cases/<mode>/<case>/                       ONE language
   case.yaml          the fields `corpus.yaml`'s `case_schema` declares. Read it
@@ -111,21 +105,13 @@ config/              the metric dictionary
 baselines/           per-runner baselines, versioned with the corpus
 ```
 
-`config/duplicate-census.json` classifies every byte-identical fixture group.
-Cases stay self-contained, so intentional support files are copied rather than
-symlinked; their invariant is that copies move together unless the seeded defect
-requires divergence. When a reviewed fixture change intentionally alters group
-membership, run `python3 scripts/duplicate_census.py --update`, inspect the exact
-paths/digests, and commit the fixture and census in one change. A new group, a
-disappeared group, or unexplained membership change fails CI.
-
 ## The bounds matrix is the point
 
 A case list answers *what did we try*. The matrix answers **what did we never try**,
 and only the second is a statement about the tool. Every declared cell is `covered`,
 `out-of-scope` with a written reason, or `GAP`.
 
-**A scenario with no case is undefined behaviour, not assumed-working.** `v0.44.0`
+**A scenario with no case is undefined behaviour, not assumed-working.** A release
 shipped two `high` defects straight through the empty Python and TypeScript columns.
 
 `bounds.gap_count` is a **count, never a ratio**. A ratio falls as easy cases are
@@ -134,10 +120,7 @@ missing. Converting a `GAP` to `out-of-scope` moves the count — declaring some
 out of scope is a visible act.
 
 The corpus owns the `bounds.gap_count` and partitioned `detection.recall`
-definitions and stores their collections here. `scripts/export_measurements.py`
-accepts no values: it derives bounds from the filesystem and recall from the
-Quire and Quoin runner-produced baselines, retaining the runner boundary in
-every observation. Quire and Quoin own their engine- and finding-quality plans;
+definitions. Quire and Quoin own their engine- and finding-quality plans;
 engineering-assurance and spec-artifacts-process intentionally own no producer
 or measurement store in this QA program.
 
@@ -225,9 +208,10 @@ and the restriction must still mismatch. So "assert the field that separates the
 is not the whole rule: the field also has to be one your mode declares. `total` is a
 witness for `minting` and for **nothing else** — a minted-row count *is* the minting
 channel, and everywhere else it is an incidental global scalar. Measured over the whole
-controlled population, 15 of the <derived:pairs=100> (case, control) pairs differ in `total`
-while being about something else entirely, which is what this closes. The pair count is
-gated against the tree; the 15 is a measurement at engine `5a68ceb` and is not.
+controlled population before PLAT-1236, 15 of 85 (case, control) pairs differed in
+`total` while being about something else entirely, which is what this closes. The
+current pair count is <derived:pairs=87>; the historical measurement has not been
+repeated for the added case. The pair count is gated against the tree; the 15 is not.
 
 Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
 A block that names none of them is rejected by name; so is one that separates the pair
@@ -239,7 +223,7 @@ Three more consequences worth knowing before you write a fixture:
 * `validate_*` keys are re-run over the **control's** tree in that grading, because
   `quire validate` reads a spec tree and cannot be recomputed from a payload. They are
   a witness in **every** mode: `quire validate` is a second oracle, not a coverage
-  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=100>: it read
+  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=87>: it read
   "0 of 35" until `wrong-type-cell` gained a control, and nothing was holding that
   sentence to the tree.
 * If your case is `pending:` on a **behaviour-change** ticket — one that adds no
@@ -253,3 +237,26 @@ it, so the rule is a behaviour rather than a claim.
 ## Licence
 
 AGPL-3.0-or-later. Per the agent-ix licensing policy — no carve-outs.
+
+## Blocked removals
+
+These stay only as exact technical dependencies on another repository and are
+removed when that dependency is.
+
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema
+  `configDigest` field. `quoin report` reads and compares it, so the labels
+  (`sha256:config-a`, not real hashes) remain in every
+  `cases/reporting/*/expect.yaml` and every
+  `cases/reporting/*/input/spec/evidence/measurements/{before,after}.json`
+  (including the `config-digest-changed` pair), and in `corpus.yaml`
+  (`reporting_contract` entries `config-digest-changed`).
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): the sibling
+  revision-labelled fields of the same Quoin measurement-collection schema,
+  `sourceRevision` (e.g. `before-aaaaaaaa`) and `corpusRevision`
+  (e.g. `corpus-276`), in the same `expect.yaml` and
+  `measurements/{before,after}.json` files. They are plain labels, not hashes;
+  `quoin report` and `quoin-measurement` validation read them.
+- BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): `quoin evidence
+  inspect-mocks` requires `--commit` (`required(true)` in quoin
+  `rust/crates/quoin-cli/src/evidence.rs`). `config/external-channel.json`
+  passes an all-zero placeholder for it.

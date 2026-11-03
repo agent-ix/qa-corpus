@@ -1,0 +1,18 @@
+id: withdrawn-verification
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1236
+mode: minting
+language: n/a
+module: variants/withdrawn-verification
+declaration_under_test: Explicit Withdrawn verification cells retire only their own rows.
+kind: failure
+findable: false
+reproduce: quire coverage --scope cases/minting/withdrawn-verification/input --module modules/variants/withdrawn-verification --json
+tags: [TC-1023, FR-050-AC-53, FR-050-AC-54, coverage, minting, retired]
+comment: >-
+  The failure preserves the real IR FR-038-AC-92 tombstone. The final healthy
+  control changes only its Verification cell from Withdrawn to Test, retaining
+  the same reason text and all three IDs. This proves retirement is declared
+  by the verification value, not inferred from the prose or a hardcoded ID.
+  Both live and Planned siblings remain unbacked. The earlier pending-stage
+  control removed the tombstone; its parser-only baseline is historical,
+  not a measurement of this final control.

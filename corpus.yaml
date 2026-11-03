@@ -6,7 +6,7 @@
 # case, the languages it should exist in, and any cell deliberately scoped out
 # with its reason.
 #
-# What is DERIVED from the filesystem, every time, by `bounds.py`:
+# What is DERIVED from the filesystem, every time, by `qa-corpus bounds`:
 #   covered  — a fixture exists for that case and language
 #   GAP      — declared applicable, no fixture, not scoped out
 #   gap_count and the sum invariant
@@ -41,6 +41,8 @@ reporting_modes:
 # The reporting runner reads this list. Required cases and refusal controls are
 # declarations here, not literals hidden in a script, so adding or removing a
 # contract row changes the gate in the same review.
+# BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
+# (cases/reporting/*/expect.yaml and input/spec/evidence/measurements/*.json carry it; see README "Blocked removals")
 reporting_contract:
   required_cases:
   - definition-version-changed
@@ -53,6 +55,7 @@ reporting_contract:
   - no-prior-record
   refusal_cases:
   - definition-version-changed
+  # BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
   - config-digest-changed
   - incomplete-population
 bounds_states:
@@ -86,11 +89,11 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=216> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=189> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
-# comparing them. The required set lives HERE, `bounds.py` validates against it
+# comparing them. The required set lives HERE, `qa-corpus bounds` validates against it
 # before deriving anything, and a Rust test asserts `CaseMeta` agrees with it —
 # so the day a field is added to one reader and not the other, a gate says so.
 #
@@ -254,11 +257,8 @@ diagnostic_reasons:
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
-  # agent-ix/quire-rs PLAT-1077 (CR-187), landed: a range — two id-shaped
-  # tokens joined by a bare `..` — written inside any source trace tag,
-  # marker or legacy alike, binds no id at all, including its own endpoints.
-  # Reported once per occurrence rather than silently dropped or (the prior
-  # behavior) partially bound.
+  # PLAT-1181 / quire-rs #566: rejected proper-substring Rust attribute matches.
+  - partial-implements-attribute-match
   - range-in-trace-tag
   # agent-ix/quire-rs#320: every declared section the document HAS holds no
   # table, so it mints nothing and neither sibling diagnostic can fire — the
@@ -360,12 +360,16 @@ diagnostic_reasons:
 # what the engine should produce once the ticket lands. That needs an engine,
 # so it lives in the graders rather than here.
 #
-# `agent-ix/quire-rs#272` LANDED (CR-118, engine v0.33.0) and is gone from this
+# `agent-ix/quire-rs#272` LANDED (CR-118) and is gone from this
 # list. Its case, `rows-across-many-headings`, folded its forward block into
 # `expect.yaml` re-measured, and the prediction held exactly: `total` 2 -> 4,
 # `backed` 1 -> 3, `untracked_symbols` emptied.
-# EMPTY, and kept for the same reason `forward` and `suppressed` are: the class
-# is real and its one member was resolved.
+# PLAT-1236 also used this class: its declaration-parser-only baseline
+# counted the actual Withdrawn tombstone as active and unbacked. The forward
+# expectation excluded it while preserving both live siblings. After the
+# fixed-engine forward check passed, that expectation became the live block.
+# The final healthy control retains the tombstone ID and prose but changes
+# only Verification to Test, so it remains live and keeps discriminating.
 #
 # It named `agent-ix/quire-rs#273` — "registers `describe()`/`suite()` headers
 # as Containers, so a tag on the header has something to attach to" — and that
@@ -376,7 +380,8 @@ diagnostic_reasons:
 # ecosystem had declined, and `tag-on-describe-header` is a live case asserting
 # `tag-on-non-binding-symbol` now.
 #
-# No fixture currently predicts a ticket that changes what mints.
+# No pending behavior-change fixture remains after PLAT-1236 promotion.
+# The class stays declared for the next transition of this kind.
 behaviour_change_tickets: []
 # `result_record:` DELETED, 2026-08-24, outside review — `agent-ix/quire-rs#279`.
 #
@@ -406,14 +411,16 @@ behaviour_change_tickets: []
 # stops there: it proves an assertion distinguishes THESE TWO PAYLOADS, not that
 # the assertion concerns the SEEDED DEFECT. Measured by running every case and
 # every control and comparing `totals.total`, over the whole controlled
-# population at `801afd5`: **14 of the 35 (case, control) pairs differed in
+# population: **14 of the 35 (case, control) pairs differed in
 # `total`** — so for those, an incidental row count satisfies the whole rule
 # while saying nothing about the family the case is named for.
 #
-# RE-MEASURED at engine `5a68ceb`: **15 of <derived:pairs=100>**. The pair count
-# is tagged and gated; the 13 is NOT, and cannot be — it needs a payload from
-# every control, which means running the engine, which `bounds.py` deliberately
-# does not do. `verify.py` is where that number can be re-derived. It is dated
+# PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
+# The current pair count is <derived:pairs=87>; that measurement has not been
+# repeated for the added case. The pair count is tagged and gated; the 15
+# is NOT, and cannot be — it needs a payload from
+# every control, which means running the engine, which `qa-corpus bounds` deliberately
+# does not do. `qa-corpus verify` is where that number can be re-derived. It is dated
 # rather than gated, and this sentence says which.
 #
 # So AC-42 is graded TWICE: once over the whole block, and once over the block
@@ -428,8 +435,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=99> `kind: failure`
-# fixtures, all <derived:controlled_failures=99> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=86> `kind: failure`
+# fixtures, all <derived:controlled_failures=86> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -535,7 +542,7 @@ witness_channels:
 #     declared cells   50 -> 88     covered 46     out-of-scope 1 -> 11     GAP 4 -> 31
 #
 # (88 rather than 85 because `section-holds-no-table` joined the inventory in
-# the same pass — a Wave 3 token, landed in `204dca4`, published, and asserted
+# the same pass — a Wave 3 token, landed, published, and asserted
 # by no fixture in either direction until then.)
 #
 # EVERY EXCLUSION IS GROUNDED IN CODE OR IN THE DECLARATION, not in judgement
@@ -560,25 +567,10 @@ witness_channels:
 # does not apply", and the difference between those two sentences is the whole
 # subject of `known_gaps`.
 inventory:
-- mode: join
-  case: shared-tc-obligation
-  source: PLAT-1149 — shared TC evidence hides an obligation with no own claim
-  languages: [rust, python, typescript]
 - mode: minting
-  case: reference-status-column-explicit
-  source: agent-ix/quire-rs#409 — explicit selectors never fall back to the model default
-  languages: [rust, python, typescript]
-- mode: minting
-  case: reference-status-column
-  source: agent-ix/quire-rs#409 — mixed authored status columns require an explicit per-reference selector
-  languages: [rust, python, typescript]
-- mode: parser
-  case: unittest-testcase
-  source: agent-ix/quire-rs#407 — native unittest.TestCase methods lost on non-Test-prefixed classes
-  languages: [python, rust, typescript]
-  out_of_scope:
-    rust: Python unittest inheritance and import aliases do not exist in Rust's attribute-based test model.
-    typescript: Python unittest inheritance and import aliases do not exist in TypeScript's registration-based test model.
+  case: withdrawn-verification
+  source: https://linear.app/agent-ix/issue/PLAT-1236 — IR-1141 Withdrawn tombstone counted as live unbacked coverage
+  languages: [n/a]
 - mode: minting
   case: status-column-mismatch
   source: agent-ix/quire-rs#341 — Coverage Status silently bypassed configured Status classification
@@ -662,7 +654,7 @@ inventory:
 - mode: detection
   # CENSUSED, and the premise this row was filed under is STALE. `rust-test-name-id`
   # binds the underscore spelling today — CR-034 landed as spec-artifacts-process
-  # cf7b4e2 and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
+  # and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
   # sites, 3,952 bind. The 8 misses are 4 names duplicated into a worktree, all the
   # `tc_811b_` "b-variant" shape, all supplementary tests for a criterion whose
   # canonical row is already backed. Zero unbacked ecosystem rows are attributable
@@ -672,7 +664,7 @@ inventory:
   # asserts that the id BINDS, with the pre-CR-034 relaxation variant as the
   # control. A fixture written to the original premise would have landed green.
   case: test-name-id-in-fn-name
-  source: CR-034 (LANDED, cf7b4e2) — regression pin, 3952/3960 sites bind
+  source: CR-034 (LANDED) — regression pin, 3952/3960 sites bind
   languages:
   - python
   - rust
@@ -686,7 +678,7 @@ inventory:
       sibling row `detection/test-name-id-in-call-title`.
 - mode: detection
   case: self-name-form-mismatch
-  source: agent-ix/filament-ide-rs@fc5d644b — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
+  source: agent-ix/filament-ide-rs — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
   languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
@@ -825,6 +817,29 @@ inventory:
       neither language has a triple-quoted string literal. A TypeScript template literal is
       a different construct and, if it desynchronises the scanner, is its own case with its
       own measurement.
+- mode: parser
+  # Retain the escaped opening brace in a TypeScript regex literal as a
+  # regression case. The parser now recovers its test symbol and trace binding.
+  # The paired control changes only that regex atom to an ordinary character.
+  case: typescript-regex-brace
+  source: >-
+    agent-ix/quire-rs#403; original locus
+    agent-ix/filament-core-data
+    test/compiler.test.ts:1291.
+    The issue also records the independent [^}] trigger from quire-rs#404.
+  languages:
+  - python
+  - rust
+  - typescript
+  out_of_scope:
+    python: >-
+      Python regular expressions are strings passed to an API; it has no
+      JavaScript-style regex literal token for the source lexer to confuse
+      with division or comments.
+    rust: >-
+      Rust regular expressions are strings passed to an API; its raw and
+      ordinary string forms are already the separate FR-051-AC-15 lexer
+      surface, not a slash-delimited regex literal.
 - mode: join
   # RE-SCOPED, and `tag-names-con-inv-sc-vc` is gone. That row bundled four
   # prefixes on the strength of one number — "123 tags" — and MEASURED WITH THE
@@ -834,7 +849,7 @@ inventory:
   # cell, nor any row's own id (quire-rs `coverage.rs:1247-1254`) — not
   # deduplicated by id. Population: the 241 repositories
   # `quire-rs/scripts/corpus.py` enumerates under ~/dev. Instrument: one `quire`
-  # binary built from `quire-cli` at its pinned rev, engine `e06f121`, release
+  # binary built from `quire-cli`, release
   # profile, `quire coverage --scope <repo> --json` per repository.
   #
   #   CON  155 entries / 28 repos  -> DECIDED to mint, by spec-artifacts-process
@@ -960,7 +975,7 @@ inventory:
   languages: [n/a]
 - mode: provenance
   case: engine-lacks-capability
-  source: the 0.29.0 failure — census must abort
+  source: the stale-engine failure — census must abort
   languages:
   - n/a
   out_of_scope:
@@ -968,34 +983,6 @@ inventory:
 - mode: attachment
   case: marker-form-mismatch
   source: agent-ix/spec-artifacts-process#59
-  languages:
-  - python
-  - rust
-  - typescript
-- mode: attachment
-  case: range-in-trace-tag
-  source: agent-ix/quire-rs#494 (CR-187, PLAT-1077) — a range binds no id at all, including its own endpoints
-  languages:
-  - python
-  - rust
-  - typescript
-- mode: attachment
-  case: range-short-suffix-in-trace-tag
-  source: agent-ix/quire-rs#494 (CR-187) — a short-suffix range (`A..2`) binds no id at all
-  languages:
-  - python
-  - rust
-  - typescript
-- mode: attachment
-  case: range-differing-prefix-in-trace-tag
-  source: agent-ix/quire-rs#494 (CR-187) — a range across two requirements' ids binds no id at all
-  languages:
-  - python
-  - rust
-  - typescript
-- mode: attachment
-  case: range-in-legacy-trace-tag
-  source: agent-ix/quire-rs#494 (CR-187) — a legacy `Trace:` range no longer binds its left endpoint
   languages:
   - python
   - rust
@@ -1080,7 +1067,7 @@ inventory:
   - typescript
 - mode: skeptic
   case: oracle-helper-copy
-  source: agent-ix/filament-ide-rs@59a180a7 TC-1598 — a copied helper oracle with no expected binding
+  source: agent-ix/filament-ide-rs TC-1598 — a copied helper oracle with no expected binding
   languages:
   - python
   - rust
@@ -1119,6 +1106,7 @@ inventory:
   case: definition-version-changed
   source: agent-ix/quire-rs#276
   languages: [data]
+# BLOCKED-BY PLAT-1216 (owner: planner titan:QSL:plan): Quoin report schema configDigest field
 - mode: reporting
   case: config-digest-changed
   source: agent-ix/quire-rs#276
@@ -1147,6 +1135,15 @@ inventory:
   case: no-prior-record
   source: agent-ix/quire-rs#276
   languages: [data]
+
+- mode: attachment
+  case: guarded-implements-partial-match
+  source: https://linear.app/agent-ix/issue/PLAT-1181
+  languages: [rust, python, typescript]
+  out_of_scope:
+    python: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not Python syntax. Existing Python unguarded forms are controlled in the engine TC-1988 regression.
+    typescript: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not TypeScript syntax. Existing TypeScript unguarded forms are controlled in the engine TC-1988 regression.
+
 # DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
 #
 # This block was read by NO CODE. It listed three uncontrolled failure cases

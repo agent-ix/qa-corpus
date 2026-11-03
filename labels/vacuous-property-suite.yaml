@@ -10,5 +10,3 @@ defects:
   findable: true
   expect_suspicion: vacuous-under-guard
   note: the only assertion is inside an `if let`
-  confirmed_at: quire-rs main (post v0.43.0)
-  needs_engine: '> v0.43.0'

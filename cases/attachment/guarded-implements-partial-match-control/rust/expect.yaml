@@ -1,0 +1,7 @@
+backed: 0
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 2
+  matched: 1
+absent_diagnostic_reasons: [partial-implements-attribute-match]

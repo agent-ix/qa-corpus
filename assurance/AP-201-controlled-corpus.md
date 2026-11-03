@@ -38,7 +38,7 @@ controls, labels, bounds matrix, and the Python/Rust readers that grade it.
 Apply it to any change that adds, removes, reclassifies, or reinterprets a case.
 The corpus is recursively assurance-critical because Quire and Quoin use it to
 claim their own detectors and metrics work.
-Follow the case-before-fix and Tier-2 pin procedure in `CONTRIBUTING.md`.
+Follow the case-before-fix procedure in `CONTRIBUTING.md`.
 
 ## Assurance Concerns
 
@@ -54,9 +54,8 @@ new metadata as one canonical inventory contract consumed by both readers.
 
 ## Evidence Expectations
 
-Retain corpus revision, module-source digests, engine identity, complete case
-inventory, derived gap and pending counts, differential failures, label changes,
-and exact mutation/self-test output.
+Retain the complete case inventory, derived gap and pending counts,
+differential failures, label changes, and exact mutation/self-test output.
 
 ## Tool Reliance and Independence
 

@@ -1,6 +1,0 @@
-total: 2
-backed: 2
-absent_diagnostic_reasons:
-- status-column-matches-nothing
-- section-matches-nothing
-- id-column-matches-nothing

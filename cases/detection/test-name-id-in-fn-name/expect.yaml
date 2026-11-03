@@ -1,7 +1,7 @@
 # THIS ROW WAS RE-SCOPED. Its inventory entry said `rust-test-name-id` binds
 # nothing across 1,292 sites. Censused before authoring: 3,960 rust
 # `fn (?i:tc)_?\d+` sites across ~/dev, 3,952 BIND. CR-034 landed as
-# spec-artifacts-process cf7b4e2 and is in the vendored copy. A fixture written
+# spec-artifacts-process and is in the vendored copy. A fixture written
 # to the original premise would have arrived green.
 #
 # What is actually broken is narrower and worse. `id_format: 'TC-{1}'` renders

@@ -2,7 +2,7 @@
 # a test's own span, so it must NOT bind — the test asserts about the text, it
 # does not verify the row.
 #
-# Measured pre-fix at engine `d55c987`: `backed 2/3`, `unbacked_rows: []`. The
+# Measured pre-fix: `backed 2/3`, `unbacked_rows: []`. The
 # id bound from the string and the row read as verified.
 backed: 1
 total: 3
@@ -12,11 +12,10 @@ unbacked_rows:
   target_ids:
   - FR-001-AC-2
   - TC-002
-- document: spec/FR-001.md
-  row_id: FR-001-AC-1
-  target_ids:
-  - FR-001-AC-1
-  - TC-001
+
+# BOTH tests are candidates and exactly ONE binds. This is what separates the
+# defect from "the tag was never written": a census of 2/1 says the binder read
+# both symbols and made a decision about each.
 binding_census:
 - language: python
   candidates: 2

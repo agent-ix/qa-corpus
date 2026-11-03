@@ -1,5 +1,5 @@
 # Re-derived from a real run against the vendored ecosystem declaration
-# (engine bcda5ed, `quire` 0.30.2).
+# (engine measured at authoring).
 #
 # The healthy half of the pair: same marker, same row, a function name carrying
 # no id. `untracked_symbols: []` is the assertion — an EMPTY list is a claim
