@@ -13,3 +13,5 @@ grading_contract:
     L1: {state: required}
     L2: {state: required}
     L3: {state: required}
+comment: >-
+  A guarded Rust form must warn on the proper substring inside the doc attribute, while its genuine multi-ID production attribute binds and block-comment/raw-string examples produce no additional implementation edges.

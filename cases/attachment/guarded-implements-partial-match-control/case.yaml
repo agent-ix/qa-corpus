@@ -7,3 +7,5 @@ kind: control
 findable: false
 tags: [TC-1985, TC-1989, PLAT-1181, coverage]
 control_for: [guarded-implements-partial-match]
+comment: >-
+  The same guarded Rust form and source topology with only the doc-attribute payload repaired. The healthy production attribute remains bound, comment/raw-string examples remain data, and the partial-match warning is absent.
