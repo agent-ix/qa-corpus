@@ -257,6 +257,8 @@ diagnostic_reasons:
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
+  # PLAT-1181 / quire-rs #566: rejected proper-substring Rust attribute matches.
+  - partial-implements-attribute-match
   - range-in-trace-tag
   # agent-ix/quire-rs#320: every declared section the document HAS holds no
   # table, so it mints nothing and neither sibling diagnostic can fire — the
