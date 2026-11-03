@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=187> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=189> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -257,6 +257,8 @@ diagnostic_reasons:
   - model-mints-nothing
   - no-symbol-bound
   - obligation-row-states-nothing
+  # PLAT-1181 / quire-rs #566: rejected proper-substring Rust attribute matches.
+  - partial-implements-attribute-match
   - range-in-trace-tag
   # agent-ix/quire-rs#320: every declared section the document HAS holds no
   # table, so it mints nothing and neither sibling diagnostic can fire — the
@@ -414,7 +416,7 @@ behaviour_change_tickets: []
 # while saying nothing about the family the case is named for.
 #
 # PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
-# The current pair count is <derived:pairs=86>; that measurement has not been
+# The current pair count is <derived:pairs=87>; that measurement has not been
 # repeated for the added case. The pair count is tagged and gated; the 15
 # is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
@@ -433,8 +435,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=85> `kind: failure`
-# fixtures, all <derived:controlled_failures=85> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=86> `kind: failure`
+# fixtures, all <derived:controlled_failures=86> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -1133,6 +1135,15 @@ inventory:
   case: no-prior-record
   source: agent-ix/quire-rs#276
   languages: [data]
+
+- mode: attachment
+  case: guarded-implements-partial-match
+  source: https://linear.app/agent-ix/issue/PLAT-1181
+  languages: [rust, python, typescript]
+  out_of_scope:
+    python: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not Python syntax. Existing Python unguarded forms are controlled in the engine TC-1988 regression.
+    typescript: The opt-in rust_attribute syntax guard selects Rust attribute_item nodes, not TypeScript syntax. Existing TypeScript unguarded forms are controlled in the engine TC-1988 regression.
+
 # DEPARTURES FROM THE CONTRACT, declared and ENFORCED.
 #
 # This block was read by NO CODE. It listed three uncontrolled failure cases

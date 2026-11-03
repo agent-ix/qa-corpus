@@ -1,0 +1,11 @@
+id: guarded-implements-partial-match-control
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1181
+mode: attachment
+module: guarded-implements
+declaration_under_test: The opt-in module-owned Rust attribute position and full-match form (PLAT-1181, FR-062 CR-191).
+kind: control
+findable: false
+tags: [TC-1985, TC-1989, PLAT-1181, coverage]
+control_for: [guarded-implements-partial-match]
+comment: >-
+  The same guarded Rust form and source topology with only the doc-attribute payload repaired. The healthy production attribute remains bound, comment/raw-string examples remain data, and the partial-match warning is absent.
