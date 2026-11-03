@@ -3,6 +3,7 @@ case: guarded-implements-partial-match
 issue_ref: https://linear.app/agent-ix/issue/PLAT-1181
 mode: attachment
 module: guarded-implements
+declaration_under_test: The opt-in module-owned Rust attribute position and full-match form (PLAT-1181, FR-062 CR-191).
 kind: failure
 findable: true
 tags: [TC-1985, TC-1989, PLAT-1181, coverage]
