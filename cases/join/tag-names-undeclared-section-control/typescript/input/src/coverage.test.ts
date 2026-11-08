@@ -13,7 +13,7 @@ import { describe, it, expect } from "vitest";
 describe("coverage", () => {
   it("carries the declared severity", () => {
     const severity = "warning";
-    // FR-001-AC-1: the declared severity is the one carried.
+    // TC-001, FR-001-AC-1: the declared severity is the one carried.
     expect(severity).toBe("warning");
   });
 

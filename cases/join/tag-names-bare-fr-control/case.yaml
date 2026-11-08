@@ -12,7 +12,7 @@ tags:
 - join
 - binding
 comment: >-
-  FOUR CHARACTERS. The bare requirement id becomes the criterion id the declaration mints, and
-  nothing else in the tree changes — same two tests, same comment form, same position in the
-  body, same sibling tag. It is the smallest control in this corpus and it moves four fields:
-  `backed`, `groups`, `unbacked_rows` and `untracked_symbols`.
+  The control supplies `TC-001` row evidence and corrects the four-character criterion id.
+  The failure has `FR-001`; the control has `TC-001` and `FR-001-AC-1`. Across the pair,
+  `backed` changes 1 -> 3, the criterion group changes 0/2 -> 1/2, the test-case group
+  changes 1/2 -> 2/2, `unbacked_rows` changes 4 -> 2, and `untracked_symbols` changes 1 -> 0.

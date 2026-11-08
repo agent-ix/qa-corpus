@@ -142,8 +142,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L1",
-      "reached": 6,
-      "population": 6,
+      "reached": 7,
+      "population": 7,
       "gap_count": 0,
       "misses": []
     },
@@ -151,8 +151,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L2",
-      "reached": 6,
-      "population": 6,
+      "reached": 7,
+      "population": 7,
       "gap_count": 0,
       "misses": []
     },
@@ -160,8 +160,8 @@
       "mode": "detection",
       "language": "rust",
       "level": "L3",
-      "reached": 5,
-      "population": 5,
+      "reached": 6,
+      "population": 6,
       "gap_count": 0,
       "misses": []
     },

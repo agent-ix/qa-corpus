@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=189> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=191> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -242,6 +242,9 @@ diagnostic_reasons:
   # `section-matches-nothing` off healthy repositories.
   - archetype-matches-nothing
   - catch-all-universal
+  # PLAT-2: a criterion paired with a different declared matrix row is not
+  # binding evidence; this makes the mismatched source tag visible.
+  - criterion-tagged-outside-row
   - hollow-denominator
   # agent-ix/quire-rs#270, landed: the archetype matched the document and the
   # declared table did not. Two tokens rather than one because the two faults
@@ -416,7 +419,7 @@ behaviour_change_tickets: []
 # while saying nothing about the family the case is named for.
 #
 # PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
-# The current pair count is <derived:pairs=87>; that measurement has not been
+# The current pair count is <derived:pairs=88>; that measurement has not been
 # repeated for the added case. The pair count is tagged and gated; the 15
 # is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
@@ -435,8 +438,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=86> `kind: failure`
-# fixtures, all <derived:controlled_failures=86> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=87> `kind: failure`
+# fixtures, all <derived:controlled_failures=87> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #

@@ -11,7 +11,7 @@ mod tests {
     #[test]
     fn defaults_every_finding_to_warning() {
         let severity = "warning";
-        // FR-001-AC-1: every finding defaults to warning.
+        // TC-001, FR-001-AC-1: every finding defaults to warning.
         assert_eq!(severity, "warning");
     }
 

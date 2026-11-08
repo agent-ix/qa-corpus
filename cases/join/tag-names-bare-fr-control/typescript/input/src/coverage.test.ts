@@ -10,7 +10,7 @@ import { describe, it, expect } from "vitest";
 describe("coverage", () => {
   it("defaults every finding to warning", () => {
     const severity = "warning";
-    // FR-001-AC-1: every finding defaults to warning.
+    // TC-001, FR-001-AC-1: every finding defaults to warning.
     expect(severity).toBe("warning");
   });
 

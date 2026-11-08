@@ -10,7 +10,7 @@
 
 #[cfg(test)]
 mod tests {
-    /// FR-001-AC-1: the declared severity is the one carried.
+    /// TC-001, FR-001-AC-1: the declared severity is the one carried.
     #[test]
     fn carries_the_declared_severity() {
         let severity = "warning";
