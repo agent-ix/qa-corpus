@@ -1,0 +1,46 @@
+name: row-aware-trace-binding
+version: 0.1.0
+description: Isolated module for criterion-to-matrix-row binding behavior
+artifact_types:
+- name: FR
+- name: TestMatrix
+traceability:
+  trace_targets:
+  - name: acceptance-criterion
+    archetype: FR
+    section: Acceptance Criteria
+    id_column: ID
+  - name: test-case
+    archetype: TestMatrix
+    section: Test Cases
+    id_column: ID
+  document_references:
+  - name: verification
+    archetype: FR
+    section: Acceptance Criteria
+    row_id_column: ID
+    column: Verification
+    pattern: '\b(TC-\d+)\b'
+    targets: [test-case]
+  - name: traces-to
+    archetype: TestMatrix
+    section: Test Cases
+    row_id_column: ID
+    column: Traces To
+    pattern: '\b((?:FR|TC)-\d+(?:-AC-\d+)?)\b'
+    targets: [acceptance-criterion, test-case]
+  status:
+    column: Status
+    complete: ["✅"]
+    pending: ["🚧"]
+  obligations:
+  - name: acceptance-criteria
+    target: acceptance-criterion
+    statement_column: Criteria
+    method_column: Verification
+  trace_tags:
+    markers:
+    - name: rust-trace-attribute
+      language: rust
+      pattern: '#\[trace\(([^)]*)\)\]'
+      template: '#[trace({ids})]'

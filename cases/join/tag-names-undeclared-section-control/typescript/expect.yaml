@@ -35,10 +35,12 @@ groups:
     backed: 1
     total: 2
 unbacked_rows:
+  - document: spec/tests.md
+    row_id: TC-002
+    target_ids: [FR-001-AC-2, TC-002]
   - document: spec/FR-001.md
     row_id: FR-001-AC-2
     target_ids: [FR-001-AC-2, TC-002]
-untracked_symbols: []
 binding_census:
   - language: typescript
     candidates: 2

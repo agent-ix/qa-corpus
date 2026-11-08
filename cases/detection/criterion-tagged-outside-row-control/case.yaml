@@ -1,0 +1,12 @@
+id: criterion-tagged-outside-row-control
+issue_ref: agent-ix/quire-rs#467
+mode: detection
+language: rust
+module: variants/row-aware-trace-binding
+declaration_under_test: The criterion-to-matrix-row reference declarations govern this fixture.
+kind: control
+control_for: [criterion-tagged-outside-row]
+findable: false
+reproduce: quire coverage --scope cases/detection/criterion-tagged-outside-row-control/input --module modules/variants/row-aware-trace-binding --json
+tags: [TC-734, PLAT-2, binding, coverage]
+comment: The same test traces to the criterion on its own declared matrix row.
