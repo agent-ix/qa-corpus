@@ -1,16 +1,15 @@
-# THE CONTROL, AND IT IS FOUR CHARACTERS AWAY FROM ITS PARTNER.
+# THE CONTROL, WITH ROW QUALIFICATION AND THE FOUR-CHARACTER CRITERION-ID CORRECTION.
 #
-# The bare requirement id becomes the criterion id the declaration mints.
-# Nothing else in the tree changes: same two tests, same comment form, same
-# position in the body, same sibling tag, same census.
+# The control adds the declared row id `TC-001` alongside the corrected criterion id.
+# The failure still carries bare `FR-001`; the control carries `TC-001` and
+# `FR-001-AC-1`. Both use the same two tests and comment form.
 #
-#   case      backed 1/4  ac 0/2  1 untracked  2 unbacked
-#   control   backed 3/4  ac 1/2  0 untracked  0 unbacked
+#   case      backed 1/4  ac 0/2  1 untracked  4 unbacked
+#   control   backed 3/4  ac 1/2  0 untracked  2 unbacked
 #
-# Four fields move, so FR-065-AC-42 is met four times over on a one-token edit.
-# That is the sharpest statement this pair can make: the failure case is not
-# about a tag the engine could not read, and the proof is that reading is
-# identical on both sides — `binding_census` is 2 of 2 here and 2 of 2 there.
+# The measured delta is backed 1 -> 3, criterion group 0/2 -> 1/2, test-case
+# group 1/2 -> 2/2, unbacked rows 4 -> 2, and untracked symbols 1 -> 0. The
+# binding census remains 2 of 2 on both sides.
 #
 # `untracked_symbols: []` is the assertion that matters most. Its partner names
 # one entry; this names none. A change that stopped populating the field
