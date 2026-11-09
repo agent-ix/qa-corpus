@@ -42,3 +42,22 @@ What is right:
 Not mergeable as is. FND-001 to FND-003 are medium and need a fix round: add `metrics: coverage.implements` to both pairs, and retag the partial pair to TC-2207 / FR-062-AC-25. The PR must land with quire-rs PR 630 or after it, because the installed engine predates both reasons.
 
 The `mocked-confirmation-python` verify mismatch predates this PR. That case's input changed in #49 and its expected line did not. It still makes `make verify` red with quoin 0.29.1, which is outside this diff.
+
+## Dispositions
+
+Round 1, checked against fix head `6088a96`. Evidence for this round:
+- `quire` 0.38.4 (engine 0.54.0) was built from quire-cli `b737daf`, with quire-rs patched to PR 630 head `7605461`. The scratch HOME modules hold spec-artifacts-process at `origin/main` (`b935498`).
+- `make verify`: 211/211 cases, 104 pairs graded, 0 mismatches.
+- With all three control inputs rewritten so nothing binds, `verify` reports `coverage.implements.matched expected 1, got 0` for each control, so the controls are no longer vacuous.
+- `bounds --require-complete`: 222 fixtures, GAP 0.
+- quire-rs at `7605461` with `corpus` at `6088a96`: `cargo test --test it corpus_` gives 32 passed, 0 failed, and `UPDATE_CORPUS_RECALL=1` leaves `baselines/quire-rs.json` unchanged.
+
+The control's `examined: 2` against the failure's `examined: 1` is the engine's measured population, not an unexplained edit. It was already 2 at `405b101`. The control's `const control = implementing(...)(...)` declarator mints a Function symbol (FR-062-AC-23, FR-051-AC-51), and the failure's bare statement mints none.
+
+The `ts-implementing-wrapper` pattern is no longer `\A`-anchored, which is deliberate and correct for this fixture module. FR-062's anchoring SHALL is the rule that shipped module patterns must follow. FR-062-AC-25's `partial-implements-syntax-match` exists to report a pattern that breaks it, and it can only be witnessed with an unanchored pattern, as the Python `@?implements\(` form already is. FR-004-AC-31..37 govern spec-artifacts-process's own manifest, not this corpus-local module. The unattached pair still yields no partial-match finding under the unanchored pattern, which was measured.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | fixed | - |
+| FND-003 | fixed | - |

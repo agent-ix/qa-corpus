@@ -29,3 +29,14 @@ Evidence: `make verify` with a quire built against quire-rs PR 630 passes all fo
 ## Verdict
 
 FR-062-AC-24 is witnessed in its only language. The corpus witnesses a reason, not every engine branch: the other four unattached variants (argument, default export, non-chain argument, non-chain declarator) belong to quire-rs TC-2206, so their absence here is not a gap. FR-062-AC-25 is witnessed in Python only (FND-001). No production code outside fixtures changed.
+
+## Dispositions
+
+Round 1, checked against fix head `6088a96`. The new pair `partial-implements-syntax-match-wrapper`/typescript and its control witness FR-062-AC-25 for a `typescript_wrapper` candidate:
+- The failure `const w = t.implementing("FR-001")(() => 1);` yields one `partial-implements-syntax-match` at `src/lib.ts:1` naming `t.implementing("FR-001")` on `w`, with `coverage.implements` matched 0.
+- The control `ixTrace.implementing("FR-001")` binds `w` to FR-001, with matched 1 and no finding.
+- `make verify` against quire-rs PR 630 at `7605461` gives 211/211 cases and 0 mismatches.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
