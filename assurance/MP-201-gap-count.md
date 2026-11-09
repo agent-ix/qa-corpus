@@ -12,12 +12,12 @@ relationships: []
 
 # Controlled-corpus gap count
 
-## Decision Objective
+## Decision Use
 
 Show which declared mode-language cells have no valid case so missing test
 coverage cannot be mistaken for working behavior.
 
-## Population and Scope
+## Population
 
 Include every cell in `corpus.yaml`'s bounds matrix. Each cell is covered,
 pending, out of scope with a reason, or GAP.
@@ -28,12 +28,12 @@ pending, out of scope with a reason, or GAP.
 `bounds.gap-count-v1`. It is a count, never a ratio; retain the named gap list
 and pending list with the scalar.
 
-## Environment and Sampling
+## Collection Procedure
 
 Run over the complete corpus tree. A missing or unreadable case is an error,
 not an exclusion.
 
-## Interpretation and Limitations
+## Interpretation
 
 A lower count means fewer declared holes, not better detector recall. Converting
 a cell to out-of-scope is a visible policy decision, not test coverage.

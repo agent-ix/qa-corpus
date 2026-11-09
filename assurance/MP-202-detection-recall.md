@@ -12,12 +12,12 @@ relationships: []
 
 # Controlled-corpus detection recall
 
-## Decision Objective
+## Decision Use
 
 Show exactly which validator behaviors work and which fail without allowing a
 strong language, failure family, or shallow finding to hide a blind one.
 
-## Population and Scope
+## Population
 
 Include every `findable: true`, `kind: failure` case. Partition observations by
 grading level (L1/L2/L3), mode, and language. Never average partitions.
@@ -33,13 +33,13 @@ Each observation reports `reached`, `population`, the exact missed case ids,
 and `bounds.gap_count`. The gap count is repeated beside every score because a
 perfect score over unrepresented cells is not a complete claim.
 
-## Environment and Sampling
+## Collection Procedure
 
 Run the complete static corpus through real production commands. Exclude only
 cases explicitly marked non-findable; pending cases remain visible but are not
 silently scored as working.
 
-## Interpretation and Limitations
+## Interpretation
 
 Recall measures whether seeded failures are found. It does not measure false
 positives; controls and the corpus differential gate do that. A low deeper-level

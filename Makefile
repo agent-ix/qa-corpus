@@ -21,6 +21,7 @@ help:
 	@echo "make schema-selftest     prove the case-metadata gate can fail"
 	@echo "make parity-selftest     prove the AC-42 differential can fail"
 	@echo "make external-channel    validate exact non-Quire witness contract"
+	@echo "make validate-assurance   quire-validate assurance/ against engineering-assurance"
 	@echo "make ci                  run the corpus and all verification selftests"
 
 # Every case, by the exact string in its own case.yaml. A documented command
@@ -54,8 +55,17 @@ parity-selftest:
 external-channel:
 	@cargo run --quiet -- external-channel
 
+# The assurance artifacts are the ecosystem's worked examples, so they are
+# validated against the module they implement. A missing quire binary fails
+# rather than skipping: an unvalidated evidence-producer profile must not read
+# as passing.
+.PHONY: validate-assurance
+validate-assurance:
+	@test -n "$(QUIRE)" || { echo "quire not found; set QUIRE=/path/to/quire"; exit 1; }
+	@"$(QUIRE)" validate --scope "$(CORPUS_ROOT)" "assurance/*.md"
+
 .PHONY: ci
-ci: schema-selftest external-channel bounds verify verify-reporting parity-selftest
+ci: schema-selftest external-channel bounds verify verify-reporting parity-selftest validate-assurance
 
 # Scaffold. The first thing an author sees is a skeleton that runs, not a
 # schema document — which is the difference between a corpus that grows and one
