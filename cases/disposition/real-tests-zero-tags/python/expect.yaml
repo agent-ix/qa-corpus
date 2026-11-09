@@ -3,7 +3,7 @@
 # Two diagnostics fire on this tree and both name the thing to change:
 #
 #   no-symbol-bound     2 python evidence symbols were examined and none carried
-#                       a tag any declared form matched (forms: pytest-trace-marker, python-trace-line, python-comment-id, python-docstring-id)
+#                       a tag any declared form matched (forms: pytest-trace-marker)
 #                       — for example `test_defaults_every_finding_to_warning` at src/test_coverage.py:18, whose annotation
 #                       carries no matching form; every row those symbols verify
 #                       is reported unbacked, which is indistinguishable from a
@@ -30,7 +30,7 @@
 #   L1  both reasons fire
 #   L2  `no-symbol-bound` names src/test_coverage.py, and `binding_census.unbound_example`
 #       names src/test_coverage.py:18
-#   L3  the message names the count, all 4 declared forms, the symbol, the
+#   L3  the message names the count, the declared form, the symbol, the
 #       line, and the consequence
 #
 # It is a regression net for the best message the engine currently writes.
@@ -90,9 +90,6 @@ diagnostic_message_contains:
     # Every declared form the binder consults for this language. Asserting a
     # subset would let the others vanish from the message with nothing noticing.
     - "pytest-trace-marker"
-    - "python-trace-line"
-    - "python-comment-id"
-    - "python-docstring-id"
     # The symbol and the exact line, which is what a reader opens.
     - "test_defaults_every_finding_to_warning"
     - "src/test_coverage.py:18"

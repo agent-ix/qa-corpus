@@ -13,7 +13,7 @@ backed: 1
 total: 2
 untracked_symbols:
   -
-    symbol: tests::tc_999_renamed_but_still_correct
+    symbol: tests::covers_the_criterion
     trace_id: TC-999
     path: src/lib.rs
 binding_census:

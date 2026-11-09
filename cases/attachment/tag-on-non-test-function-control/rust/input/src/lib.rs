@@ -16,7 +16,8 @@ pub fn normalize_severity(severity: Option<&str>) -> &str {
 mod tests {
     use super::normalize_severity;
 
-    // TC-002: on the test, which registers an evidence symbol. Unchanged.
+    // on the test, which registers an evidence symbol. Unchanged.
+    #[trace("TC-002")]
     #[test]
     fn names_the_declaration_on_every_finding() {
         assert_eq!(normalize_severity(None), "warning");

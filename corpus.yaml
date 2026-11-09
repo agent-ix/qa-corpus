@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=199> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=196> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -257,10 +257,6 @@ diagnostic_reasons:
   # PLAT-1170 / quire-rs #615: a legacy implements-form tag.
   - legacy-implements-form
   - low-symbol-binding
-  # agent-ix/quire-rs#367: mixed binding channels can keep the aggregate
-  # census healthy while a repository's self-named test convention binds
-  # nothing. This token is specific to that retained subpopulation.
-  - marker-form-mismatch
   - model-mints-nothing
   - no-symbol-bound
   - not-in-tag-channel
@@ -280,23 +276,14 @@ diagnostic_reasons:
   # but not the model-wide configured status column. The rows are still read;
   # only status classification was silently skipped, hiding status lies.
   - status-column-matches-nothing
-  # agent-ix/quire-rs#312, landed: a trace tag written on a symbol whose kind
-  # cannot bind it. `trace::bind` takes the `carries_implements()` branch and
-  # the tag reaches NO channel — `verifies` refuses it by kind, `implements`
-  # wants the literal keyword the comment does not carry, and `binding_census`
-  # never counts it, because a non-binding symbol is missing from `candidates`
-  # rather than counted as unbound. So `no-symbol-bound` and
-  # `low-symbol-binding` both read a denominator the defect has been removed
-  # from, and a repository whose tags are ALL in the wrong place reported a
-  # flawless 100%.
-  #
-  # Two rows share the token because the two predicates are exact COMPLEMENTS:
-  # `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget} and
-  # `carries_implements()` is {Function, Container} — five variants, disjoint,
-  # covering. `tag-at-module-scope` (the file's `Container`) and
-  # `tag-on-non-test-function` (a production `Function`) are dropped by the
-  # SAME branch.
-  - tag-on-non-binding-symbol
+  # PLAT-847 / CR-215 (quire-rs FR-051-AC-49): only a canonical marker binds a
+  # `verifies` relation. An id-shaped token in the annotation channel (a comment,
+  # or a Python docstring) of any declaration or file header never binds, and is
+  # reported once per occurrence with the canonical text to write instead. This
+  # one advisory replaces `tag-on-non-binding-symbol` (#312) and
+  # `marker-form-mismatch` (#367): a tag at module scope, on a production
+  # function, on a describe header or inside a string is now simply a comment.
+  - trace-id-outside-marker
   # agent-ix/quire-rs#307, landed: an id in `untracked_symbols` that differs
   # from one in `unbacked_rows` only by zero-padding, case or separator. The
   # engine held both halves and joined neither — `rust-test-name-id` renders its
@@ -329,8 +316,8 @@ diagnostic_reasons:
   # When a ticket lands, its token MOVES from `forward` to `emitted`. That edit
   # is the one that makes every pending fixture in its group go green at once.
   # EMPTY, and kept for the same reason `suppressed` is: the class is real and
-  # every member has graduated. `tag-on-non-binding-symbol` (#312) and
-  # `untracked-id-near-miss` (#307) both landed and moved to `emitted`. The
+  # every member has graduated. `untracked-id-near-miss` (#307) landed and
+  # moved to `emitted`. The
   # next fixture written red against a token no engine has yet is declared
   # here, and until then TC-1026 proves the rule can still fail rather than
   # requiring a member to exist.
@@ -387,7 +374,7 @@ diagnostic_reasons:
 # the OTHER answer: a tag on a symbol whose kind cannot bind it does not start
 # binding, it gets reported. So the forward block was demanding an outcome the
 # ecosystem had declined, and `tag-on-describe-header` is a live case asserting
-# `tag-on-non-binding-symbol` now.
+# `trace-id-outside-marker` now.
 #
 # No pending behavior-change fixture remains after PLAT-1236 promotion.
 # The class stays declared for the next transition of this kind.
@@ -425,7 +412,7 @@ behaviour_change_tickets: []
 # while saying nothing about the family the case is named for.
 #
 # PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
-# The current pair count is <derived:pairs=92>; that measurement has not been
+# The current pair count is <derived:pairs=91>; that measurement has not been
 # repeated for the added case. The pair count is tagged and gated; the 15
 # is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
@@ -444,8 +431,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=91> `kind: failure`
-# fixtures, all <derived:controlled_failures=91> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=90> `kind: failure`
+# fixtures, all <derived:controlled_failures=90> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -559,10 +546,6 @@ witness_channels:
 # defect cannot be expressed in that language or the detector deliberately does
 # not run there:
 #
-#   * `test-name-id-*` — the manifest declares `rust-test-name-id` and
-#     `typescript-test-name-id` and NO python sibling, and the two forms read
-#     different things (a function name, a call title), which is why they are
-#     two rows rather than one language set.
 #   * `tag-at-module-scope` / `tag-on-describe-header` — `symbols/rust.rs` emits
 #     no file-level container and no registration-call form.
 #   * `triple-quote-scope-desync` — neither Rust nor TypeScript has a
@@ -645,49 +628,13 @@ inventory:
   - rust
   - typescript
 - mode: detection
-  case: test-name-id-in-call-title
-  source: spec-artifacts-process#68, 81% of a repo
-  languages:
-  - python
-  - rust
-  - typescript
-  out_of_scope:
-    python: >-
-      the declaration declares NO python test-name-id form. `manifest.yaml` carries
-      `rust-test-name-id` and `typescript-test-name-id` and no python sibling, so there is
-      no form for a python fixture to write the defect in.
-    rust: >-
-      `rust-test-name-id` reads the FUNCTION NAME, not a call title — Rust has no
-      registration call to put a title in. The Rust shape of this defect is
-      `detection/test-name-id-in-fn-name`, which is its own row.
-- mode: detection
-  # CENSUSED, and the premise this row was filed under is STALE. `rust-test-name-id`
-  # binds the underscore spelling today — CR-034 landed as spec-artifacts-process
-  # and is in the vendored copy. Across ~/dev: 3,960 rust `fn (?i:tc)_?\d+`
-  # sites, 3,952 bind. The 8 misses are 4 names duplicated into a worktree, all the
-  # `tc_811b_` "b-variant" shape, all supplementary tests for a criterion whose
-  # canonical row is already backed. Zero unbacked ecosystem rows are attributable
-  # to this form.
-  #
-  # So the row is re-scoped from "seed the defect" to "pin the fix": the fixture
-  # asserts that the id BINDS, with the pre-CR-034 relaxation variant as the
-  # control. A fixture written to the original premise would have landed green.
-  case: test-name-id-in-fn-name
-  source: CR-034 (LANDED) — regression pin, 3952/3960 sites bind
-  languages:
-  - python
-  - rust
-  - typescript
-  out_of_scope:
-    python: >-
-      the declaration declares no python test-name-id form at all — see the same exclusion
-      on `test-name-id-in-call-title`.
-    typescript: >-
-      `typescript-test-name-id` reads the CALL TITLE, not a function name, which is the
-      sibling row `detection/test-name-id-in-call-title`.
-- mode: detection
-  case: self-name-form-mismatch
-  source: agent-ix/filament-ide-rs — 1,292 `tc_NNN` symbols hidden by successful comment bindings (#367)
+  # PLAT-847 / CR-215: a test NAME no longer binds anything, so the zero-padding
+  # near miss the `test-name-id-*` rows pinned is now written the only way an id
+  # binds: in a marker. `#[trace("TC-1")]` against a `TC-001` row is the same two
+  # characters of padding, the same homeless id and unbacked row, and the same
+  # `untracked-id-near-miss` finding.
+  case: untracked-id-near-miss
+  source: agent-ix/quire-rs#307 — an unpadded id and a padded row, joined by neither
   languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are

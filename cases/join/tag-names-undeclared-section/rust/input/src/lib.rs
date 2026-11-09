@@ -12,14 +12,16 @@
 
 #[cfg(test)]
 mod tests {
-    /// FR-001-INV-1: the declared severity is the one carried.
+    /// the declared severity is the one carried.
+    #[trace("FR-001-INV-1")]
     #[test]
     fn carries_the_declared_severity() {
         let severity = "warning";
         assert_eq!(severity, "warning");
     }
 
-    /// TC-002: the row's own minted id, which the declaration can join.
+    /// the row's own minted id, which the declaration can join.
+    #[trace("TC-002")]
     #[test]
     fn names_the_declaration_on_every_finding() {
         let declaration = "traceability.trace_tags";

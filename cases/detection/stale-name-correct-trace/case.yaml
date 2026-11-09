@@ -15,5 +15,6 @@ tags:
 - coverage
 - binding
 comment: >-
-  A test name carries an undeclared id while its explicit marker carries a declared one. The row is
-  correctly backed, and the stale name must remain visible as an exact untracked symbol.
+  A marker carries a stale id that names no row beside the declared one. The row is correctly
+  backed, and the stale id must remain visible as an exact untracked symbol. (A test NAME carrying
+  an id no longer binds anything, CR-215, so the stale id is written where an id binds: the marker.)

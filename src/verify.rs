@@ -9,7 +9,6 @@ use crate::corpus::{controls_by_case, Case, CorpusError, ErrorCode};
 const REQUIRED_CAPABILITIES: &[&str] = &[
     "action_guidance.structured",
     "binding_census",
-    "binding_census.self_named",
     "binding_census.tagged",
     "declaration_origins",
     "metrics_envelope",
@@ -785,14 +784,7 @@ pub fn grade_with_validate(
             errors.push(format!("no `{language}` binding_census entry"));
             continue;
         };
-        for key in [
-            "language",
-            "candidates",
-            "tagged",
-            "bound",
-            "self_named",
-            "self_named_bound",
-        ] {
+        for key in ["language", "candidates", "tagged", "bound"] {
             if let Some(value) = wanted.get(key) {
                 if found.get(key) != Some(value) {
                     errors.push(format!(
@@ -802,11 +794,7 @@ pub fn grade_with_validate(
                 }
             }
         }
-        for key in [
-            "unbound_example",
-            "unmatched_example",
-            "self_named_unbound_example",
-        ] {
+        for key in ["unbound_example", "unmatched_example"] {
             if let Some(value) = wanted.get(key) {
                 let actual = found
                     .get(key)

@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    // TC-001
+    #[trace("TC-001")]
     #[test]
     fn case_01() {}
     #[test]

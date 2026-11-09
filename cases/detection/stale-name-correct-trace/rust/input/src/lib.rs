@@ -1,10 +1,9 @@
 //! fixture
 
-#[cfg(test)]
 mod tests {
-    #[trace("TC-001")]
+    #[trace("TC-999", "TC-001")]
     #[test]
-    fn tc_999_renamed_but_still_correct() {
+    fn covers_the_criterion() {
         let _ = 1;
     }
 }

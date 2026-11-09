@@ -1,18 +1,16 @@
-"""The control: the same two tests, and the tag is a tag."""
+"""The control: the same two tests, and the tag is a marker."""
 
 
+@pytest.mark.trace("TC-001")
 def test_real():
-    # Trace: TC-001
     assert True
 
 
+@pytest.mark.trace("TC-002")
 def test_carries_an_example():
-    # ONE LINE MOVED. The tag is in a comment, where a legacy form belongs, and
-    # the string below carries no tag-shaped text at all. So this test really
-    # does verify TC-002 and the row is backed — which is what makes the pair
-    # discriminate: the mask must blank a string's CONTENTS and leave comments
-    # alone, and a mask that blanked both would make this control go red.
-    # Trace: TC-002
+    # ONE LINE MOVED. The id is in a marker, where it binds, and the string
+    # below carries no tag-shaped text at all. So this test really does verify
+    # the second row and it is backed.
     example = """
         an ordinary fixture string
     """

@@ -1,14 +1,14 @@
 #[cfg(test)]
 mod tests {
+    #[trace("TC-001")]
     #[test]
     fn real() {
-        // Trace: TC-001
         assert!(true);
     }
 
     #[test]
     fn carries_an_example() {
-        // Tag-shaped data must not bind this test to TC-002.
+        // Tag-shaped data is not a tag and not a misplaced citation.
         let example = "Trace: TC-002";
         assert!(example.contains("Trace"));
     }

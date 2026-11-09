@@ -1,11 +1,5 @@
-# The control: `tc_001_` where its partner says `tc_1_`. Two characters.
-#
-# It binds, backs the row, and leaves nothing untracked — so the pair isolates
-# the padding exactly, with no other difference between the trees.
-#
-# This half also PINS CR-034, the change that made `rust-test-name-id` read the
-# underscore spelling at all. Nothing else in the corpus would notice that
-# regressing, and 3,952 binding sites across the ecosystem depend on it.
+# The control: `TC-001` where its partner says `TC-1`. Two characters. It binds, backs the
+# row, and leaves nothing untracked.
 total: 2
 backed: 1
 groups:

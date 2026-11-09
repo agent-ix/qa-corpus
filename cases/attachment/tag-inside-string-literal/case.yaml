@@ -16,11 +16,8 @@ tags:
 - attachment
 - binding
 comment: >-
-  A LEGACY TRACE FORM INSIDE A STRING LITERAL, in a test's own span. Rust has masked string
-  contents before matching legacy forms since the mask was written — `src/symbols/trace.rs`
-  gated it on `SourceLanguage::Rust` and every other language fell through to the raw span.
-  So a Python or TypeScript test that carries tag-shaped text as DATA bound it, and the row
-  read as verified by a test that never touches it. Measured on this fixture at the pre-fix engine:
-  `backed 2/3` with nothing unbacked, which is invented coverage nobody authored.
-  The repair is the mask, not the fixture: the text is a legitimate thing for a test to
-  assert about.
+  TAG-SHAPED TEXT INSIDE A STRING LITERAL, in a test's own span (CR-215, FR-051-AC-24). The text
+  is DATA a test asserts about: it binds nothing and, because a string literal is not an
+  annotation, the `trace-id-outside-marker` advisory does not report it either. The mask is
+  language-neutral; it once covered Rust alone, so a Python or TypeScript test carrying
+  tag-shaped data read as verifying a row it never touches. The row stays unbacked: `backed 1/3`.

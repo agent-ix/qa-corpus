@@ -6,14 +6,16 @@
 
 #[cfg(test)]
 mod tests {
-    // TC-001: the row this test answers.
+    // the row this test answers.
+    #[trace("TC-001")]
     #[test]
     fn defaults_every_finding_to_warning() {
         let severity = "warning";
         assert_eq!(severity, "warning");
     }
 
-    // TC-002: the row this test answers.
+    // the row this test answers.
+    #[trace("TC-002")]
     #[test]
     fn names_the_declaration_on_every_finding() {
         let declaration = "traceability.trace_tags";

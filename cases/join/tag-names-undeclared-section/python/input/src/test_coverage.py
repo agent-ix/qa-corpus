@@ -12,13 +12,15 @@
 # MIXED on purpose — one undeclared-section id beside one minted test-case id.
 
 
+@pytest.mark.trace("FR-001-INV-1")
 def test_carries_the_declared_severity():
-    """FR-001-INV-1: the declared severity is the one carried."""
+    """the declared severity is the one carried."""
     severity = "warning"
     assert severity == "warning"
 
 
+@pytest.mark.trace("TC-002")
 def test_names_the_declaration_on_every_finding():
-    """TC-002: the row's own minted id, which the declaration can join."""
+    """the row's own minted id, which the declaration can join."""
     declaration = "traceability.trace_tags"
     assert declaration

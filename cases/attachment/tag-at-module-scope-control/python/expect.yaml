@@ -63,4 +63,4 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding
   - hollow-denominator
-  - tag-on-non-binding-symbol
+  - trace-id-outside-marker

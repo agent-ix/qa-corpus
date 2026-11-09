@@ -28,5 +28,5 @@ binding_census:
 # non-binding-symbol diagnostic must stay silent: a string literal is not a
 # symbol of the wrong kind (#312 is a different defect).
 absent_diagnostic_reasons:
-- tag-on-non-binding-symbol
+- trace-id-outside-marker
 - no-symbol-bound

@@ -13,13 +13,15 @@ import { describe, it, expect } from "vitest";
 describe("coverage", () => {
   it("carries the declared severity", () => {
     const severity = "warning";
-    // TC-001, FR-001-AC-1: the declared severity is the one carried.
+    // the declared severity is the one carried.
+    trace("TC-001", "FR-001-AC-1");
     expect(severity).toBe("warning");
   });
 
   it("names the declaration on every finding", () => {
     const declaration = "traceability.trace_tags";
-    // TC-002: the row's own minted id, which the declaration can join.
+    // the row's own minted id, which the declaration can join.
+    trace("TC-002");
     expect(declaration).toBeTruthy();
   });
 });

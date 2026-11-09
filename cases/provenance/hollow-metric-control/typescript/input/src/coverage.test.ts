@@ -1,4 +1,4 @@
 test("covers", () => {
-  // Trace: TC-001
+  trace("TC-001");
   expect(parse()).toBe(1);
 });

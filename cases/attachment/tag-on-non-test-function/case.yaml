@@ -11,12 +11,6 @@ grading_contract:
     L2: {state: required}
     L3: {state: required}
 findable: true
-pending_reason: >-
-  `SymbolKind::Function.binds_trace_ids()` is false (CR-061), so a tag on production code is
-  not even a binding CANDIDATE — `trace::bind` drops it at `trace.rs:261-271`, BEFORE the census
-  increments `candidates`. It reaches neither channel: `verifies` refuses it by symbol kind,
-  `untracked_symbols` is built from `graph.verifies` and cannot see a tag that never bound,
-  and `implements` needs the literal `Implements:` prefix. #312 adds the diagnostic.
 tags:
 - TC-1014
 - attachment
@@ -30,3 +24,5 @@ comment: >-
   files across 86 repos — python 497/47, rust 943/6, typescript 237/36. Shapes taken from
   k8s-orchestration/k8s_orchestration/retry.py:15, catalog-mcp-ui/src/ElementList.tsx:20 and
   quire-rs/src/corpus/validate.rs:253.
+  PLAT-847 / CR-215: the citation is a comment, so it binds nothing and is reported once by the
+  `trace-id-outside-marker` advisory (FR-051-AC-49); the control writes it as a marker.

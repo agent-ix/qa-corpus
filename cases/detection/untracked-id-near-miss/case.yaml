@@ -1,0 +1,21 @@
+mode: detection
+language: rust
+module: ecosystem
+id: untracked-id-near-miss
+issue_ref: agent-ix/quire-rs#307
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+findable: true
+tags:
+- TC-1014
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/untracked-id-near-miss/input --json
+comment: >-
+  `#[trace("TC-1")]` against a `TC-001` row: the marker binds the unpadded string verbatim,
+  while the matrix row declares the padded one. The engine holds both strings and joins neither.

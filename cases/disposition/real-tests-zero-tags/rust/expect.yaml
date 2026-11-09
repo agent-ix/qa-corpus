@@ -3,7 +3,7 @@
 # Two diagnostics fire on this tree and both name the thing to change:
 #
 #   no-symbol-bound     2 rust evidence symbols were examined and none carried
-#                       a tag any declared form matched (forms: rust-trace-attribute, rust-trace-line, rust-comment-id, rust-test-name-id, rust-doc-comment-id)
+#                       a tag any declared form matched (forms: rust-trace-attribute)
 #                       — for example `tests::defaults_every_finding_to_warning` at src/lib.rs:17, whose annotation
 #                       carries no matching form; every row those symbols verify
 #                       is reported unbacked, which is indistinguishable from a
@@ -30,7 +30,7 @@
 #   L1  both reasons fire
 #   L2  `no-symbol-bound` names src/lib.rs, and `binding_census.unbound_example`
 #       names src/lib.rs:17
-#   L3  the message names the count, all 5 declared forms, the symbol, the
+#   L3  the message names the count, the declared form, the symbol, the
 #       line, and the consequence
 #
 # It is a regression net for the best message the engine currently writes.
@@ -90,10 +90,6 @@ diagnostic_message_contains:
     # Every declared form the binder consults for this language. Asserting a
     # subset would let the others vanish from the message with nothing noticing.
     - "rust-trace-attribute"
-    - "rust-trace-line"
-    - "rust-comment-id"
-    - "rust-test-name-id"
-    - "rust-doc-comment-id"
     # The symbol and the exact line, which is what a reader opens.
     - "tests::defaults_every_finding_to_warning"
     - "src/lib.rs:17"

@@ -1,3 +1,3 @@
+@pytest.mark.trace("TC-001")
 def test_covers():
-    # Trace: TC-001
     assert parse() == 1

@@ -19,7 +19,7 @@
 # AND THIS IS THE HARD CASE FOR #312. The naive detector — "any declared
 # trace-id form inside a symbol that does not bind trace ids" — fires here, on a
 # production symbol annotated exactly as the declaration says to annotate it.
-# `tag-on-non-binding-symbol` in `absent_diagnostic_reasons` is vacuous today
+# `trace-id-outside-marker` in `absent_diagnostic_reasons` is vacuous today
 # and is that check the day the ticket lands. A failure case may not make the
 # claim (FR-065-AC-32); a control is what it is for.
 total: 4
@@ -61,4 +61,4 @@ absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding
   - hollow-denominator
-  - tag-on-non-binding-symbol
+  - trace-id-outside-marker

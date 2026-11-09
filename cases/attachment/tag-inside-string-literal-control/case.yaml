@@ -11,9 +11,8 @@ tags:
 - attachment
 - binding
 comment: >-
-  ONE LINE MOVED, out of the string and into a comment. Both trees have two tests, both
-  carry a string literal, both name `TC-002` somewhere — and here the naming is a TAG rather
-  than data, so the row is genuinely backed. That is what makes the pair discriminate in the
-  direction that matters: the mask must blank a string's CONTENTS and leave comments intact,
-  and a mask that blanked both would turn this control red while leaving its partner green.
+  ONE LINE MOVED, out of the string and into a marker. Both trees have two tests, both carry a
+  string literal, both name the second row somewhere, and here the naming is a marker, so the row
+  is genuinely backed. That is what makes the pair discriminate in the direction that matters:
+  the mask must blank a string's CONTENTS and leave the test's own marker intact.
   A detector written as "a trace id anywhere near a string literal" fires here and is wrong.

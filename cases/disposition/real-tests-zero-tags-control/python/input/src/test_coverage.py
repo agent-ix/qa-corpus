@@ -5,13 +5,15 @@
 # have real tests; one has been authored against the matrix and one has not.
 
 
-# TC-001: the row this test answers.
+@pytest.mark.trace("TC-001")
+# the row this test answers.
 def test_defaults_every_finding_to_warning():
     severity = "warning"
     assert severity == "warning"
 
 
-# TC-002: the row this test answers.
+@pytest.mark.trace("TC-002")
+# the row this test answers.
 def test_names_the_declaration_on_every_finding():
     declaration = "traceability.trace_tags"
     assert declaration
