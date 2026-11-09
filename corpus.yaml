@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=196> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=216> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -412,7 +412,7 @@ behaviour_change_tickets: []
 # while saying nothing about the family the case is named for.
 #
 # PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
-# The current pair count is <derived:pairs=91>; that measurement has not been
+# The current pair count is <derived:pairs=101>; that measurement has not been
 # repeated for the added case. The pair count is tagged and gated; the 15
 # is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
@@ -431,8 +431,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=90> `kind: failure`
-# fixtures, all <derived:controlled_failures=90> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=100> `kind: failure`
+# fixtures, all <derived:controlled_failures=100> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
@@ -950,17 +950,38 @@ inventory:
   - python
   - rust
   - typescript
-- mode: detection
-  case: stale-name-correct-trace
-  source: agent-ix/quire-rs#227
+- mode: attachment
+  # PLAT-847 / CR-215 (FR-051-AC-49): the advisory's main path, an id in a comment on a test,
+  # with the replacement text the module's marker template renders.
+  case: comment-id-on-test
+  source: quire-rs#627 -- 291 non-marker relations retagged in quire-rs alone
   languages:
   - python
   - rust
   - typescript
-  out_of_scope:
-    python: >-
-      The ecosystem declares test-name id forms for Rust function names and TypeScript registration
-      titles, but no Python function-name form. A Python name cannot produce the stale-name condition.
+- mode: attachment
+  # FR-051-AC-50: the advisory fires whether or not the id is also backed.
+  case: comment-id-on-backed-test
+  source: quire-rs#627 -- FR-051-AC-50
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: detection
+  # FR-050-AC-44, FR-051-AC-11: a test name carrying an id binds nothing and is not advised.
+  case: test-name-binds-nothing
+  source: quire-rs#627 -- 40 symbols in quire-rs were tagged only through their name
+  languages:
+  - python
+  - rust
+  - typescript
+- mode: detection
+  case: stale-id-beside-declared-id
+  source: agent-ix/quire-rs#227 -- a stale id beside the declared one stays visible as an untracked symbol
+  languages:
+  - python
+  - rust
+  - typescript
 - mode: disposition
   case: greenfield-no-symbols
   source: agent-ix/quire-rs#229

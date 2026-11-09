@@ -1,0 +1,16 @@
+mode: detection
+module: ecosystem
+id: test-name-binds-nothing-control
+issue_ref: agent-ix/quire-rs#627
+kind: control
+control_for:
+- test-name-binds-nothing
+findable: false
+tags:
+- TC-2160
+- TC-1017
+- detection
+- binding
+comment: 'The same test with the id moved from its name into a marker. It binds and backs the row.
+
+  '

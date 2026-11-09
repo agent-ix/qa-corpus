@@ -1,3 +1,6 @@
+import pytest
+
+
 def is_contained(path: str) -> bool:
     return not path.startswith("/") and ".." not in path and "\0" not in path
 

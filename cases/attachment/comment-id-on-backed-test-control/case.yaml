@@ -1,0 +1,14 @@
+mode: attachment
+module: ecosystem
+id: comment-id-on-backed-test-control
+issue_ref: agent-ix/quire-rs#627
+kind: control
+control_for:
+- comment-id-on-backed-test
+findable: false
+tags:
+- TC-2163
+- TC-1017
+- attachment
+- binding
+comment: 'The same marked test without the comment: backed, and the advisory is silent.'

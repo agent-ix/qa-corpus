@@ -1,0 +1,20 @@
+id: stale-id-beside-declared-id
+issue_ref: agent-ix/quire-rs#227
+mode: detection
+module: ecosystem
+findable: true
+kind: failure
+grading_contract:
+  channel: direct-observation
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: not_applicable, reason: "untracked_symbols is a located direct payload, not a repair-guidance finding"}
+tags:
+- TC-993
+- coverage
+- binding
+comment: >-
+  A marker carries a stale id that names no row beside the declared one. The row is correctly
+  backed, and the stale id must remain visible as an exact untracked symbol. (A test NAME carrying
+  an id no longer binds anything, CR-215, so the stale id is written where an id binds: the marker.)

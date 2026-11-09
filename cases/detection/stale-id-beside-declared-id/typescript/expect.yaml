@@ -1,0 +1,18 @@
+# A marker carries a stale id that names no row beside the declared one. The row is backed by
+# the declared id, and the stale one stays visible as an exact untracked symbol (a test NAME
+# carrying an id binds nothing since CR-215, so the stale id is written where an id binds).
+backed: 1
+total: 2
+untracked_symbols:
+  -
+    symbol: covers the criterion
+    trace_id: TC-999
+    path: src/coverage.test.ts
+binding_census:
+  -
+    language: typescript
+    candidates: 1
+    bound: 1
+absent_diagnostic_reasons:
+  - no-symbol-bound
+  - hollow-denominator

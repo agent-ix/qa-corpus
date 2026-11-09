@@ -1,0 +1,1 @@
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/stale-id-beside-declared-id-control/rust/input --json

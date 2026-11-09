@@ -1,5 +1,5 @@
 //! The id is unpadded in a canonical marker and the matrix row declares it
-//! padded: `TC-1` against `TC-001`.
+//! padded.
 
 #[cfg(test)]
 mod tests {

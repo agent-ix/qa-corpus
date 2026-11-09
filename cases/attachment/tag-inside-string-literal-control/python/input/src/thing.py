@@ -1,4 +1,6 @@
-"""The control: the same two tests, and the tag is a marker."""
+"""The control: the same two tests, and the second names its row in a marker."""
+
+import pytest
 
 
 @pytest.mark.trace("TC-001")
@@ -7,11 +9,6 @@ def test_real():
 
 
 @pytest.mark.trace("TC-002")
+@pytest.mark.skip(reason="an ordinary reason")
 def test_carries_an_example():
-    # ONE LINE MOVED. The id is in a marker, where it binds, and the string
-    # below carries no tag-shaped text at all. So this test really does verify
-    # the second row and it is backed.
-    example = """
-        an ordinary fixture string
-    """
-    assert "ordinary" in example
+    assert True

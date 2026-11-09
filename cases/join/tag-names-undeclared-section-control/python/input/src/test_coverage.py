@@ -8,6 +8,8 @@
 # authored table rows with an `ID` column, in the same document, read by the
 # same form. One id class is minted and the other is not.
 
+import pytest
+
 
 @pytest.mark.trace("TC-001", "FR-001-AC-1")
 def test_carries_the_declared_severity():

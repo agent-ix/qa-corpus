@@ -1,3 +1,6 @@
+import pytest
+
+
 class Confirmation:
     @classmethod
     def allow(cls):

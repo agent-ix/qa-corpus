@@ -1,4 +1,6 @@
-"""Seeded: tag-shaped text inside a string literal, in a test's own span."""
+"""Seeded: comment-shaped text inside a string literal on a test's own declaration."""
+
+import pytest
 
 
 @pytest.mark.trace("TC-001")
@@ -6,11 +8,6 @@ def test_real():
     assert True
 
 
+@pytest.mark.skip(reason="# TC-002: not a tag")
 def test_carries_an_example():
-    # THE DEFECT SHAPE. The text below is DATA this test asserts about, not a
-    # tag on this test: no id in it binds, and none is reported as a misplaced
-    # citation, because a string literal is not an annotation.
-    example = """
-        Trace: TC-002
-    """
-    assert "Trace" in example
+    assert True

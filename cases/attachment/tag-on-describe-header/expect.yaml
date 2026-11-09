@@ -53,9 +53,12 @@ diagnostic_message_contains:
   trace-id-outside-marker:
   - TC-001
   - warning default
+  - container
 absent_diagnostic_reasons:
 - no-symbol-bound
 - low-symbol-binding
 - hollow-denominator
 diagnostic_reasons:
 - trace-id-outside-marker
+diagnostic_lines:
+  trace-id-outside-marker: 6

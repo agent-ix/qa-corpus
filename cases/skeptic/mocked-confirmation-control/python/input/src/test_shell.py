@@ -1,3 +1,6 @@
+import pytest
+
+
 class Confirmation:
     @classmethod
     def from_user(cls):

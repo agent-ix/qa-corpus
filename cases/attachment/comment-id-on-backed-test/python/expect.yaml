@@ -1,0 +1,18 @@
+total: 2
+backed: 1
+binding_census:
+- language: python
+  candidates: 1
+  tagged: 1
+  bound: 1
+diagnostic_reasons:
+- trace-id-outside-marker
+diagnostic_paths:
+  trace-id-outside-marker: src/test_coverage.py
+diagnostic_lines:
+  trace-id-outside-marker: 4
+diagnostic_message_contains:
+  trace-id-outside-marker:
+  - TC-001
+  - test_backed_and_commented
+  - '@pytest.mark.trace("TC-001")'

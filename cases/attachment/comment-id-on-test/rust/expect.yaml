@@ -1,0 +1,18 @@
+total: 4
+backed: 1
+binding_census:
+- language: rust
+  candidates: 2
+  tagged: 2
+  bound: 1
+diagnostic_reasons:
+- trace-id-outside-marker
+diagnostic_paths:
+  trace-id-outside-marker: src/lib.rs
+diagnostic_lines:
+  trace-id-outside-marker: 9
+diagnostic_message_contains:
+  trace-id-outside-marker:
+  - TC-001
+  - tests::commented
+  - '#[trace("TC-001")]'

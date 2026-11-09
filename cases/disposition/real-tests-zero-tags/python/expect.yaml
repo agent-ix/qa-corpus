@@ -4,7 +4,7 @@
 #
 #   no-symbol-bound     2 python evidence symbols were examined and none carried
 #                       a tag any declared form matched (forms: pytest-trace-marker)
-#                       — for example `test_defaults_every_finding_to_warning` at src/test_coverage.py:18, whose annotation
+#                       — for example `test_defaults_every_finding_to_warning` at src/test_coverage.py:17, whose annotation
 #                       carries no matching form; every row those symbols verify
 #                       is reported unbacked, which is indistinguishable from a
 #                       missing test
@@ -29,7 +29,7 @@
 #
 #   L1  both reasons fire
 #   L2  `no-symbol-bound` names src/test_coverage.py, and `binding_census.unbound_example`
-#       names src/test_coverage.py:18
+#       names src/test_coverage.py:17
 #   L3  the message names the count, the declared form, the symbol, the
 #       line, and the consequence
 #
@@ -92,7 +92,7 @@ diagnostic_message_contains:
     - "pytest-trace-marker"
     # The symbol and the exact line, which is what a reader opens.
     - "test_defaults_every_finding_to_warning"
-    - "src/test_coverage.py:18"
+    - "src/test_coverage.py:17"
     # And the consequence, which is the whole reason this matters.
     - "indistinguishable from a missing test"
   # `hollow-denominator`'s METHOD half, which nothing pinned. `metric.method`
@@ -120,7 +120,7 @@ binding_census:
     candidates: 2
     tagged: 0
     bound: 0
-    unbound_example: src/test_coverage.py:18
+    unbound_example: src/test_coverage.py:17
 # The metric the second diagnostic is about, as data: a RATIO whose population is
 # non-empty, whose examined count is non-zero, and which matched nothing. That
 # triple is `Metric::is_hollow` exactly, and asserting it is what stops the

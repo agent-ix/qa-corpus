@@ -6,6 +6,8 @@
 # case is not a missing tag, a misplaced tag or an unreadable tag. It is a tag
 # the engine reads perfectly and joins to nothing.
 
+import pytest
+
 
 @pytest.mark.trace("TC-001", "FR-001-AC-1")
 def test_defaults_every_finding_to_warning():

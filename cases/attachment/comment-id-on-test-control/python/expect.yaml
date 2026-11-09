@@ -1,0 +1,10 @@
+total: 4
+backed: 2
+binding_census:
+- language: python
+  candidates: 2
+  tagged: 2
+  bound: 2
+absent_diagnostic_reasons:
+- trace-id-outside-marker
+- no-symbol-bound

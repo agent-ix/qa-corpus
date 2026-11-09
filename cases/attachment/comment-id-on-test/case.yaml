@@ -1,0 +1,27 @@
+mode: attachment
+module: ecosystem
+id: comment-id-on-test
+case: comment-id-on-test
+issue_ref: agent-ix/quire-rs#627
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1:
+      state: required
+    L2:
+      state: required
+    L3:
+      state: required
+findable: true
+tags:
+- TC-2161
+- TC-2163
+- attachment
+- binding
+comment: AN ID IN A COMMENT ON A TEST, the main path of the advisory (CR-215, FR-051-AC-49). The comment
+  names the row and binds nothing; the finding names the file, the 1-based line, the qualified symbol,
+  the id and the exact text to write instead, rendered from the module's marker template for the language
+  (`#[trace("TC-001")]`, `@pytest.mark.trace("TC-001")`, `trace("TC-001")`). MIXED with a correctly marked
+  sibling so the census stays healthy and the advisory is the only finding. The control writes the same
+  id as a marker.

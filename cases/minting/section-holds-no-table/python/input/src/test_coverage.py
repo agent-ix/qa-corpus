@@ -1,3 +1,6 @@
+import pytest
+
+
 @pytest.mark.trace("TC-001")
 def test_covers_the_criterion():
     # the correctly tagged test is not the defect.

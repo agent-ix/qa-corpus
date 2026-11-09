@@ -1,17 +1,11 @@
-// The control: the same two tests, and the tag is a marker.
+// The control: the same two tests, and the second names its row in a marker.
 
 test("real", () => {
   trace("TC-001");
   expect(true).toBe(true);
 });
 
-test("carries an example", () => {
-  // ONE LINE MOVED. The id is in a marker, where it binds, and the template
-  // literal below carries no tag-shaped text at all. So this test really does
-  // verify the second row and it is backed.
+test("an ordinary title", () => {
   trace("TC-002");
-  const example = `
-        an ordinary fixture string
-    `;
-  expect(example).toContain("ordinary");
+  expect(true).toBe(true);
 });

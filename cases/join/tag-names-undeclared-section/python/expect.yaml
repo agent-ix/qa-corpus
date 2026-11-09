@@ -10,7 +10,7 @@
 #
 #   binding_census  python  candidates 2, bound 2   <- 100%, and honestly so
 #
-# `python-docstring-id` admits the sub-id segment, the enclosing symbol is a
+# the marker admits the sub-id segment, the enclosing symbol is a
 # test function, and the engine records the relation. What it recorded is a
 # relation to an id no `TraceTarget` mints, because a target names a SECTION and
 # `## Invariants` is a heading NEITHER declaring module admits: not in the ISO

@@ -16,8 +16,9 @@ tags:
 - attachment
 - binding
 comment: >-
-  TAG-SHAPED TEXT INSIDE A STRING LITERAL, in a test's own span (CR-215, FR-051-AC-24). The text
-  is DATA a test asserts about: it binds nothing and, because a string literal is not an
-  annotation, the `trace-id-outside-marker` advisory does not report it either. The mask is
-  language-neutral; it once covered Rust alone, so a Python or TypeScript test carrying
-  tag-shaped data read as verifying a row it never touches. The row stays unbacked: `backed 1/3`.
+  COMMENT-SHAPED TEXT INSIDE A STRING LITERAL on a test's own declaration line: a pytest
+  `skip(reason=...)` decorator, a vitest title, a Rust `#[ignore = "..."]` attribute (CR-215,
+  FR-051-AC-24). A declaration line belongs to the annotation block the advisory reads, so only
+  the string mask stands between this text and a `trace-id-outside-marker` finding. The mask is
+  language-neutral: it blanks a string's contents and keeps comments. The row stays unbacked:
+  `backed 1/3`, and nothing is advised.

@@ -1,7 +1,7 @@
 // The shape is taken from identity/tests/test_tenant_auth_policy.py:195, in
 // TypeScript: a `//` comment carrying an id an `## Invariants` table declares.
 //
-// The tag BINDS. `typescript-comment-id` admits the sub-id segment, the
+// The tag BINDS. The marker admits the sub-id segment, the
 // enclosing symbol is a test registration, and the census counts it as bound.
 // What it binds to is an id no target mints, because `## Invariants` is a
 // heading NEITHER module declares: not in the ISO `FR` skeleton, not in either

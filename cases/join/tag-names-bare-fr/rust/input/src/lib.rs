@@ -2,7 +2,7 @@
 //! comment carrying a BARE requirement id, inside the test body, on the
 //! assertion it justifies.
 //!
-//! The tag BINDS. `rust-comment-id` admits `FR-\d+` and the enclosing symbol is
+//! The tag BINDS. The marker admits `FR-\d+` and the enclosing symbol is
 //! a test function, so this is a healthy binding by every measure the engine
 //! has: the census counts it, and it counts it as bound. What it binds to is an
 //! id the declaration never minted.

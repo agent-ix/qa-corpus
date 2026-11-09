@@ -1,0 +1,15 @@
+mode: attachment
+module: ecosystem
+id: comment-id-on-test-control
+issue_ref: agent-ix/quire-rs#627
+kind: control
+control_for:
+- comment-id-on-test
+findable: false
+tags:
+- TC-2161
+- TC-1017
+- attachment
+- binding
+comment: The same two tests with the comment replaced by the marker it asked for. Both rows back and the
+  advisory is silent.

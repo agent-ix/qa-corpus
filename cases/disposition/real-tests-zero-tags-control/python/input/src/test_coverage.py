@@ -4,6 +4,8 @@
 # This is the disposition the failure case must be told apart from. Both trees
 # have real tests; one has been authored against the matrix and one has not.
 
+import pytest
+
 
 @pytest.mark.trace("TC-001")
 # the row this test answers.

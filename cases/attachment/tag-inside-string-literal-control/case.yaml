@@ -11,8 +11,7 @@ tags:
 - attachment
 - binding
 comment: >-
-  ONE LINE MOVED, out of the string and into a marker. Both trees have two tests, both carry a
-  string literal, both name the second row somewhere, and here the naming is a marker, so the row
-  is genuinely backed. That is what makes the pair discriminate in the direction that matters:
-  the mask must blank a string's CONTENTS and leave the test's own marker intact.
-  A detector written as "a trace id anywhere near a string literal" fires here and is wrong.
+  ONE LINE MOVED: the second test names its row in a marker and the string says nothing
+  tag-shaped. Both trees have two tests and a string on the second one's declaration, so the
+  pair discriminates in the direction that matters: the mask blanks a string's CONTENTS and
+  leaves the test's own marker intact. The row is backed: `backed 2/3`.

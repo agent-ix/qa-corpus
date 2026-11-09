@@ -56,5 +56,8 @@ diagnostic_paths:
 diagnostic_message_contains:
   trace-id-outside-marker:
   - TC-001
+  - module
 diagnostic_reasons:
 - trace-id-outside-marker
+diagnostic_lines:
+  trace-id-outside-marker: 8

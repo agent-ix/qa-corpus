@@ -1,8 +1,10 @@
-# `baselines/` — per-runner ratchets
+# `baselines/` -- per-runner ratchets
 
-`quire-rs.json` and `quoin.json` are the independent detection-recall ratchets
-for the two runners. They record no corpus revision: the revision a
-baseline was measured against is the git history of this repository.
+`quire-rs.json` is the detection-recall ratchet for the quire-rs runner. It records no
+corpus revision: the revision a baseline was measured against is the git history of
+this repository.
 
-Baselines live here rather than in either tool's `bench/` so that one corpus
-change moves both ratchets in one reviewable diff.
+A `quoin.json` ratchet used to live here. Nothing in this repository, quire-rs,
+quire-cli or quoin reads it, and it was last measured before the cases were reworked for
+marker-only binding (CR-215), so it is deleted rather than kept as an unread number.
+A runner that wants its own ratchet adds its file with the measurement that produced it.
