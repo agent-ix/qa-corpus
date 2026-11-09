@@ -1,5 +1,6 @@
 mode: minting
-module: ecosystem
+module: variants/multi-heading-test-case
+declaration_under_test: A test-case target whose `section` is a pattern reaching several headings is the measured condition; the installed ecosystem declaration names one heading and cannot exhibit it.
 id: rows-across-many-headings
 case: rows-across-many-headings
 issue_ref: agent-ix/quire-rs#272
@@ -17,7 +18,7 @@ comment: >-
   two headings were invisible and the matrix reported a flawless `test-case 1/1` over a
   third of itself. agent-ix/identity carries roughly thirty such headings.
   agent-ix/quire-rs#272 (CR-118) made `section:` accept a list or a pattern and the
-  ecosystem module now declares the `*Test Case Summary*` family, so all three are reached.
+  a declaration that names the `*Test Case Summary*` family reaches all three. The installed ecosystem module now names one heading, so this case binds a corpus-owned fixture module that declares the family.
   The input tree is byte-unchanged, which is exactly why the pair stopped discriminating:
   its healthy counterpart differs from it only in heading text, and the payloads are now
   identical. FR-065-AC-42 rejected the pair, correctly. The input is still the shape that

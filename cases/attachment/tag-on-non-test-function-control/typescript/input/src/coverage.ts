@@ -7,6 +7,6 @@
 // trace-id form inside a symbol that does not bind trace ids" would fire here
 // too, and be wrong.
 
-// Implements: FR-001-AC-1
-export const severityOf = (finding: { severity?: string }) =>
-  finding.severity ?? "warning";
+export const severityOf = implementing("FR-001-AC-1")(
+  (finding: { severity?: string }) => finding.severity ?? "warning",
+);

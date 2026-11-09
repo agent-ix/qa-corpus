@@ -8,6 +8,6 @@
 # too, and be wrong.
 
 
-# Implements: FR-001-AC-1
+@implements("FR-001-AC-1")
 def normalize_severity(finding):
     return finding.get("severity") or "warning"

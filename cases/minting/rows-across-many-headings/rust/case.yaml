@@ -1,1 +1,1 @@
-reproduce: quire coverage --scope cases/minting/rows-across-many-headings/rust/input --json
+reproduce: quire coverage --scope cases/minting/rows-across-many-headings/rust/input --module modules/variants/multi-heading-test-case --json

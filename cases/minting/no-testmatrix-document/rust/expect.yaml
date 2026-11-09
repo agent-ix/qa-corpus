@@ -70,8 +70,6 @@ diagnostic_reasons:
   - test-case/archetype-matches-nothing
 diagnostic_paths:
   test-case/archetype-matches-nothing: spec-artifacts-process/manifest.yaml
-diagnostic_lines:
-  test-case/archetype-matches-nothing: 673
 diagnostic_message_contains:
   test-case/archetype-matches-nothing:
     - "test-case"

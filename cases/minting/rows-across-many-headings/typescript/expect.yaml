@@ -15,7 +15,7 @@
 # test symbols and currently land in `untracked_symbols`".
 #
 # RE-MEASURED against the payload, not copied from the forward block:
-#   quire coverage \
+#   quire coverage --module modules/variants/multi-heading-test-case \
 #     --scope cases/minting/rows-across-many-headings/typescript/input --json
 #
 # `total` goes 2 -> 4 and `backed` 1 -> 3, so this fixture's own backing ratio

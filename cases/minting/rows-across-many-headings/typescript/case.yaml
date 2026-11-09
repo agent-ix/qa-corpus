@@ -1,1 +1,1 @@
-reproduce: quire coverage --scope cases/minting/rows-across-many-headings/typescript/input --json
+reproduce: quire coverage --scope cases/minting/rows-across-many-headings/typescript/input --module modules/variants/multi-heading-test-case --json
