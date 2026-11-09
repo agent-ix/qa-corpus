@@ -9,7 +9,7 @@ tags:
 - TC-1836
 - parser
 - binding
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/typescript-regex-brace/input --json
+reproduce: quire coverage --scope cases/parser/typescript-regex-brace/input --json
 comment: >-
   Regression pin for the escaped opening brace in a slash-delimited regex
   inside a balanced test function. The current parser recovers its test symbol

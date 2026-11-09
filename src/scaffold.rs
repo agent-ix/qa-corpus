@@ -30,6 +30,10 @@ pub struct Options<'a> {
 }
 
 fn module_selector(root: &Path, module: &str) -> Result<String, CorpusError> {
+    // The ecosystem declaration is the installed module registry; nothing to select.
+    if module == "ecosystem" {
+        return Ok(String::new());
+    }
     if module.is_empty()
         || !Path::new(module)
             .components()
@@ -198,7 +202,9 @@ pub fn create(root: &Path, options: &Options<'_>) -> Result<(PathBuf, String), C
         .map_err(|error| invalid(error.to_string()))?
         .to_path_buf();
     let scope = format!("{}/input", relative.display());
-    let reproduce = if selector.starts_with("IX_") {
+    let reproduce = if selector.is_empty() {
+        format!("quire coverage --scope {scope} --json")
+    } else if selector.starts_with("IX_") {
         format!("{selector} quire coverage --scope {scope} --json")
     } else {
         format!("quire coverage --scope {scope} {selector} --json")
@@ -242,16 +248,13 @@ mod tests {
 
     /// Trace: FR-065-AC-3, FR-065-AC-18. A control scaffold has usable metadata.
     #[test]
-    fn control_scaffold_selects_module_path_and_lists_partner() {
+    fn control_scaffold_binds_installed_registry_and_lists_partner() {
         let root = tempfile::tempdir().expect("scratch corpus");
         fs::write(
             root.path().join("corpus.yaml"),
             "mode_families: [detection]\n",
         )
         .expect("declaration");
-        let module = root.path().join("modules/ecosystem/spec-artifacts-iso");
-        fs::create_dir_all(&module).expect("module directory");
-        fs::write(module.join("manifest.yaml"), "id: iso\n").expect("manifest");
         let options = Options {
             mode: "detection",
             case: "example",
@@ -265,7 +268,8 @@ mod tests {
             relative.to_string_lossy(),
             "cases/detection/example-control"
         );
-        assert!(reproduce.starts_with("IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage"));
+        assert!(reproduce.starts_with("quire coverage"));
+        assert!(!reproduce.contains("IX_FILAMENT_MODULES_PATH"));
         let meta = load_yaml(&root.path().join(relative).join("case.yaml")).expect("metadata");
         assert_eq!(meta["control_for"], serde_json::json!(["example"]));
         assert!(meta.get("case").is_none());
@@ -281,9 +285,6 @@ mod tests {
             "mode_families: [detection]\n",
         )
         .expect("declaration");
-        let module = root.path().join("modules/ecosystem/spec-artifacts-iso");
-        fs::create_dir_all(&module).expect("module directory");
-        fs::write(module.join("manifest.yaml"), "id: iso\n").expect("manifest");
         let mut options = Options {
             mode: "detection",
             case: "example",

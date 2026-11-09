@@ -15,7 +15,7 @@ tags:
 - TC-1014
 - detection
 - binding
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/untracked-id-near-miss/input --json
+reproduce: quire coverage --scope cases/detection/untracked-id-near-miss/input --json
 comment: >-
   `#[trace("TC-1")]` against a `TC-001` row: the marker binds the unpadded string verbatim,
   while the matrix row declares the padded one. The engine holds both strings and joins neither.

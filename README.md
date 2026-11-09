@@ -35,15 +35,18 @@ make external-channel           # validate exact non-Quire producer/invocations
 Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 
 ```bash
-IX_FILAMENT_MODULES_PATH=modules/ecosystem \
-  quire coverage --scope cases/attachment/marker-form-mismatch/input --json
+quire coverage --scope cases/attachment/marker-form-mismatch/input --json
 ```
 
-Naming the module is not decoration. Without it no traceability model loads, the run
-reports `0/0 rows backed`, and the case cannot exhibit the declaration defect it exists
-for. The ecosystem declaration is a module **path** — `spec-artifacts-process` *and*
-`spec-artifacts-iso` — so it is selected with `IX_FILAMENT_MODULES_PATH`;
-`--module` takes one directory and is what a variant-bound case uses.
+Naming the module is not decoration, and the corpus does not carry the declaration.
+The ecosystem declaration is two modules, `spec-artifacts-process` *and*
+`spec-artifacts-iso`, and a case binding `module: ecosystem` resolves them from the
+**installed module registry** (`~/.ix/filament/modules`, installed with Quoin) — the
+authoritative copy. To run against a source checkout instead, point
+`IX_FILAMENT_MODULES_PATH` at a directory holding the two module checkouts' module
+directories; the corpus never copies them. Without the declaration no traceability
+model loads and the run reports `0/0 rows backed`. `--module` takes one directory and is
+what a variant-bound case uses.
 
 It runs from the root because the CLI **refuses a `..` segment** in `--module` under
 path safety, so a `cd input && … --module ../../../../modules/…` form is rejected
@@ -74,7 +77,6 @@ corpus.yaml          schema version, vocabularies, `case_schema`, and the INVENT
 src/                 Rust metadata, matrix, case runner, and reporting gates
 Makefile             runs those gates and scaffolds new cases through the Rust CLI
 modules/
-  ecosystem/         THE REAL declaration, vendored
   variants/<id>/     relaxation variants — each names the ticket it sizes
 cases/<mode>/<case>/                       ONE language
   case.yaml          the fields `corpus.yaml`'s `case_schema` declares. Read it
@@ -132,7 +134,7 @@ central file.
 
 `agent-ix/quire-rs#285` migrated the ported detection cases off `bench-legacy` —
 the synthetic manifest whose heading always matches — and deleted it. Detection
-fixtures bind either the vendored ecosystem declaration or an explicitly attributed
+fixtures bind either the installed ecosystem declaration or an explicitly attributed
 declaration-under-test variant; reporting fixtures exercise Quoin and do not load a
 traceability module despite retaining the common metadata field.
 

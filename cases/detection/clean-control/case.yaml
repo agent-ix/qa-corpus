@@ -5,7 +5,7 @@ language: rust
 module: ecosystem
 kind: control
 findable: false
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/clean-control/input
+reproduce: quire coverage --scope cases/detection/clean-control/input
   --json
 tags:
 - TC-1014

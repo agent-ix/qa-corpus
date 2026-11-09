@@ -6,6 +6,6 @@ module: ecosystem
 kind: control
 control_for: [obligation-row-states-nothing]
 findable: false
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/obligation-row-states-nothing-control/input --json
+reproduce: quire coverage --scope cases/detection/obligation-row-states-nothing-control/input --json
 tags: [TC-1059, coverage, obligation]
 comment: The same row with one concrete criterion.

@@ -12,6 +12,6 @@ tags:
 - TC-1017
 - detection
 - binding
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/untracked-id-near-miss-control/input --json
+reproduce: quire coverage --scope cases/detection/untracked-id-near-miss-control/input --json
 comment: >-
   The same marker with `TC-001` instead of `TC-1` -- two characters. It binds and backs the row.

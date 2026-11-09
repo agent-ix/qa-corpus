@@ -12,7 +12,7 @@ tags:
 - TC-1014
 - parser
 - binding
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/parser/triple-quote-scope-desync/input --json
+reproduce: quire coverage --scope cases/parser/triple-quote-scope-desync/input --json
 comment: >-
   A REGRESSION PIN, not a defect. #274 landed and this input now parses correctly. Its control
   was the same content written the way the BROKEN parser could handle, so once the parser was
