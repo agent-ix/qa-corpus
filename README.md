@@ -38,13 +38,15 @@ Or one case by hand, **from the corpus root** — this is exactly what CI runs:
 quire coverage --scope cases/attachment/marker-form-mismatch/input --json
 ```
 
-Naming the module is not decoration, and the corpus does not carry the declaration.
+The corpus does not carry the ecosystem declaration.
 The ecosystem declaration is two modules, `spec-artifacts-process` *and*
 `spec-artifacts-iso`, and a case binding `module: ecosystem` resolves them from the
 **installed module registry** (`~/.ix/filament/modules`, installed with Quoin) — the
 authoritative copy. To run against a source checkout instead, point
 `IX_FILAMENT_MODULES_PATH` at a directory holding the two module checkouts' module
-directories; the corpus never copies them. Without the declaration no traceability
+directories; the corpus never copies them. That path ADDS to the installed set and wins
+first, so every archetype then raises DuplicateArchetype warnings; use `--module` to
+replace the installed set instead. Without the declaration no traceability
 model loads and the run reports `0/0 rows backed`. `--module` takes one directory and is
 what a variant-bound case uses.
 

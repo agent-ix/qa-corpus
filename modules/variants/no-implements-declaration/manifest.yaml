@@ -3,9 +3,10 @@
 #
 # See VARIANT.md. This is NOT a transitional relaxation: `coverage.implements`
 # reaches `state: not_computed` only when the loaded module declares no
-# `implements` forms, and the installed ecosystem declares three
-# (`rust-implements-line`, `python-implements-line`, `typescript-implements-line`
-# — in the installed `spec-artifacts-process` manifest). A
+# `implements` forms, and the installed ecosystem declares five
+# (`rust-implements-line`, `rust-implements-attribute`, `python-implements-decorator`,
+# `typescript-implements-decorator`, `typescript-implements-wrapper` — in the installed
+# `spec-artifacts-process` manifest). A
 # fixture for that metric state therefore cannot bind `ecosystem` at all.
 name: no-implements-declaration
 manifest_version: 1.0.0
@@ -16,7 +17,7 @@ artifact_types:
 - name: TestMatrix
 traceability:
   trace_targets:
-  # The ECOSYSTEM's heading and id column, not `Test Cases` / `ID`. The one
+  # A heading and id column close to the ecosystem's (`Test ID`), not `Test Cases` / `ID`. The one
   # axis this variant relaxes is the absent `implements:` block below; a second
   # relaxation carried alongside it would make the fixture unable to say which
   # of the two it was measuring.

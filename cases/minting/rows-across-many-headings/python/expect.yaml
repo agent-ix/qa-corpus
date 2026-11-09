@@ -19,9 +19,9 @@
 #     --scope cases/minting/rows-across-many-headings/python/input --json
 #
 # `total` goes 2 -> 4 and `backed` 1 -> 3, so this fixture's own backing ratio
-# moves 50% -> 75%. The ecosystem's moves the other way, because most of the
-# rows that start minting across 88 repositories have nothing backing them —
-# and that is the correction, not a regression.
+# moves 50% -> 75%. The multi-heading declaration exists only on upstream branch
+# epic/264-assurance-integration and is NOT in the released module, so the installed
+# module strands rows under sibling headings and this case runs on the corpus variant.
 total: 4
 backed: 3
 groups:

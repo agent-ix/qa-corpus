@@ -12,7 +12,7 @@ tags:
 - attachment
 - binding
 comment: >-
-  ONE LINE CHANGED, and the id-shaped annotation stays exactly where it is: the tag above the
+  ONE TAG CHANGED (typescript rewraps the declaration, two lines into three), and the id-shaped annotation stays exactly where it is: the tag above the
   production function is rewritten in the form the production channel accepts. That is the
   repair for THIS defect — a production symbol cannot be evidence for a matrix row, and the
   relation it can carry is `implements`. It is also the harder control: a detector written as

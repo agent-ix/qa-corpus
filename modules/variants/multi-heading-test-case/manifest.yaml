@@ -8,18 +8,15 @@ traceability:
   trace_targets:
   - name: test-case
     archetype: TestMatrix
-    exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
     section: ['*Test Case Summary*']
     id_column: Test ID
   - name: acceptance-criterion
     archetype: FR
-    exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
     section: Acceptance Criteria
     id_column: ID
   document_references:
   - name: verification
     archetype: FR
-    exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
     section: Acceptance Criteria
     row_id_column: ID
     column: Verification
@@ -29,7 +26,6 @@ traceability:
     strip_annotations: false
   - name: traces-to
     archetype: TestMatrix
-    exclude: ['tests/**', 'tests_integration/**', 'fixtures/**']
     section: ['*Test Case Summary*']
     row_id_column: Test ID
     column: Traces To
@@ -37,12 +33,6 @@ traceability:
     targets: [acceptance-criterion, test-case]
     expand_ranges: true
     strip_annotations: true
-  status:
-    column: Status
-    complete: ["✅"]
-    pending: ["🚧"]
-    failed: ["❌"]
-    retired: ["⛔"]
   obligations:
   - name: acceptance-criterion
     target: acceptance-criterion

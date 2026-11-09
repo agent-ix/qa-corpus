@@ -1,6 +1,6 @@
 mode: minting
 module: variants/multi-heading-test-case
-declaration_under_test: A test-case target whose `section` is a pattern reaching several headings is the measured condition; the installed ecosystem declaration names one heading and cannot exhibit it.
+declaration_under_test: A test-case target whose `section` is a pattern reaching several headings is the measured condition. The multi-heading `*Test Case Summary*` declaration (spec-artifacts-process #70, commit 995288d) exists only on the upstream branch epic/264-assurance-integration and is NOT in the released module; the installed module names one heading and strands rows under sibling headings, so this case runs on the corpus variant.
 id: rows-across-many-headings
 case: rows-across-many-headings
 issue_ref: agent-ix/quire-rs#272
@@ -17,8 +17,12 @@ comment: >-
   the ENGINE — `TraceTarget.section` took one heading name, so the two rows under the other
   two headings were invisible and the matrix reported a flawless `test-case 1/1` over a
   third of itself. agent-ix/identity carries roughly thirty such headings.
-  agent-ix/quire-rs#272 (CR-118) made `section:` accept a list or a pattern and the
-  a declaration that names the `*Test Case Summary*` family reaches all three. The installed ecosystem module now names one heading, so this case binds a corpus-owned fixture module that declares the family.
+  agent-ix/quire-rs#272 (CR-118) made `section:` accept a list or a pattern, so a declaration that names the
+  `*Test Case Summary*` family reaches all three. That declaration (spec-artifacts-process
+  #70, commit 995288d) exists only on the upstream branch epic/264-assurance-integration
+  and is NOT in the released module. The installed module names one heading, so it still
+  strands rows under sibling headings. This case therefore binds a corpus-owned fixture
+  module that declares the family.
   The input tree is byte-unchanged, which is exactly why the pair stopped discriminating:
   its healthy counterpart differs from it only in heading text, and the payloads are now
   identical. FR-065-AC-42 rejected the pair, correctly. The input is still the shape that
