@@ -48,3 +48,19 @@ The deleted cases test only removed machinery:
 The `quire-rs.json` regeneration is consistent with the tree. The `quoin.json` label-only edit is not acceptable (FND-001).
 
 Not mergeable until the medium findings are fixed and `make verify` passes against the quire-rs PR 627 head. It should land together with quire-rs PR 627.
+
+## Dispositions
+
+Round 1, checked against fix head `8d24c93`. Evidence for this round:
+- qa-corpus `cargo test`: 18 tests pass.
+- `bounds --require-complete`: 216 fixtures, GAP 0. The derived tags read 216 fixtures, 101 pairs and 100 failures.
+- quire-rs PR 627 head `2648663`, whose `corpus` submodule is at `8d24c93`: `cargo test --test it corpus` gives 35 passed, 0 failed. This includes `corpus_cases_hold`, `tc1028_a_failure_case_discriminates_from_its_control` and the recall ratchet.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | deferred | Upstream spec-artifacts-process PR 131 has merged and drops `trace_tags.legacy`. The copy now matches upstream, and the landing dependency for quire-rs PR 627 is gone. The copy is still vendored, and so is the `spec-artifacts-iso` schema copy that still declares `legacy`. That copy predates this ticket and needs its own de-vendoring change, which the lead should raise. |
+| FND-003 | fixed | - |
+| FND-004 | fixed | - |
+| FND-005 | still-open | Most of the stale prose is gone. Two kinds remain. First, `rust-doc-comment-id` is still named as the binding form in cases/join/tag-names-undeclared-section/rust/input/src/lib.rs:4 and in its expect.yaml at line 13. Second, "vacuous today" still appears in cases/attachment/tag-on-non-test-function-control/{python,rust,typescript}/expect.yaml:22 and in cases/attachment/tag-at-module-scope-control/{python,typescript}/expect.yaml near lines 58 and 63. The ticket has landed, so the check is live, not vacuous. |
+| FND-006 | still-open | `import pytest` is now present in every python fixture that uses the marker. A comment line still sits between `@pytest.mark.trace(...)` and `def` in 4 files: real-tests-zero-tags-control/python lines 11 and 18, and tag-on-non-test-function and its control, python test_coverage.py:12. |

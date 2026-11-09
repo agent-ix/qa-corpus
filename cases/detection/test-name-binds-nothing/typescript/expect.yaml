@@ -13,3 +13,5 @@ diagnostic_paths:
 diagnostic_message_contains:
   no-symbol-bound:
   - 1 typescript evidence symbols were examined
+absent_diagnostic_reasons:
+- trace-id-outside-marker

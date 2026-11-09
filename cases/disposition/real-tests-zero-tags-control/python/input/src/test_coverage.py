@@ -7,15 +7,15 @@
 import pytest
 
 
-@pytest.mark.trace("TC-001")
 # the row this test answers.
+@pytest.mark.trace("TC-001")
 def test_defaults_every_finding_to_warning():
     severity = "warning"
     assert severity == "warning"
 
 
-@pytest.mark.trace("TC-002")
 # the row this test answers.
+@pytest.mark.trace("TC-002")
 def test_names_the_declaration_on_every_finding():
     declaration = "traceability.trace_tags"
     assert declaration

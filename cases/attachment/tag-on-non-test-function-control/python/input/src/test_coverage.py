@@ -8,7 +8,7 @@ import pytest
 from coverage import normalize_severity
 
 
-@pytest.mark.trace("TC-002")
 # on the test, which registers an evidence symbol.
+@pytest.mark.trace("TC-002")
 def test_names_the_declaration_on_every_finding():
     assert normalize_severity({}) == "warning"

@@ -42,3 +42,22 @@ Examined: FR-051-AC-22, AC-24, AC-49 and AC-50 against the rewritten failing cas
 AC-49 (non-binding kinds), the AC-49 implements exclusion and AC-50's all-markers-silent rule are witnessed. AC-49's evidence-kind path (FND-001), AC-22's kind and no-marker-text clauses (FND-002, FND-003) and AC-24's mask (FND-005) are not. The deleted cases test only removed machinery. The renamed near-miss case tests a real, emitted behaviour.
 
 Not mergeable until these findings are fixed or dispositioned.
+
+## Dispositions
+
+Round 1, checked against fix head `8d24c93`. quire-rs PR 627 at `2648663` grades every corpus case against its expectation, with the submodule at `8d24c93`: `corpus_cases_hold`, 35 of 35 corpus tests pass. That makes the expectations below verified engine behaviour, not just authored claims.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-001 | fixed | - |
+| FND-002 | fixed | - |
+| FND-003 | accepted-no-change | The coder chose not to add an excluded-fragment key, and AC-22's no-marker-text clause is pinned in the engine instead. quire-rs TC-2165 asserts that a Rust module's message has no `#[` and that a production function's has no `#[trace`. TC-2185 asserts that a Python or TypeScript function is never given a Rust attribute. The corpus now pins the positive kind text (`module`, `container`, `function`). The leftover gap is that no test asserts a Python or TypeScript production function's message lacks `@pytest.mark.trace(`/`trace(`. That is small, and adding a harness key for one clause would be more test than the AC needs. |
+| FND-004 | fixed | - |
+| FND-005 | fixed | - |
+| FND-006 | fixed | - |
+
+## New findings (disposition pass 1)
+
+| ID | Severity | Summary | Refs |
+| --- | --- | --- | --- |
+| FND-007 | low | `test-name-binds-nothing` says the id in the name is "not read and not advised", but neither the case nor its control asserts `trace-id-outside-marker` absent. Today nothing would notice if the advisory started reading test names. | cases/detection/test-name-binds-nothing/case.yaml, cases/detection/test-name-binds-nothing/rust/expect.yaml |

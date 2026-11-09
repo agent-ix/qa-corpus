@@ -59,10 +59,9 @@ metrics:
 # HEALTHY INPUT STAYS SILENT. The first three are the diagnostics that read the
 # binding census, and none may fire on a tree whose tags all bind.
 #
-# The fourth is the forward token #312 introduces, and asserting it absent HERE
-# is the point of the pair: it is vacuous today, and the day #312 lands it is
-# the check that the new diagnostic did not simply fire on every file carrying a
-# comment above a test. A failure case may not make this claim (FR-065-AC-32) —
+# The fourth is the `trace-id-outside-marker` advisory, and asserting it absent HERE
+# is the point of the pair: it is the check that the advisory did not simply fire on
+# every file carrying a comment above a test. A failure case may not make this claim (FR-065-AC-32) —
 # a control is exactly what may.
 absent_diagnostic_reasons:
   - no-symbol-bound

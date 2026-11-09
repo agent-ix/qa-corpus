@@ -6,5 +6,6 @@ binding_census:
   tagged: 1
   bound: 1
 absent_diagnostic_reasons:
+- trace-id-outside-marker
 - no-symbol-bound
 - hollow-denominator
