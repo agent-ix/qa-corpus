@@ -1,0 +1,17 @@
+id: implements-syntax-unattached
+case: implements-syntax-unattached
+issue_ref: https://linear.app/agent-ix/issue/PLAT-866
+mode: attachment
+module: structural-implements
+declaration_under_test: A TypeScript implementing wrapper call attached to no declaration binds nothing and is reported (PLAT-866, FR-062-AC-24).
+kind: failure
+findable: true
+tags: [TC-2206, PLAT-866, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+comment: >-
+  The wrapper call is a bare expression statement, so no declaration receives the relation. The call is reported once with its line instead of being dropped.

@@ -1,0 +1,17 @@
+id: partial-implements-syntax-match
+case: partial-implements-syntax-match
+issue_ref: https://linear.app/agent-ix/issue/PLAT-866
+mode: attachment
+module: structural-implements
+declaration_under_test: A structural implements pattern that matches only part of a Python decorator binds nothing and is reported (PLAT-866, FR-062-AC-19).
+kind: failure
+findable: true
+tags: [TC-2201, PLAT-866, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+comment: >-
+  The decorator is qualified through a renamed import, so the module's unanchored pattern matches only a substring of it. The proper substring never binds and is reported.

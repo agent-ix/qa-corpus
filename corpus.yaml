@@ -89,7 +89,7 @@ case_kinds:
 # Rust reader rejects a missing required field (serde) and duplicate ids (its own
 # test), and the Python reader checked neither. Reproduced — remove `issue_ref`
 # from a `case.yaml`, or point two cases at one id, and `python3 bounds.py` exited
-# 0 reporting all <derived:fixtures=216> fixtures either way (agent-ix/quire-rs#336).
+# 0 reporting all <derived:fixtures=220> fixtures either way (agent-ix/quire-rs#336).
 #
 # The fix is NOT a second hand-written list of required fields in Python. That is
 # the same defect one level up: two lists, free to disagree, with nothing
@@ -254,6 +254,9 @@ diagnostic_reasons:
   # table and `unbacked_rows` is empty, a wrong id column reads it and mints a
   # row whose `row_id` is null — and agree in every field a reader looks at.
   - id-column-matches-nothing
+  # PLAT-866 / quire-rs #630 (FR-062-AC-24): a TypeScript wrapper call attached to
+  # no declaration.
+  - implements-syntax-unattached
   # PLAT-1170 / quire-rs #615: a legacy implements-form tag.
   - legacy-implements-form
   - low-symbol-binding
@@ -264,6 +267,9 @@ diagnostic_reasons:
   - outside-entry-paths
   # PLAT-1181 / quire-rs #566: rejected proper-substring Rust attribute matches.
   - partial-implements-attribute-match
+  # PLAT-866 / quire-rs #630 (FR-062-AC-19, AC-25): a structural pattern that
+  # matched only part of a Python or TypeScript declaration's text.
+  - partial-implements-syntax-match
   - range-in-trace-tag
   # agent-ix/quire-rs#320: every declared section the document HAS holds no
   # table, so it mints nothing and neither sibling diagnostic can fire — the
@@ -412,7 +418,7 @@ behaviour_change_tickets: []
 # while saying nothing about the family the case is named for.
 #
 # PREVIOUSLY MEASURED: **15 of 85** before the PLAT-1236 case was added.
-# The current pair count is <derived:pairs=101>; that measurement has not been
+# The current pair count is <derived:pairs=103>; that measurement has not been
 # repeated for the added case. The pair count is tagged and gated; the 15
 # is NOT, and cannot be — it needs a payload from
 # every control, which means running the engine, which `qa-corpus bounds` deliberately
@@ -431,8 +437,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=100> `kind: failure`
-# fixtures, all <derived:controlled_failures=100> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=102> `kind: failure`
+# fixtures, all <derived:controlled_failures=102> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #

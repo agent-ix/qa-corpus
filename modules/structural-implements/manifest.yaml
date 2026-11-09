@@ -1,0 +1,25 @@
+{
+  "name": "structural-implements",
+  "version": "0.1.0",
+  "artifact_types": [],
+  "traceability": {
+    "trace_tags": {
+      "implements": [
+        {
+          "name": "py-implements",
+          "language": "python",
+          "syntax": "python_decorator",
+          "pattern": "@?implements\\(((?:\\s*\"[^\"]*\"\\s*,?)+)\\s*\\)",
+          "template": "@implements({ids})"
+        },
+        {
+          "name": "ts-implementing-wrapper",
+          "language": "typescript",
+          "syntax": "typescript_wrapper",
+          "pattern": "\\Aimplementing\\(((?:\\s*\"[^\"]*\"\\s*,?)+)\\s*\\)",
+          "template": "implementing({ids})"
+        }
+      ]
+    }
+  }
+}

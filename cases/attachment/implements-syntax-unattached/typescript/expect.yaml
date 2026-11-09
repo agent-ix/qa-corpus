@@ -1,0 +1,7 @@
+diagnostic_reasons: [implements-syntax-unattached]
+diagnostic_paths:
+  implements-syntax-unattached: src/lib.ts
+diagnostic_lines:
+  implements-syntax-unattached: 1
+diagnostic_message_contains:
+  implements-syntax-unattached: ['implementing("FR-001")']

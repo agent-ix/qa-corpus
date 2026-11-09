@@ -1,0 +1,7 @@
+diagnostic_reasons: [partial-implements-syntax-match]
+diagnostic_paths:
+  partial-implements-syntax-match: src/lib.py
+diagnostic_lines:
+  partial-implements-syntax-match: 1
+diagnostic_message_contains:
+  partial-implements-syntax-match: ['@t.implements("FR-001")']
