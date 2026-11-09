@@ -210,7 +210,7 @@ witness for `minting` and for **nothing else** — a minted-row count *is* the m
 channel, and everywhere else it is an incidental global scalar. Measured over the whole
 controlled population before PLAT-1236, 15 of 85 (case, control) pairs differed in
 `total` while being about something else entirely, which is what this closes. The
-current pair count is <derived:pairs=88>; the historical measurement has not been
+current pair count is <derived:pairs=89>; the historical measurement has not been
 repeated for the added case. The pair count is gated against the tree; the 15 is not.
 
 Read `witness_channels` in `corpus.yaml` for your mode before you write `expect.yaml`.
@@ -223,7 +223,7 @@ Three more consequences worth knowing before you write a fixture:
 * `validate_*` keys are re-run over the **control's** tree in that grading, because
   `quire validate` reads a spec tree and cannot be recomputed from a payload. They are
   a witness in **every** mode: `quire validate` is a second oracle, not a coverage
-  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=88>: it read
+  channel. The rule's reach over this corpus is 1 pair of <derived:pairs=89>: it read
   "0 of 35" until `wrong-type-cell` gained a control, and nothing was holding that
   sentence to the tree.
 * If your case is `pending:` on a **behaviour-change** ticket — one that adds no

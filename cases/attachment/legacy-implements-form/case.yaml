@@ -1,0 +1,17 @@
+id: legacy-implements-form
+case: legacy-implements-form
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1170
+mode: attachment
+module: legacy-implements
+declaration_under_test: A textual Rust implements use warns when the module also declares the attribute form (PLAT-1170, FR-050-AC-62).
+kind: failure
+findable: true
+tags: [TC-2090, PLAT-1170, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+comment: >-
+  A production symbol still carries the textual Implements line while the module declares a rust_attribute implements form with a template. The use keeps binding and the finding names the canonical attribute.

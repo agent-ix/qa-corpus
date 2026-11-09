@@ -1,0 +1,13 @@
+backed: 0
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 1
+  matched: 1
+diagnostic_reasons: [legacy-implements-form]
+diagnostic_paths:
+  legacy-implements-form: src/lib.rs
+diagnostic_lines:
+  legacy-implements-form: 1
+diagnostic_message_contains:
+  legacy-implements-form: [production, 'FR-001', '#[implements("FR-001")]']
