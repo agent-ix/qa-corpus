@@ -69,7 +69,7 @@ diagnostic_reasons:
   # of; naming `test-case` is what asserts the fact this case is about.
   - test-case/archetype-matches-nothing
 diagnostic_paths:
-  test-case/archetype-matches-nothing: spec-artifacts-process/manifest.yaml
+  test-case/archetype-matches-nothing: manifest.yaml
 diagnostic_message_contains:
   test-case/archetype-matches-nothing:
     - "test-case"
