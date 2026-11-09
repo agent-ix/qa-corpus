@@ -1,1 +1,6 @@
 absent_diagnostic_reasons: [partial-implements-syntax-match]
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 2
+  matched: 1

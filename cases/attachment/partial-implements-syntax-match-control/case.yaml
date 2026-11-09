@@ -2,10 +2,10 @@ id: partial-implements-syntax-match-control
 issue_ref: https://linear.app/agent-ix/issue/PLAT-866
 mode: attachment
 module: structural-implements
-declaration_under_test: A structural implements pattern that matches only part of a Python decorator binds nothing and is reported (PLAT-866, FR-062-AC-19).
+declaration_under_test: A structural implements pattern that matches only part of a Python decorator binds nothing and is reported (PLAT-866, FR-062-AC-25).
 kind: control
 findable: false
-tags: [TC-2201, PLAT-866, coverage]
+tags: [TC-2207, PLAT-866, coverage]
 control_for: [partial-implements-syntax-match]
 comment: >-
   The same module and source with the decorator spelled as the pattern's full match. It binds and the partial-match finding is absent.

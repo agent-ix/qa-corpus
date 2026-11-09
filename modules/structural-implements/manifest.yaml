@@ -16,7 +16,7 @@
           "name": "ts-implementing-wrapper",
           "language": "typescript",
           "syntax": "typescript_wrapper",
-          "pattern": "\\Aimplementing\\(((?:\\s*\"[^\"]*\"\\s*,?)+)\\s*\\)",
+          "pattern": "(?:ixTrace\\.)?implementing\\(((?:\\s*\"[^\"]*\"\\s*,?)+)\\s*\\)",
           "template": "implementing({ids})"
         }
       ]

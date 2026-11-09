@@ -7,7 +7,7 @@ binding_census:
 external_observations:
 - kind: mock-injection-observed
   path: src/test_shell.py
-  line: 13
+  line: 16
   symbol: test_covers
   injects:
   - Confirmation.allow

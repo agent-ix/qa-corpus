@@ -5,3 +5,8 @@ diagnostic_lines:
   implements-syntax-unattached: 1
 diagnostic_message_contains:
   implements-syntax-unattached: ['implementing("FR-001")']
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 1
+  matched: 0

@@ -61,8 +61,8 @@
       "mode": "attachment",
       "language": "typescript",
       "level": "L1",
-      "reached": 9,
-      "population": 9,
+      "reached": 10,
+      "population": 10,
       "gap_count": 0,
       "misses": []
     },
@@ -70,8 +70,8 @@
       "mode": "attachment",
       "language": "typescript",
       "level": "L2",
-      "reached": 9,
-      "population": 9,
+      "reached": 10,
+      "population": 10,
       "gap_count": 0,
       "misses": []
     },
@@ -79,8 +79,8 @@
       "mode": "attachment",
       "language": "typescript",
       "level": "L3",
-      "reached": 9,
-      "population": 9,
+      "reached": 10,
+      "population": 10,
       "gap_count": 0,
       "misses": []
     },

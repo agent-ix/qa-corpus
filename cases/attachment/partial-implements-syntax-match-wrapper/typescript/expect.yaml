@@ -1,0 +1,12 @@
+diagnostic_reasons: [partial-implements-syntax-match]
+diagnostic_paths:
+  partial-implements-syntax-match: src/lib.ts
+diagnostic_lines:
+  partial-implements-syntax-match: 1
+diagnostic_message_contains:
+  partial-implements-syntax-match: ['t.implementing("FR-001")']
+metrics:
+- name: coverage.implements
+  state: measured
+  examined: 2
+  matched: 0
