@@ -45,8 +45,7 @@ The ecosystem declaration is two modules, `spec-artifacts-process` *and*
 authoritative copy. To run against a source checkout instead, point
 `IX_FILAMENT_MODULES_PATH` at a directory holding the two module checkouts' module
 directories; the corpus never copies them. That path ADDS to the installed set and wins
-first, so every archetype then raises DuplicateArchetype warnings; use `--module` to
-replace the installed set instead. Without the declaration no traceability
+first, so every archetype then raises DuplicateArchetype warnings. Without the declaration no traceability
 model loads and the run reports `0/0 rows backed`. `--module` takes one directory and is
 what a variant-bound case uses.
 
