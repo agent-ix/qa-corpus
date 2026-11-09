@@ -1,0 +1,11 @@
+id: legacy-implements-form-control
+issue_ref: https://linear.app/agent-ix/issue/PLAT-1170
+mode: attachment
+module: legacy-implements
+declaration_under_test: A textual Rust implements use warns when the module also declares the attribute form (PLAT-1170, FR-050-AC-62).
+kind: control
+findable: false
+tags: [TC-2090, PLAT-1170, coverage]
+control_for: [legacy-implements-form]
+comment: >-
+  The same module and source topology with the textual line rewritten as the declared attribute. It binds the same relation and the legacy-form warning is absent.

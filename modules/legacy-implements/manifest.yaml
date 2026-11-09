@@ -1,0 +1,23 @@
+{
+  "name": "legacy-implements",
+  "version": "0.1.0",
+  "artifact_types": [],
+  "traceability": {
+    "trace_tags": {
+      "implements": [
+        {
+          "name": "rust-implements-comment",
+          "language": "rust",
+          "pattern": "(?m)^\\s*///\\s*Implements:\\s*([^\\n]+)"
+        },
+        {
+          "name": "rust-implements",
+          "language": "rust",
+          "syntax": "rust_attribute",
+          "pattern": "(?s)#\\[\\s*implements\\s*\\((.*?)\\)\\s*\\]",
+          "template": "#[implements({ids})]"
+        }
+      ]
+    }
+  }
+}
