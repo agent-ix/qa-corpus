@@ -245,6 +245,9 @@ diagnostic_reasons:
   # PLAT-2: a criterion paired with a different declared matrix row is not
   # binding evidence; this makes the mismatched source tag visible.
   - criterion-tagged-outside-row
+  # PLAT-362 / quire-rs#624: shell marker reasons (FR-051-AC-39, AC-44).
+  - entry-paths-not-applied
+  - function-not-evidence
   - hollow-denominator
   # agent-ix/quire-rs#270, landed: the archetype matched the document and the
   # declared table did not. Two tokens rather than one because the two faults
@@ -261,7 +264,9 @@ diagnostic_reasons:
   - marker-form-mismatch
   - model-mints-nothing
   - no-symbol-bound
+  - not-in-tag-channel
   - obligation-row-states-nothing
+  - outside-entry-paths
   # PLAT-1181 / quire-rs #566: rejected proper-substring Rust attribute matches.
   - partial-implements-attribute-match
   - range-in-trace-tag
