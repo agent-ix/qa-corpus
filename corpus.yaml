@@ -440,8 +440,8 @@ behaviour_change_tickets: []
 # and #318 is the standing example of confusing them.
 #
 # MEASURED BEFORE IT WAS WRITTEN, over EVERY failure block and not only the
-# controlled ones. Population: <derived:failure_fixtures=87> `kind: failure`
-# fixtures, all <derived:controlled_failures=87> controlled. The last three
+# controlled ones. Population: <derived:failure_fixtures=88> `kind: failure`
+# fixtures, all <derived:controlled_failures=88> controlled. The last three
 # uncontrolled skeptic cells gained language-matched controls when #224 added
 # the claim+wiring+capability validator.
 #
