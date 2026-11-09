@@ -1,0 +1,11 @@
+id: implements-syntax-unattached-control
+issue_ref: https://linear.app/agent-ix/issue/PLAT-866
+mode: attachment
+module: structural-implements
+declaration_under_test: A TypeScript implementing wrapper call attached to no declaration binds nothing and is reported (PLAT-866, FR-062-AC-24).
+kind: control
+findable: false
+tags: [TC-2206, PLAT-866, coverage]
+control_for: [implements-syntax-unattached]
+comment: >-
+  The same module and source with the wrapper call assigned to a const. The call attaches to a declaration, the relation binds and the unattached finding is absent.

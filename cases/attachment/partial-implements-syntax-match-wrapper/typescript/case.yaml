@@ -1,0 +1,1 @@
+reproduce: quire coverage --scope cases/attachment/partial-implements-syntax-match-wrapper/typescript/input --module modules/structural-implements --json
