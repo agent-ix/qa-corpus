@@ -1,0 +1,17 @@
+id: not-in-tag-channel
+case: not-in-tag-channel
+issue_ref: https://linear.app/agent-ix/issue/PLAT-362
+mode: attachment
+module: shell-markers
+declaration_under_test: A shell marker after the first command is in no tag channel, binds nothing and is reported (FR-051-AC-40, AC-44).
+kind: failure
+findable: true
+tags: [TC-2111, PLAT-362, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+comment: >-
+  The marker follows the first command and is neither a function block nor the header run.

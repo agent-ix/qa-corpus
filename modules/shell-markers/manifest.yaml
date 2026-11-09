@@ -1,0 +1,20 @@
+{
+  "name": "shell-markers",
+  "version": "0.1.0",
+  "artifact_types": [],
+  "traceability": {
+    "trace_tags": {
+      "markers": [
+        {
+          "name": "shell-trace-comment",
+          "language": "shell",
+          "syntax": "comment",
+          "pattern": "#\\s*trace:\\s*(.+)$",
+          "entry_paths": [
+            "scripts/**"
+          ]
+        }
+      ]
+    }
+  }
+}

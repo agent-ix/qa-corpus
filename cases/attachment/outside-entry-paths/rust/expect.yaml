@@ -1,0 +1,8 @@
+backed: 0
+diagnostic_reasons: [outside-entry-paths]
+diagnostic_paths:
+  outside-entry-paths: tools/check.sh
+diagnostic_lines:
+  outside-entry-paths: 2
+diagnostic_message_contains:
+  outside-entry-paths: ['TC-001']

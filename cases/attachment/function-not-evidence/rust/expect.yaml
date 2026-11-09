@@ -1,0 +1,8 @@
+backed: 0
+diagnostic_reasons: [function-not-evidence]
+diagnostic_paths:
+  function-not-evidence: scripts/check.sh
+diagnostic_lines:
+  function-not-evidence: 3
+diagnostic_message_contains:
+  function-not-evidence: ['TC-001']
