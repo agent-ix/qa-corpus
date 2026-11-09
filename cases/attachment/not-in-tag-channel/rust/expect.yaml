@@ -1,0 +1,8 @@
+backed: 0
+diagnostic_reasons: [not-in-tag-channel]
+diagnostic_paths:
+  not-in-tag-channel: scripts/check.sh
+diagnostic_lines:
+  not-in-tag-channel: 4
+diagnostic_message_contains:
+  not-in-tag-channel: ['TC-001']

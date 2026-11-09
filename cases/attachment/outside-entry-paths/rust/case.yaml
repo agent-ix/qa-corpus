@@ -1,0 +1,1 @@
+reproduce: quire coverage --scope cases/attachment/outside-entry-paths/rust/input --module modules/shell-markers --json

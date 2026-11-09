@@ -1,0 +1,11 @@
+id: outside-entry-paths-control
+issue_ref: https://linear.app/agent-ix/issue/PLAT-362
+mode: attachment
+module: shell-markers
+declaration_under_test: A shell marker in a header whose path matches no entry_paths glob binds nothing and is reported (FR-051-AC-44).
+kind: control
+findable: false
+tags: [TC-2111, PLAT-362, coverage]
+control_for: [outside-entry-paths]
+comment: >-
+  The same script and header moved under the entry_paths glob, so it is eligible and the finding is absent.

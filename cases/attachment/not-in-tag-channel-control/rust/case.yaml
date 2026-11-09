@@ -1,0 +1,1 @@
+reproduce: quire coverage --scope cases/attachment/not-in-tag-channel-control/rust/input --module modules/shell-markers --json

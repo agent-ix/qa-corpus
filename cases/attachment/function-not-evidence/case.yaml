@@ -1,0 +1,17 @@
+id: function-not-evidence
+case: function-not-evidence
+issue_ref: https://linear.app/agent-ix/issue/PLAT-362
+mode: attachment
+module: shell-markers
+declaration_under_test: A shell marker in a function comment block binds nothing and is reported (FR-051-AC-38, AC-44).
+kind: failure
+findable: true
+tags: [TC-2111, PLAT-362, coverage]
+grading_contract:
+  channel: finding
+  levels:
+    L1: {state: required}
+    L2: {state: required}
+    L3: {state: required}
+comment: >-
+  The marker sits in the comment block above a shell function, which is production and binds no verifies.
