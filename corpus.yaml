@@ -252,6 +252,8 @@ diagnostic_reasons:
   # table and `unbacked_rows` is empty, a wrong id column reads it and mints a
   # row whose `row_id` is null — and agree in every field a reader looks at.
   - id-column-matches-nothing
+  # PLAT-1170 / quire-rs #615: a legacy implements-form tag.
+  - legacy-implements-form
   - low-symbol-binding
   # agent-ix/quire-rs#367: mixed binding channels can keep the aggregate
   # census healthy while a repository's self-named test convention binds
