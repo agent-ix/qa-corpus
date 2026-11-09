@@ -1,0 +1,25 @@
+mode: attachment
+module: ecosystem
+id: comment-id-on-backed-test
+case: comment-id-on-backed-test
+issue_ref: agent-ix/quire-rs#627
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1:
+      state: required
+    L2:
+      state: required
+    L3:
+      state: required
+findable: true
+tags:
+- TC-2163
+- attachment
+- binding
+comment: THE ADVISORY FIRES WHETHER OR NOT THE ID IS ALSO BACKED (CR-215, FR-051-AC-50). The test carries
+  a marker naming TC-001 and also a comment naming it. The row is backed, the census reads 1 of 1, and
+  the comment is still reported once, because the advisory is a worklist for an author who has not finished
+  retagging and the comment is a second citation the marker does not need. The control is the same test
+  without the comment.

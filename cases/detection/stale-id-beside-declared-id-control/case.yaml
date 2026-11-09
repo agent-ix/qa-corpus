@@ -1,0 +1,15 @@
+id: stale-id-beside-declared-id-control
+issue_ref: agent-ix/quire-rs#286
+mode: detection
+module: ecosystem
+findable: false
+kind: control
+control_for:
+- stale-id-beside-declared-id
+tags:
+- TC-993
+- coverage
+- binding
+comment: >-
+  The same tree with the stale id removed from the marker. The marker still backs the row, while
+  untracked_symbols must be empty.

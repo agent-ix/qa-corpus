@@ -1,3 +1,6 @@
+import pytest
+
+
 class Confirmation:
     @classmethod
     def from_user(cls):
@@ -8,6 +11,6 @@ def grant_root(_confirmation: Confirmation) -> bool:
     return True
 
 
-# Trace: TC-001
+@pytest.mark.trace("TC-001")
 def test_covers():
     assert grant_root(Confirmation.from_user())

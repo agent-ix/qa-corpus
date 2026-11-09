@@ -1,0 +1,27 @@
+mode: detection
+module: ecosystem
+id: test-name-binds-nothing
+case: test-name-binds-nothing
+issue_ref: agent-ix/quire-rs#627
+kind: failure
+grading_contract:
+  channel: finding
+  levels:
+    L1:
+      state: required
+    L2:
+      state: required
+    L3:
+      state: required
+findable: true
+tags:
+- TC-2160
+- TC-2164
+- detection
+- binding
+comment: 'A test whose NAME carries a trace id and that carries no marker binds nothing (FR-050-AC-44,
+  FR-051-AC-11). The name adds nothing to `tagged` or `bound`, so the census reads 0 of 1 and `no-symbol-bound`
+  fires; the id in the name is not read and not advised. The control moves the id out of the name and
+  into a marker: the same test binds and backs the row.
+
+  '

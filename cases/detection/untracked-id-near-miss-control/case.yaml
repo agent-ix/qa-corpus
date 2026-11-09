@@ -1,0 +1,17 @@
+mode: detection
+language: rust
+module: ecosystem
+id: untracked-id-near-miss-control
+issue_ref: agent-ix/quire-rs#307
+kind: control
+control_for:
+- untracked-id-near-miss
+findable: false
+tags:
+- TC-1014
+- TC-1017
+- detection
+- binding
+reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/untracked-id-near-miss-control/input --json
+comment: >-
+  The same marker with `TC-001` instead of `TC-1` -- two characters. It binds and backs the row.

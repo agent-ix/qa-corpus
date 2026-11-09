@@ -1,0 +1,10 @@
+total: 2
+backed: 1
+binding_census:
+- language: typescript
+  candidates: 1
+  tagged: 1
+  bound: 1
+absent_diagnostic_reasons:
+- trace-id-outside-marker
+- no-symbol-bound

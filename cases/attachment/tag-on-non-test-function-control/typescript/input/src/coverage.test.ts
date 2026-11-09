@@ -5,8 +5,9 @@ import { describe, it, expect } from "vitest";
 import { severityOf } from "./coverage";
 
 describe("coverage", () => {
-  // TC-002: on the `it`, which registers an evidence symbol.
+  // on the `it`, which registers an evidence symbol.
   it("names the declaration on every finding", () => {
+    trace("TC-002");
     expect(severityOf({})).toBe("warning");
   });
 });

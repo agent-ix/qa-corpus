@@ -1,8 +1,7 @@
 # Two real pytest tests and not one trace tag anywhere in the tree. The shape is
 # taken from data-store/tests/test_hashing.py, whose module docstring names the
-# requirements in PROSE — `Covers: FR-001 (content addressing)` — and binds
-# nothing, because `python-docstring-id` anchors on the FIRST token of the doc
-# comment. That repository is one of 150 with test files and no binding tag at
+# requirements in PROSE — a `Covers:` line with a requirement and a gloss — and
+# binds nothing, because only a marker binds. That repository is one of 150 with test files and no binding tag at
 # all.
 #
 # NOT MIXED, deliberately. Every other attachment and join fixture in this corpus

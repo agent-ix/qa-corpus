@@ -12,5 +12,5 @@ binding_census:
   candidates: 2
   bound: 2
 absent_diagnostic_reasons:
-- tag-on-non-binding-symbol
+- trace-id-outside-marker
 - no-symbol-bound

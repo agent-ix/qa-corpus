@@ -6,14 +6,16 @@
 import { describe, it, expect } from "vitest";
 
 describe("coverage", () => {
-  // TC-001: the row this test answers.
+  // the row this test answers.
   it("defaults every finding to warning", () => {
+    trace("TC-001");
     const severity = "warning";
     expect(severity).toBe("warning");
   });
 
-  // TC-002: the row this test answers.
+  // the row this test answers.
   it("names the declaration on every finding", () => {
+    trace("TC-002");
     const declaration = "traceability.trace_tags";
     expect(declaration).toBeTruthy();
   });

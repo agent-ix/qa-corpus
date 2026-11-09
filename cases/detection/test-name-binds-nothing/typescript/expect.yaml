@@ -1,0 +1,17 @@
+total: 2
+backed: 0
+binding_census:
+- language: typescript
+  candidates: 1
+  tagged: 0
+  bound: 0
+diagnostic_reasons:
+- no-symbol-bound
+- hollow-denominator
+diagnostic_paths:
+  no-symbol-bound: src/coverage.test.ts
+diagnostic_message_contains:
+  no-symbol-bound:
+  - 1 typescript evidence symbols were examined
+absent_diagnostic_reasons:
+- trace-id-outside-marker

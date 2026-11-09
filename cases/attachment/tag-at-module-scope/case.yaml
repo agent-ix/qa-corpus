@@ -11,11 +11,6 @@ grading_contract:
     L2: {state: required}
     L3: {state: required}
 findable: true
-pending_reason: >-
-  A tag at module scope lands inside the file's own `Container` symbol, which `python.rs` and
-  `typescript.rs` emit spanning line 1 to EOF. `SymbolKind::Container.binds_trace_ids()` is
-  false (CR-061), so the tag reaches neither `verifies` nor `untracked_symbols` — that channel
-  is built from `graph.verifies` and needs a tag that BOUND. #312 adds the diagnostic.
 tags:
 - TC-1014
 - attachment
@@ -28,3 +23,5 @@ comment: >-
   across 23 repos — python 96/18, rust 25/4, typescript 4/3.
   MIXED with a correctly-tagged sibling, because that is what real files look like and it is
   what keeps the census above the `binding_diagnostics` floor.
+  PLAT-847 / CR-215: the citation is a comment, so it binds nothing and is reported once by the
+  `trace-id-outside-marker` advisory (FR-051-AC-49); the control writes it as a marker.

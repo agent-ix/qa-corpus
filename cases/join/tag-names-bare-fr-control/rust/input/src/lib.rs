@@ -11,14 +11,16 @@ mod tests {
     #[test]
     fn defaults_every_finding_to_warning() {
         let severity = "warning";
-        // TC-001, FR-001-AC-1: every finding defaults to warning.
+        // every finding defaults to warning.
+        #[trace("TC-001", "FR-001-AC-1")]
         assert_eq!(severity, "warning");
     }
 
     #[test]
     fn names_the_declaration_on_every_finding() {
         let declaration = "traceability.trace_tags";
-        // TC-002: the row's own minted id, which the declaration can join.
+        // the row's own minted id, which the declaration can join.
+        #[trace("TC-002")]
         assert!(!declaration.is_empty());
     }
 }

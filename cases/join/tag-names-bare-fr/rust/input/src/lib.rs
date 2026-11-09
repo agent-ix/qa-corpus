@@ -2,7 +2,7 @@
 //! comment carrying a BARE requirement id, inside the test body, on the
 //! assertion it justifies.
 //!
-//! The tag BINDS. `rust-comment-id` admits `FR-\d+` and the enclosing symbol is
+//! The tag BINDS. The marker admits `FR-\d+` and the enclosing symbol is
 //! a test function, so this is a healthy binding by every measure the engine
 //! has: the census counts it, and it counts it as bound. What it binds to is an
 //! id the declaration never minted.
@@ -14,14 +14,16 @@ mod tests {
     #[test]
     fn defaults_every_finding_to_warning() {
         let severity = "warning";
-        // FR-001: every finding defaults to warning.
+        // every finding defaults to warning.
+        #[trace("FR-001")]
         assert_eq!(severity, "warning");
     }
 
     #[test]
     fn names_the_declaration_on_every_finding() {
         let declaration = "traceability.trace_tags";
-        // TC-002: the row's own minted id, which the declaration can join.
+        // the row's own minted id, which the declaration can join.
+        #[trace("TC-002")]
         assert!(!declaration.is_empty());
     }
 }

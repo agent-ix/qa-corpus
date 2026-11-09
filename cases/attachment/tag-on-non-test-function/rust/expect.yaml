@@ -1,112 +1,61 @@
-# THE CENSUS READS 100% AND A ROW IS UNBACKED.
-#
-#   binding_census  rust  candidates 1, bound 1   <- and no unbound_example
-#   groups          test-case 1 of 2
-#   unbacked_rows   TC-001, FR-001-AC-1
-#
-# Those three lines are the defect. `normalize_severity` is a plain function, so
-# `SymbolKind::Function`, and `binds_trace_ids()` is false for that kind
-# (CR-061: production doc comments routinely CITE the criterion they implement,
-# and binding them would mass-manufacture backing out of prose).
-#
-# THE TAG IS NOT A MISS, IT IS AN ABSENCE. `trace::bind` reaches
-# the `carries_implements()` branch at `trace.rs:261`, which `continue`s at 271 — and the
-# census `candidates` counter is incremented AFTER that guard. So the symbol is
-# missing from the DENOMINATOR rather than counted as an unbound candidate, and
-# there is no `unbound_example` because nothing was ever unbound. A repository
-# whose tags are ALL on production code reads 100% bound.
-#
-# THE PREDICATES ARE EXACT COMPLEMENTS, which is why this is one defect and not
-# two. `binds_trace_ids()` is {TestFunction, Benchmark, FuzzTarget};
-# `carries_implements()` is {Function, Container}. Five variants, disjoint,
-# covering — so every symbol that cannot bind has ALREADY been consumed by the
-# implements branch. (The `!binds_trace_ids()` guard twelve lines below it is
-# therefore dead code; noted on #312.)
-#
-# That matters for the fix: at 261 the symbol is already being counted as an
-# `implements` candidate, so admitting it to `binding_census.candidates` would
-# double-count it across two censuses. #312's original citation hid that.
-#
-# NEITHER CHANNEL RECEIVES IT.
-#
-#   verifies           refused by symbol kind
-#   untracked_symbols  built from `graph.verifies` (`coverage.rs:1194`), so it
-#                      reports ids that BOUND and matched no row. A tag that
-#                      never bound is not there.
-#   implements         `rust-implements-line` needs the literal `Implements:`
-#                      keyword; `// TC-001: Warning default.` does not carry it.
-#
-# AND THE ENGINE WALKED THAT EXACT SYMBOL. `coverage.implements` says TWO
-# production symbols were examined — `normalize_severity` and the `tests` module
-# — and neither carried a marker. Two rather than three, because `rust.rs` emits
-# no file-level container: that absence is why `tag-at-module-scope` declares no
-# rust cell, and it is visible here as a denominator one smaller than the other
-# two languages'.
-#
-# THIS IS THE FIELD THAT DISCRIMINATES, and it is the only one. The control
-# leaves the annotation where it is and rewrites it as `/// Implements:
-# FR-001-AC-1`, so every count below is byte-identical there — same `backed`,
-# same `groups`, same `unbacked_rows`, same census. `coverage.implements` goes
-# to 1 matched.
+# CR-215 / FR-051-AC-49: only a marker binds. The citation below is a comment, so it
+# binds nothing, and the `trace-id-outside-marker` advisory names the file, line, symbol and
+# kind it sits on. The counts are those of the same tree with the citation absent, and the
+# healthy control writes it as a marker, which silences the advisory.
+
 total: 4
 backed: 1
 groups:
-  - document: spec/FR-001.md
-    target: acceptance-criterion
-    backed: 0
-    total: 2
-  - document: spec/tests.md
-    target: test-case
-    backed: 1
-    total: 2
+- document: spec/FR-001.md
+  target: acceptance-criterion
+  backed: 0
+  total: 2
+- document: spec/tests.md
+  target: test-case
+  backed: 1
+  total: 2
 unbacked_rows:
-  - document: spec/tests.md
-    row_id: TC-001
-    target_ids: [FR-001-AC-1, TC-001]
-  - document: spec/tests.md
-    row_id: TC-002
-    target_ids: [FR-001-AC-2, TC-002]
-  - document: spec/FR-001.md
-    row_id: FR-001-AC-1
-    target_ids: [FR-001-AC-1, TC-001]
-  - document: spec/FR-001.md
-    row_id: FR-001-AC-2
-    target_ids: [FR-001-AC-2, TC-002]
+- document: spec/tests.md
+  row_id: TC-001
+  target_ids:
+  - FR-001-AC-1
+  - TC-001
+- document: spec/tests.md
+  row_id: TC-002
+  target_ids:
+  - FR-001-AC-2
+  - TC-002
+- document: spec/FR-001.md
+  row_id: FR-001-AC-1
+  target_ids:
+  - FR-001-AC-1
+  - TC-001
+- document: spec/FR-001.md
+  row_id: FR-001-AC-2
+  target_ids:
+  - FR-001-AC-2
+  - TC-002
 binding_census:
-  - language: rust
-    candidates: 1
-    bound: 1
+- language: rust
+  candidates: 1
+  bound: 1
 metrics:
-  - name: coverage.implements
-    state: measured
-    value: 0
-    population: 2
-    examined: 2
-    matched: 0
+- name: coverage.implements
+  state: measured
+  value: 0
+  population: 2
+  examined: 2
+  matched: 0
 absent_diagnostic_reasons:
-  - no-symbol-bound
-  - low-symbol-binding
-  - hollow-denominator
-
-# ── agent-ix/quire-rs#312 LANDED: what was the forward block is now live ──
-#
-# Folded in from `expect-pending.yaml` unchanged. Every count above is
-# untouched by the fix, which is what the forward block said it would be: a
-# DIAGNOSTIC ticket, not a behaviour change. The tag still does not bind and
-# it should not (CR-061) — the engine has stopped dropping it in silence.
-diagnostic_reasons:
-  - tag-on-non-binding-symbol
+- no-symbol-bound
+- low-symbol-binding
+- hollow-denominator
 diagnostic_paths:
-  tag-on-non-binding-symbol: src/lib.rs
+  trace-id-outside-marker: src/lib.rs
 diagnostic_message_contains:
-  tag-on-non-binding-symbol:
-    # The id that was written, verbatim — without it the reader has a file and
-    # not a line.
-    - "TC-001"
-    # The symbol it landed on and its kind, which is the whole fix.
-    - "normalize_severity"
-    - "function"
-    # The channel that would have accepted an annotation on this symbol.
-    - "Implements:"
-    # And the consequence, so this is not read as a style note.
-    - "unbacked"
+  trace-id-outside-marker:
+  - TC-001
+  - normalize_severity
+  - function
+diagnostic_reasons:
+- trace-id-outside-marker

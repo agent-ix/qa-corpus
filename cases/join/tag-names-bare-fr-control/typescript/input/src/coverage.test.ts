@@ -10,13 +10,15 @@ import { describe, it, expect } from "vitest";
 describe("coverage", () => {
   it("defaults every finding to warning", () => {
     const severity = "warning";
-    // TC-001, FR-001-AC-1: every finding defaults to warning.
+    // every finding defaults to warning.
+    trace("TC-001", "FR-001-AC-1");
     expect(severity).toBe("warning");
   });
 
   it("names the declaration on every finding", () => {
     const declaration = "traceability.trace_tags";
-    // TC-002: the row's own minted id, which the declaration can join.
+    // the row's own minted id, which the declaration can join.
+    trace("TC-002");
     expect(declaration).toBeTruthy();
   });
 });

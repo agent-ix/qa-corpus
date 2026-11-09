@@ -6,14 +6,18 @@
 # case is not a missing tag, a misplaced tag or an unreadable tag. It is a tag
 # the engine reads perfectly and joins to nothing.
 
+import pytest
 
+
+@pytest.mark.trace("TC-001", "FR-001-AC-1")
 def test_defaults_every_finding_to_warning():
     severity = "warning"
-    # TC-001, FR-001-AC-1: every finding defaults to warning.
+    # every finding defaults to warning.
     assert severity == "warning"
 
 
+@pytest.mark.trace("TC-002")
 def test_names_the_declaration_on_every_finding():
     declaration = "traceability.trace_tags"
-    # TC-002: the row's own minted id, which the declaration can join.
+    # the row's own minted id, which the declaration can join.
     assert declaration

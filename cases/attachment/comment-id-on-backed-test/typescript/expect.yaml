@@ -1,0 +1,18 @@
+total: 2
+backed: 1
+binding_census:
+- language: typescript
+  candidates: 1
+  tagged: 1
+  bound: 1
+diagnostic_reasons:
+- trace-id-outside-marker
+diagnostic_paths:
+  trace-id-outside-marker: src/coverage.test.ts
+diagnostic_lines:
+  trace-id-outside-marker: 1
+diagnostic_message_contains:
+  trace-id-outside-marker:
+  - TC-001
+  - backed and commented
+  - trace("TC-001")
