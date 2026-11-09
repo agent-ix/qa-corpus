@@ -1,4 +1,4 @@
-# RE-MEASURED against the vendored ecosystem declaration (measured at authoring).
+# RE-MEASURED against the installed spec-artifacts-process declaration (measured at authoring).
 # The list GREW by one and the growth is the migration's
 # doing, not a defect: `bench-no-symbol-vocab` declared only the `verification`
 # reference on the FR, so the matrix was never read; the ecosystem also

@@ -12,7 +12,7 @@ grading_contract:
     L2: {state: required}
     L3: {state: required}
 findable: true
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/catch-all-properties/input
+reproduce: quire coverage --scope cases/detection/catch-all-properties/input
   --json
 tags:
 - TC-1014

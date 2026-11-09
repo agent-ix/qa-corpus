@@ -15,7 +15,7 @@ tags:
 - TC-1014
 - attachment
 - binding
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/tag-on-describe-header/input --json
+reproduce: quire coverage --scope cases/attachment/tag-on-describe-header/input --json
 comment: >-
   Shape taken verbatim from ix-ui/packages/semantic/tests/glyphs.test.ts:100 — a comment-id
   above the `describe(` header with the work in an `it` inside. RE-MEASURED under CR-119: 162

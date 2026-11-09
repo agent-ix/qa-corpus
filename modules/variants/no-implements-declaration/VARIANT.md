@@ -25,7 +25,7 @@ forms.
 | module | `coverage.implements` |
 |---|---|
 | this variant | `state: not_computed`, no value, no counts |
-| `modules/ecosystem` | `state: measured`, `value: 0`, `examined: 1`, `matched: 0` |
+| the installed ecosystem modules | `state: measured`, `value: 0`, `examined: 1`, `matched: 0` |
 
 Both are correct and different. The absent declaration is the fixture's
 subject, so no migration ticket exists or should be invented for it (#330).
@@ -36,8 +36,9 @@ subject, so no migration ticket exists or should be invented for it (#330).
 relaxed **two** — the heading and the id column — on top of declaring one trace
 form where the ecosystem declares five. A variant relaxing several axes cannot
 say which one a payload came from. Everything here that the fixture is *not*
-about is spelled the way `modules/ecosystem/spec-artifacts-process/manifest.yaml`
-spells it, so the only reading this variant admits and the ecosystem does not is
+about is spelled close to the installed `spec-artifacts-process` manifest (the
+test-case target also lists the `*Test Case Summary*` family, which the installed
+manifest does not: it names the single `Test Case Summary` heading), so the only reading this variant admits and the ecosystem does not is
 the one the case is named for.
 
 The fixture's ecosystem cell is `out-of-scope`, with the reason carried in the

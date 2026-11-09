@@ -1,9 +1,9 @@
 # THE CONTROL, AND ITS COVERAGE PAYLOAD IS IDENTICAL TO ITS PARTNER'S.
 #
 # That is deliberate and it is the point. One line changed: the annotation above
-# `normalize_severity` stayed exactly where it was and became `# Implements:
-# FR-001-AC-1`. The id-shaped comment is still sitting on production code — what
-# changed is that it now names the relation that symbol kind can carry.
+# `normalize_severity` stayed exactly where it was and became the structural
+# `@implements("FR-001-AC-1")` decorator (python and typescript no longer accept the
+# `Implements:` comment form; the file container no longer matches, so 1 rather than 2).
 #
 # So `backed`, `total`, `groups`, `unbacked_rows`, `untracked_symbols` and the
 # census all read exactly as they do in the failure case, and they are asserted
@@ -11,7 +11,7 @@
 # unbacked, correctly: no test verifies it, and a production symbol never could.
 #
 # `coverage.implements` is the whole separation, and FR-065-AC-42 rests on it
-# alone. 0 matched there, 2 here, over the same 3 production symbols
+# alone. 0 matched there, 1 here, over the same 3 production symbols
 # examined. A fixture pair that could only be told apart by an incidental scalar
 # would be the weakness FR-065 records against ten of the other eleven
 # controlled fixtures; this one is forced onto the field the defect is about.
@@ -53,10 +53,10 @@ binding_census:
 metrics:
   - name: coverage.implements
     state: measured
-    value: 2
+    value: 1
     population: 3
     examined: 3
-    matched: 2
+    matched: 1
 absent_diagnostic_reasons:
   - no-symbol-bound
   - low-symbol-binding

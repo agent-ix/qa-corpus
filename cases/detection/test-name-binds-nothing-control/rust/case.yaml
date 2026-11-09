@@ -1,1 +1,1 @@
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/detection/test-name-binds-nothing-control/rust/input --json
+reproduce: quire coverage --scope cases/detection/test-name-binds-nothing-control/rust/input --json

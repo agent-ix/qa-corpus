@@ -1,4 +1,4 @@
-# RE-MEASURED against the vendored ecosystem declaration (measured at authoring).
+# RE-MEASURED against the installed spec-artifacts-process declaration (measured at authoring).
 # This was `[]` on `bench-no-symbol-vocab`, which declared no
 # `traces-to` reference and so never read the matrix at all.
 #

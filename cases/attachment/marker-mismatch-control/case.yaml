@@ -7,7 +7,7 @@ findable: false
 kind: control
 control_for:
 - marker-mismatch
-reproduce: IX_FILAMENT_MODULES_PATH=modules/ecosystem quire coverage --scope cases/attachment/marker-mismatch-control/input
+reproduce: quire coverage --scope cases/attachment/marker-mismatch-control/input
   --json
 tags:
 - TC-1006

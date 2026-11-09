@@ -48,6 +48,10 @@ fn string_set(value: &Value, key: &str, context: &str) -> Result<BTreeSet<String
 }
 
 fn module_exists(root: &Path, module: &str) -> bool {
+    // `ecosystem` is the installed module registry, not a directory of this corpus.
+    if module == "ecosystem" {
+        return true;
+    }
     let base = root.join("modules").join(module);
     if base.join("manifest.yaml").is_file() {
         return true;
