@@ -56,6 +56,12 @@ Round 1, checked against fix head `8d24c93`. quire-rs PR 627 at `2648663` grades
 | FND-005 | fixed | - |
 | FND-006 | fixed | - |
 
+Round 2, checked against fix head `57d2e4c`. Evidence: qa-corpus `cargo test` passes (18 tests); `bounds --require-complete` gives GAP 0; quire-rs PR 627 at `54940b4` with `corpus` at `57d2e4c` gives `cargo test --test it corpus_` 32 passed, 0 failed.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-007 | fixed | - |
+
 ## New findings (disposition pass 1)
 
 | ID | Severity | Summary | Refs |

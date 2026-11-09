@@ -64,3 +64,10 @@ Round 1, checked against fix head `8d24c93`. Evidence for this round:
 | FND-004 | fixed | - |
 | FND-005 | still-open | Most of the stale prose is gone. Two kinds remain. First, `rust-doc-comment-id` is still named as the binding form in cases/join/tag-names-undeclared-section/rust/input/src/lib.rs:4 and in its expect.yaml at line 13. Second, "vacuous today" still appears in cases/attachment/tag-on-non-test-function-control/{python,rust,typescript}/expect.yaml:22 and in cases/attachment/tag-at-module-scope-control/{python,typescript}/expect.yaml near lines 58 and 63. The ticket has landed, so the check is live, not vacuous. |
 | FND-006 | still-open | `import pytest` is now present in every python fixture that uses the marker. A comment line still sits between `@pytest.mark.trace(...)` and `def` in 4 files: real-tests-zero-tags-control/python lines 11 and 18, and tag-on-non-test-function and its control, python test_coverage.py:12. |
+
+Round 2, checked against fix head `57d2e4c`. Evidence: qa-corpus `cargo test` passes (18 tests); `bounds --require-complete` gives GAP 0; quire-rs PR 627 at `54940b4` with `corpus` at `57d2e4c` gives `cargo test --test it corpus_` 32 passed, 0 failed.
+
+| FND | Outcome | Reason |
+| --- | --- | --- |
+| FND-005 | fixed | - |
+| FND-006 | fixed | - |
