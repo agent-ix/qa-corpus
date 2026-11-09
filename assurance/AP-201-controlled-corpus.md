@@ -4,7 +4,6 @@ title: Controlled QA corpus assurance profile
 type: AssuranceProfile
 status: active
 owner: qa-corpus-maintainers
-schema_version: 0.2
 profile_kind: general
 scope: corpus inventory, fixtures, controls, labels, bounds, and independent readers
 impact_assessments:
@@ -14,12 +13,10 @@ impact_assessments:
 relationships: []
 review_policy:
   mode: require
-  operations: [spec-review, gap-analysis]
+  operations: [spec-review]
 ---
 
 # Controlled QA corpus assurance profile
-
-Written against the `engineering-assurance` module, version 0.3.2.
 
 ## Decision Boundary
 
@@ -55,7 +52,7 @@ tools, which is why review is required.
 
 ## Evidence Policy
 
-Run `make ci`, including schema and parity self-tests. Require every failure
+Review runs the evidence, integrity, and scope-boundary analyses over the change. Run `make ci`, including schema and parity self-tests. Require every failure
 case to name a control and differ through its declared witness channel. Treat
 new metadata as one canonical inventory contract consumed by both readers.
 

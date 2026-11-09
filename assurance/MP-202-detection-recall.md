@@ -12,8 +12,6 @@ relationships: []
 
 # Controlled-corpus detection recall
 
-Written against the `engineering-assurance` module, version 0.3.2.
-
 ## Decision Use
 
 Show exactly which validator behaviors work and which fail without allowing a

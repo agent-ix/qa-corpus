@@ -58,8 +58,7 @@ external-channel:
 # The assurance artifacts are the ecosystem's worked examples, so they are
 # validated against the module they implement. A missing quire binary fails
 # rather than skipping: an unvalidated evidence-producer profile must not read
-# as passing. They are written against engineering-assurance 0.3.2; a contract
-# move shows up here as a validation failure.
+# as passing.
 .PHONY: validate-assurance
 validate-assurance:
 	@test -n "$(QUIRE)" || { echo "quire not found; set QUIRE=/path/to/quire"; exit 1; }

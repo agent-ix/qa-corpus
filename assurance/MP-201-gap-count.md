@@ -12,8 +12,6 @@ relationships: []
 
 # Controlled-corpus gap count
 
-Written against the `engineering-assurance` module, version 0.3.2.
-
 ## Decision Use
 
 Show which declared mode-language cells have no valid case so missing test
