@@ -43,3 +43,12 @@ contains no `SUITE-*` or `INSP-*` obligation, has P3 26,726, P4 20,097, backed
 other net changes came from concurrent real source/spec additions and are not
 attributed to #363. The full gate evidence is recorded on
 `agent-ix/quire-rs#277` and `#363`.
+
+## Before you open a pull request: sign the CLA
+
+Every contribution requires a signed Contributor License Agreement. Read it
+at [`CLA.md`](CLA.md) in this repo before you start writing code.
+
+When you open your first pull request, the CLA Assistant bot will comment
+with instructions to sign electronically. Sign once and it is recorded for
+future contributions across the org.
