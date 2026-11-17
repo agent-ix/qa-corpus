@@ -639,6 +639,13 @@ inventory:
   case: untracked-id-near-miss
   source: agent-ix/quire-rs#307 — an unpadded id and a padded row, joined by neither
   languages: [rust]
+- mode: detection
+  # PLAT-1767: a direct criterion marker can bind the criterion without a
+  # matching test-matrix row; the regression and its paired control pin that
+  # the aggregate row still requires row-scoped evidence.
+  case: criterion-tagged-outside-row
+  source: agent-ix/quire-rs#467 — PLAT-1767 direct criterion marker behavior
+  languages: [rust]
 - mode: attachment
   # The "30 repos, 0 backed" figure is #273's, and it counts repos whose tags are
   # ENTIRELY on headers. The fixture models the MIXED case instead — one

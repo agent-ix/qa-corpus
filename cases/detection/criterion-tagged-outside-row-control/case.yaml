@@ -1,4 +1,5 @@
 id: criterion-tagged-outside-row-control
+case: criterion-tagged-outside-row
 issue_ref: agent-ix/quire-rs#467
 mode: detection
 language: rust
