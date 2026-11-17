@@ -242,9 +242,6 @@ diagnostic_reasons:
   # `section-matches-nothing` off healthy repositories.
   - archetype-matches-nothing
   - catch-all-universal
-  # PLAT-2: a criterion paired with a different declared matrix row is not
-  # binding evidence; this makes the mismatched source tag visible.
-  - criterion-tagged-outside-row
   # PLAT-362 / quire-rs#624: shell marker reasons (FR-051-AC-39, AC-44).
   - function-not-evidence
   - hollow-denominator
