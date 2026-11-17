@@ -1,5 +1,4 @@
 diagnostic_reasons: []
-absent_diagnostic_reasons: [criterion-tagged-outside-row]
 unbacked_rows:
   - document: spec/tests.md
     row_id: TC-001
